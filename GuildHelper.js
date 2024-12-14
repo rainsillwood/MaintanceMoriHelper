@@ -20,7 +20,7 @@
   //S: Server. 1 = Japan, 2 = Korea, 3 = Asia, 4 = North America, 5 = Europe, 6 = Global
   //WWW: World number. For example, W10 is 010
   const WorldId = 3019;
-  const ErrorCode = getErrorCode();
+  let ErrorCode;
   const reginList = { 'jp': 0, 'kr': 1, 'ap': 2, 'us': 3, 'eu': 4, 'gl': 5 };
   const CountryCode = 'TW';
   const ModelName = 'Xiaomi 2203121C';
@@ -35,7 +35,7 @@
   let Masterversion = 0;
   const WorldGroup = await getWorldGroup();
   const AppVersion = getStorage('AppVersion');
-  initPage();
+  await initPage();
   //const account = getStorage('Account') ? getStorage('Account') : await createUser();
   switch (document.URL) {
     case 'https://mentemori.icu/?function=powerAttacher': {
@@ -61,7 +61,7 @@
   }
   //主功能
   //初始化页面
-  function initPage() {
+  async function initPage() {
     console.log('脚本运行中');
     //添加导航栏
     let nav = createElement('nav');
@@ -83,7 +83,7 @@
     } else {
       accountlogger.innerHTML = `无账号`;
     }
-    //accountlogger.onclick = loginAccount;
+    accountlogger.onclick = loginAccount;
     let accountcleaner = createElement('a', '清除账号');
     accountcleaner.onclick = () => {
       let confirm = prompt('真的要清除账号吗，请输入：确认清除');
@@ -93,11 +93,11 @@
       }
     };
     /*/增加中文
-    let localnav = document.body.childNodes[2];
-    let zh = createElement('a', 'ZH');
-    zh.href = '?lang=zh';
-    localnav.childNodes[3].childNodes[3].appendChild(createElement('text', ' | '));
-    localnav.childNodes[3].childNodes[3].appendChild(zh);*/
+      let localnav = document.body.childNodes[2];
+      let zh = createElement('a', 'ZH');
+      zh.href = '?lang=zh';
+      localnav.childNodes[3].childNodes[3].appendChild(createElement('text', ' | '));
+      localnav.childNodes[3].childNodes[3].appendChild(zh);*/
     //写入元素
     accountmanager.appendChild(createElement('a', '登录状态:'));
     accountmanager.appendChild(accountlogger);
@@ -110,6 +110,8 @@
     nav.appendChild(accountmanager);
     document.body.insertBefore(nav, document.body.childNodes[1]);
     document.body.insertBefore(createElement('hr'), document.body.childNodes[1]);
+    //获取错误码
+    ErrorCode = await getErrorCode();
     //服务器选择
     let region = createElement('select');
     region.id = 'region';
@@ -141,68 +143,68 @@
     }
     document.head.appendChild(style);
     /*/初始化数据区域
-    let divData = createElement('div');
-    divData.setAttribute('style', 'width:100%;display:flex;flex-direction:row;flex-wrap: nowrap');
-    //初始化公会列表
-    let nodeGuildList = createElement('div');
-    nodeGuildList.setAttribute('style', 'width:350px;');
-    nodeGuildList.classList.add('innerdiv');
-    let requestGuild = await XMLRequest('https://api.mentemori.icu/' + WorldId + '/guild_ranking/latest');
-    let guildRanking = JSON.parse(requestGuild.body);
-    let guildList = guildRanking.data.rankings.stock;
-    nodeGuildList.appendChild(createElement('a', '我方|中立|敌方|序号·公会名称|显示中立'));
-    let checkbox = createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = 'showMiddle';
-    checkbox.onchange = function () {
-      changeNode();
-    };
-    nodeGuildList.appendChild(checkbox);
-    nodeGuildList.appendChild(createElement('hr'));
-    for (let i = 0; i < guildList.length; i++) {
-      let nodeGuild = createElement('div');
-      nodeGuild.appendChild(createElement('text', '|'));
-      for (let j in { friend: 1, middle: 1, enermy: 1 }) {
-        let radio = createElement('input');
-        radio.type = 'radio';
-        radio.name = guildList[i].id;
-        radio.value = j;
-        if (j == 'middle') {
-          radio.checked = true;
+      let divData = createElement('div');
+      divData.setAttribute('style', 'width:100%;display:flex;flex-direction:row;flex-wrap: nowrap');
+      //初始化公会列表
+      let nodeGuildList = createElement('div');
+      nodeGuildList.setAttribute('style', 'width:350px;');
+      nodeGuildList.classList.add('innerdiv');
+      let requestGuild = await XMLRequest('https://api.mentemori.icu/' + WorldId + '/guild_ranking/latest');
+      let guildRanking = JSON.parse(requestGuild.body);
+      let guildList = guildRanking.data.rankings.stock;
+      nodeGuildList.appendChild(createElement('a', '我方|中立|敌方|序号·公会名称|显示中立'));
+      let checkbox = createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = 'showMiddle';
+      checkbox.onchange = function () {
+        changeNode();
+      };
+      nodeGuildList.appendChild(checkbox);
+      nodeGuildList.appendChild(createElement('hr'));
+      for (let i = 0; i < guildList.length; i++) {
+        let nodeGuild = createElement('div');
+        nodeGuild.appendChild(createElement('text', '|'));
+        for (let j in { friend: 1, middle: 1, enermy: 1 }) {
+          let radio = createElement('input');
+          radio.type = 'radio';
+          radio.name = guildList[i].id;
+          radio.value = j;
+          if (j == 'middle') {
+            radio.checked = true;
+          }
+          radio.onchange = function () {
+            changeNode();
+          };
+          nodeGuild.appendChild(radio);
+          nodeGuild.appendChild(createElement('text', '||'));
         }
-        radio.onchange = function () {
-          changeNode();
-        };
-        nodeGuild.appendChild(radio);
-        nodeGuild.appendChild(createElement('text', '||'));
+        nodeGuild.appendChild(createElement('text', [i] + '·' + guildList[i].name));
+        nodeGuildList.appendChild(nodeGuild);
       }
-      nodeGuild.appendChild(createElement('text', [i] + '·' + guildList[i].name));
-      nodeGuildList.appendChild(nodeGuild);
-    }
-    //获取高战列表
-    let nodePlayerList = createElement('div');
-    nodePlayerList.setAttribute('style', 'width:calc(100% - 350px);display:flex;flex-direction:column;fflex-wrap:wrap;align-items:center');
-    nodePlayerList.classList.add('innerdiv');
-    let requestPlayer = await XMLRequest('https://api.mentemori.icu/' + WorldId + '/player_ranking/latest');
-    let playerRanking = JSON.parse(requestPlayer.body);
-    let playerList = playerRanking.data.player_info;
-    for (let i in playerList) {
-      let nodePlayer = createElement('div');
-      nodePlayer.classList.add('nodePlayer');
-      nodePlayer.setAttribute('guild', playerList[i].guild_id);
-      nodePlayer.setAttribute('relation', 'none');
-      nodePlayer.id = playerList[i].id;
-      let nodeName = createElement('a', playerList[i].name);
-      let nodePower = createElement('a', playerList[i].bp);
-      let nodeGuild = createElement('a', playerList[i].guild_name);
-      nodePlayer.appendChild(nodeName);
-      nodePlayer.appendChild(nodePower);
-      nodePlayer.appendChild(nodeGuild);
-      nodePlayerList.appendChild(nodePlayer);
-    }
-    divData.appendChild(nodeGuildList);
-    divData.appendChild(nodePlayerList);
-    document.body.appendChild(divData);*/
+      //获取高战列表
+      let nodePlayerList = createElement('div');
+      nodePlayerList.setAttribute('style', 'width:calc(100% - 350px);display:flex;flex-direction:column;fflex-wrap:wrap;align-items:center');
+      nodePlayerList.classList.add('innerdiv');
+      let requestPlayer = await XMLRequest('https://api.mentemori.icu/' + WorldId + '/player_ranking/latest');
+      let playerRanking = JSON.parse(requestPlayer.body);
+      let playerList = playerRanking.data.player_info;
+      for (let i in playerList) {
+        let nodePlayer = createElement('div');
+        nodePlayer.classList.add('nodePlayer');
+        nodePlayer.setAttribute('guild', playerList[i].guild_id);
+        nodePlayer.setAttribute('relation', 'none');
+        nodePlayer.id = playerList[i].id;
+        let nodeName = createElement('a', playerList[i].name);
+        let nodePower = createElement('a', playerList[i].bp);
+        let nodeGuild = createElement('a', playerList[i].guild_name);
+        nodePlayer.appendChild(nodeName);
+        nodePlayer.appendChild(nodePower);
+        nodePlayer.appendChild(nodeGuild);
+        nodePlayerList.appendChild(nodePlayer);
+      }
+      divData.appendChild(nodeGuildList);
+      divData.appendChild(nodePlayerList);
+      document.body.appendChild(divData);*/
   }
   //文件转换
   function fileConverter() {
@@ -241,13 +243,6 @@
     divData.appendChild(uploadButton);
     divData.appendChild(createElement('br'));
     document.body.appendChild(divData);
-    /*
-    let dataLogin = await login();
-    let dataCastal = await getLocalGvgCastleInfoDialogData(1);
-    let guild = await searchGuildId(0xb722d4da43);
-    console.log(dataCastal);
-    console.log(guild);
-    */
   }
   //战斗布局
   function gvgMapper() {
@@ -581,7 +576,6 @@
   //登录账号
   async function loginAccount() {
     setStorage('ortegaaccesstoken', '');
-    ErrorCode = await getErrorCode();
     const ortegauuid = crypto.randomUUID().replaceAll('-', '');
     const AdverisementId = crypto.randomUUID();
     latestOption = await buildOption(ortegauuid);
@@ -590,12 +584,10 @@
     const _createUser = await createUser(AuthToken, AdverisementId, ortegauuid);
     const _setUserSetting = await setUserSetting();
     const _createWorldPlayer = await createWorldPlayer();
-    /*
     userURL = _createWorldPlayer.ApiHost;
     MagicOnionHost = _createWorldPlayer.MagicOnionHost;
     MagicOnionPort = _createWorldPlayer.MagicOnionPort;
     const _loginPlayer = loginPlayer(_createWorldPlayer.PlayerId, _createWorldPlayer.Password);
-    */
   }
   //Guild Battle/Grand War增加提示功能
   function gvgHint(grade) {
