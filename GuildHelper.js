@@ -11,7 +11,7 @@
 // @connect      mememori-game.com
 // @connect      moonheart.dev
 // @require      https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=mentemori.icu
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -509,7 +509,7 @@
       },
     };
     let style = createElement('style');
-    let grade = 'local';
+    let grade = 'global';
     let image = grade == 'local' ? 'base_ribbon_01' : 'base_metal';
     style.appendChild(createElement('text', `gvg-status{width:164px;height:50px;position:relative;display:block}`));
     style.appendChild(createElement('text', `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`));
@@ -547,6 +547,11 @@
     style.appendChild(createElement('text', `gvg-viewer[${grade}]{background-image:url(assets/${grade}gvg.png)}`));
     let viewer = createElement('gvg-viewer');
     viewer.setAttribute(grade, '');
+    let legend = createElement('div');
+    legend.id = 'legend';
+    legend.appendChild(createElement('div', '图例'));
+    legend.setAttribute('style', 'background-color:rgba(255,255,255,0.5);width:275px');
+    viewer.appendChild(legend);
     for (let i in castalList[grade]) {
       let castal = castalList[grade][i];
       let castleNode = createElement('gvg-castle');
@@ -602,8 +607,8 @@
       let castal = listCastal[i];
       //增加备注
       castal.getElementsByTagName('gvg-castle-name')[0].onclick = addHint;
-      castal.getElementsByTagName('gvg-status-bar-defense')[0].onclick = changeDefense;
-      castal.getElementsByTagName('gvg-status-bar-offense')[0].onclick = changeOffense;
+      castal.getElementsByTagName('gvg-status-bar-defense')[0].onclick = changeContent;
+      castal.getElementsByTagName('gvg-status-bar-offense')[0].onclick = changeContent;
       castal.getElementsByTagName('gvg-status-icon-defense')[0].onclick = showOffense;
       castal.getElementsByTagName('gvg-status-icon-offense')[0].onclick = hideOffense;
       castal.getElementsByTagName('gvg-castle-icon')[0].onclick = changeColor;
@@ -625,18 +630,8 @@
       exist.innerHTML = hint;
     }
   }
-  //战斗布局-改变防守方
-  function changeDefense() {
-    let hint = prompt('输入防御公会', this.innerHTML);
-    if (hint == '' || hint == undefined) {
-      return;
-    } else {
-      this.innerHTML = hint;
-    }
-  }
-  //战斗布局-改变进攻方
-  function changeOffense() {
-    let hint = prompt('输入进攻公会', this.innerHTML);
+  function changeContent() {
+    let hint = prompt('输入修改内容', this.innerHTML);
     if (hint == '' || hint == undefined) {
       return;
     } else {
@@ -658,6 +653,21 @@
     let color = prompt('输入颜色:R(0-255),G(0-255),B(0-255),A(0-1)', this.innerHTML).split(',');
     if (color) {
       this.setAttribute('style', `background-color: rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`);
+    }
+    let div = document.getElementById(color.join('_'));
+    if (!div) {
+      div = createElement('div');
+      div.id = color.join('_');
+      let square = createElement('a', '█');
+      square.setAttribute('style', `color:rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+      square.ondblclick = function () {
+        this.parentNode.remove();
+      };
+      div.appendChild(square);
+      let commment = createElement('a', '点击此处输入图例');
+      commment.onclick = changeContent;
+      div.appendChild(commment);
+      document.getElementById('legend').appendChild(div);
     }
   }
   //登录账号-生成默认最新配置
