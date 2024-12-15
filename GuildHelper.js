@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MementoMori Guild Helper
 // @namespace    https://suzunemaiki.moe/
-// @version      0.1
+// @version      0.2
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @match        http*://mentemori.icu/*
