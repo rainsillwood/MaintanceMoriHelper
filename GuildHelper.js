@@ -685,7 +685,7 @@
         'User-Agent': 'BestHTTP/2 v2.3.0', //固定
         //'Content-Length':399, //自动
       },
-      type: 'arraybuffer',
+      type: 'blob',
       msgpack: true,
       //body: null, //消息体
     };
@@ -928,14 +928,17 @@
       let method = option.method ? option.method : 'GET';
       let headers = option.headers ? option.headers : {};
       let data;
+      let binary = false;
       if (option.body) {
         if (option.msgpack) {
           //每次重新生成uuid
           if (!headers.ortegauuid) {
             headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
           }
+
           headers.ortegaaccesstoken = getStorage('ortegaaccesstoken');
-          data = msgpack.encode(option.body);
+          data = new Blob([msgpack.encode(option.body)]);
+          binary = true;
         } else {
           data = option.body;
         }
