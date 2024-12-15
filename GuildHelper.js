@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MementoMori Guild Helper
 // @namespace    https://suzunemaiki.moe/
-// @version      0.2
+// @version      0.3
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @match        http*://mentemori.icu/*
@@ -15,6 +15,8 @@
 // @require      https://cdn.jsdelivr.net/npm/int64-buffer/dist/int64-buffer.min.js
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
 // @grant        GM_xmlhttpRequest
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/refs/heads/main/GuildHelper.js
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/refs/heads/main/GuildHelper.js
 // ==/UserScript==
 
 (async function () {
