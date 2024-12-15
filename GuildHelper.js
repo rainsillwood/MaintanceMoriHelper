@@ -10,6 +10,7 @@
 // @connect      cdn-mememori.akamaized.net
 // @connect      mememori-game.com
 // @connect      moonheart.dev
+// @connect      githubusercontent.com
 // @require      https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js
 // @require      https://cdn.jsdelivr.net/npm/int64-buffer/dist/int64-buffer.min.js
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -18,31 +19,41 @@
 
 (async function () {
   'use strict';
-  //S: Server. 1 = Japan, 2 = Korea, 3 = Asia, 4 = North America, 5 = Europe, 6 = Global
-  //WWW: World number. For example, W10 is 010
-  const WorldId = 3019;
-  let ErrorCode;
-  const reginList = { 'jp': 0, 'kr': 1, 'ap': 2, 'us': 3, 'eu': 4, 'gl': 5 };
-  const CountryCode = 'TW';
+  const ListRegion = {
+    'jp': {
+      id: 0,
+      Code: 'JP',
+    },
+    'kr': {
+      id: 1,
+      Code: 'KR',
+    },
+    'ap': {
+      id: 2,
+      Code: 'TW',
+    },
+    'us': {
+      id: 3,
+      Code: 'US',
+    },
+    'eu': {
+      id: 4,
+      Code: 'EN',
+    },
+    'gl': {
+      id: 5,
+      Code: 'CN',
+    },
+  };
   const ModelName = 'Xiaomi 2203121C';
   const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
   const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
-  let userURL = 'https://prd1-ap2-api.mememori-boi.com/api/';
-  let MagicOnionHost = 'prd1-ap2-onion.mememori-boi.com';
-  let MagicOnionPort = 443;
-  let Account = getStorage('Account');
-  let WorldList = [];
-  let latestOption = await buildOption();
-  let Masterversion = 0;
-  const WorldGroup = await getWorldGroup();
-  const AppVersion = getStorage('AppVersion');
-  await initPage();
+  let userURL;
+  let MagicOnionHost;
+  let MagicOnionPort;
+  initPage();
   //const account = getStorage('Account') ? getStorage('Account') : await createUser();
   switch (document.URL) {
-    case 'https://mentemori.icu/?function=powerAttacher': {
-      powerAttacher();
-      break;
-    }
     case 'https://mentemori.icu/?function=fileConverter': {
       fileConverter();
       break;
@@ -60,153 +71,169 @@
       break;
     }
   }
-  //主功能
+  //初始化功能
   //初始化页面
   async function initPage() {
     console.log('脚本运行中');
-    //添加导航栏
+    //初始化导航栏
     let nav = createElement('nav');
+    //初始化功能模块
     let div = createElement('div');
     //二进制文件转换功能
     let converter = createElement('a', '数据转换');
     converter.href = '/?function=fileConverter';
+    div.appendChild(converter);
     //战斗布局功能
+    div.appendChild(createElement('text', ' | '));
     let mapper = createElement('a', '战斗布局');
     mapper.href = '/?function=gvgMapper';
-    //战力侦查功能
-    let power = createElement('a', '战力侦查');
-    power.href = '/?function=powerAttacher';
-    //账号管理
+    div.appendChild(mapper);
+    //插入功能模块
+    nav.appendChild(div);
+    //初始化账号管理模块
     let accountmanager = createElement('div');
-    let accountlogger = createElement('a');
-    if (Account) {
-      accountlogger.innerHTML = `${Account.Name} 未登录`;
-    } else {
-      accountlogger.innerHTML = `无账号`;
+    accountmanager.id = 'accountmanager';
+    accountmanager.appendChild(createElement('a', '登录状态:'));
+    //登录状态模块
+    let accountlogger = createElement('a', '无账号');
+    accountmanager.appendChild(accountlogger);
+    //登录模块
+    let login = createElement('button', '登录');
+    login.id = 'login';
+    login.onclick = loginAccount;
+    accountmanager.appendChild(login);
+    //登出模块
+    let logout = createElement('button', '登出');
+    logout.id = 'logout';
+    logout.classList.add('hidden');
+    logout.onclick = logoutAccount;
+    accountmanager.appendChild(logout);
+    //插入账号管理模块
+    nav.appendChild(accountmanager);
+    //插入导航栏
+    document.body.insertBefore(nav, document.body.childNodes[1]);
+    //插入分割线
+    document.body.insertBefore(createElement('hr'), document.body.childNodes[1]);
+    //获取语言模块
+    let localdiv = document.getElementsByTagName('nav')[1].childNodes[3].childNodes[3];
+    //插入中文模块
+    localdiv.appendChild(createElement('text', ' | '));
+    let zh = createElement('a', 'ZH');
+    /*zh.href = '?lang=zh';*/
+    localdiv.appendChild(zh);
+    //初始化AppVersion
+    const AppVersion = await getAppVersion();
+    if (AppVersion) {
+      setStorage('AppVersion', AppVersion);
     }
-    accountlogger.onclick = loginAccount;
-    let accountcleaner = createElement('a', '清除账号');
-    accountcleaner.onclick = () => {
-      let confirm = prompt('真的要清除账号吗，请输入：确认清除');
-      if (confirm == '确认清除') {
-        setStorage('Account');
-        setStorage('ortegaaccesstoken');
+    //初始化ErrorCode
+    const ErrorCode = await getErrorCode();
+    if (ErrorCode) {
+      setStorage('ErrorCode', JSON.stringify(ErrorCode));
+    }
+  }
+  //初始化选择栏
+  async function initSelect() {
+    let WorldGroup = await getWorldGroup();
+    const _getDataUri = await getDataUri();
+    const line = '-'.repeat(80);
+    const GroupList = { '0': 'jp', '2': 'kr', '3': 'ap', '4': 'us', '5': 'eu', '6': 'gl' };
+    for (let i = 0; i < _getDataUri.WorldInfos.length; i++) {
+      const World = _getDataUri.WorldInfos[i];
+      let region = WorldGroup[GroupList[Math.floor(World.GameServerId / 10).toString()]];
+      if (!region.WorldList.includes(World.Id)) {
+        region.GroupList[0].WorldIdList.push(World.Id);
+      }
+    }
+    let div = createElement('div');
+    let divRegion = createElement('div', 'Region : ');
+    let listRegion = createElement('select');
+    listRegion.id = 'listRegion';
+    listRegion.options.add(new Option(line, false));
+    let divGroup = createElement('div', '-Group : ');
+    let listGroup = createElement('select');
+    listGroup.id = 'listGroup';
+    listGroup.options.add(new Option(line, false));
+    let grand = createElement('div', '-Grand : ');
+    let listGrand = createElement('select');
+    listGrand.id = 'listGrand';
+    listGrand.options.add(new Option(line, false));
+    let world = createElement('div', '-World : ');
+    let listWorld = createElement('select');
+    listWorld.id = 'listWorld';
+    listWorld.options.add(new Option(line, false));
+    for (let i in WorldGroup) {
+      let option = createElement('option', WorldGroup[i].Region);
+      option.value = i;
+      listRegion.options.add(option);
+    }
+    listRegion.onchange = () => {
+      listGroup.options.length = 0;
+      listGroup.options.add(new Option(line, false));
+      listGrand.options.length = 0;
+      listGrand.options.add(new Option(line, false));
+      listWorld.options.length = 0;
+      listWorld.options.add(new Option(line, false));
+      if (listRegion.options[listRegion.selectedIndex].value) {
+        let list = WorldGroup[listRegion.options[listRegion.selectedIndex].value].GroupList;
+        for (let i = 0; i < list.length; i++) {
+          let WorldIdList = list[i].WorldIdList.map((value) => {
+            return `W${value % 1000}`;
+          });
+          listGroup.options.add(new Option(list[i].Id > 0 ? `Group ${list[i].Id}(${WorldIdList.toString()})` : `Group None(${WorldIdList.toString()})`, i));
+        }
       }
     };
-    /*/增加中文
-      let localnav = document.body.childNodes[2];
-      let zh = createElement('a', 'ZH');
-      zh.href = '?lang=zh';
-      localnav.childNodes[3].childNodes[3].appendChild(createElement('text', ' | '));
-      localnav.childNodes[3].childNodes[3].appendChild(zh);*/
-    //写入元素
-    accountmanager.appendChild(createElement('a', '登录状态:'));
-    accountmanager.appendChild(accountlogger);
-    div.appendChild(converter);
-    div.appendChild(createElement('text', ' | '));
-    div.appendChild(mapper);
-    div.appendChild(createElement('text', ' | '));
-    div.appendChild(power);
-    nav.appendChild(div);
-    nav.appendChild(accountmanager);
-    document.body.insertBefore(nav, document.body.childNodes[1]);
-    document.body.insertBefore(createElement('hr'), document.body.childNodes[1]);
-    //获取错误码
-    ErrorCode = await getErrorCode();
-    //服务器选择
-    let region = createElement('select');
-    region.id = 'region';
-    let group = createElement('select');
-    group.id = 'group';
-    let grade = createElement('select');
-    grade.id = 'grade';
-    let server = createElement('select');
-    server.id = 'server';
-  }
-  //战力侦查
-  async function powerAttacher() {
-    //清除元素
-    while (document.body.childNodes.length > 6) {
-      document.body.lastChild.remove();
-    }
-    //设置敌我颜色
-    let colorFriend = ['lightgreen', 'skyblue', 'aliceblue', 'thistle'];
-    let colorEnermy = ['lightcoral', 'lightpink', 'lightsalmon', 'wheat'];
-    //添加style
-    let style = createElement('style');
-    style.appendChild(createElement('text', '.innerdiv{border:solid}'));
-    style.appendChild(createElement('text', '.nodePlayer{border:groove gray;width:55%}'));
-    style.appendChild(createElement('text', '.nodePlayer>a{width:30%;height:100%;display:inline-block;text-align:center;}'));
-    style.appendChild(createElement('text', '[relation="none"]{display:none}'));
-    for (let i = 0; i < 16; i++) {
-      style.appendChild(createElement('text', '[relation="enermy' + i + '"]{background-color:' + colorEnermy[i] + ';align-self:flex-end}'));
-      style.appendChild(createElement('text', '[relation="friend' + i + '"]{background-color:' + colorFriend[i] + ';align-self:flex-start}'));
-    }
-    document.head.appendChild(style);
-    /*/初始化数据区域
-      let divData = createElement('div');
-      divData.setAttribute('style', 'width:100%;display:flex;flex-direction:row;flex-wrap: nowrap');
-      //初始化公会列表
-      let nodeGuildList = createElement('div');
-      nodeGuildList.setAttribute('style', 'width:350px;');
-      nodeGuildList.classList.add('innerdiv');
-      let requestGuild = await XMLRequest('https://api.mentemori.icu/' + WorldId + '/guild_ranking/latest');
-      let guildRanking = JSON.parse(requestGuild.body);
-      let guildList = guildRanking.data.rankings.stock;
-      nodeGuildList.appendChild(createElement('a', '我方|中立|敌方|序号·公会名称|显示中立'));
-      let checkbox = createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = 'showMiddle';
-      checkbox.onchange = function () {
-        changeNode();
-      };
-      nodeGuildList.appendChild(checkbox);
-      nodeGuildList.appendChild(createElement('hr'));
-      for (let i = 0; i < guildList.length; i++) {
-        let nodeGuild = createElement('div');
-        nodeGuild.appendChild(createElement('text', '|'));
-        for (let j in { friend: 1, middle: 1, enermy: 1 }) {
-          let radio = createElement('input');
-          radio.type = 'radio';
-          radio.name = guildList[i].id;
-          radio.value = j;
-          if (j == 'middle') {
-            radio.checked = true;
-          }
-          radio.onchange = function () {
-            changeNode();
-          };
-          nodeGuild.appendChild(radio);
-          nodeGuild.appendChild(createElement('text', '||'));
+    listGroup.onchange = () => {
+      listGrand.options.length = 0;
+      listGrand.options.add(new Option(line, false));
+      listWorld.options.length = 0;
+      listWorld.options.add(new Option(line, false));
+      let valueRegion = listRegion.options[listRegion.selectedIndex].value;
+      let valueGroup = listGroup.options[listGroup.selectedIndex].value;
+      let list = WorldGroup[valueRegion].GroupList[valueGroup];
+      if (valueRegion && valueGroup && list.WorldIdList.length > 0) {
+        listGrand.options.add(new Option('Local', 1));
+        if (list.Id > 0) {
+          listGrand.options.add(new Option('Elite', 2));
+          listGrand.options.add(new Option('Expert', 3));
+          listGrand.options.add(new Option('Master', 4));
         }
-        nodeGuild.appendChild(createElement('text', [i] + '·' + guildList[i].name));
-        nodeGuildList.appendChild(nodeGuild);
       }
-      //获取高战列表
-      let nodePlayerList = createElement('div');
-      nodePlayerList.setAttribute('style', 'width:calc(100% - 350px);display:flex;flex-direction:column;fflex-wrap:wrap;align-items:center');
-      nodePlayerList.classList.add('innerdiv');
-      let requestPlayer = await XMLRequest('https://api.mentemori.icu/' + WorldId + '/player_ranking/latest');
-      let playerRanking = JSON.parse(requestPlayer.body);
-      let playerList = playerRanking.data.player_info;
-      for (let i in playerList) {
-        let nodePlayer = createElement('div');
-        nodePlayer.classList.add('nodePlayer');
-        nodePlayer.setAttribute('guild', playerList[i].guild_id);
-        nodePlayer.setAttribute('relation', 'none');
-        nodePlayer.id = playerList[i].id;
-        let nodeName = createElement('a', playerList[i].name);
-        let nodePower = createElement('a', playerList[i].bp);
-        let nodeGuild = createElement('a', playerList[i].guild_name);
-        nodePlayer.appendChild(nodeName);
-        nodePlayer.appendChild(nodePower);
-        nodePlayer.appendChild(nodeGuild);
-        nodePlayerList.appendChild(nodePlayer);
+    };
+    listGrand.onchange = () => {
+      listWorld.options.length = 0;
+      listWorld.options.add(new Option(line, false));
+      let valueRegion = listRegion.options[listRegion.selectedIndex].value;
+      let valueGroup = listGroup.options[listGroup.selectedIndex].value;
+      let valueGrand = listGrand.options[listGrand.selectedIndex].value;
+      if (valueRegion && valueGroup) {
+        if (valueGrand > 1) {
+          listWorld.options.add(new Option('Block A', 1));
+          listWorld.options.add(new Option('Block B', 2));
+          listWorld.options.add(new Option('Block C', 3));
+          listWorld.options.add(new Option('Block D', 4));
+        } else {
+          let list = WorldGroup[valueRegion].GroupList[valueGroup].WorldIdList;
+          for (let i = 0; i < list.length; i++) {
+            listWorld.options.add(new Option(`W${list[i] % 1000}`));
+          }
+        }
       }
-      divData.appendChild(nodeGuildList);
-      divData.appendChild(nodePlayerList);
-      document.body.appendChild(divData);*/
+    };
+    divRegion.appendChild(listRegion);
+    divGroup.appendChild(listGroup);
+    grand.appendChild(listGrand);
+    world.appendChild(listWorld);
+    div.appendChild(divRegion);
+    div.appendChild(divGroup);
+    div.appendChild(grand);
+    div.appendChild(world);
+    document.body.appendChild(div);
+    document.body.appendChild(createElement('hr'));
+    console.log('done');
   }
+  //主功能
   //文件转换
   function fileConverter() {
     //清除元素
@@ -224,10 +251,10 @@
         let filename = file.name;
         let reader = new FileReader();
         reader.readAsArrayBuffer(file);
-        reader.onload = function () {
+        reader.onload = async () => {
           let buffer = reader.result;
           let view = new Uint8Array(buffer);
-          let data = msgpack.decode(view);
+          let data = await msgpack.decode(view);
           let file = new Blob([JSON.stringify(data)], { type: 'text/plain' });
           let link = createElement('a', filename + '.json');
           let url = window.URL.createObjectURL(file);
@@ -246,11 +273,12 @@
     document.body.appendChild(divData);
   }
   //战斗布局
-  function gvgMapper() {
+  async function gvgMapper() {
     //清除元素
     while (document.body.childNodes.length > 6) {
       document.body.lastChild.remove();
     }
+    await initSelect();
     const castalList = {
       'local': {
         '1': {
@@ -582,26 +610,57 @@
   //登录账号
   async function loginAccount() {
     setStorage('ortegaaccesstoken', '');
-    const ortegauuid = crypto.randomUUID().replaceAll('-', '');
-    const AdverisementId = crypto.randomUUID();
-    latestOption = await buildOption(ortegauuid);
-    const AuthToken = await getAuthToken();
-    const _getDataUri = await getDataUri();
-    const _createUser = await createUser(AuthToken, AdverisementId, ortegauuid);
-    const _setUserSetting = await setUserSetting();
-    const _createWorldPlayer = await createWorldPlayer();
-    userURL = _createWorldPlayer.ApiHost;
-    MagicOnionHost = _createWorldPlayer.MagicOnionHost;
-    MagicOnionPort = _createWorldPlayer.MagicOnionPort;
-    const _loginPlayer = loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
+    let Account = getStorage('Account');
+    //若Account不存在
+    if (!Account) {
+      Account = {};
+      const UserId = prompt('请输入引继码，若使用临时账号请留空');
+      const ortegauuid = crypto.randomUUID().replaceAll('-', '');
+      const AdverisementId = crypto.randomUUID();
+      const AuthToken = await getAuthToken();
+      const _createUser = await createUser(AuthToken, AdverisementId, ortegauuid);
+      //若不使用引继码
+      if (!UserId) {
+        Account.ClientKey = _createUser.ClientKey;
+        Account.UserId = UserId.toString();
+        const _setUserSetting = await setUserSetting();
+        const _createWorldPlayer = await createWorldPlayer();
+        userURL = _createWorldPlayer.ApiHost;
+        const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
+      }
+      //若使用引继码
+      else {
+        const Password = prompt('请输入引继码，若使用临时账号请留空');
+        const _getComebackUserData = await getComebackUserData(FromUserId, UserId, Password, AuthToken);
+      }
+    }
+    //若Account存在
+    else {
+    }
+    getLoginState();
   }
-  //Guild Battle/Grand War增加提示功能
+  //登出账号
+  function logoutAccount() {
+    let confirm = prompt('真的要清除账号吗，请输入：确认清除');
+    if (confirm == '确认清除') {
+      setStorage('Account');
+      setStorage('ortegauuid');
+      setStorage('LoginState', false);
+      setStorage('ortegaaccesstoken', '');
+      this.classList.add('hidden');
+      document.getElementById('login').classList.remove('hidden');
+    }
+  }
+  //增加提示功能
   function gvgHint(grade) {
     let style = createElement('style');
-    style.appendChild(createElement('text', 'gvg-castle-hint{left:-70px;right:-70px;background:rgba(192, 128, 128, 0.5);width:140px;height:20px;color: blue;position: absolute;display: block;font-size: 10px;text-align: center;}'));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{bottom:${-80}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{bottom:${-75}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{bottom:${-67}px}`));
+    style.appendChild(createElement('text', 'gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}'));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:${58}px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:${50}px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:${45}px}`));
     document.head.appendChild(style);
     let listCastal = document.getElementsByTagName('gvg-castle');
     for (let i = 0; i < listCastal.length; i++) {
@@ -617,25 +676,36 @@
   }
   //子功能
   //战斗布局-增加提示
-  function addHint() {
+  async function addHint() {
     let exist = this.parentNode.getElementsByTagName('gvg-castle-hint')[0];
-    let hint = prompt('输入添加的提示', exist ? exist.innerHTML : '');
+    let image = this.parentNode.getElementsByClassName('gvg-castle-symbol')[0];
+    let hint = prompt('输入添加的提示，然后输入|，再输入标识代码（A1：攻击1；A2：攻击2；D1：防御1；D2：防御2；FB：禁止；NN：旗帜）', exist ? exist.innerHTML : '');
     if (hint == '' || hint == undefined) {
       exist.remove();
       return;
     }
+    hint = hint.split('|');
     if (!exist) {
-      exist = createElement('gvg-castle-hint', hint);
+      exist = createElement('gvg-castle-hint', hint[0]);
       this.parentNode.appendChild(exist);
     } else {
-      exist.innerHTML = hint;
+      exist.innerHTML = hint[0];
+    }
+    if (image) {
+      image.remove();
+    } else {
+      image = createElement('img');
+      image.classList.add('gvg-castle-symbol');
+    }
+    if ('A1|A2|D1|D2|FB|NN'.includes(hint[1])) {
+      image.src = `https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/refs/heads/main/${hint[1]}.png`;
+      this.parentNode.appendChild(image);
     }
   }
+  //战斗布局-改变内容
   function changeContent() {
     let hint = prompt('输入修改内容', this.innerHTML);
-    if (hint == '' || hint == undefined) {
-      return;
-    } else {
+    if (hint != '' && hint != undefined && hint != null) {
       this.innerHTML = hint;
     }
   }
@@ -671,15 +741,32 @@
       document.getElementById('legend').appendChild(div);
     }
   }
-  //登录账号-生成默认最新配置
-  async function buildOption(ortegauuid) {
+  //登陆账号-检查登陆状态
+  async function getLoginState() {
+    const _getUserData = await getUserData();
+    let accountmanager = document.getElementById('accountmanager');
+    if (_getUserData.UserSyncData.UserStatusDtoInfo) {
+      accountmanager.childNodes[1].innerHTML = `已登录 ${_getUserData.UserSyncData.UserStatusDtoInfo.Name}`;
+      accountmanager.childNodes[2].classList.add('hidden');
+      accountmanager.childNodes[3].classList.remove('hidden');
+      return true;
+    } else {
+      accountmanager.childNodes[1].innerHTML = `未登录`;
+      accountmanager.childNodes[3].classList.add('hidden');
+      accountmanager.childNodes[2].classList.remove('hidden');
+      return false;
+    }
+  }
+  //API函数
+  //获取option
+  function buildOption() {
     let option = {
       method: 'POST',
       headers: {
-        'ortegaaccesstoken': '', //从cookie获取
-        //'ortegaappversion': apkVersion, //跟随版本
+        'ortegaaccesstoken': getStorage('ortegaaccesstoken'), //从cookie获取
+        'ortegaappversion': getStorage('AppVersion'), //跟随版本
         'ortegadevicetype': 2, //固定为2
-        //'ortegauuid': ortegauuid, //随机uuid，登录后绑定账号
+        'ortegauuid': getStorage('ortegauuid'), //随机uuid，登录后绑定账号
         //'Host':'*.mememori-boi.com', //自动
         'Content-Type': 'application/json; charset=UTF-8', //固定
         'Accept-Encoding': 'gzip', //固定
@@ -690,86 +777,83 @@
       msgpack: true,
       //body: null, //消息体
     };
-    const apkVersion = getStorage('AppVersion') ? getStorage('AppVersion') : await getapkVersion();
-    let version = apkVersion.split('.');
-    for (let i = 0; i < 11; i++) {
-      //版本号递增
-      version[2] = version[2] * 1 + i;
-      option.headers.ortegaappversion = version.join('.');
-      //最后一次手动请求版本号
-      if (i == 10) {
-        option.headers.ortegaappversion = prompt('版本号不在正常范围内，请手动输入版本号', option.headers.ortegaappversion);
-      }
-      option.headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
-      //请求getDataUri
-      let result = await getDataUri(option);
-      //版本正确
-      if (!result.ErrorCode) {
-        //存储版本号
-        setStorage('AppVersion', option.headers.ortegaappversion);
-        option.headers.ortegauuid = ortegauuid;
-        //删除配置中的包体
-        delete option.body;
-        //生成世界列表
-        const WorldInfos = result.WorldInfos;
-        for (let i = 0; i < WorldInfos.length; i++) {
-          const WorldInfo = WorldInfos[i];
-          const Region = WorldInfo.GameServerId < 20 ? 0 : WorldInfo.GameServerId / 10 - 1;
-          WorldList.push({
-            'Id': WorldInfo.Id,
-            'Region': Region,
-            'GameServerId': WorldInfo.GameServerId,
-          });
-        }
-        //返回配置
-        return JSON.stringify(option);
-      }
-    }
-  }
-  //登录账号-获取登录信息
-
-  //API函数
-  //获取错误码
-  async function getErrorCode() {
-    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('masterversion')}/TextResourceZhTwMB`, { type: 'arraybuffer', msgpack: true });
-    const TextResourceZhTwMB = msgpack.decode(new Uint8Array(buffer));
-    if (!TextResourceZhTwMB) return;
-    let result = {};
-    for (let i = 0; i < TextResourceZhTwMB.length; i++) {
-      const TextResource = TextResourceZhTwMB[i];
-      if (TextResource.StringKey.includes('ErrorMessage')) {
-        result[TextResource.StringKey.replace(/\[ErrorMessage(.*?)\]/, '$1') * 1] = TextResource.Text;
-      }
-    }
-    return result;
-  }
-  //获取错误码
-  async function getWorldGroup() {
-    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('masterversion')}/WorldGroupMB`, { type: 'arraybuffer', msgpack: true });
-    const WorldGroupMB = msgpack.decode(new Uint8Array(buffer));
-    if (!WorldGroupMB) return;
-    let result = {};
-    for (let i = 0; i < WorldGroupMB.length; i++) {
-      const WorldGroup = WorldGroupMB[i];
-      if (result.Memo) {
-        result.Memo.push({
-          'Id': WorldGroup.Id,
-          'WorldIdList': WorldGroup.WorldIdList,
-        });
-      } else {
-        result.Memo = [];
-      }
-    }
-    return result;
+    return option;
   }
   //获取apkversion
-  async function getapkVersion() {
-    let varjs = await sendGMRequest('https://mememori-game.com/apps/vars.js', {});
+  async function getAppVersion() {
+    let option = buildOption();
+    const varjs = await sendGMRequest('https://mememori-game.com/apps/vars.js', {});
     if (!varjs) {
       console.log('获取var.js失败');
       alert('获取var.js失败，请重试');
+    } else {
+      const apkVersion = getVariable(varjs, 'apkVersion').split('.');
+      let max = 20;
+      for (let i = 0; i < max + 1; i++) {
+        //版本号递增
+        apkVersion[2] = apkVersion[2] * 1 + i;
+        option.headers.ortegaappversion = apkVersion.join('.');
+        //最后一次手动请求版本号
+        if (i == max) {
+          option.headers.ortegaappversion = prompt('版本号不在正常范围内，请手动输入版本号', option.headers.ortegaappversion);
+        }
+        //请求getDataUri
+        let result = await getDataUri(option);
+        //正确
+        if (!result.ErrorCode) {
+          //存储版本号
+          return option.headers.ortegaappversion;
+        }
+      }
     }
-    return getVariable(varjs, 'apkVersion');
+  }
+  //获取错误码
+  async function getErrorCode() {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResourceZhTwMB`, { type: 'arraybuffer', msgpack: true });
+    const TextResourceZhTwMB = await msgpack.decode(new Uint8Array(buffer));
+    if (!TextResourceZhTwMB) return;
+    let result = {};
+    for (let i = 0; i < TextResourceZhTwMB.length; i++) {
+      const TextResourceZhTw = TextResourceZhTwMB[i];
+      if (TextResourceZhTw.StringKey.includes('ErrorMessage')) {
+        result[TextResourceZhTw.StringKey.replace(/\[ErrorMessage(.*?)\]/, '$1') * 1] = TextResourceZhTw.Text;
+      }
+    }
+    return result;
+  }
+  //获取世界组
+  async function getWorldGroup() {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer', msgpack: true });
+    const WorldGroupMB = await msgpack.decode(new Uint8Array(buffer));
+    let result = {};
+    if (WorldGroupMB) {
+      for (let i = 0; i < WorldGroupMB.length; i++) {
+        const WorldGroup = WorldGroupMB[i];
+        const RegionList = { 'jp': 'Japan', 'kr': 'Korea', 'ap': 'Asia', 'us': 'America', 'eu': 'Europe', 'gl': 'Global' };
+        const EndTime = new Date(WorldGroup.EndTime);
+        const NowTime = new Date();
+        if (EndTime > NowTime) {
+          if (!result[WorldGroup.Memo]) {
+            result[WorldGroup.Memo] = {
+              Region: RegionList[WorldGroup.Memo],
+              WorldList: [],
+              GroupList: [
+                {
+                  'Id': -1,
+                  'WorldIdList': [],
+                },
+              ],
+            };
+          }
+          result[WorldGroup.Memo].GroupList.push({
+            'Id': WorldGroup.Id,
+            'WorldIdList': WorldGroup.WorldIdList,
+          });
+          result[WorldGroup.Memo].WorldList = result[WorldGroup.Memo].WorldList.concat(WorldGroup.WorldIdList);
+        }
+      }
+    }
+    return result;
   }
   //获取AuthToken
   async function getAuthToken() {
@@ -783,10 +867,14 @@
   //https://prd1-auth.mememori-boi.com/api/auth/getDataUri
   async function getDataUri(defaultOpting) {
     //生成配置
-    let option = defaultOpting ? defaultOpting : JSON.parse(latestOption);
+    let option = defaultOpting ? defaultOpting : buildOption();
+    //随机ortegauuid
+    option.headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
+    //不设ortegaaccesstoken
+    option.headers.ortegaaccesstoken = '';
     //生成包体
     const data = {
-      'CountryCode': CountryCode,
+      'CountryCode': 'TW',
       'UserId': 0,
     };
     option.body = data;
@@ -796,7 +884,7 @@
   }
   //https://prd1-auth.mememori-boi.com/api/auth/createUser
   async function createUser(AuthToken, AdverisementId, ortegauuid) {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'AdverisementId': AdverisementId,
       'AppVersion': AppVersion,
@@ -815,7 +903,7 @@
   }
   //https://prd1-auth.mememori-boi.com/api/auth/setUserSetting
   async function setUserSetting() {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'UserSettingsType': 2,
       'Value': 2,
@@ -827,7 +915,7 @@
   }
   //https://prd1-auth.mememori-boi.com/api/auth/createWorldPlayer
   async function createWorldPlayer() {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'WorldId': WorldId,
       'Comment': '侦查员一号',
@@ -841,7 +929,7 @@
   }
   //https://prd1-auth.mememori-boi.com/api/auth/getComebackUserData
   async function getComebackUserData(FromUserId, UserId, Password, AuthToken) {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'AppleIdToken': null,
       'FromUserId': new Uint64BE(FromUserId),
@@ -859,7 +947,7 @@
   }
   //https://prd1-auth.mememori-boi.com/api/auth/comebackUser
   async function comebackUser(FromUserId, OneTimeToken, UserId) {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'FromUserId': new Uint64BE(FromUserId, 10),
       'OneTimeToken': OneTimeToken,
@@ -872,11 +960,11 @@
   }
   //https://prd1-auth.mememori-boi.com/api/auth/login
   async function login(ClientKey, AdverisementId, UserId) {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'ClientKey': ClientKey,
       'DeviceToken': '',
-      'AppVersion': option.headers.ortegaappversion,
+      'AppVersion': AppVersion,
       'OSVersion': OSVersion,
       'ModelName': ModelName,
       'AdverisementId': AdverisementId,
@@ -889,7 +977,7 @@
   }
   //https://prd1-auth.mememori-boi.com/api/auth/getServerHost
   async function getServerHost(WorldId) {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'WorldId': WorldId,
     };
@@ -897,9 +985,9 @@
     let result = await sendRequest(authURL + 'getServerHost', option);
     return result;
   }
-  //https://prd1-ap2-api.mememori-boi.com/api/user/loginPlayer
+  //user/loginPlayer
   async function loginPlayer(PlayerId, Password) {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {
       'Password': Password,
       'PlayerId': new Uint64BE(PlayerId, 10),
@@ -910,12 +998,20 @@
     let result = await sendRequest(userURL + 'user/loginPlayer', option);
     return result;
   }
-  //https://prd1-ap2-api.mememori-boi.com/api/user/getUserData
+  //user/getUserData
   async function getUserData() {
-    let option = JSON.parse(latestOption);
+    let option = buildOption();
     const data = {};
     option.body = data;
     let result = await sendRequest(userURL + 'user/getUserData', option);
+    return result;
+  }
+  //localGvg/getLocalGvgSceneTransitionData
+  async function getLocalGvgSceneTransitionData() {
+    let option = buildOption();
+    const data = {};
+    option.body = data;
+    let result = await sendRequest(userURL + 'localGvg/getLocalGvgSceneTransitionData', option);
     return result;
   }
   //工具函数
@@ -936,8 +1032,9 @@
           if (!headers.ortegauuid) {
             headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
           }
-
-          headers.ortegaaccesstoken = getStorage('ortegaaccesstoken');
+          if (!headers.ortegaaccesstoken) {
+            headers.ortegaaccesstoken = getStorage('ortegaaccesstoken');
+          }
           data = new Blob([msgpack.encode(option.body)]);
           binary = true;
         } else {
@@ -951,17 +1048,21 @@
         headers: headers,
         data: data,
         responseType: responseType,
-        onload: (response) => {
+        onload: async (response) => {
           if (response.readyState == 4) {
-            let token = getHeader(response.responseHeaders, 'orteganextaccesstoken');
             let type = getHeader(response.responseHeaders, 'content-type');
-            if (token) {
-              setStorage('ortegaaccesstoken', token);
-            }
             let data;
             if (type == 'application/octet-stream') {
-              data = msgpack.decode(new Uint8Array(response.response));
+              let token = getHeader(response.responseHeaders, 'orteganextaccesstoken');
+              if (token != undefined && token != '' && token != null) {
+                setStorage('ortegaaccesstoken', token);
+              }
+              setStorage('AssetVersion', getHeader(response.responseHeaders, 'ortegamasterversion'));
+              setStorage('MasterVersion', getHeader(response.responseHeaders, 'ortegamasterversion'));
+              setStorage('utcnowtimestamp', getHeader(response.responseHeaders, 'ortegautcnowtimestamp'));
+              data = await msgpack.decode(new Uint8Array(response.response));
               if (data.ErrorCode) {
+                const ErrorCode = JSON.parse(getStorage('ErrorCode'));
                 console.log(`${response.finalUrl.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
               } else {
                 console.log(`${response.finalUrl.split('/').pop()}:获取成功`);
@@ -1004,7 +1105,7 @@
         request.setRequestHeader(i, headers[i]);
       }
       request.send(data);
-      request.onload = function () {
+      request.onload = async function () {
         if (request.status != 200) {
           // 分析响应的 HTTP 状态
           console.log(`Error ${request.status}: ${request.statusText}`); // 例如 404: Not Found
@@ -1014,13 +1115,14 @@
           console.log(`Done, got ${response.length} bytes`); // response 是服务器响应
           const type = request.getResponseHeader('content-type');
           setStorage('ortegaaccesstoken', request.getResponseHeader('orteganextaccesstoken'));
-          setStorage('assetversion', request.getResponseHeader('assetversion'));
-          setStorage('masterversion', request.getResponseHeader('masterversion'));
+          setStorage('AssetVersion', request.getResponseHeader('assetversion'));
+          setStorage('MasterVersion', request.getResponseHeader('masterversion'));
           setStorage('utcnowtimestamp', request.getResponseHeader('utcnowtimestamp'));
           let data;
           if (type == 'application/octet-stream') {
-            data = msgpack.decode(new Uint8Array(response));
+            data = await msgpack.decode(new Uint8Array(response));
             if (data.ErrorCode) {
+              const ErrorCode = JSON.parse(getStorage('ErrorCode'));
               console.log(`${request.responseURL.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
             } else {
               console.log(`${request.responseURL.split('/').pop()}:获取成功`);
