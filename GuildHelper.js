@@ -11,6 +11,7 @@
 // @connect      mememori-game.com
 // @connect      moonheart.dev
 // @require      https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js
+// @require      https://cdn.jsdelivr.net/npm/int64-buffer/dist/int64-buffer.min.js
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
@@ -592,7 +593,7 @@
     userURL = _createWorldPlayer.ApiHost;
     MagicOnionHost = _createWorldPlayer.MagicOnionHost;
     MagicOnionPort = _createWorldPlayer.MagicOnionPort;
-    const _loginPlayer = loginPlayer(_createWorldPlayer.PlayerId, _createWorldPlayer.Password);
+    const _loginPlayer = loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
   }
   //Guild Battle/Grand War增加提示功能
   function gvgHint(grade) {
@@ -753,7 +754,7 @@
       if (result.Memo) {
         result.Memo.push({
           'Id': WorldGroup.Id,
-          WorldIdList: WorldGroup.WorldIdList,
+          'WorldIdList': WorldGroup.WorldIdList,
         });
       } else {
         result.Memo = [];
@@ -785,8 +786,8 @@
     let option = defaultOpting ? defaultOpting : JSON.parse(latestOption);
     //生成包体
     const data = {
-      CountryCode: CountryCode,
-      UserId: 0,
+      'CountryCode': CountryCode,
+      'UserId': 0,
     };
     option.body = data;
     //发包
@@ -797,15 +798,15 @@
   async function createUser(AuthToken, AdverisementId, ortegauuid) {
     let option = JSON.parse(latestOption);
     const data = {
-      AdverisementId: AdverisementId,
-      AppVersion: AppVersion,
-      CountryCode: CountryCode,
-      DeviceToken: '',
-      DisplayLanguage: 4,
-      ModelName: ModelName,
-      OSVersion: OSVersion,
-      SteamTicket: '',
-      AuthToken: AuthToken,
+      'AdverisementId': AdverisementId,
+      'AppVersion': AppVersion,
+      'CountryCode': CountryCode,
+      'DeviceToken': '',
+      'DisplayLanguage': 4,
+      'ModelName': ModelName,
+      'OSVersion': OSVersion,
+      'SteamTicket': '',
+      'AuthToken': AuthToken,
     };
     option.body = data;
     option.headers.ortegauuid = ortegauuid;
@@ -843,13 +844,13 @@
     let option = JSON.parse(latestOption);
     const data = {
       'AppleIdToken': null,
-      'FromUserId': FromUserId,
+      'FromUserId': new Uint64BE(FromUserId),
       'GoogleAuthorizationCode': null,
       'Password': Password,
       'SnsType': 1,
       'TwitterAccessToken': null,
       'TwitterAccessTokenSecret': null,
-      'UserId': UserId,
+      'UserId': new Uint64BE(UserId),
       'AuthToken': AuthToken,
     };
     option.body = data;
@@ -860,10 +861,10 @@
   async function comebackUser(FromUserId, OneTimeToken, UserId) {
     let option = JSON.parse(latestOption);
     const data = {
-      FromUserId: FromUserId,
-      OneTimeToken: OneTimeToken,
-      ToUserId: UserId,
-      SteamTicket: null,
+      'FromUserId': new Uint64BE(FromUserId, 10),
+      'OneTimeToken': OneTimeToken,
+      'ToUserId': new Uint64BE(UserId, 10),
+      'SteamTicket': null,
     };
     option.body = data;
     let result = await sendRequest(authURL + 'comebackUser', option);
@@ -873,14 +874,14 @@
   async function login(ClientKey, AdverisementId, UserId) {
     let option = JSON.parse(latestOption);
     const data = {
-      ClientKey: ClientKey,
-      DeviceToken: '',
-      AppVersion: option.headers.ortegaappversion,
-      OSVersion: OSVersion,
-      ModelName: ModelName,
-      AdverisementId: AdverisementId,
-      UserId: UserId,
-      IsPushNotificationAllowed: false,
+      'ClientKey': ClientKey,
+      'DeviceToken': '',
+      'AppVersion': option.headers.ortegaappversion,
+      'OSVersion': OSVersion,
+      'ModelName': ModelName,
+      'AdverisementId': AdverisementId,
+      'UserId': new Uint64BE(UserId, 10),
+      'IsPushNotificationAllowed': false,
     };
     option.body = data;
     let result = await sendRequest(authURL + 'login', option);
@@ -890,7 +891,7 @@
   async function getServerHost(WorldId) {
     let option = JSON.parse(latestOption);
     const data = {
-      WorldId: WorldId,
+      'WorldId': WorldId,
     };
     option.body = data;
     let result = await sendRequest(authURL + 'getServerHost', option);
@@ -900,10 +901,10 @@
   async function loginPlayer(PlayerId, Password) {
     let option = JSON.parse(latestOption);
     const data = {
-      Password: Password,
-      PlayerId: PlayerId,
-      ErrorLogInfoList: null,
-      SteamTicket: null,
+      'Password': Password,
+      'PlayerId': new Uint64BE(PlayerId, 10),
+      'ErrorLogInfoList': null,
+      'SteamTicket': null,
     };
     option.body = data;
     let result = await sendRequest(userURL + 'user/loginPlayer', option);
