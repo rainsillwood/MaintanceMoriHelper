@@ -685,7 +685,7 @@
         'User-Agent': 'BestHTTP/2 v2.3.0', //固定
         //'Content-Length':399, //自动
       },
-      type: 'blob',
+      type: 'arraybuffer',
       msgpack: true,
       //body: null, //消息体
     };
@@ -951,23 +951,25 @@
         data: data,
         responseType: responseType,
         onload: (response) => {
-          let token = getHeader(response.responseHeaders, 'orteganextaccesstoken');
-          let type = getHeader(response.responseHeaders, 'content-type');
-          if (token) {
-            setStorage('ortegaaccesstoken', token);
-          }
-          let data;
-          if (type == 'application/octet-stream') {
-            data = msgpack.decode(new Uint8Array(response.response));
-            if (data.ErrorCode) {
-              console.log(`${response.finalUrl.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
-            } else {
-              console.log(`${response.finalUrl.split('/').pop()}:获取成功`);
+          if (response.readyState == 4) {
+            let token = getHeader(response.responseHeaders, 'orteganextaccesstoken');
+            let type = getHeader(response.responseHeaders, 'content-type');
+            if (token) {
+              setStorage('ortegaaccesstoken', token);
             }
-          } else {
-            data = response.response;
+            let data;
+            if (type == 'application/octet-stream') {
+              data = msgpack.decode(new Uint8Array(response.response));
+              if (data.ErrorCode) {
+                console.log(`${response.finalUrl.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
+              } else {
+                console.log(`${response.finalUrl.split('/').pop()}:获取成功`);
+              }
+            } else {
+              data = response.response;
+            }
+            resolve(data);
           }
-          resolve(data);
         },
         onerror: function () {
           console.log('Request failed');
@@ -1086,7 +1088,7 @@
   }
   //获取消息头
   function getHeader(headers, key) {
-    let reg = new RegExp(`${key}: (?<token>.*?)\\r\\n`, 'i');
+    let reg = new RegExp(`${key}:( ?)(?<token>.*?)\\r\\n`, 'i');
     let match = reg.exec(headers);
     let result;
     if (match) {
