@@ -148,22 +148,22 @@
       }
     }
     let div = createElement('div');
-    let divRegion = createElement('div', 'Region : ');
+    let divRegion = createElement('p', 'Region : ');
     let listRegion = createElement('select');
     listRegion.id = 'listRegion';
-    listRegion.options.add(new Option(line, false));
-    let divGroup = createElement('div', '-Group : ');
+    listRegion.options.add(new Option(line, -1));
+    let divGroup = createElement('p', '-Group : ');
     let listGroup = createElement('select');
     listGroup.id = 'listGroup';
-    listGroup.options.add(new Option(line, false));
-    let grand = createElement('div', '-Grand : ');
+    listGroup.options.add(new Option(line, -1));
+    let grand = createElement('p', '-Grand : ');
     let listGrand = createElement('select');
     listGrand.id = 'listGrand';
-    listGrand.options.add(new Option(line, false));
-    let world = createElement('div', '-World : ');
+    listGrand.options.add(new Option(line, -1));
+    let world = createElement('p', '-World : ');
     let listWorld = createElement('select');
     listWorld.id = 'listWorld';
-    listWorld.options.add(new Option(line, false));
+    listWorld.options.add(new Option(line, -1));
     for (let i in WorldGroup) {
       let option = createElement('option', WorldGroup[i].Region);
       option.value = i;
@@ -171,26 +171,26 @@
     }
     listRegion.onchange = () => {
       listGroup.options.length = 0;
-      listGroup.options.add(new Option(line, false));
+      listGroup.options.add(new Option(line, -1));
       listGrand.options.length = 0;
-      listGrand.options.add(new Option(line, false));
+      listGrand.options.add(new Option(line, -1));
       listWorld.options.length = 0;
-      listWorld.options.add(new Option(line, false));
+      listWorld.options.add(new Option(line, -1));
       if (listRegion.options[listRegion.selectedIndex].value) {
         let list = WorldGroup[listRegion.options[listRegion.selectedIndex].value].GroupList;
         for (let i = 0; i < list.length; i++) {
           let WorldIdList = list[i].WorldIdList.map((value) => {
             return `W${value % 1000}`;
           });
-          listGroup.options.add(new Option(list[i].Id > 0 ? `Group ${list[i].Id}(${WorldIdList.toString()})` : `Group None(${WorldIdList.toString()})`, i));
+          listGroup.options.add(new Option(`Group ${list[i].Id}(${WorldIdList.toString()})`, list[i].Id));
         }
       }
     };
     listGroup.onchange = () => {
       listGrand.options.length = 0;
-      listGrand.options.add(new Option(line, false));
+      listGrand.options.add(new Option(line, -1));
       listWorld.options.length = 0;
-      listWorld.options.add(new Option(line, false));
+      listWorld.options.add(new Option(line, -1));
       let valueRegion = listRegion.options[listRegion.selectedIndex].value;
       let valueGroup = listGroup.options[listGroup.selectedIndex].value;
       let list = WorldGroup[valueRegion].GroupList[valueGroup];
@@ -205,7 +205,7 @@
     };
     listGrand.onchange = () => {
       listWorld.options.length = 0;
-      listWorld.options.add(new Option(line, false));
+      listWorld.options.add(new Option(line, -1));
       let valueRegion = listRegion.options[listRegion.selectedIndex].value;
       let valueGroup = listGroup.options[listGroup.selectedIndex].value;
       let valueGrand = listGrand.options[listGrand.selectedIndex].value;
@@ -218,11 +218,19 @@
         } else {
           let list = WorldGroup[valueRegion].GroupList[valueGroup].WorldIdList;
           for (let i = 0; i < list.length; i++) {
-            listWorld.options.add(new Option(`W${list[i] % 1000}`));
+            listWorld.options.add(new Option(`W${list[i] % 1000}`, list[i]));
           }
         }
       }
     };
+    listWorld.onchange = () => {
+      let valueRegion = listRegion.options[listRegion.selectedIndex].value;
+      let valueGroup = listGroup.options[listGroup.selectedIndex].value;
+      let valueGrand = listGrand.options[listGrand.selectedIndex].value;
+      let valueWorld = valueWorld.options[valueWorld.selectedIndex].value;
+      setStorage('Selected', `${valueRegion},${valueGroup},${valueGrand},${valueWorld}`)
+      setStorage('WorldID', valueWorld)
+    }
     divRegion.appendChild(listRegion);
     divGroup.appendChild(listGroup);
     grand.appendChild(listGrand);
@@ -281,6 +289,10 @@
       document.body.lastChild.remove();
     }
     await initSelect();
+    const Selected = getStorage('Selected') ? getStorage('Selected').split(",") : null;
+    if (Selected) {
+      document.getElementById('listRegion') = 1;
+    }
     const castalList = {
       'local': {
         '1': {
@@ -540,7 +552,7 @@
       },
     };
     let style = createElement('style');
-    let grade = 'global';
+    let grade = Selected[1] > 1 ? 'global' : 'local';
     let image = grade == 'local' ? 'base_ribbon_01' : 'base_metal';
     style.appendChild(createElement('text', `gvg-status{width:164px;height:50px;position:relative;display:block}`));
     style.appendChild(createElement('text', `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`));
@@ -841,7 +853,7 @@
               WorldList: [],
               GroupList: [
                 {
-                  'Id': -1,
+                  'Id': 0,
                   'WorldIdList': [],
                 },
               ],
