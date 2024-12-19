@@ -136,100 +136,113 @@
   }
   //初始化选择栏
   async function initSelect() {
-    let WorldGroup = await getWorldGroup();
-    const _getDataUri = await getDataUri();
-    const line = '-'.repeat(80);
-    const GroupList = { '0': 'jp', '2': 'kr', '3': 'ap', '4': 'us', '5': 'eu', '6': 'gl' };
-    for (let i = 0; i < _getDataUri.WorldInfos.length; i++) {
-      const World = _getDataUri.WorldInfos[i];
-      let region = WorldGroup[GroupList[Math.floor(World.GameServerId / 10).toString()]];
-      if (!region.WorldList.includes(World.Id)) {
-        region.GroupList[0].WorldIdList.push(World.Id);
-      }
+    const NullOption = () => {
+      return new Option('-'.repeat(80), -1);
     }
+    let WorldGroup = await getWorldGroup();
     let div = createElement('div');
     let divRegion = createElement('p', 'Region : ');
     let listRegion = createElement('select');
     listRegion.id = 'listRegion';
-    listRegion.options.add(new Option(line, -1));
+    listRegion.options.add(NullOption());
     let divGroup = createElement('p', '-Group : ');
     let listGroup = createElement('select');
     listGroup.id = 'listGroup';
-    listGroup.options.add(new Option(line, -1));
+    listGroup.options.add(NullOption());
     let grand = createElement('p', '-Grand : ');
     let listGrand = createElement('select');
     listGrand.id = 'listGrand';
-    listGrand.options.add(new Option(line, -1));
+    listGrand.options.add(NullOption());
     let world = createElement('p', '-World : ');
     let listWorld = createElement('select');
     listWorld.id = 'listWorld';
-    listWorld.options.add(new Option(line, -1));
-    for (let i in WorldGroup) {
-      let option = createElement('option', WorldGroup[i].Region);
-      option.value = i;
-      listRegion.options.add(option);
+    listWorld.options.add(NullOption());
+    const RegionList = WorldGroup.RegionList;
+    const GroupList = WorldGroup.GroupList;
+    const WorldList = WorldGroup.WorldList;
+    for (let i in RegionList) {
+      const Region = RegionList[i];
+      listRegion.options.add(new Option(Region.Name, i));
     }
     listRegion.onchange = () => {
       listGroup.options.length = 0;
-      listGroup.options.add(new Option(line, -1));
+      listGroup.options.add(NullOption());
       listGrand.options.length = 0;
-      listGrand.options.add(new Option(line, -1));
+      listGrand.options.add(NullOption());
       listWorld.options.length = 0;
-      listWorld.options.add(new Option(line, -1));
-      if (listRegion.options[listRegion.selectedIndex].value) {
-        let list = WorldGroup[listRegion.options[listRegion.selectedIndex].value].GroupList;
-        for (let i = 0; i < list.length; i++) {
-          let WorldIdList = list[i].WorldIdList.map((value) => {
-            return `W${value % 1000}`;
-          });
-          listGroup.options.add(new Option(`Group ${list[i].Id}(${WorldIdList.toString()})`, list[i].Id));
-        }
-      }
-    };
-    listGroup.onchange = () => {
-      listGrand.options.length = 0;
-      listGrand.options.add(new Option(line, -1));
-      listWorld.options.length = 0;
-      listWorld.options.add(new Option(line, -1));
-      let valueRegion = listRegion.options[listRegion.selectedIndex].value;
-      let valueGroup = listGroup.options[listGroup.selectedIndex].value;
-      let list = WorldGroup[valueRegion].GroupList[valueGroup];
-      if (valueRegion && valueGroup && list.WorldIdList.length > 0) {
-        listGrand.options.add(new Option('Local', 1));
-        if (list.Id > 0) {
-          listGrand.options.add(new Option('Elite', 2));
-          listGrand.options.add(new Option('Expert', 3));
-          listGrand.options.add(new Option('Master', 4));
-        }
-      }
-    };
-    listGrand.onchange = () => {
-      listWorld.options.length = 0;
-      listWorld.options.add(new Option(line, -1));
-      let valueRegion = listRegion.options[listRegion.selectedIndex].value;
-      let valueGroup = listGroup.options[listGroup.selectedIndex].value;
-      let valueGrand = listGrand.options[listGrand.selectedIndex].value;
-      if (valueRegion && valueGroup) {
-        if (valueGrand > 1) {
-          listWorld.options.add(new Option('Block A', 1));
-          listWorld.options.add(new Option('Block B', 2));
-          listWorld.options.add(new Option('Block C', 3));
-          listWorld.options.add(new Option('Block D', 4));
-        } else {
-          let list = WorldGroup[valueRegion].GroupList[valueGroup].WorldIdList;
-          for (let i = 0; i < list.length; i++) {
-            listWorld.options.add(new Option(`W${list[i] % 1000}`, list[i]));
+      listWorld.options.add(NullOption());
+      const RegionId = listRegion.options[listRegion.selectedIndex].value * 1;
+      if ((RegionId * 1) >= 0) {
+        const Region = RegionList[RegionId];
+        if (Region) {
+          const List = Region.GroupList;
+          for (let i = 0; i < List.length; i++) {
+            const GroupId = List[i];
+            const Group = GroupList[GroupId];
+            if (Group.WorldList.length > 0) {
+              const text = Group.WorldList.map((value) => {
+                return `${WorldList[value].SName}`
+              });
+              listGroup.options.add(new Option(`${Group.Name}(${text})`, GroupId));
+            }
           }
         }
       }
+      setStorage('RegionId')
+      setStorage('GroupId')
+      setStorage('GrandId')
+      setStorage('WorldId')
+    };
+    listGroup.onchange = () => {
+      listGrand.options.length = 0;
+      listGrand.options.add(NullOption());
+      listWorld.options.length = 0;
+      listWorld.options.add(NullOption());
+      const GroupId = listGroup.options[listGroup.selectedIndex].value;
+      if (GroupId != -1) {
+        const Group = GroupList[GroupId]
+        if (Group.WorldList.length > 0) {
+          listGrand.options.add(new Option('Local', 1));
+          if (!GroupId.includes('N')) {
+            listGrand.options.add(new Option('Elite', 2));
+            listGrand.options.add(new Option('Expert', 3));
+            listGrand.options.add(new Option('Master', 4));
+          }
+        }
+      }
+      setStorage('RegionId')
+      setStorage('GroupId')
+      setStorage('GrandId')
+      setStorage('WorldId')
+    };
+    listGrand.onchange = () => {
+      listWorld.options.length = 0;
+      listWorld.options.add(NullOption());
+      const GrandId = listGrand.options[listGrand.selectedIndex].value;
+      if ((GrandId * 1) > 1) {
+        listWorld.options.add(new Option('Block A', 1));
+        listWorld.options.add(new Option('Block B', 2));
+        listWorld.options.add(new Option('Block C', 3));
+        listWorld.options.add(new Option('Block D', 4));
+      } else if ((GrandId * 1) == 1) {
+        const GroupId = listGroup.options[listGroup.selectedIndex].value;
+        const Worlds = GroupList[GroupId].WorldList;
+        for (let i = 0; i < Worlds.length; i++) {
+          const WorldId = Worlds[i]
+          const World = WorldList[WorldId]
+          listWorld.options.add(new Option(World.SName, WorldId));
+        }
+      }
+      setStorage('RegionId')
+      setStorage('GroupId')
+      setStorage('GrandId')
+      setStorage('WorldId')
     };
     listWorld.onchange = () => {
-      let valueRegion = listRegion.options[listRegion.selectedIndex].value;
-      let valueGroup = listGroup.options[listGroup.selectedIndex].value;
-      let valueGrand = listGrand.options[listGrand.selectedIndex].value;
-      let valueWorld = valueWorld.options[valueWorld.selectedIndex].value;
-      setStorage('Selected', `${valueRegion},${valueGroup},${valueGrand},${valueWorld}`)
-      setStorage('WorldID', valueWorld)
+      setStorage('RegionId', listRegion.options[listRegion.selectedIndex].value)
+      setStorage('GroupId', listGroup.options[listGroup.selectedIndex].value)
+      setStorage('GrandId', listGrand.options[listGrand.selectedIndex].value)
+      setStorage('WorldId', valueWorld.options[valueWorld.selectedIndex].value)
     }
     divRegion.appendChild(listRegion);
     divGroup.appendChild(listGroup);
@@ -289,9 +302,17 @@
       document.body.lastChild.remove();
     }
     await initSelect();
-    const Selected = getStorage('Selected') ? getStorage('Selected').split(",") : null;
-    if (Selected) {
-      document.getElementById('listRegion') = 1;
+    const Selected = {
+      RegionId: getStorage('RegionId'),
+      GroupId: getStorage('GroupId'),
+      GrandId: getStorage('GrandId'),
+      WorldId: getStorage('WorldlId')
+    };
+    if ((Selected.WorlId * 1) > 0) {
+      document.getElementById('listRegion').value = Selected.RegionId;
+      document.getElementById('listGroup').value = Selected.GroupId;
+      document.getElementById('listGrand').value = Selected.GrandId;
+      document.getElementById('listWorld').value = Selected.WorldId;
     }
     const castalList = {
       'local': {
@@ -551,9 +572,9 @@
         },
       },
     };
+    const Grand = (Selected.GrandId == '1') ? 'local' : 'global';
+    let image = (Grand == 'local') ? 'base_ribbon_01' : 'base_metal';
     let style = createElement('style');
-    let grade = Selected[1] > 1 ? 'global' : 'local';
-    let image = grade == 'local' ? 'base_ribbon_01' : 'base_metal';
     style.appendChild(createElement('text', `gvg-status{width:164px;height:50px;position:relative;display:block}`));
     style.appendChild(createElement('text', `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`));
     style.appendChild(createElement('text', `gvg-status-icon-defense{background-image:url(assets/icon_gvg_party_defense.png)}`));
@@ -579,24 +600,24 @@
     style.appendChild(createElement('text', `gvg-ko-count-container{position:absolute;width:76px;left:-38px;top:-19px;display:block;color:#eee;text-shadow:red 0 0 30px,red 0 0 5px}`));
     style.appendChild(createElement('text', `gvg-ko-count{display:block;font-size:26px;text-align:center;width:100%}`));
     style.appendChild(createElement('text', `gvg-ko-count-label:after{content:'KOs';font-size:14px;position:absolute;display:block;text-align:center;width:100%;height:14px;top:26px;left:0}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church]>gvg-castle-icon{position:absolute;left:-28px;right:-28px;bottom:-25px;width:56px;height:50px;background-image:url(assets/Castle_0_0.png)}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle]>gvg-castle-icon{position:absolute;left:-31px;right:-31px;bottom:-33px;width:62px;height:67px;background-image:url(assets/Castle_0_1.png)}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple]>gvg-castle-icon{position:absolute;left:-39px;right:-39px;bottom:-40px;width:78px;height:80px;background-image:url(assets/Castle_0_2.png)}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle-name{background-image:url(assets/${image}.png);width:140px;height:26px;color:${grade == 'local' ? '#473d3b' : 'white'};line-height:33px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle>gvg-castle-name{left:-70px;right:-70px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church]>gvg-castle-name{bottom:-45px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle]>gvg-castle-name{bottom:-50px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple]>gvg-castle-name{bottom:-58px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}]{background-image:url(assets/${grade}gvg.png)}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-icon{position:absolute;left:-28px;right:-28px;bottom:-25px;width:56px;height:50px;background-image:url(assets/Castle_0_0.png)}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-icon{position:absolute;left:-31px;right:-31px;bottom:-33px;width:62px;height:67px;background-image:url(assets/Castle_0_1.png)}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-icon{position:absolute;left:-39px;right:-39px;bottom:-40px;width:78px;height:80px;background-image:url(assets/Castle_0_2.png)}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle-name{background-image:url(assets/${image}.png);width:140px;height:26px;color:${Grand == 'local' ? '#473d3b' : 'white'};line-height:33px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle>gvg-castle-name{left:-70px;right:-70px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-name{bottom:-45px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-name{bottom:-50px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-name{bottom:-58px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${Grand}]{background-image:url(assets/${Grand}gvg.png)}`));
     let viewer = createElement('gvg-viewer');
-    viewer.setAttribute(grade, '');
+    viewer.setAttribute(Grand, '');
     let legend = createElement('div');
     legend.id = 'legend';
     legend.appendChild(createElement('div', '图例'));
     legend.setAttribute('style', 'background-color:rgba(255,255,255,0.5);width:275px');
     viewer.appendChild(legend);
-    for (let i in castalList[grade]) {
-      let castal = castalList[grade][i];
+    for (let i in castalList[Grand]) {
+      let castal = castalList[Grand][i];
       let castleNode = createElement('gvg-castle');
       castleNode.setAttribute('castle-id', i);
       castleNode.setAttribute(castal.type, 'true');
@@ -615,11 +636,11 @@
       kos.appendChild(createElement('gvg-ko-count-label'));
       castleNode.appendChild(kos);
       viewer.appendChild(castleNode);
-      style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle-id="${i}"]{left:${castal.left};top:${castal.top}}`));
+      style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[castle-id="${i}"]{left:${castal.left};top:${castal.top}}`));
     }
     document.head.appendChild(style);
     document.body.appendChild(viewer);
-    gvgHint(grade);
+    gvgHint(Grand);
   }
   //登录账号
   async function loginAccount() {
@@ -839,31 +860,82 @@
   async function getWorldGroup() {
     const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer', msgpack: true });
     const WorldGroupMB = await msgpack.decode(new Uint8Array(buffer));
-    let result = {};
-    if (WorldGroupMB) {
-      for (let i = 0; i < WorldGroupMB.length; i++) {
-        const WorldGroup = WorldGroupMB[i];
-        const RegionList = { 'jp': 'Japan', 'kr': 'Korea', 'ap': 'Asia', 'us': 'America', 'eu': 'Europe', 'gl': 'Global' };
-        const EndTime = new Date(WorldGroup.EndTime);
-        const NowTime = new Date();
-        if (EndTime > NowTime) {
-          if (!result[WorldGroup.Memo]) {
-            result[WorldGroup.Memo] = {
-              Region: RegionList[WorldGroup.Memo],
-              WorldList: [],
-              GroupList: [
-                {
-                  'Id': 0,
-                  'WorldIdList': [],
-                },
-              ],
-            };
+    const RegionList = { 'jp': 'Japan', 'kr': 'Korea', 'ap': 'Asia', 'us': 'America', 'eu': 'Europe', 'gl': 'Global' };
+    const RegionIdList = { 'jp': 0, 'kr': 2, 'ap': 3, 'us': 4, 'eu': 5, 'gl': 6 };
+    let result = {
+      'RegionList': {},
+      'GroupList': {},
+      'WorldList': {},
+    };
+    for (let i = 0; i < WorldGroupMB.length; i++) {
+      const WorldGroup = WorldGroupMB[i];
+      const RegionMemo = WorldGroup.Memo
+      const RegionId = RegionIdList[RegionMemo].toString()
+      const WorldIdList = WorldGroup.WorldIdList
+      if (new Date(WorldGroup.EndTime) > new Date()) {
+        let region = result.RegionList[RegionId];
+        if (!region) {
+          region = {
+            'Name': RegionList[RegionMemo],
+            'SName': RegionMemo,
+            'WorldList': [],
+            'GroupList': [`N${RegionId}`]
+          };
+          result.RegionList[RegionId] = region;
+          result.GroupList[`N${RegionId}`] = {
+            'Name': `Group NA`,
+            'SName': `GNA`,
+            'Region': RegionId,
+            'WorldList': [],
           }
-          result[WorldGroup.Memo].GroupList.push({
-            'Id': WorldGroup.Id,
-            'WorldIdList': WorldGroup.WorldIdList,
-          });
-          result[WorldGroup.Memo].WorldList = result[WorldGroup.Memo].WorldList.concat(WorldGroup.WorldIdList);
+        }
+        const GroupId = WorldGroup.Id.toString()
+        let group = result.GroupList[GroupId]
+        if (!group) {
+          group = {
+            'Region': RegionId,
+            'Name': `Group ${GroupId}`,
+            'SName': `G${GroupId}`,
+            'WorldList': [],
+          }
+          result.GroupList[GroupId] = group
+        }
+        region.GroupList.push(GroupId);
+        for (let j = 0; j < WorldIdList.length; j++) {
+          const WorldId = WorldIdList[j].toString();
+          region.WorldList.push(WorldId);
+          let world = {
+            'Name': `World ${WorldId % 1000}`,
+            'SName': `W${WorldId % 1000}`,
+            'Region': RegionId,
+            'Group': GroupId,
+          }
+          result.WorldList[WorldId] = world;
+          region.WorldList.push(WorldId);
+          group.WorldList.push(WorldId);
+        }
+      }
+    }
+    const _getDataUri = await getDataUri();
+    for (let i = 0; i < _getDataUri.WorldInfos.length; i++) {
+      const World = _getDataUri.WorldInfos[i];
+      const GameServerId = World.GameServerId;
+      const RegionId = Math.floor(GameServerId / 10).toString();
+      const WorldId = World.Id.toString()
+      let region = result.RegionList[RegionId];
+      region.WorldList.push(WorldId);
+      let world = result.WorldList[WorldId];
+      if (world) {
+        world.GameServerId = GameServerId;
+      } else {
+        const GroupId = `N${RegionId}`
+        result.GroupList[GroupId].WorldList.push(WorldId);
+        result.WorldList[WorldId] = {
+          'Name': `World ${WorldId % 1000}`,
+          'SName': `W${WorldId % 1000}`,
+          'Region': RegionId,
+          'Group': GroupId,
+          'GameServerId': GameServerId
         }
       }
     }
