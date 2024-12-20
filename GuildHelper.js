@@ -572,6 +572,76 @@
         },
       },
     };
+  }
+  //登录账号
+  async function loginAccount() {
+    setStorage('ortegaaccesstoken', '');
+    let Account = getStorage('Account');
+    //若Account不存在
+    if (!Account) {
+      Account = {};
+      const UserId = prompt('请输入引继码，若使用临时账号请留空');
+      const ortegauuid = crypto.randomUUID().replaceAll('-', '');
+      const AdverisementId = crypto.randomUUID();
+      const AuthToken = await getAuthToken();
+      const _createUser = await createUser(AuthToken, AdverisementId, ortegauuid);
+      //若不使用引继码
+      if (!UserId) {
+        Account.ClientKey = _createUser.ClientKey;
+        Account.UserId = UserId.toString();
+        const _setUserSetting = await setUserSetting();
+        const _createWorldPlayer = await createWorldPlayer();
+        userURL = _createWorldPlayer.ApiHost;
+        const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
+      }
+      //若使用引继码
+      else {
+        const Password = prompt('请输入引继码，若使用临时账号请留空');
+        const _getComebackUserData = await getComebackUserData(FromUserId, UserId, Password, AuthToken);
+      }
+    }
+    //若Account存在
+    else {
+    }
+    getLoginState();
+  }
+  //登出账号
+  function logoutAccount() {
+    let confirm = prompt('真的要清除账号吗，请输入：确认清除');
+    if (confirm == '确认清除') {
+      setStorage('Account');
+      setStorage('ortegauuid');
+      setStorage('LoginState', false);
+      setStorage('ortegaaccesstoken', '');
+      this.classList.add('hidden');
+      document.getElementById('login').classList.remove('hidden');
+    }
+  }
+  //增加提示功能
+  function gvgHint(grade) {
+    let style = createElement('style');
+    style.appendChild(createElement('text', 'gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}'));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:${58}px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:${50}px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:${45}px}`));
+    document.head.appendChild(style);
+    let listCastal = document.getElementsByTagName('gvg-castle');
+    for (let i = 0; i < listCastal.length; i++) {
+      let castal = listCastal[i];
+      //增加备注
+      castal.getElementsByTagName('gvg-castle-name')[0].onclick = addHint;
+      castal.getElementsByTagName('gvg-status-bar-defense')[0].onclick = changeContent;
+      castal.getElementsByTagName('gvg-status-bar-offense')[0].onclick = changeContent;
+      castal.getElementsByTagName('gvg-status-icon-defense')[0].onclick = showOffense;
+      castal.getElementsByTagName('gvg-status-icon-offense')[0].onclick = hideOffense;
+      castal.getElementsByTagName('gvg-castle-icon')[0].onclick = changeColor;
+    }
+  }
+  //子功能
+  function drawMap(Grand, World) {
     const Grand = (Selected.GrandId == '1') ? 'local' : 'global';
     let image = (Grand == 'local') ? 'base_ribbon_01' : 'base_metal';
     let style = createElement('style');
@@ -642,74 +712,6 @@
     document.body.appendChild(viewer);
     gvgHint(Grand);
   }
-  //登录账号
-  async function loginAccount() {
-    setStorage('ortegaaccesstoken', '');
-    let Account = getStorage('Account');
-    //若Account不存在
-    if (!Account) {
-      Account = {};
-      const UserId = prompt('请输入引继码，若使用临时账号请留空');
-      const ortegauuid = crypto.randomUUID().replaceAll('-', '');
-      const AdverisementId = crypto.randomUUID();
-      const AuthToken = await getAuthToken();
-      const _createUser = await createUser(AuthToken, AdverisementId, ortegauuid);
-      //若不使用引继码
-      if (!UserId) {
-        Account.ClientKey = _createUser.ClientKey;
-        Account.UserId = UserId.toString();
-        const _setUserSetting = await setUserSetting();
-        const _createWorldPlayer = await createWorldPlayer();
-        userURL = _createWorldPlayer.ApiHost;
-        const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
-      }
-      //若使用引继码
-      else {
-        const Password = prompt('请输入引继码，若使用临时账号请留空');
-        const _getComebackUserData = await getComebackUserData(FromUserId, UserId, Password, AuthToken);
-      }
-    }
-    //若Account存在
-    else {
-    }
-    getLoginState();
-  }
-  //登出账号
-  function logoutAccount() {
-    let confirm = prompt('真的要清除账号吗，请输入：确认清除');
-    if (confirm == '确认清除') {
-      setStorage('Account');
-      setStorage('ortegauuid');
-      setStorage('LoginState', false);
-      setStorage('ortegaaccesstoken', '');
-      this.classList.add('hidden');
-      document.getElementById('login').classList.remove('hidden');
-    }
-  }
-  //增加提示功能
-  function gvgHint(grade) {
-    let style = createElement('style');
-    style.appendChild(createElement('text', 'gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}'));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:${58}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:${50}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:${45}px}`));
-    document.head.appendChild(style);
-    let listCastal = document.getElementsByTagName('gvg-castle');
-    for (let i = 0; i < listCastal.length; i++) {
-      let castal = listCastal[i];
-      //增加备注
-      castal.getElementsByTagName('gvg-castle-name')[0].onclick = addHint;
-      castal.getElementsByTagName('gvg-status-bar-defense')[0].onclick = changeContent;
-      castal.getElementsByTagName('gvg-status-bar-offense')[0].onclick = changeContent;
-      castal.getElementsByTagName('gvg-status-icon-defense')[0].onclick = showOffense;
-      castal.getElementsByTagName('gvg-status-icon-offense')[0].onclick = hideOffense;
-      castal.getElementsByTagName('gvg-castle-icon')[0].onclick = changeColor;
-    }
-  }
-  //子功能
   //战斗布局-增加提示
   async function addHint() {
     let exist = this.parentNode.getElementsByTagName('gvg-castle-hint')[0];
