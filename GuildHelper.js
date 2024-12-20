@@ -138,7 +138,7 @@
   async function initSelect() {
     const NullOption = () => {
       return new Option('-'.repeat(80), -1);
-    }
+    };
     let WorldGroup = await getWorldGroup();
     let div = createElement('div');
     let divRegion = createElement('p', 'Region : ');
@@ -157,6 +157,19 @@
     let listWorld = createElement('select');
     listWorld.id = 'listWorld';
     listWorld.options.add(NullOption());
+    let getServer = createElement('button', `从服务器获取`);
+    getServer.onclick = () => {
+      const DataList = 0;
+    };
+    let getLocal = createElement('button', `从上一次恢复`);
+    getServer.onclick = () => {
+      const DataList = 0;
+    };
+    let setLocal = createElement('button', `保存设置`);
+    getServer.onclick = () => {
+      const DataList = 0;
+    };
+
     const RegionList = WorldGroup.RegionList;
     const GroupList = WorldGroup.GroupList;
     const WorldList = WorldGroup.WorldList;
@@ -172,7 +185,7 @@
       listWorld.options.length = 0;
       listWorld.options.add(NullOption());
       const RegionId = listRegion.options[listRegion.selectedIndex].value * 1;
-      if ((RegionId * 1) >= 0) {
+      if (RegionId * 1 >= 0) {
         const Region = RegionList[RegionId];
         if (Region) {
           const List = Region.GroupList;
@@ -181,17 +194,17 @@
             const Group = GroupList[GroupId];
             if (Group.WorldList.length > 0) {
               const text = Group.WorldList.map((value) => {
-                return `${WorldList[value].SName}`
+                return `${WorldList[value].SName}`;
               });
               listGroup.options.add(new Option(`${Group.Name}(${text})`, GroupId));
             }
           }
         }
       }
-      setStorage('RegionId')
-      setStorage('GroupId')
-      setStorage('GrandId')
-      setStorage('WorldId')
+      setStorage('RegionId');
+      setStorage('GroupId');
+      setStorage('GrandId');
+      setStorage('WorldId');
     };
     listGroup.onchange = () => {
       listGrand.options.length = 0;
@@ -200,7 +213,7 @@
       listWorld.options.add(NullOption());
       const GroupId = listGroup.options[listGroup.selectedIndex].value;
       if (GroupId != -1) {
-        const Group = GroupList[GroupId]
+        const Group = GroupList[GroupId];
         if (Group.WorldList.length > 0) {
           listGrand.options.add(new Option('Local', 1));
           if (!GroupId.includes('N')) {
@@ -210,40 +223,42 @@
           }
         }
       }
-      setStorage('RegionId')
-      setStorage('GroupId')
-      setStorage('GrandId')
-      setStorage('WorldId')
+      setStorage('RegionId');
+      setStorage('GroupId');
+      setStorage('GrandId');
+      setStorage('WorldId');
     };
     listGrand.onchange = () => {
       listWorld.options.length = 0;
       listWorld.options.add(NullOption());
       const GrandId = listGrand.options[listGrand.selectedIndex].value;
-      if ((GrandId * 1) > 1) {
+      if (GrandId * 1 > 1) {
         listWorld.options.add(new Option('Block A', 1));
         listWorld.options.add(new Option('Block B', 2));
         listWorld.options.add(new Option('Block C', 3));
         listWorld.options.add(new Option('Block D', 4));
-      } else if ((GrandId * 1) == 1) {
+      } else if (GrandId * 1 == 1) {
         const GroupId = listGroup.options[listGroup.selectedIndex].value;
         const Worlds = GroupList[GroupId].WorldList;
         for (let i = 0; i < Worlds.length; i++) {
-          const WorldId = Worlds[i]
-          const World = WorldList[WorldId]
+          const WorldId = Worlds[i];
+          const World = WorldList[WorldId];
           listWorld.options.add(new Option(World.SName, WorldId));
         }
       }
-      setStorage('RegionId')
-      setStorage('GroupId')
-      setStorage('GrandId')
-      setStorage('WorldId')
+      setStorage('RegionId');
+      setStorage('GroupId');
+      setStorage('GrandId');
+      setStorage('WorldId');
     };
     listWorld.onchange = () => {
-      setStorage('RegionId', listRegion.options[listRegion.selectedIndex].value)
-      setStorage('GroupId', listGroup.options[listGroup.selectedIndex].value)
-      setStorage('GrandId', listGrand.options[listGrand.selectedIndex].value)
-      setStorage('WorldId', valueWorld.options[valueWorld.selectedIndex].value)
-    }
+      const GrandId = listGrand.options[listGrand.selectedIndex].value;
+      setStorage('RegionId', listRegion.options[listRegion.selectedIndex].value);
+      setStorage('GroupId', listGroup.options[listGroup.selectedIndex].value);
+      setStorage('GrandId', GrandId);
+      setStorage('WorldId', listWorld.options[listWorld.selectedIndex].value);
+      drawMap(GrandId);
+    };
     divRegion.appendChild(listRegion);
     divGroup.appendChild(listGroup);
     grand.appendChild(listGrand);
@@ -254,7 +269,6 @@
     div.appendChild(world);
     document.body.appendChild(div);
     document.body.appendChild(createElement('hr'));
-    console.log('done');
   }
   //主功能
   //文件转换
@@ -306,14 +320,86 @@
       RegionId: getStorage('RegionId'),
       GroupId: getStorage('GroupId'),
       GrandId: getStorage('GrandId'),
-      WorldId: getStorage('WorldlId')
+      WorldId: getStorage('WorldlId'),
     };
-    if ((Selected.WorlId * 1) > 0) {
+    if (Selected.WorlId * 1 > 0) {
       document.getElementById('listRegion').value = Selected.RegionId;
       document.getElementById('listGroup').value = Selected.GroupId;
       document.getElementById('listGrand').value = Selected.GrandId;
       document.getElementById('listWorld').value = Selected.WorldId;
     }
+  }
+  //登录账号
+  async function loginAccount() {
+    setStorage('ortegaaccesstoken', '');
+    let Account = getStorage('Account');
+    //若Account不存在
+    if (!Account) {
+      Account = {};
+      const UserId = prompt('请输入引继码，若使用临时账号请留空');
+      const ortegauuid = crypto.randomUUID().replaceAll('-', '');
+      const AdverisementId = crypto.randomUUID();
+      const AuthToken = await getAuthToken();
+      const _createUser = await createUser(AuthToken, AdverisementId, ortegauuid);
+      //若不使用引继码
+      if (!UserId) {
+        Account.ClientKey = _createUser.ClientKey;
+        Account.UserId = UserId.toString();
+        const _setUserSetting = await setUserSetting();
+        const _createWorldPlayer = await createWorldPlayer();
+        userURL = _createWorldPlayer.ApiHost;
+        const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
+      }
+      //若使用引继码
+      else {
+        const Password = prompt('请输入引继码，若使用临时账号请留空');
+        const _getComebackUserData = await getComebackUserData(FromUserId, UserId, Password, AuthToken);
+      }
+    }
+    //若Account存在
+    else {
+    }
+    getLoginState();
+  }
+  //登出账号
+  function logoutAccount() {
+    let confirm = prompt('真的要清除账号吗，请输入：确认清除');
+    if (confirm == '确认清除') {
+      setStorage('Account');
+      setStorage('ortegauuid');
+      setStorage('LoginState', false);
+      setStorage('ortegaaccesstoken', '');
+      this.classList.add('hidden');
+      document.getElementById('login').classList.remove('hidden');
+    }
+  }
+  //增加提示功能
+  function gvgHint(grade) {
+    document.getElementById('gvgHintStyle')?.remove();
+    let style = createElement('style');
+    style.id = 'gvgHintStyle';
+    style.appendChild(createElement('text', 'gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}'));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:${58}px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:${50}px}`));
+    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:${45}px}`));
+    document.head.appendChild(style);
+    let listCastal = document.getElementsByTagName('gvg-castle');
+    for (let i = 0; i < listCastal.length; i++) {
+      let castal = listCastal[i];
+      //增加备注
+      castal.getElementsByTagName('gvg-castle-name')[0].onclick = addHint;
+      castal.getElementsByTagName('gvg-status-bar-defense')[0].onclick = changeContent;
+      castal.getElementsByTagName('gvg-status-bar-offense')[0].onclick = changeContent;
+      castal.getElementsByTagName('gvg-status-icon-defense')[0].onclick = showOffense;
+      castal.getElementsByTagName('gvg-status-icon-offense')[0].onclick = hideOffense;
+      castal.getElementsByTagName('gvg-castle-icon')[0].onclick = changeColor;
+    }
+  }
+  //子功能
+  function drawMap(GrandId) {
     const castalList = {
       'local': {
         '1': {
@@ -572,113 +658,48 @@
         },
       },
     };
-  }
-  //登录账号
-  async function loginAccount() {
-    setStorage('ortegaaccesstoken', '');
-    let Account = getStorage('Account');
-    //若Account不存在
-    if (!Account) {
-      Account = {};
-      const UserId = prompt('请输入引继码，若使用临时账号请留空');
-      const ortegauuid = crypto.randomUUID().replaceAll('-', '');
-      const AdverisementId = crypto.randomUUID();
-      const AuthToken = await getAuthToken();
-      const _createUser = await createUser(AuthToken, AdverisementId, ortegauuid);
-      //若不使用引继码
-      if (!UserId) {
-        Account.ClientKey = _createUser.ClientKey;
-        Account.UserId = UserId.toString();
-        const _setUserSetting = await setUserSetting();
-        const _createWorldPlayer = await createWorldPlayer();
-        userURL = _createWorldPlayer.ApiHost;
-        const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
-      }
-      //若使用引继码
-      else {
-        const Password = prompt('请输入引继码，若使用临时账号请留空');
-        const _getComebackUserData = await getComebackUserData(FromUserId, UserId, Password, AuthToken);
-      }
-    }
-    //若Account存在
-    else {
-    }
-    getLoginState();
-  }
-  //登出账号
-  function logoutAccount() {
-    let confirm = prompt('真的要清除账号吗，请输入：确认清除');
-    if (confirm == '确认清除') {
-      setStorage('Account');
-      setStorage('ortegauuid');
-      setStorage('LoginState', false);
-      setStorage('ortegaaccesstoken', '');
-      this.classList.add('hidden');
-      document.getElementById('login').classList.remove('hidden');
-    }
-  }
-  //增加提示功能
-  function gvgHint(grade) {
+    document.getElementById('gvgMapStyle')?.remove();
+    document.getElementById('gvg-viewer')?.remove();
+    const Grand = GrandId == '1' ? 'local' : 'global';
+    const image = Grand == 'local' ? 'base_ribbon_01' : 'base_metal';
     let style = createElement('style');
-    style.appendChild(createElement('text', 'gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}'));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:${58}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:${50}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:${45}px}`));
-    document.head.appendChild(style);
-    let listCastal = document.getElementsByTagName('gvg-castle');
-    for (let i = 0; i < listCastal.length; i++) {
-      let castal = listCastal[i];
-      //增加备注
-      castal.getElementsByTagName('gvg-castle-name')[0].onclick = addHint;
-      castal.getElementsByTagName('gvg-status-bar-defense')[0].onclick = changeContent;
-      castal.getElementsByTagName('gvg-status-bar-offense')[0].onclick = changeContent;
-      castal.getElementsByTagName('gvg-status-icon-defense')[0].onclick = showOffense;
-      castal.getElementsByTagName('gvg-status-icon-offense')[0].onclick = hideOffense;
-      castal.getElementsByTagName('gvg-castle-icon')[0].onclick = changeColor;
-    }
-  }
-  //子功能
-  function drawMap(Grand, World) {
-    const Grand = (Selected.GrandId == '1') ? 'local' : 'global';
-    let image = (Grand == 'local') ? 'base_ribbon_01' : 'base_metal';
-    let style = createElement('style');
-    style.appendChild(createElement('text', `gvg-status{width:164px;height:50px;position:relative;display:block}`));
-    style.appendChild(createElement('text', `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`));
-    style.appendChild(createElement('text', `gvg-status-icon-defense{background-image:url(assets/icon_gvg_party_defense.png)}`));
-    style.appendChild(createElement('text', `gvg-status-icon-offense{background-image:url(assets/icon_gvg_party_offense.png)}`));
-    style.appendChild(createElement('text', `gvg-status[active]>gvg-status-bar-defense,gvg-status[active]>gvg-status-bar-offense{display:block;width:90px;height:20px;padding:0 10px;background-size:cover;color:#fff;font-size:9px}`));
-    style.appendChild(createElement('text', `gvg-status-bar-offense{background-image:url(assets/base_s_09_red.png);text-align:left;line-height:16px}`));
-    style.appendChild(createElement('text', `gvg-status-bar-defense{background-image:url(assets/base_s_09_blue.png);text-align:right;line-height:24px}`));
-    style.appendChild(createElement('text', `gvg-status[neutral]>gvg-status-icon-defense{position:absolute;left:0;right:0;top:0;margin:auto}`));
-    style.appendChild(createElement('text', `gvg-status[neutral]>gvg-status-icon-offense{display:none}`));
-    style.appendChild(createElement('text', `gvg-status[neutral]>gvg-status-bar-defense{display:block;width:131px;height:12px;text-align:center;line-height:12px;background-image:url(assets/base_s_08_blue.png);background-size:cover;color:#fff;font-size:9px;position:absolute;left:0;right:0;top:35px;margin:auto}`));
-    style.appendChild(createElement('text', `gvg-status[neutral]>gvg-status-bar-offense{display:none}`));
-    style.appendChild(createElement('text', `gvg-status[active]>gvg-status-bar-offense {position:absolute;left:25px;bottom:10px }`));
-    style.appendChild(createElement('text', `gvg-status[active]>gvg-status-bar-defense {position:absolute;right:25px;bottom:0 }`));
-    style.appendChild(createElement('text', `gvg-status[active]>gvg-status-icon-offense {position:absolute;left:0;bottom:0 }`));
-    style.appendChild(createElement('text', `gvg-status[active]>gvg-status-icon-defense {position:absolute;right:0;bottom:0 }`));
-    style.appendChild(createElement('text', `gvg-castle>gvg-status{position:absolute;left:-82px;right:-82px;bottom:43px}`));
-    style.appendChild(createElement('text', `gvg-castle-icon{display:block;background-size:cover}`));
-    style.appendChild(createElement('text', `gvg-castle-name{display:block;background-size:cover;width:140px;height:26px;font-size:9px;text-align:center}`));
-    style.appendChild(createElement('text', `gvg-castle>gvg-castle-icon{position:absolute}`));
-    style.appendChild(createElement('text', `gvg-castle>gvg-castle-name{position:absolute}`));
-    style.appendChild(createElement('text', `gvg-castle{display:block;position:absolute;user-select:none}`));
-    style.appendChild(createElement('text', `gvg-viewer{display:block;position:relative;width:1280px;height:1280px;font-family:sans-serif;background-size:cover}`));
-    style.appendChild(createElement('text', `gvg-ko-count-container{position:absolute;width:76px;left:-38px;top:-19px;display:block;color:#eee;text-shadow:red 0 0 30px,red 0 0 5px}`));
-    style.appendChild(createElement('text', `gvg-ko-count{display:block;font-size:26px;text-align:center;width:100%}`));
-    style.appendChild(createElement('text', `gvg-ko-count-label:after{content:'KOs';font-size:14px;position:absolute;display:block;text-align:center;width:100%;height:14px;top:26px;left:0}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-icon{position:absolute;left:-28px;right:-28px;bottom:-25px;width:56px;height:50px;background-image:url(assets/Castle_0_0.png)}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-icon{position:absolute;left:-31px;right:-31px;bottom:-33px;width:62px;height:67px;background-image:url(assets/Castle_0_1.png)}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-icon{position:absolute;left:-39px;right:-39px;bottom:-40px;width:78px;height:80px;background-image:url(assets/Castle_0_2.png)}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle-name{background-image:url(assets/${image}.png);width:140px;height:26px;color:${Grand == 'local' ? '#473d3b' : 'white'};line-height:33px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle>gvg-castle-name{left:-70px;right:-70px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-name{bottom:-45px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-name{bottom:-50px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-name{bottom:-58px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${Grand}]{background-image:url(assets/${Grand}gvg.png)}`));
+    style.id = 'gvgMapStyle';
+    let styleList = [
+      `gvg-status{width:164px;height:50px;position:relative;display:block}`,
+      `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`,
+      `gvg-status-icon-defense{background-image:url(assets/icon_gvg_party_defense.png)}`,
+      `gvg-status-icon-offense{background-image:url(assets/icon_gvg_party_offense.png)}`,
+      `gvg-status[active]>gvg-status-bar-defense,gvg-status[active]>gvg-status-bar-offense{display:block;width:90px;height:20px;padding:0 10px;background-size:cover;color:#fff;font-size:9px}`,
+      `gvg-status-bar-offense{background-image:url(assets/base_s_09_red.png);text-align:left;line-height:16px}`,
+      `gvg-status-bar-defense{background-image:url(assets/base_s_09_blue.png);text-align:right;line-height:24px}`,
+      `gvg-status[neutral]>gvg-status-icon-defense{position:absolute;left:0;right:0;top:0;margin:auto}`,
+      `gvg-status[neutral]>gvg-status-icon-offense{display:none}`,
+      `gvg-status[neutral]>gvg-status-bar-defense{display:block;width:131px;height:12px;text-align:center;line-height:12px;background-image:url(assets/base_s_08_blue.png);background-size:cover;color:#fff;font-size:9px;position:absolute;left:0;right:0;top:35px;margin:auto}`,
+      `gvg-status[neutral]>gvg-status-bar-offense{display:none}`,
+      `gvg-status[active]>gvg-status-bar-offense {position:absolute;left:25px;bottom:10px }`,
+      `gvg-status[active]>gvg-status-bar-defense {position:absolute;right:25px;bottom:0 }`,
+      `gvg-status[active]>gvg-status-icon-offense {position:absolute;left:0;bottom:0 }`,
+      `gvg-status[active]>gvg-status-icon-defense {position:absolute;right:0;bottom:0 }`,
+      `gvg-castle>gvg-status{position:absolute;left:-82px;right:-82px;bottom:43px}`,
+      `gvg-castle-icon{display:block;background-size:cover}`,
+      `gvg-castle-name{display:block;background-size:cover;width:140px;height:26px;font-size:9px;text-align:center}`,
+      `gvg-castle>gvg-castle-icon{position:absolute}`,
+      `gvg-castle>gvg-castle-name{position:absolute}`,
+      `gvg-castle{display:block;position:absolute;user-select:none}`,
+      `gvg-viewer{display:block;position:relative;width:1280px;height:1280px;font-family:sans-serif;background-size:cover}`,
+      `gvg-ko-count-container{position:absolute;width:76px;left:-38px;top:-19px;display:block;color:#eee;text-shadow:red 0 0 30px,red 0 0 5px}`,
+      `gvg-ko-count{display:block;font-size:26px;text-align:center;width:100%}`,
+      `gvg-ko-count-label:after{content:'KOs';font-size:14px;position:absolute;display:block;text-align:center;width:100%;height:14px;top:26px;left:0}`,
+      `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-icon{position:absolute;left:-28px;right:-28px;bottom:-25px;width:56px;height:50px;background-image:url(assets/Castle_0_0.png)}`,
+      `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-icon{position:absolute;left:-31px;right:-31px;bottom:-33px;width:62px;height:67px;background-image:url(assets/Castle_0_1.png)}`,
+      `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-icon{position:absolute;left:-39px;right:-39px;bottom:-40px;width:78px;height:80px;background-image:url(assets/Castle_0_2.png)}`,
+      `gvg-viewer[${Grand}] gvg-castle-name{background-image:url(assets/${image}.png);width:140px;height:26px;color:${Grand == 'local' ? '#473d3b' : 'white'};line-height:33px}`,
+      `gvg-viewer[${Grand}] gvg-castle>gvg-castle-name{left:-70px;right:-70px}`,
+      `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-name{bottom:-45px}`,
+      `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-name{bottom:-50px}`,
+      `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-name{bottom:-58px}`,
+      `gvg-viewer[${Grand}]{background-image:url(assets/${Grand}gvg.png)}`,
+    ];
     let viewer = createElement('gvg-viewer');
     viewer.setAttribute(Grand, '');
     let legend = createElement('div');
@@ -706,7 +727,10 @@
       kos.appendChild(createElement('gvg-ko-count-label'));
       castleNode.appendChild(kos);
       viewer.appendChild(castleNode);
-      style.appendChild(createElement('text', `gvg-viewer[${Grand}] gvg-castle[castle-id="${i}"]{left:${castal.left};top:${castal.top}}`));
+      styleList.push(`gvg-viewer[${Grand}] gvg-castle[castle-id="${i}"]{left:${castal.left};top:${castal.top}}`);
+    }
+    for (let i = 0; i < styleList.length; i++) {
+      style.appendChild(createElement('text', styleList[i]));
     }
     document.head.appendChild(style);
     document.body.appendChild(viewer);
@@ -871,9 +895,9 @@
     };
     for (let i = 0; i < WorldGroupMB.length; i++) {
       const WorldGroup = WorldGroupMB[i];
-      const RegionMemo = WorldGroup.Memo
-      const RegionId = RegionIdList[RegionMemo].toString()
-      const WorldIdList = WorldGroup.WorldIdList
+      const RegionMemo = WorldGroup.Memo;
+      const RegionId = RegionIdList[RegionMemo].toString();
+      const WorldIdList = WorldGroup.WorldIdList;
       if (new Date(WorldGroup.EndTime) > new Date()) {
         let region = result.RegionList[RegionId];
         if (!region) {
@@ -881,7 +905,7 @@
             'Name': RegionList[RegionMemo],
             'SName': RegionMemo,
             'WorldList': [],
-            'GroupList': [`N${RegionId}`]
+            'GroupList': [`N${RegionId}`],
           };
           result.RegionList[RegionId] = region;
           result.GroupList[`N${RegionId}`] = {
@@ -889,18 +913,18 @@
             'SName': `GNA`,
             'Region': RegionId,
             'WorldList': [],
-          }
+          };
         }
-        const GroupId = WorldGroup.Id.toString()
-        let group = result.GroupList[GroupId]
+        const GroupId = WorldGroup.Id.toString();
+        let group = result.GroupList[GroupId];
         if (!group) {
           group = {
             'Region': RegionId,
             'Name': `Group ${GroupId}`,
             'SName': `G${GroupId}`,
             'WorldList': [],
-          }
-          result.GroupList[GroupId] = group
+          };
+          result.GroupList[GroupId] = group;
         }
         region.GroupList.push(GroupId);
         for (let j = 0; j < WorldIdList.length; j++) {
@@ -911,7 +935,7 @@
             'SName': `W${WorldId % 1000}`,
             'Region': RegionId,
             'Group': GroupId,
-          }
+          };
           result.WorldList[WorldId] = world;
           region.WorldList.push(WorldId);
           group.WorldList.push(WorldId);
@@ -923,22 +947,22 @@
       const World = _getDataUri.WorldInfos[i];
       const GameServerId = World.GameServerId;
       const RegionId = Math.floor(GameServerId / 10).toString();
-      const WorldId = World.Id.toString()
+      const WorldId = World.Id.toString();
       let region = result.RegionList[RegionId];
       region.WorldList.push(WorldId);
       let world = result.WorldList[WorldId];
       if (world) {
         world.GameServerId = GameServerId;
       } else {
-        const GroupId = `N${RegionId}`
+        const GroupId = `N${RegionId}`;
         result.GroupList[GroupId].WorldList.push(WorldId);
         result.WorldList[WorldId] = {
           'Name': `World ${WorldId % 1000}`,
           'SName': `W${WorldId % 1000}`,
           'Region': RegionId,
           'Group': GroupId,
-          'GameServerId': GameServerId
-        }
+          'GameServerId': GameServerId,
+        };
       }
     }
     return result;
