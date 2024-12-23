@@ -6,6 +6,7 @@
 // @author       SuzuneMaiki
 // @match        http*://mentemori.icu/*
 // @match        http*://*.mememori-boi.com/*
+// @connect      mentemori.icu
 // @connect      mememori-boi.com
 // @connect      cdn-mememori.akamaized.net
 // @connect      mememori-game.com
@@ -21,32 +22,6 @@
 
 (async function () {
   'use strict';
-  const ListRegion = {
-    'jp': {
-      id: 0,
-      Code: 'JP',
-    },
-    'kr': {
-      id: 1,
-      Code: 'KR',
-    },
-    'ap': {
-      id: 2,
-      Code: 'TW',
-    },
-    'us': {
-      id: 3,
-      Code: 'US',
-    },
-    'eu': {
-      id: 4,
-      Code: 'EN',
-    },
-    'gl': {
-      id: 5,
-      Code: 'CN',
-    },
-  };
   const ModelName = 'Xiaomi 2203121C';
   const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
   const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
@@ -93,20 +68,17 @@
     //插入功能模块
     nav.appendChild(div);
     //初始化账号管理模块
-    let accountmanager = createElement('div');
-    accountmanager.id = 'accountmanager';
+    let accountmanager = createElement('div', '', 'accountmanager');
     accountmanager.appendChild(createElement('a', '登录状态:'));
     //登录状态模块
     let accountlogger = createElement('a', '无账号');
     accountmanager.appendChild(accountlogger);
     //登录模块
-    let login = createElement('button', '登录');
-    login.id = 'login';
+    let login = createElement('button', '登录', 'login');
     login.onclick = loginAccount;
     accountmanager.appendChild(login);
     //登出模块
-    let logout = createElement('button', '登出');
-    logout.id = 'logout';
+    let logout = createElement('button', '登出', 'logout');
     logout.classList.add('hidden');
     logout.onclick = logoutAccount;
     accountmanager.appendChild(logout);
@@ -137,77 +109,84 @@
   //初始化选择栏
   async function initSelect() {
     const NullOption = () => {
-      let option = new Option('-'.repeat(80), -1)
-      option.classList.add('static')
+      let option = new Option('-'.repeat(100), -1);
+      option.classList.add('default');
       return option;
     };
-    let style = createElement('style');
-    style.appendChild(createElement('text', `option{display:none}`))
-    style.appendChild(createElement('text', `option.static{display:inline}`))
-    style.appendChild(createElement('text', `select.NA option.static{display:inline}`))
-    document.head.appendChild(style);
+    let staticStyle = createElement('style');
+    const styleList = [`option{display:none}`, `option.default{display:inline}`, `#getInfo {width:650px}`, `#getInfo button{width:33%}`, `#selector p a{display:inline-block}`, `#selector p a:nth-child(1){width:100px}`, `#selector p a:nth-child(2){width:30px}`, `#selector p select{width:520px}`];
+    for (let i = 0; i < styleList.length; i++) {
+      staticStyle.appendChild(createElement('text', styleList[i]));
+    }
+    document.head.appendChild(staticStyle);
     let WorldGroup = await getWorldGroup();
-    let div = createElement('div');
-    let divRegion = createElement('p', 'Region : ');
-    let listRegion = createElement('select');
-    listRegion.id = 'listRegion';
-    let divGroup = createElement('p', '-Group : ');
-    let listGroup = createElement('select');
-    listGroup.id = 'listGroup';
-    let grand = createElement('p', '-Grand : ');
-    let listGrand = createElement('select');
-    listGrand.id = 'listGrand';
-    let world = createElement('p', '-World : ');
-    let listWorld = createElement('select');
-    listWorld.id = 'listWorld';
+    let div = createElement('div', '', 'selector');
+    let divRegion = createElement('p', '<a>Region</a><a> : </a>');
+    let listRegion = createElement('select', '', 'listRegion');
+    let divGroup = createElement('p', '<a>Group</a><a> : </a>');
+    let listGroup = createElement('select', '', 'listGroup');
+    let divGrand = createElement('p', '<a>Grand</a><a> : </a>');
+    let listGrand = createElement('select', '', 'listGrand');
+    let divWorld = createElement('p', '<a>World</a><a> : </a>');
+    let listWorld = createElement('select', '', 'listWorld');
+    let divRequest = createElement('p', '', 'getInfo');
     let getServer = createElement('button', `从服务器获取`);
-    getServer.onclick = () => {
-      const DataList = 0;
+    getServer.onclick = async () => {
+      const CastalData = await getGuildWar(getStorage('GrandId'), getStorage('WorldId'), getStorage('GradeId'));
+      console.log(JSON.stringify(CastalData));
     };
     let getLocal = createElement('button', `从上一次恢复`);
-    getServer.onclick = () => {
+    getLocal.onclick = () => {
       const DataList = 0;
     };
     let setLocal = createElement('button', `保存设置`);
-    getServer.onclick = () => {
+    setLocal.onclick = () => {
       const DataList = 0;
     };
+    divRequest.appendChild(getServer);
+    divRequest.appendChild(getLocal);
+    divRequest.appendChild(setLocal);
     const RegionList = WorldGroup.RegionList;
     const GroupList = WorldGroup.GroupList;
     const GrandList = {
-      '1': {
+      '0': {
         'Name': 'Local',
+        'Class': 'static',
+      },
+      '1': {
+        'Name': 'Elite',
+        'Class': 'dynamic',
       },
       '2': {
-        'Name': 'Elite',
+        'Name': 'Expert',
+        'Class': 'dynamic',
       },
       '3': {
-        'Name': 'Expert',
-      },
-      '4': {
         'Name': 'Master',
-      }
-    }
+        'Class': 'dynamic',
+      },
+    };
     const WorldList = WorldGroup.WorldList;
     const BlockList = {
-      '1': {
+      '0': {
         'Name': 'Block A',
       },
-      '2': {
+      '1': {
         'Name': 'Block B',
       },
-      '3': {
+      '2': {
         'Name': 'Block C',
       },
-      '4': {
+      '3': {
         'Name': 'Block D',
       },
-    }
+    };
     listRegion.options.add(NullOption());
     for (let i in RegionList) {
       const Region = RegionList[i];
-      const option = new Option(Region.Name, i)
+      const option = new Option(Region.Name, i);
       if (Region.GroupList.length > 0) {
+        option.classList.add('default');
         listRegion.options.add(option);
       }
     }
@@ -218,62 +197,71 @@
         const text = Group.WorldList.map((value) => {
           return `${WorldList[value].SName}`;
         });
-        const option = new Option(`${Group.Name}(${text})`, i)
-        option.classList.add(Group.Region)
+        const option = new Option(`${Group.Name}(${text})`, i);
+        option.classList.add('R' + Group.Region);
         listGroup.options.add(option);
-        if (Group.Name == 'Group NA') {
-          listGrand.classList.add('NA')
-        } else {
-          listGrand.classList.remove('NA')
-        }
       }
     }
     listGrand.options.add(NullOption());
     for (let i in GrandList) {
       const Grand = GrandList[i];
-      const option = new Option(Grand.Name, i)
-      option.classList.add(Group.Region)
+      const option = new Option(Grand.Name, i);
+      option.classList.add(Grand.Class);
       listGrand.options.add(option);
     }
     listWorld.options.add(NullOption());
     for (let i in WorldList) {
       const World = WorldList[i];
-      const option = new Option(World.Name, i)
-      option.classList.add('local')
+      const option = new Option(World.Name, i);
+      option.classList.add('G' + World.Group);
       listWorld.options.add(option);
     }
     for (let i in BlockList) {
       const Block = BlockList[i];
-      const option = new Option(Block.Name, i)
-      option.classList.add('global')
+      const option = new Option(Block.Name, i);
+      option.classList.add('global');
       listWorld.options.add(option);
     }
-
     listRegion.onchange = () => {
-      const RegionId = listRegion.options[listRegion.selectedIndex].value * 1;
+      document.getElementById('styleGroup')?.remove();
+      listGroup.value = '-1';
+      listGrand.value = '-1';
+      listWorld.value = '-1';
+      const RegionId = listRegion.options[listRegion.selectedIndex].value;
+      document.head.appendChild(createElement('style', `#listGroup option.R${RegionId} {display:inline}`, 'styleGroup'));
     };
     listGroup.onchange = () => {
+      document.getElementById('styleGrand')?.remove();
+      listGrand.value = '-1';
+      listWorld.value = '-1';
       const GroupId = listGroup.options[listGroup.selectedIndex].value;
+      const RegionId = listRegion.options[listRegion.selectedIndex].value;
+      document.head.appendChild(createElement('style', `#listGrand .static${GroupId == `N${RegionId}` ? '' : ',.dynamic'}{display:inline}`, 'styleGrand'));
     };
     listGrand.onchange = () => {
+      document.getElementById('styleWorld')?.remove();
+      listWorld.value = '-1';
       const GrandId = listGrand.options[listGrand.selectedIndex].value;
+      const GroupId = listGroup.options[listGroup.selectedIndex].value;
+      document.head.appendChild(createElement('style', `#listWorld ${GrandId > 0 ? '.global' : '.G' + GroupId} {display:inline}`, 'styleWorld'));
+      drawMap(GrandId);
     };
     listWorld.onchange = () => {
-      const GrandId = listGrand.options[listGrand.selectedIndex].value;
+      const WorldId = listWorld.options[listWorld.selectedIndex].value;
       setStorage('RegionId', listRegion.options[listRegion.selectedIndex].value);
       setStorage('GroupId', listGroup.options[listGroup.selectedIndex].value);
-      setStorage('GrandId', GrandId);
-      setStorage('WorldId', listWorld.options[listWorld.selectedIndex].value);
-      drawMap(GrandId);
+      setStorage('GrandId', listGrand.options[listGrand.selectedIndex].value);
+      setStorage('WorldId', WorldId);
     };
     divRegion.appendChild(listRegion);
     divGroup.appendChild(listGroup);
-    grand.appendChild(listGrand);
-    world.appendChild(listWorld);
+    divGrand.appendChild(listGrand);
+    divWorld.appendChild(listWorld);
     div.appendChild(divRegion);
     div.appendChild(divGroup);
-    div.appendChild(grand);
-    div.appendChild(world);
+    div.appendChild(divGrand);
+    div.appendChild(divWorld);
+    div.appendChild(divRequest);
     document.body.appendChild(div);
     document.body.appendChild(createElement('hr'));
   }
@@ -323,17 +311,21 @@
       document.body.lastChild.remove();
     }
     await initSelect();
-    const Selected = {
-      RegionId: getStorage('RegionId'),
-      GroupId: getStorage('GroupId'),
-      GrandId: getStorage('GrandId'),
-      WorldId: getStorage('WorldId'),
-    };
-    if (Selected.WorldId * 1 > 0) {
-      document.getElementById('listRegion').value = Selected.RegionId;
-      document.getElementById('listGroup').value = Selected.GroupId;
-      document.getElementById('listGrand').value = Selected.GrandId;
-      document.getElementById('listWorld').value = Selected.WorldId;
+    const RegionId = getStorage('RegionId');
+    const GroupId = getStorage('GroupId');
+    const GrandId = getStorage('GrandId');
+    const WorldId = getStorage('WorldId');
+    if (WorldId > 0) {
+      document.getElementById('listRegion').value = RegionId;
+      document.getElementById('listGroup').value = GroupId;
+      document.getElementById('listGrand').value = GrandId;
+      document.getElementById('listWorld').value = WorldId;
+      document.head.appendChild(createElement('style', `#listGroup option.R${RegionId} {display:inline}`, 'styleGroup'));
+      document.head.appendChild(createElement('style', `#listGrand .static${GroupId == `N${RegionId}` ? '' : ',.dynamic'}{display:inline}`, 'styleGrand'));
+      document.head.appendChild(createElement('style', `#listWorld ${GrandId > 1 ? '.global' : '.G' + GroupId} {display:inline}`, 'styleWorld'));
+    }
+    if (GrandId > 0) {
+      drawMap(GrandId);
     }
   }
   //登录账号
@@ -383,15 +375,19 @@
   //增加提示功能
   function gvgHint(grade) {
     document.getElementById('gvgHintStyle')?.remove();
-    let style = createElement('style');
-    style.id = 'gvgHintStyle';
-    style.appendChild(createElement('text', 'gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}'));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:${58}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:${50}px}`));
-    style.appendChild(createElement('text', `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:${45}px}`));
+    let style = createElement('style', '', 'gvgHintStyle');
+    const styleList = [
+      `gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`,
+      `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:58px}`,
+      `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:50px}`,
+      `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:45px}`,
+    ];
+    for (let i = 0; i < styleList.length; i++) {
+      style.appendChild(createElement('text', styleList[i]));
+    }
     document.head.appendChild(style);
     let listCastal = document.getElementsByTagName('gvg-castle');
     for (let i = 0; i < listCastal.length; i++) {
@@ -406,7 +402,10 @@
     }
   }
   //子功能
+  //战斗布局-绘制地图
   function drawMap(GrandId) {
+    document.getElementById('gvgMapStyle')?.remove();
+    document.getElementsByTagName('gvg-viewer')[0]?.remove();
     const castalList = {
       'local': {
         '1': {
@@ -665,12 +664,9 @@
         },
       },
     };
-    document.getElementById('gvgMapStyle')?.remove();
-    document.getElementById('gvg-viewer')?.remove();
-    const Grand = GrandId == '1' ? 'local' : 'global';
+    const Grand = GrandId == 0 ? 'local' : 'global';
     const image = Grand == 'local' ? 'base_ribbon_01' : 'base_metal';
-    let style = createElement('style');
-    style.id = 'gvgMapStyle';
+    let style = createElement('style', '', 'gvgMapStyle');
     let styleList = [
       `gvg-status{width:164px;height:50px;position:relative;display:block}`,
       `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`,
@@ -709,8 +705,7 @@
     ];
     let viewer = createElement('gvg-viewer');
     viewer.setAttribute(Grand, '');
-    let legend = createElement('div');
-    legend.id = 'legend';
+    let legend = createElement('div', '', 'legend');
     legend.appendChild(createElement('div', '图例'));
     legend.setAttribute('style', 'background-color:rgba(255,255,255,0.5);width:275px');
     viewer.appendChild(legend);
@@ -743,6 +738,8 @@
     document.body.appendChild(viewer);
     gvgHint(Grand);
   }
+  //战斗布局-填充数据
+  async function fillMap(Data) {}
   //战斗布局-增加提示
   async function addHint() {
     let exist = this.parentNode.getElementsByTagName('gvg-castle-hint')[0];
@@ -795,8 +792,7 @@
     }
     let div = document.getElementById(color.join('_'));
     if (!div) {
-      div = createElement('div');
-      div.id = color.join('_');
+      div = createElement('div', '', color.join('_'));
       let square = createElement('a', '█');
       square.setAttribute('style', `color:rgb(${color[0]}, ${color[1]}, ${color[2]})`);
       square.ondblclick = function () {
@@ -983,6 +979,16 @@
     }
     return jsonAuthTokenData._authToken;
   }
+  //获取gvg信息
+  async function getGuildWar(GrandId, WorlId, GroupId) {
+    let request;
+    if (GrandId == 0) {
+      request = sendRequest(`https://api.mentemori.icu/${WorlId}/localgvg/latest`);
+    } else {
+      request = sendRequest(`https://api.mentemori.icu/wg/${GroupId}/globalgvg/${GrandId}/${WorlId}/latest`);
+    }
+    return request;
+  }
   //https://prd1-auth.mememori-boi.com/api/auth/getDataUri
   async function getDataUri(defaultOpting) {
     //生成配置
@@ -1133,10 +1139,26 @@
     let result = await sendRequest(userURL + 'localGvg/getLocalGvgSceneTransitionData', option);
     return result;
   }
+  //localGvg/getLocalGvgCastleInfoDialogData
+  async function getLocalGvgCastleInfoDialogData(CastleId) {
+    let option = buildOption();
+    const data = {
+      'CastleId': CastleId,
+    };
+    option.body = data;
+    let result = await sendRequest(userURL + 'localGvg/getLocalGvgCastleInfoDialogData', option);
+    return result;
+  }
   //工具函数
-  async function sendRequest(url, option = {}) {
+  //请求函数
+  async function sendRequest(url, option) {
     let request = await sendGMRequest(url, option);
     return request;
+  }
+  //连接函数
+  async function connectServer(params) {
+    let connect = await connectWebsocket(params);
+    return connect;
   }
   //跨域请求函数
   async function sendGMRequest(url, option = {}) {
@@ -1264,6 +1286,32 @@
       };
     });
   }
+  //Websocket链接
+  async function connectWebsocket(url) {
+    return new Promise((resolve) => {
+      let connect = new WebSocket(url);
+      connect.onopen = function (e) {
+        alert('[open] Connection established');
+        alert('Sending to server');
+        socket.send('My name is John');
+      };
+      connect.onmessage = function (event) {
+        alert(`[message] Data received from server: ${event.data}`);
+      };
+      connect.onclose = function (event) {
+        if (event.wasClean) {
+          alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+        } else {
+          // 例如服务器进程被杀死或网络中断
+          // 在这种情况下，event.code 通常为 1006
+          alert('[close] Connection died');
+        }
+      };
+      connect.onerror = function (error) {
+        alert(`[error] ${error.message}`);
+      };
+    });
+  }
   //改变颜色
   function changeNode() {
     let showMiddle = document.getElementById('showMiddle').checked;
@@ -1298,13 +1346,16 @@
     }
   }
   //新建DOM
-  function createElement(type, text = '') {
+  function createElement(type, text = '', id) {
     let node;
     if (type == 'text') {
       node = document.createTextNode(text);
     } else {
       node = document.createElement(type);
       node.innerHTML = text;
+    }
+    if (id) {
+      node.id = id;
     }
     return node;
   }

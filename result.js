@@ -1,32 +1,32 @@
 result = {
-    RegionList: {
-        RegionId: {
-            'Name': RegionList[RegionMemo],
-            'SName': RegionMemo,
-            'WorldList': [],
-            'GroupList': [`N${RegionId}`],
-        }
+  RegionList: {
+    RegionId: {
+      'Name': RegionList[RegionMemo],
+      'SName': RegionMemo,
+      'WorldList': [],
+      'GroupList': [`N${RegionId}`],
     },
-    GroupList: {
-        GroupId: {
-            'Name': `Group NA`,
-            'SName': `GNA`,
-            'Region': RegionId,
-            'WorldList': [],
-        },
-        GroupId: {
-            'Region': RegionId,
-            'Name': `Group ${GroupId}`,
-            'SName': `G${GroupId}`,
-            'WorldList': [],
-        }
+  },
+  GroupList: {
+    GroupId: {
+      'Name': `Group NA`,
+      'SName': `GNA`,
+      'Region': RegionId,
+      'WorldList': [],
     },
-    WorldList: {
-        WorldId: {
-            'Name': `World ${WorldId % 1000}`,
-            'SName': `W${WorldId % 1000}`,
-            'Region': RegionId,
-            'Group': GroupId,
-        }
-    }
-}
+    GroupId: {
+      'Region': RegionId,
+      'Name': `Group ${GroupId}`,
+      'SName': `G${GroupId}`,
+      'WorldList': [],
+    },
+  },
+  WorldList: {
+    WorldId: {
+      'Name': `World ${WorldId % 1000}`,
+      'SName': `W${WorldId % 1000}`,
+      'Region': RegionId,
+      'Group': GroupId,
+    },
+  },
+};
