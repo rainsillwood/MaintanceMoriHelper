@@ -1,0 +1,8 @@
+GET /master/prd1/version/1734499759089/master-catalog HTTP/1.1
+Host: cdn-mememori.akamaized.net
+User-Agent: UnityPlayer/2021.3.42f1 (UnityWebRequest/1.0, libcurl/8.5.0-DEV)
+Accept: */*
+Accept-Encoding: deflate, gzip
+content-type: application/octet-stream
+X-Unity-Version: 2021.3.42f1
+
