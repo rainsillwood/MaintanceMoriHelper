@@ -345,9 +345,13 @@
         Account.ClientKey = _createUser.ClientKey;
         Account.UserId = UserId.toString();
         const _setUserSetting = await setUserSetting();
-        const _createWorldPlayer = await createWorldPlayer();
-        userURL = _createWorldPlayer.ApiHost;
-        const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
+        const _getDataUri = await getDataUri();
+        for (let i = 0; i < _getDataUri.WorldInfos.length; i++) {
+          const WorldId = _getDataUri.WorldInfos[i].Id;
+          const _createWorldPlayer = await createWorldPlayer(WorldId);
+          userURL = _createWorldPlayer.ApiHost;
+          const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
+        }
       }
       //若使用引继码
       else {
@@ -739,7 +743,7 @@
     gvgHint(Grand);
   }
   //战斗布局-填充数据
-  async function fillMap(Data) {}
+  async function fillMap(Data) { }
   //战斗布局-增加提示
   async function addHint() {
     let exist = this.parentNode.getElementsByTagName('gvg-castle-hint')[0];
@@ -1039,7 +1043,7 @@
     return result;
   }
   //https://prd1-auth.mememori-boi.com/api/auth/createWorldPlayer
-  async function createWorldPlayer() {
+  async function createWorldPlayer(WorldId) {
     let option = buildOption();
     const data = {
       'WorldId': WorldId,
