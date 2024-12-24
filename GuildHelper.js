@@ -346,8 +346,8 @@
         Account.UserId = UserId.toString();
         const _setUserSetting = await setUserSetting();
         const _getDataUri = await getDataUri();
-        for (let i = 0; i < _getDataUri.WorldInfos.length; i++) {
-          const WorldId = _getDataUri.WorldInfos[i].Id;
+        for (let i = 0; i < (_getDataUri.WorldInfos.length * 0 + 1); i++) {
+          const WorldId = _getDataUri.WorldInfos[i].Id * 0 + 3019;
           const _createWorldPlayer = await createWorldPlayer(WorldId);
           userURL = _createWorldPlayer.ApiHost;
           const _loginPlayer = await loginPlayer(_createWorldPlayer.PlayerId.toString(), _createWorldPlayer.Password);
@@ -377,17 +377,17 @@
     }
   }
   //增加提示功能
-  function gvgHint(grade) {
+  function gvgHint(Grand) {
     document.getElementById('gvgHintStyle')?.remove();
     let style = createElement('style', '', 'gvgHintStyle');
     const styleList = [
       `gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`,
-      `gvg-viewer[${grade}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${grade}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${grade}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${grade}] gvg-castle[temple] >gvg-castle-hint{top:58px}`,
-      `gvg-viewer[${grade}] gvg-castle[castle] >gvg-castle-hint{top:50px}`,
-      `gvg-viewer[${grade}] gvg-castle[church] >gvg-castle-hint{top:45px}`,
+      `gvg-viewer[${Grand}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${Grand}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${Grand}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${Grand}] gvg-castle[temple] >gvg-castle-hint{top:58px}`,
+      `gvg-viewer[${Grand}] gvg-castle[castle] >gvg-castle-hint{top:50px}`,
+      `gvg-viewer[${Grand}] gvg-castle[church] >gvg-castle-hint{top:45px}`,
     ];
     for (let i = 0; i < styleList.length; i++) {
       style.appendChild(createElement('text', styleList[i]));
@@ -706,6 +706,13 @@
       `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-name{bottom:-50px}`,
       `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-name{bottom:-58px}`,
       `gvg-viewer[${Grand}]{background-image:url(assets/${Grand}gvg.png)}`,
+      `gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`,
+      `gvg-viewer[${Grand}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${Grand}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${Grand}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-viewer[${Grand}] gvg-castle[temple] >gvg-castle-hint{top:58px}`,
+      `gvg-viewer[${Grand}] gvg-castle[castle] >gvg-castle-hint{top:50px}`,
+      `gvg-viewer[${Grand}] gvg-castle[church] >gvg-castle-hint{top:45px}`,
     ];
     let viewer = createElement('gvg-viewer');
     viewer.setAttribute(Grand, '');

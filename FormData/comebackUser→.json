@@ -1,1 +1,6 @@
-{"FromUserId":255336798270,"OneTimeToken":"59e0dcaf6590457fa60cdd363e4c7a8a","ToUserId":536699343209,"SteamTicket":null}
+{
+    "FromUserId": 255336798270,
+    "OneTimeToken": "59e0dcaf6590457fa60cdd363e4c7a8a",
+    "ToUserId": 536699343209,
+    "SteamTicket": null
+}
