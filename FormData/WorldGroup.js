@@ -1,4 +1,4 @@
-result = {
+WorldGroup = {
   RegionList: {
     RegionId: {
       'Name': RegionList[RegionMemo],

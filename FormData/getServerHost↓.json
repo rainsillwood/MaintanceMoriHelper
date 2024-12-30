@@ -1,0 +1,5 @@
+{
+  "ApiHost": "https://prd1-ap2-api.mememori-boi.com/api/",
+  "MagicOnionHost": "prd1-ap2-onion.mememori-boi.com",
+  "MagicOnionPort": 443
+}

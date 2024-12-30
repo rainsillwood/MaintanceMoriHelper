@@ -1,0 +1,14 @@
+{
+  "Password": "ecef3ce445044ac4afccbedc1ad3c9c2",
+  "PlayerId": 615549089019,
+  "ErrorLogInfoList": [
+    {
+      "ApiName": "IAP",
+      "ErrorCode": 2300006,
+      "ErrorLogType": 2,
+      "LocalTimeStamp": 1735483126759,
+      "Message": "PurchaseIAPInitializeFailedServiceDisconnect\nmessage:GoogleBillingResponseCode: BillingUnavailable"
+    }
+  ],
+  "SteamTicket": null
+}
