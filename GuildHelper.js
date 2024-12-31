@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MementoMori Guild Helper
 // @namespace    https://suzunemaiki.moe/
-// @version      0.3
+// @version      0.4
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -98,30 +98,70 @@
       return option;
     };
     //选择栏样式
-    const staticStyle = createElement('style');
-    const styleList = [
-      `#selectpanel{width:640px;display:inline-block;vertical-align:top;}`, //
-      `#selectpanel>p>a{display:inline-block;}`,
-      `#selectpanel>p>a:nth-child(1){width:75px;}`,
-      `#selectpanel>p>a:nth-child(2){width:25px;}`,
-      `#selectpanel>p>select{width:520px;}`,
-      `#selectpanel>p>button{width:33%;}`,
-      `option{display:none;}`,
-      `option.default{display:inline;}`,
-      `th,td{height:24px;border:1px solid black;text-align:center;}`,
-      `table{width:300px;border-collapse:collapse;display:inline-table;vertical-align:top;}`,
-      `#guilds1{margin-left:20px;}`,
-      `#guilds2{margin-right:20px;}`,
-      `tr>:nth-child(1){width:25px;}`,
-      `tr>:nth-child(2){text-align:left;}`,
-      `tr>:nth-child(3){width:25px;}`,
-      `tr>:nth-child(4){width:25px;}`,
-      `tr>:nth-child(5){width:25px;}`,
-    ];
-    for (let i = 0; i < styleList.length; i++) {
-      staticStyle.appendChild(createElement('text', styleList[i]));
-    }
-    document.head.appendChild(staticStyle);
+    const Style = createElement(
+      'style',
+      `
+            #selectpanel {
+              width: 640px;
+              display: inline-block;
+              vertical-align: top;
+            }
+            #selectpanel a {
+              display: inline-block;
+            }
+            #selectpanel a:nth-child(1) {
+              width: 75px;
+            }
+            #selectpanel a:nth-child(2) {
+              width: 25px;
+            }
+            #selectpanel select {
+              width: 520px;
+            }
+            #selectpanel button {
+              width: 33%;
+            }
+            option {
+              display: none;
+            }
+            option.default {
+              display: inline;
+            }
+            th,
+            td {
+              height: 24px;
+              border: 1px solid black;
+              text-align: center;
+            }
+            table {
+              width: 300px;
+              border-collapse: collapse;
+              display: inline-table;
+              vertical-align: top;
+            }
+            #guilds1 {
+              margin-left: 20px;
+            }
+            #guilds2 {
+              margin-right: 20px;
+            }
+            tr > :nth-child(1) {
+              width: 25px;
+            }
+            tr > :nth-child(2) {
+              text-align: left;
+            }
+            tr > :nth-child(3) {
+              width: 25px;
+            }
+            tr > :nth-child(4) {
+              width: 25px;
+            }
+            tr > :nth-child(5) {
+              width: 25px;
+            }`
+    );
+    document.head.appendChild(Style);
     //获取世界分组
     const WorldGroup = await getWorldGroup();
     //初始化选择区
@@ -205,6 +245,7 @@
             'AttackerGuildId': Castal.getAttribute('offense'),
             'AttackPartyCount': Castal.querySelector('gvg-status-icon-offense').innerHTML,
             'DefensePartyCount': Castal.querySelector('gvg-status-icon-defense').innerHTML,
+            'GvgCastleState': Castal.querySelector('gvg-status').hasAttribute('active') + Castal.querySelector('gvg-status').hasAttribute('counter'),
             'LastWinPartyKnockOutCount': Castal.querySelector('gvg-ko-count').innerHTML,
           });
         }
@@ -297,20 +338,48 @@
       selectGroup.value = '-1';
       selectGrand.value = '-1';
       selectWorld.value = '-1';
-      document.head.appendChild(createElement('style', `#listGroup option.R${selectRegion.value} {display:inline}`, 'styleGroup'));
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listGroup > option.R${selectRegion.value} {
+              display: inline;
+            }`,
+          'styleGroup'
+        )
+      );
     };
     selectGroup.onchange = () => {
       document.querySelector('#styleGrand')?.remove();
       resetTable();
       selectGrand.value = '-1';
       selectWorld.value = '-1';
-      document.head.appendChild(createElement('style', `#listGrand .static${selectGroup.value == `N${selectRegion.value}` ? '' : ',.dynamic'}{display:inline}`, 'styleGrand'));
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listGrand > .static
+            ${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listGrand > .dynamic'} {
+              display: inline;
+            }`,
+          'styleGrand'
+        )
+      );
     };
     selectGrand.onchange = () => {
       document.querySelector('#styleWorld')?.remove();
       resetTable();
       selectWorld.value = '-1';
-      document.head.appendChild(createElement('style', `#listWorld ${selectGrand.value > 0 ? '.global' : '.G' + selectGroup.value} {display:inline}`, 'styleWorld'));
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listWorld > ${selectGrand.value > 0 ? '.global' : '.G' + selectGroup.value} {
+              display: inline;
+            }`,
+          'styleWorld'
+        )
+      );
     };
     selectWorld.onchange = () => {
       resetTable();
@@ -333,32 +402,34 @@
     document.body.appendChild(
       createElement(
         'table',
-        `<thead>
-        <tr>
-          <th>图</th>
-          <th>公会名称</th>
-          <th>友</th>
-          <th>中</th>
-          <th>敌</th>
-        </tr>
-      </thead>
-      <tbody></tbody>`,
+        `
+        <thead>
+          <tr>
+            <th>图</th>
+            <th>公会名称</th>
+            <th>友</th>
+            <th>中</th>
+            <th>敌</th>
+          </tr>
+        </thead>
+        <tbody></tbody>`,
         'guilds1'
       )
     );
     document.body.appendChild(
       createElement(
         'table',
-        `<thead>
-        <tr>
-          <th>图</th>
-          <th>公会名称</th>
-          <th>友</th>
-          <th>中</th>
-          <th>敌</th>
-        </tr>
-      </thead>
-      <tbody></tbody>`,
+        `
+        <thead>
+          <tr>
+            <th>图</th>
+            <th>公会名称</th>
+            <th>友</th>
+            <th>中</th>
+            <th>敌</th>
+          </tr>
+        </thead>
+        <tbody></tbody>`,
         'guilds2'
       )
     );
@@ -372,7 +443,7 @@
       document.body.lastChild.remove();
     }
     let divData = createElement('div');
-    divData.setAttribute('style', 'width:100%;display:flex;flex-direction:column;flex-wrap: nowrap');
+    divData.setAttribute('style', 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;');
     let uploadButton = createElement('input', '', {
       type: 'file',
       multiple: 'multiple',
@@ -420,9 +491,37 @@
       document.querySelector('#listGroup').value = GroupId;
       document.querySelector('#listGrand').value = GrandId;
       document.querySelector('#listWorld').value = WorldId;
-      document.head.appendChild(createElement('style', `#listGroup option.R${RegionId} {display:inline}`, 'styleGroup'));
-      document.head.appendChild(createElement('style', `#listGrand .static${GroupId == `N${RegionId}` ? '' : ',.dynamic'}{display:inline}`, 'styleGrand'));
-      document.head.appendChild(createElement('style', `#listWorld ${GrandId > 0 ? '.global' : '.G' + GroupId} {display:inline}`, 'styleWorld'));
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listGroup > option.R${RegionId} {
+              display: inline;
+            }`,
+          'styleGroup'
+        )
+      );
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listGrand > .static
+            ${GroupId == 'N' + RegionId ? '' : ',#listGrand > .dynamic'} {
+              display: inline;
+            }`,
+          'styleGrand'
+        )
+      );
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listWorld > ${GrandId > 0 ? '.global' : '.G' + GroupId} {
+              display: inline;
+            }`,
+          'styleWorld'
+        )
+      );
     }
     if (GrandId >= 0) {
       drawMap(GrandId);
@@ -788,51 +887,293 @@
     };
     const Grand = GrandId == 0 ? 'local' : 'global';
     const image = Grand == 'local' ? 'base_ribbon_01' : 'base_metal';
-    let style = createElement('style', '', 'gvgMapStyle');
-    let styleList = [
-      `gvg-status{width:164px;height:50px;position:relative;display:block}`, //
-      `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`,
-      `gvg-status-icon-defense{background-image:url(assets/icon_gvg_party_defense.png)}`,
-      `gvg-status-icon-offense{background-image:url(assets/icon_gvg_party_offense.png)}`,
-      `gvg-status[active]>gvg-status-bar-defense,gvg-status[active]>gvg-status-bar-offense{display:block;width:90px;height:20px;padding:0 10px;background-size:cover;color:#fff;font-size:9px}`,
-      `gvg-status-bar-offense{background-image:url(assets/base_s_09_red.png);text-align:left;line-height:16px}`,
-      `gvg-status-bar-defense{background-image:url(assets/base_s_09_blue.png);text-align:right;line-height:24px}`,
-      `gvg-status[neutral]>gvg-status-icon-defense{position:absolute;left:0;right:0;top:0;margin:auto}`,
-      `gvg-status[neutral]>gvg-status-icon-offense{display:none}`,
-      `gvg-status[neutral]>gvg-status-bar-defense{display:block;width:131px;height:12px;text-align:center;line-height:12px;background-image:url(assets/base_s_08_blue.png);background-size:cover;color:#fff;font-size:9px;position:absolute;left:0;right:0;top:35px;margin:auto}`,
-      `gvg-status[neutral]>gvg-status-bar-offense{display:none}`,
-      `gvg-status[active]>gvg-status-bar-offense {position:absolute;left:25px;bottom:10px }`,
-      `gvg-status[active]>gvg-status-bar-defense {position:absolute;right:25px;bottom:0 }`,
-      `gvg-status[active]>gvg-status-icon-offense {position:absolute;left:0;bottom:0 }`,
-      `gvg-status[active]>gvg-status-icon-defense {position:absolute;right:0;bottom:0 }`,
-      `gvg-castle>gvg-status{position:absolute;left:-82px;right:-82px;bottom:43px}`,
-      `gvg-castle-icon{display:block;background-size:cover}`,
-      `gvg-castle-name{display:block;background-size:cover;width:140px;height:26px;font-size:9px;text-align:center}`,
-      `gvg-castle>gvg-castle-icon{position:absolute}`,
-      `gvg-castle>gvg-castle-name{position:absolute}`,
-      `gvg-castle{display:block;position:absolute;user-select:none}`,
-      `gvg-viewer{display:block;position:relative;width:1280px;height:1280px;font-family:sans-serif;background-size:cover}`,
-      `gvg-ko-count-container{position:absolute;width:76px;left:-38px;top:-19px;display:block;color:#eee;text-shadow:red 0 0 30px,red 0 0 5px}`,
-      `gvg-ko-count{display:block;font-size:26px;text-align:center;width:100%}`,
-      `gvg-ko-count-label:after{content:'KOs';font-size:14px;position:absolute;display:block;text-align:center;width:100%;height:14px;top:26px;left:0}`,
-      `gvg-attacker{position:absolute;width:160px;left:-80px;bottom:72px;display:block;font-size:16px;text-align:center;opacity:0.5;}`,
-      `gvg-castle[church]>gvg-castle-icon{position:absolute;left:-28px;right:-28px;bottom:-25px;width:56px;height:50px;background-image:url(assets/Castle_0_0.png)}`,
-      `gvg-castle[castle]>gvg-castle-icon{position:absolute;left:-31px;right:-31px;bottom:-33px;width:62px;height:67px;background-image:url(assets/Castle_0_1.png)}`,
-      `gvg-castle[temple]>gvg-castle-icon{position:absolute;left:-39px;right:-39px;bottom:-40px;width:78px;height:80px;background-image:url(assets/Castle_0_2.png)}`,
-      `gvg-castle-name{background-image:url(assets/${image}.png);width:140px;height:26px;color:${Grand == 'local' ? '#473d3b' : 'white'};line-height:33px}`,
-      `gvg-castle>gvg-castle-name{left:-70px;right:-70px}`,
-      `gvg-castle[church]>gvg-castle-name{bottom:-45px}`,
-      `gvg-castle[castle]>gvg-castle-name{bottom:-50px}`,
-      `gvg-castle[temple]>gvg-castle-name{bottom:-58px}`,
-      `gvg-viewer{background-image:url(assets/${Grand}gvg.png)}`,
-      `gvg-castle[temple]>.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-castle[castle]>.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-castle[church]>.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`,
-      `gvg-castle[temple]>gvg-castle-hint{top:58px}`,
-      `gvg-castle[castle]>gvg-castle-hint{top:50px}`,
-      `gvg-castle[church]>gvg-castle-hint{top:45px}`,
-    ];
+    let style = createElement(
+      'style',
+      `
+            gvg-viewer {
+              display: block;
+              position: relative;
+              width: 1280px;
+              height: 1280px;
+              font-family: sans-serif;
+              background-size: cover;
+              background-image: url(assets/${Grand}gvg.png);
+            }
+            gvg-castle {
+              display: block;
+              position: absolute;
+              user-select: none;
+            }
+            gvg-status {
+              width: 164px;
+              height: 50px;
+              display: block;
+              position: absolute;
+              left: -82px;
+              right: -82px;
+              bottom: 43px;
+            }
+            gvg-attacker {
+              display: block;
+              width: 165px;
+              position: absolute;
+              text-align: center;
+              font-size: 16px;
+              opacity: 0.5;
+            }
+            gvg-status-icon-defense,
+            gvg-status-icon-offense {
+              display: block;
+              width: 32px;
+              height: 33px;
+              position: absolute;
+              text-align: center;
+              line-height: 37px;
+              font-size: 12px;
+              color: #fff;
+              background-size: cover;
+            }
+            gvg-status-icon-defense {
+              background-image: url(assets/icon_gvg_party_defense.png);
+            }
+            gvg-status-icon-offense {
+              background-image: url(assets/icon_gvg_party_offense.png);
+            }
+            gvg-status-bar-offense,
+            gvg-status-bar-defense {
+              display: block;
+              width: 90px;
+              height: 20px;
+              padding: 0 10px;
+              position: absolute;
+              font-size: 9px;
+              color: #fff;
+              background-size: cover;
+            }
+            gvg-status-bar-offense{
+              line-height:16px;
+            }
+            gvg-status-bar-defense {
+              line-height:24px;
+            }
+            gvg-status[neutral] > gvg-attacker {
+              display: none;
+            }
+            gvg-status[neutral] > gvg-status-icon-defense {
+              margin: auto;
+              left: 0;
+              right: 0;
+              top: 0;
+            }
+            gvg-status[neutral] > gvg-status-icon-offense {
+              display: none;
+            }
+            gvg-status[neutral] > gvg-status-bar-defense {
+              width: 131px;
+              height: 12px;
+              margin: auto;
+              left: 0;
+              right: 0;
+              top: 35px;
+              text-align: center;
+              line-height: 12px;
+              background-image: url(assets/base_s_08_blue.png);
+            }
+            gvg-status[neutral] > gvg-status-bar-offense {
+              display: none;
+            }
+            gvg-status[active] > gvg-status-icon-defense {
+              right: 0;
+              bottom: 0;
+            }
+            gvg-status[active] > gvg-status-icon-offense {
+              left: 0;
+              bottom: 0;
+            }
+            gvg-status[active] > gvg-status-bar-defense {
+              right: 25px;
+              bottom: 0;
+              text-align: right;
+              background-image: url(assets/base_s_09_blue.png);
+            }
+            gvg-status[active] > gvg-status-bar-offense {
+              left: 25px;
+              bottom: 10px;
+              text-align: left;
+              background-image: url(assets/base_s_09_red.png);
+            }
+            
+            
+            gvg-status[counter] > gvg-status-icon-defense {
+              left: 0;
+              bottom: 0;
+              background-image: url(assets/icon_gvg_party_offense.png);
+            }
+            gvg-status[counter] > gvg-status-icon-offense {
+              right: 0;
+              bottom: 0;
+              background-image: url(https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/icon_gvg_party_offense_counter.png);
+            }
+            gvg-status[counter] > gvg-status-bar-defense {
+              left: 25px;
+              bottom: 10px;
+              text-align: left;
+              background-image: url(assets/base_s_09_red.png);
+            }
+            gvg-status[active] > gvg-status-bar-offense {
+              right: 25px;
+              bottom: 0;
+              text-align: right;
+              background-image: url(assets/base_s_09_blue.png);
+            }
+            gvg-ko-count-container {
+              position: absolute;
+              width: 76px;
+              left: -38px;
+              top: -19px;
+              display: block;
+              color: #eee;
+              text-shadow: red 0 0 30px red 0 0 5px;
+            }
+
+            gvg-ko-count {
+              display: block;
+              font-size: 26px;
+              text-align: center;
+              width: 100%;
+            }
+
+            gvg-ko-count-label:after {
+              content: 'KOs';
+              font-size: 14px;
+              position: absolute;
+              display: block;
+              text-align: center;
+              width: 100%;
+              height: 14px;
+              top: 26px;
+              left: 0;
+            }
+
+            gvg-castle-icon {
+              display: block;
+              position: absolute;
+              background-size: cover;
+            }
+
+            gvg-castle[church] > gvg-castle-icon {
+              left: -28px;
+              right: -28px;
+              bottom: -25px;
+              width: 56px;
+              height: 50px;
+              background-image: url(assets/Castle_0_0.png);
+            }
+
+            gvg-castle[castle] > gvg-castle-icon {
+              left: -31px;
+              right: -31px;
+              bottom: -33px;
+              width: 62px;
+              height: 67px;
+              background-image: url(assets/Castle_0_1.png);
+            }
+
+            gvg-castle[temple] > gvg-castle-icon {
+              left: -39px;
+              right: -39px;
+              bottom: -40px;
+              width: 78px;
+              height: 80px;
+              background-image: url(assets/Castle_0_2.png);
+            }
+
+            gvg-castle-name {
+              display: block;
+              position: absolute;
+              background-size: cover;
+              width: 140px;
+              height: 26px;
+              font-size: 9px;
+              text-align: center;
+            }
+
+            gvg-castle-name {
+              background-image: url(assets/${image}.png);
+              width: 140px;
+              height: 26px;
+              left: -70px;
+              right: -70px;
+              color: $ {
+                grand== 'local' ? '#473d3b' : 'white';
+              }
+              line-height: 33px;
+            }
+
+            gvg-castle[church] > gvg-castle-name {
+              bottom: -45px;
+            }
+
+            gvg-castle[castle] > gvg-castle-name {
+              bottom: -50px;
+            }
+
+            gvg-castle[temple] > gvg-castle-name {
+              bottom: -58px;
+            }
+
+            gvg-castle[temple] > .gvg-castle-symbol {
+              left: -70px;
+              bottom: -58px;
+              width: 33px;
+              height: 29px;
+              position: absolute;
+              display: block;
+            }
+
+            gvg-castle[castle] > .gvg-castle-symbol {
+              left: -70px;
+              bottom: -50px;
+              width: 33px;
+              height: 29px;
+              position: absolute;
+              display: block;
+            }
+
+            gvg-castle[church] > .gvg-castle-symbol {
+              left: -70px;
+              bottom: -45px;
+              width: 33px;
+              height: 29px;
+              position: absolute;
+              display: block;
+            }
+
+            gvg-castle-hint {
+              left: -70px;
+              right: -70px;
+              background: rgba(32 32 32 0.5);
+              width: 140px;
+              color: white;
+              position: absolute;
+              display: block;
+              font-size: 10px;
+              text-align: center;
+            }
+
+            gvg-castle[temple] > gvg-castle-hint {
+              top: 58px;
+            }
+
+            gvg-castle[castle] > gvg-castle-hint {
+              top: 50px;
+            }
+
+            gvg-castle[church] > gvg-castle-hint {
+              top: 45px;
+            }`,
+      'gvgMapStyle'
+    );
     let viewer = createElement('gvg-viewer');
     viewer.setAttribute(Grand, '');
     for (let i in castalList[Grand]) {
@@ -851,7 +1192,7 @@
           GuildList[tr.id] = tr.childNodes[1].innerHTML;
         }
         const GuildSelector = createElement('dialog', '<p>请选择公会</p>', {
-          style: `position:absolute;left:${e.clientX}px;top:${e.clientY}px`,
+          style: `position: absolute;left: ${e.clientX}px;top: ${e.clientY}px;`,
         });
       };
       status.appendChild(NodeOffense);
@@ -864,6 +1205,7 @@
       const IconDefense = createElement('gvg-status-icon-defense', 0);
       IconDefense.onclick = showOffense;
       status.appendChild(IconDefense);
+      status.appendChild(createElement('gvg-attacker', '⚔️'));
       castleNode.appendChild(status);
       castleNode.appendChild(createElement('gvg-castle-icon'));
       const NodeCastalName = createElement('gvg-castle-name', castal.name);
@@ -874,14 +1216,17 @@
       kos.appendChild(createElement('gvg-ko-count', 0));
       kos.appendChild(createElement('gvg-ko-count-label'));
       castleNode.appendChild(kos);
-      let attack = createElement('gvg-attacker', '⚔️');
-      attack.classList.add('hidden');
-      castleNode.appendChild(attack);
       viewer.appendChild(castleNode);
-      styleList.push(`gvg-viewer[${Grand}] gvg-castle[castle-id="${i}"]{left:${castal.left};top:${castal.top}}`);
-    }
-    for (let i = 0; i < styleList.length; i++) {
-      style.appendChild(createElement('text', styleList[i]));
+      style.appendChild(
+        createElement(
+          'text',
+          `
+            gvg-viewer[${Grand}] gvg-castle[castle-id='${i}'] {
+              left: ${castal.left};
+              top: ${castal.top};
+            }`
+        )
+      );
     }
     document.head.appendChild(style);
     document.body.appendChild(viewer);
@@ -927,14 +1272,12 @@
       CastalNode.querySelector('gvg-status-bar-offense').innerHTML = GuildList[CastalData.AttackerGuildId]?.Name;
       CastalNode.querySelector('gvg-status-icon-defense').innerHTML = CastalData.DefensePartyCount;
       CastalNode.querySelector('gvg-status-icon-offense').innerHTML = CastalData.AttackPartyCount;
-      if (CastalData.AttackerGuildId > 0) {
+      if (CastalData.GvgCastleState == 1) {
         CastalNode.querySelector('gvg-status').removeAttribute('neutral');
         CastalNode.querySelector('gvg-status').setAttribute('active', '');
-        CastalNode.querySelector('gvg-attacker').classList.remove('hidden');
       } else {
         CastalNode.querySelector('gvg-status').removeAttribute('active');
         CastalNode.querySelector('gvg-status').setAttribute('neutral', '');
-        CastalNode.querySelector('gvg-attacker').classList.add('hidden');
       }
       CastalNode.querySelector('gvg-ko-count').innerHTML = CastalData.LastWinPartyKnockOutCount;
     }
@@ -984,61 +1327,24 @@
   //战斗布局-修改颜色
   function changeColor(GuildId, Color) {
     document.querySelector(`#style${GuildId}`)?.remove();
-    const style = createElement('style', '', `style${GuildId}`);
-    style.appendChild(createElement('text', `gvg-castle[defense="${GuildId}"] gvg-castle-icon{background-color:rgba(${Color},0.5)}`));
-    style.appendChild(createElement('text', `gvg-castle[offense="${GuildId}"] gvg-attacker{background-color:rgba(${Color},1)}`));
-    style.appendChild(createElement('text', `tr[id="${GuildId}"] td:nth-child(1){color:rgba(${Color},1)}`));
+    const style = createElement(
+      'style',
+      `
+            gvg-castle[defense='${GuildId}'] gvg-castle-icon {
+              background-color: rgba(${Color}, 0.5);
+            }
+
+            gvg-castle[offense='${GuildId}'] gvg-attacker {
+              background-color: rgba(${Color}, 1);
+            }
+
+            tr[id='${GuildId}'] td:nth-child(1) {
+              color: rgba(${Color}, 1);
+            }`,
+      `style${GuildId}`
+    );
     document.head.appendChild(style);
   }
-  /*/Guild Battle/Grand War-附加功能
-  function gvgHint(Grand) {
-    document.querySelector('#gvgHintStyle')?.remove();
-    let style = createElement('style', '', 'gvgHintStyle');
-    const styleList = [`gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`, `gvg-viewer[${Grand}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`, `gvg-viewer[${Grand}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`, `gvg-viewer[${Grand}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`, `gvg-viewer[${Grand}] gvg-castle[temple] >gvg-castle-hint{top:58px}`, `gvg-viewer[${Grand}] gvg-castle[castle] >gvg-castle-hint{top:50px}`, `gvg-viewer[${Grand}] gvg-castle[church] >gvg-castle-hint{top:45px}`];
-    for (let i = 0; i < styleList.length; i++) {
-      style.appendChild(createElement('text', styleList[i]));
-    }
-    document.head.appendChild(style);
-    let listCastal = document.querySelector('gvg-castle');
-    for (let i = 0; i < listCastal.length; i++) {
-      let castal = listCastal[i];
-      //增加备注
-      castal.querySelector('gvg-castle-name').onclick = addHint;
-      castal.querySelector('gvg-status-bar-defense').onclick = changeContent;
-      castal.querySelector('gvg-status-bar-offense').onclick = changeContent;
-      castal.querySelector('gvg-status-icon-defense').onclick = showOffense;
-      castal.querySelector('gvg-status-icon-offense').onclick = hideOffense;
-      castal.querySelector('gvg-castle-icon').onclick = changeColor;
-    }
-  }
-  //Guild Battle/Grand War-改变内容
-  function changeContent() {
-    let hint = prompt('输入修改内容', this.innerHTML);
-    if (hint != '' && hint != undefined && hint != null) {
-      this.innerHTML = hint;
-    }
-  }
-  //Guild Battle/Grand War-改变势力颜色
-  function changeColor() {
-    let color = prompt('输入颜色:R(0-255),G(0-255),B(0-255),A(0-1)', this.innerHTML).split(',');
-    if (color) {
-      this.setAttribute('style', `background-color: rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`);
-    }
-    let div = document.querySelector(`#${color.join('_')}`);
-    if (!div) {
-      div = createElement('div', '', color.join('_'));
-      let square = createElement('a', '█');
-      square.setAttribute('style', `color:rgb(${color[0]}, ${color[1]}, ${color[2]})`);
-      square.ondblclick = function () {
-        this.parentNode.remove();
-      };
-      div.appendChild(square);
-      let commment = createElement('a', '点击此处输入图例');
-      commment.onclick = changeContent;
-      div.appendChild(commment);
-      document.querySelector('#legend').appendChild(div);
-    }
-  }*/
   //API函数
   //获取option
   function buildOption() {
