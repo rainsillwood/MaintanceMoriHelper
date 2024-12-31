@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         MementoMori Guild Helper
 // @namespace    https://suzunemaiki.moe/
-// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.js
-// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.js
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @version      0.4
 // @description  公会战小助手
 // @author       SuzuneMaiki
