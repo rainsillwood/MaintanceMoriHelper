@@ -121,10 +121,10 @@
             #selectpanel button {
               width: 33%;
             }
-            option {
+            #selectpanel option {
               display: none;
             }
-            option.default {
+            #selectpanel option.default {
               display: inline;
             }
             th,
@@ -399,40 +399,8 @@
     divSelect.appendChild(pWorld);
     divSelect.appendChild(pRequest);
     document.body.appendChild(divSelect);
-    document.body.appendChild(
-      createElement(
-        'table',
-        `
-        <thead>
-          <tr>
-            <th>图</th>
-            <th>公会名称</th>
-            <th>友</th>
-            <th>中</th>
-            <th>敌</th>
-          </tr>
-        </thead>
-        <tbody></tbody>`,
-        'guilds1'
-      )
-    );
-    document.body.appendChild(
-      createElement(
-        'table',
-        `
-        <thead>
-          <tr>
-            <th>图</th>
-            <th>公会名称</th>
-            <th>友</th>
-            <th>中</th>
-            <th>敌</th>
-          </tr>
-        </thead>
-        <tbody></tbody>`,
-        'guilds2'
-      )
-    );
+    document.body.appendChild(createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds1'));
+    document.body.appendChild(createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds2'));
     document.body.appendChild(createElement('hr'));
   }
   //主功能
@@ -919,7 +887,7 @@
               position: absolute;
               text-align: center;
               font-size: 16px;
-              opacity: 0.5;
+              opacity: 0.8;
             }
             gvg-status-icon-defense,
             gvg-status-icon-offense {
@@ -949,12 +917,6 @@
               font-size: 9px;
               color: #fff;
               background-size: cover;
-            }
-            gvg-status-bar-offense{
-              line-height:16px;
-            }
-            gvg-status-bar-defense {
-              line-height:24px;
             }
             gvg-status[neutral] > gvg-attacker {
               display: none;
@@ -994,36 +956,38 @@
               right: 25px;
               bottom: 0;
               text-align: right;
+              line-height: 24px;
               background-image: url(assets/base_s_09_blue.png);
             }
             gvg-status[active] > gvg-status-bar-offense {
               left: 25px;
               bottom: 10px;
               text-align: left;
+              line-height: 16px;
               background-image: url(assets/base_s_09_red.png);
             }
-            
-            
             gvg-status[counter] > gvg-status-icon-defense {
               left: 0;
               bottom: 0;
-              background-image: url(assets/icon_gvg_party_offense.png);
+              background-image: url(https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/icon_gvg_party_offense_counter.png);
             }
             gvg-status[counter] > gvg-status-icon-offense {
               right: 0;
               bottom: 0;
-              background-image: url(https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/icon_gvg_party_offense_counter.png);
+              background-image: url(assets/icon_gvg_party_defense.png);
             }
             gvg-status[counter] > gvg-status-bar-defense {
               left: 25px;
               bottom: 10px;
               text-align: left;
+              line-height: 16px;
               background-image: url(assets/base_s_09_red.png);
             }
-            gvg-status[active] > gvg-status-bar-offense {
+            gvg-status[counter] > gvg-status-bar-offense {
               right: 25px;
               bottom: 0;
               text-align: right;
+              line-height: 24px;
               background-image: url(assets/base_s_09_blue.png);
             }
             gvg-ko-count-container {
@@ -1035,14 +999,12 @@
               color: #eee;
               text-shadow: red 0 0 30px red 0 0 5px;
             }
-
             gvg-ko-count {
               display: block;
               font-size: 26px;
               text-align: center;
               width: 100%;
             }
-
             gvg-ko-count-label:after {
               content: 'KOs';
               font-size: 14px;
@@ -1054,13 +1016,11 @@
               top: 26px;
               left: 0;
             }
-
             gvg-castle-icon {
               display: block;
               position: absolute;
               background-size: cover;
             }
-
             gvg-castle[church] > gvg-castle-icon {
               left: -28px;
               right: -28px;
@@ -1069,7 +1029,6 @@
               height: 50px;
               background-image: url(assets/Castle_0_0.png);
             }
-
             gvg-castle[castle] > gvg-castle-icon {
               left: -31px;
               right: -31px;
@@ -1078,7 +1037,6 @@
               height: 67px;
               background-image: url(assets/Castle_0_1.png);
             }
-
             gvg-castle[temple] > gvg-castle-icon {
               left: -39px;
               right: -39px;
@@ -1087,7 +1045,6 @@
               height: 80px;
               background-image: url(assets/Castle_0_2.png);
             }
-
             gvg-castle-name {
               display: block;
               position: absolute;
@@ -1097,7 +1054,6 @@
               font-size: 9px;
               text-align: center;
             }
-
             gvg-castle-name {
               background-image: url(assets/${image}.png);
               width: 140px;
@@ -1109,19 +1065,15 @@
               }
               line-height: 33px;
             }
-
             gvg-castle[church] > gvg-castle-name {
               bottom: -45px;
             }
-
             gvg-castle[castle] > gvg-castle-name {
               bottom: -50px;
             }
-
             gvg-castle[temple] > gvg-castle-name {
               bottom: -58px;
             }
-
             gvg-castle[temple] > .gvg-castle-symbol {
               left: -70px;
               bottom: -58px;
@@ -1130,7 +1082,6 @@
               position: absolute;
               display: block;
             }
-
             gvg-castle[castle] > .gvg-castle-symbol {
               left: -70px;
               bottom: -50px;
@@ -1139,7 +1090,6 @@
               position: absolute;
               display: block;
             }
-
             gvg-castle[church] > .gvg-castle-symbol {
               left: -70px;
               bottom: -45px;
@@ -1148,27 +1098,24 @@
               position: absolute;
               display: block;
             }
-
             gvg-castle-hint {
               left: -70px;
               right: -70px;
-              background: rgba(32 32 32 0.5);
+              background: rgba(32, 32, 32, 0.5);
               width: 140px;
               color: white;
               position: absolute;
               display: block;
               font-size: 10px;
               text-align: center;
+              word-break: break-word;
             }
-
             gvg-castle[temple] > gvg-castle-hint {
               top: 58px;
             }
-
             gvg-castle[castle] > gvg-castle-hint {
               top: 50px;
             }
-
             gvg-castle[church] > gvg-castle-hint {
               top: 45px;
             }`,
@@ -1185,19 +1132,13 @@
       status.setAttribute('neutral', '');
       const NodeOffense = createElement('gvg-status-bar-offense');
       NodeOffense.onclick = (e) => {
-        const trList = document.querySelectorAll('tr');
-        let GuildList = {};
-        for (let i = 0; i < trList.length; i++) {
-          const tr = trList[i];
-          GuildList[tr.id] = tr.childNodes[1].innerHTML;
-        }
-        const GuildSelector = createElement('dialog', '<p>请选择公会</p>', {
-          style: `position: absolute;left: ${e.clientX}px;top: ${e.clientY}px;`,
-        });
+        changeGuild(e.target);
       };
       status.appendChild(NodeOffense);
       const NodeDefense = createElement('gvg-status-bar-defense');
-      NodeDefense.onclick = (e) => {};
+      NodeDefense.onclick = (e) => {
+        changeGuild(e.target);
+      };
       status.appendChild(NodeDefense);
       const IconOffense = createElement('gvg-status-icon-offense', 0);
       IconOffense.onclick = hideOffense;
@@ -1205,7 +1146,9 @@
       const IconDefense = createElement('gvg-status-icon-defense', 0);
       IconDefense.onclick = showOffense;
       status.appendChild(IconDefense);
-      status.appendChild(createElement('gvg-attacker', '⚔️'));
+      const NodeAttacker = createElement('gvg-attacker', '⚔️');
+      NodeAttacker.onclick = counterOffense;
+      status.appendChild(NodeAttacker);
       castleNode.appendChild(status);
       castleNode.appendChild(createElement('gvg-castle-icon'));
       const NodeCastalName = createElement('gvg-castle-name', castal.name);
@@ -1268,8 +1211,8 @@
       const CastalNode = document.querySelector(`gvg-castle[castle-id="${CastalData.CastleId}"]`);
       CastalNode.setAttribute('defense', CastalData.GuildId);
       CastalNode.setAttribute('offense', CastalData.AttackerGuildId);
-      CastalNode.querySelector('gvg-status-bar-defense').innerHTML = GuildList[CastalData.GuildId]?.Name;
-      CastalNode.querySelector('gvg-status-bar-offense').innerHTML = GuildList[CastalData.AttackerGuildId]?.Name;
+      CastalNode.querySelector('gvg-status-bar-defense').innerHTML = GuildList[CastalData.GuildId]?.Name ?? '';
+      CastalNode.querySelector('gvg-status-bar-offense').innerHTML = GuildList[CastalData.AttackerGuildId]?.Name ?? '';
       CastalNode.querySelector('gvg-status-icon-defense').innerHTML = CastalData.DefensePartyCount;
       CastalNode.querySelector('gvg-status-icon-offense').innerHTML = CastalData.AttackPartyCount;
       if (CastalData.GvgCastleState == 1) {
@@ -1317,12 +1260,20 @@
   //战斗布局-显示进攻方
   function showOffense() {
     this.parentNode.removeAttribute('neutral');
+    this.parentNode.removeAttribute('counter');
     this.parentNode.setAttribute('active', '');
   }
   //战斗布局-隐藏进攻方
   function hideOffense() {
     this.parentNode.removeAttribute('active');
+    this.parentNode.removeAttribute('counter');
     this.parentNode.setAttribute('neutral', '');
+  }
+  //战斗布局-反击进攻方
+  function counterOffense() {
+    this.parentNode.removeAttribute('active');
+    this.parentNode.removeAttribute('neutral');
+    this.parentNode.setAttribute('counter', '');
   }
   //战斗布局-修改颜色
   function changeColor(GuildId, Color) {
@@ -1335,7 +1286,7 @@
             }
 
             gvg-castle[offense='${GuildId}'] gvg-attacker {
-              background-color: rgba(${Color}, 1);
+              background-color: rgba(${Color}, 0.625);
             }
 
             tr[id='${GuildId}'] td:nth-child(1) {
@@ -1344,6 +1295,39 @@
       `style${GuildId}`
     );
     document.head.appendChild(style);
+  }
+  //战斗布局-修改公会
+  function changeGuild(target) {
+    const trList = document.querySelectorAll('tbody > tr');
+    const selectGuild = createElement('select', '', {
+      castal: target.parentNode.parentNode.getAttribute('castle-id'),
+      target: target.tagName,
+    });
+    selectGuild.options.add(
+      createElement('option', '', {
+        value: '0',
+      })
+    );
+    for (let i = 0; i < trList.length; i++) {
+      const tr = trList[i];
+      selectGuild.options.add(
+        createElement('option', tr.childNodes[1].innerHTML, {
+          value: tr.id,
+        })
+      );
+    }
+    const dialogGuild = createElement('dialog', `<a>请选择公会：</a>`);
+    dialogGuild.onclose = (e) => {
+      const select = e.target.querySelector('select');
+      const castal = document.querySelector(`gvg-castle[castle-id="${select.getAttribute('castal')}"]`);
+      const target = select.getAttribute('target');
+      castal.setAttribute(target.split('-').pop(), select.value);
+      castal.querySelector(target).innerHTML = select.selectedOptions[0].innerHTML;
+      dialogGuild.remove();
+    };
+    dialogGuild.appendChild(selectGuild);
+    document.body.appendChild(dialogGuild);
+    dialogGuild.showModal();
   }
   //API函数
   //获取option
