@@ -1,1 +1,237 @@
-{"status":200,"timestamp":1734878390,"data":{"world_id":3019,"castles":[{"CastleId":1,"GuildId":362802303019,"AttackerGuildId":786563390019,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":2,"UtcFallenTimeStamp":1734902147097,"LastWinPartyKnockOutCount":0},{"CastleId":2,"GuildId":657124216019,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":0,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":3,"GuildId":657124216019,"AttackerGuildId":628657068019,"AttackPartyCount":0,"DefensePartyCount":267,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":4,"GuildId":786563390019,"AttackerGuildId":362802303019,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":2,"UtcFallenTimeStamp":1734902126099,"LastWinPartyKnockOutCount":0},{"CastleId":5,"GuildId":112688838019,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":6,"GuildId":657124216019,"AttackerGuildId":112688838019,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":4,"UtcFallenTimeStamp":1734900329100,"LastWinPartyKnockOutCount":0},{"CastleId":7,"GuildId":657124216019,"AttackerGuildId":831039253019,"AttackPartyCount":0,"DefensePartyCount":50,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":8,"GuildId":657124216019,"AttackerGuildId":908616726019,"AttackPartyCount":0,"DefensePartyCount":17,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":9,"GuildId":362802303019,"AttackerGuildId":908616726019,"AttackPartyCount":0,"DefensePartyCount":155,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":10,"GuildId":657124216019,"AttackerGuildId":362802303019,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":4,"UtcFallenTimeStamp":1734900308098,"LastWinPartyKnockOutCount":0},{"CastleId":11,"GuildId":831039253019,"AttackerGuildId":657124216019,"AttackPartyCount":0,"DefensePartyCount":10,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":12,"GuildId":628657068019,"AttackerGuildId":657124216019,"AttackPartyCount":0,"DefensePartyCount":146,"GvgCastleState":2,"UtcFallenTimeStamp":1734900756099,"LastWinPartyKnockOutCount":0},{"CastleId":13,"GuildId":628657068019,"AttackerGuildId":614754463019,"AttackPartyCount":0,"DefensePartyCount":116,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":14,"GuildId":252767109019,"AttackerGuildId":628657068019,"AttackPartyCount":0,"DefensePartyCount":80,"GvgCastleState":2,"UtcFallenTimeStamp":1734901019099,"LastWinPartyKnockOutCount":0},{"CastleId":15,"GuildId":786563390019,"AttackerGuildId":252767109019,"AttackPartyCount":0,"DefensePartyCount":10,"GvgCastleState":2,"UtcFallenTimeStamp":1734900883095,"LastWinPartyKnockOutCount":0},{"CastleId":16,"GuildId":252767109019,"AttackerGuildId":786563390019,"AttackPartyCount":0,"DefensePartyCount":2,"GvgCastleState":2,"UtcFallenTimeStamp":1734902112099,"LastWinPartyKnockOutCount":0},{"CastleId":17,"GuildId":473576117019,"AttackerGuildId":833462558019,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":4,"UtcFallenTimeStamp":1734900541100,"LastWinPartyKnockOutCount":0},{"CastleId":18,"GuildId":473576117019,"AttackerGuildId":833462558019,"AttackPartyCount":0,"DefensePartyCount":8,"GvgCastleState":4,"UtcFallenTimeStamp":1734900547099,"LastWinPartyKnockOutCount":0},{"CastleId":19,"GuildId":786563390019,"AttackerGuildId":473576117019,"AttackPartyCount":0,"DefensePartyCount":175,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":20,"GuildId":786563390019,"AttackerGuildId":933813590019,"AttackPartyCount":0,"DefensePartyCount":106,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":21,"GuildId":786563390019,"AttackerGuildId":933813590019,"AttackPartyCount":0,"DefensePartyCount":348,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0}],"guilds":{"933813590019":"兔兔帝國","908616726019":"0w0","833462558019":"失物招领所(亡者复生","831039253019":"小白船","786563390019":"θωθ","614754463019":"明日方舟","519149743019":"睡教-酣夢地","473576117019":"索索19α","338546177019":"花語","628657068019":"星河","362802303019":"σωσ","657124216019":"0ω0","252767109019":"造謠幫","942600068019":"阿瓦隆","117430908019":"麻雀似麻糬","112688838019":"◍⁠ ω⁠ ◍⁠"}}}
+{
+    "status": 200,
+    "timestamp": 1734878390,
+    "data": {
+        "world_id": 3019,
+        "castles": [
+            {
+                "CastleId": 1,
+                "GuildId": 362802303019,
+                "AttackerGuildId": 786563390019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902147097,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 2,
+                "GuildId": 657124216019,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 0,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 3,
+                "GuildId": 657124216019,
+                "AttackerGuildId": 628657068019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 267,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 4,
+                "GuildId": 786563390019,
+                "AttackerGuildId": 362802303019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902126099,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 5,
+                "GuildId": 112688838019,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 6,
+                "GuildId": 657124216019,
+                "AttackerGuildId": 112688838019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734900329100,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 7,
+                "GuildId": 657124216019,
+                "AttackerGuildId": 831039253019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 50,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 8,
+                "GuildId": 657124216019,
+                "AttackerGuildId": 908616726019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 17,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 9,
+                "GuildId": 362802303019,
+                "AttackerGuildId": 908616726019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 155,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 10,
+                "GuildId": 657124216019,
+                "AttackerGuildId": 362802303019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734900308098,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 11,
+                "GuildId": 831039253019,
+                "AttackerGuildId": 657124216019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 10,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 12,
+                "GuildId": 628657068019,
+                "AttackerGuildId": 657124216019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 146,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734900756099,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 13,
+                "GuildId": 628657068019,
+                "AttackerGuildId": 614754463019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 116,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 14,
+                "GuildId": 252767109019,
+                "AttackerGuildId": 628657068019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 80,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734901019099,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 15,
+                "GuildId": 786563390019,
+                "AttackerGuildId": 252767109019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 10,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734900883095,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 16,
+                "GuildId": 252767109019,
+                "AttackerGuildId": 786563390019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 2,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902112099,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 17,
+                "GuildId": 473576117019,
+                "AttackerGuildId": 833462558019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734900541100,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 18,
+                "GuildId": 473576117019,
+                "AttackerGuildId": 833462558019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 8,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734900547099,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 19,
+                "GuildId": 786563390019,
+                "AttackerGuildId": 473576117019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 175,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 20,
+                "GuildId": 786563390019,
+                "AttackerGuildId": 933813590019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 106,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 21,
+                "GuildId": 786563390019,
+                "AttackerGuildId": 933813590019,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 348,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            }
+        ],
+        "guilds": {
+            "933813590019": "兔兔帝國",
+            "908616726019": "0w0",
+            "833462558019": "失物招领所(亡者复生",
+            "831039253019": "小白船",
+            "786563390019": "θωθ",
+            "614754463019": "明日方舟",
+            "519149743019": "睡教-酣夢地",
+            "473576117019": "索索19α",
+            "338546177019": "花語",
+            "628657068019": "星河",
+            "362802303019": "σωσ",
+            "657124216019": "0ω0",
+            "252767109019": "造謠幫",
+            "942600068019": "阿瓦隆",
+            "117430908019": "麻雀似麻糬",
+            "112688838019": "◍⁠ ω⁠ ◍⁠"
+        }
+    }
+}

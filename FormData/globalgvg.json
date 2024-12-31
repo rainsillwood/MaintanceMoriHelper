@@ -1,1 +1,225 @@
-{"status":200,"timestamp":1734880371,"data":{"matching_number":21101,"castles":[{"CastleId":1,"GuildId":864636787003,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":86,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":2,"GuildId":224725513005,"AttackerGuildId":864636787003,"AttackPartyCount":0,"DefensePartyCount":3,"GvgCastleState":2,"UtcFallenTimeStamp":1734902732098,"LastWinPartyKnockOutCount":0},{"CastleId":3,"GuildId":864636787003,"AttackerGuildId":993484798001,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":4,"UtcFallenTimeStamp":1734900981097,"LastWinPartyKnockOutCount":0},{"CastleId":4,"GuildId":993484798001,"AttackerGuildId":224725513005,"AttackPartyCount":0,"DefensePartyCount":14,"GvgCastleState":2,"UtcFallenTimeStamp":1734902150098,"LastWinPartyKnockOutCount":0},{"CastleId":5,"GuildId":864636787003,"AttackerGuildId":993484798001,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":4,"UtcFallenTimeStamp":1734901012097,"LastWinPartyKnockOutCount":0},{"CastleId":6,"GuildId":224725513005,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":7,"GuildId":224725513005,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":0,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":8,"GuildId":224725513005,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":0,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":9,"GuildId":224725513005,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":0,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":10,"GuildId":224725513005,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":0,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":11,"GuildId":224725513005,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":12,"GuildId":993484798001,"AttackerGuildId":864636787003,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":2,"UtcFallenTimeStamp":1734902119098,"LastWinPartyKnockOutCount":0},{"CastleId":13,"GuildId":993484798001,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":0,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":14,"GuildId":993484798001,"AttackerGuildId":224725513005,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":2,"UtcFallenTimeStamp":1734902132099,"LastWinPartyKnockOutCount":0},{"CastleId":15,"GuildId":224725513005,"AttackerGuildId":993484798001,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":4,"UtcFallenTimeStamp":1734900991095,"LastWinPartyKnockOutCount":0},{"CastleId":16,"GuildId":993484798001,"AttackerGuildId":224725513005,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":2,"UtcFallenTimeStamp":1734902164099,"LastWinPartyKnockOutCount":0},{"CastleId":17,"GuildId":993484798001,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":0,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":18,"GuildId":993484798001,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":19,"GuildId":993484798001,"AttackerGuildId":864636787003,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":2,"UtcFallenTimeStamp":1734902145100,"LastWinPartyKnockOutCount":0},{"CastleId":20,"GuildId":127041728001,"AttackerGuildId":0,"AttackPartyCount":0,"DefensePartyCount":37,"GvgCastleState":0,"UtcFallenTimeStamp":0,"LastWinPartyKnockOutCount":0},{"CastleId":21,"GuildId":224725513005,"AttackerGuildId":127041728001,"AttackPartyCount":0,"DefensePartyCount":1,"GvgCastleState":4,"UtcFallenTimeStamp":1734901145099,"LastWinPartyKnockOutCount":0}],"guilds":{"224725513005":"星空下の物語","864636787003":"鋼鐵齒輪","127041728001":"十字神社","993484798001":"魔女之泉"}}}
+{
+    "status": 200,
+    "timestamp": 1734880371,
+    "data": {
+        "matching_number": 21101,
+        "castles": [
+            {
+                "CastleId": 1,
+                "GuildId": 864636787003,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 86,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 2,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 864636787003,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 3,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902732098,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 3,
+                "GuildId": 864636787003,
+                "AttackerGuildId": 993484798001,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734900981097,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 4,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 224725513005,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 14,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902150098,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 5,
+                "GuildId": 864636787003,
+                "AttackerGuildId": 993484798001,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734901012097,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 6,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 7,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 0,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 8,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 0,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 9,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 0,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 10,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 0,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 11,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 12,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 864636787003,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902119098,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 13,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 0,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 14,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 224725513005,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902132099,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 15,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 993484798001,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734900991095,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 16,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 224725513005,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902164099,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 17,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 0,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 18,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 19,
+                "GuildId": 993484798001,
+                "AttackerGuildId": 864636787003,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 2,
+                "UtcFallenTimeStamp": 1734902145100,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 20,
+                "GuildId": 127041728001,
+                "AttackerGuildId": 0,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 37,
+                "GvgCastleState": 0,
+                "UtcFallenTimeStamp": 0,
+                "LastWinPartyKnockOutCount": 0
+            },
+            {
+                "CastleId": 21,
+                "GuildId": 224725513005,
+                "AttackerGuildId": 127041728001,
+                "AttackPartyCount": 0,
+                "DefensePartyCount": 1,
+                "GvgCastleState": 4,
+                "UtcFallenTimeStamp": 1734901145099,
+                "LastWinPartyKnockOutCount": 0
+            }
+        ],
+        "guilds": {
+            "224725513005": "星空下の物語",
+            "864636787003": "鋼鐵齒輪",
+            "127041728001": "十字神社",
+            "993484798001": "魔女之泉"
+        }
+    }
+}

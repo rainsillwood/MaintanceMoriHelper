@@ -4,6 +4,7 @@
 // @version      0.3
 // @description  公会战小助手
 // @author       SuzuneMaiki
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
 // @match        http*://mentemori.icu/*
 // @match        http*://*.mememori-boi.com/*
 // @connect      mentemori.icu
@@ -12,12 +13,11 @@
 // @connect      mememori-game.com
 // @connect      moonheart.dev
 // @connect      githubusercontent.com
-// @require      https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js
-// @require      https://cdn.jsdelivr.net/npm/int64-buffer/dist/int64-buffer.min.js
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
 // @grant        GM_xmlhttpRequest
-// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/refs/heads/main/GuildHelper.js
-// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/refs/heads/main/GuildHelper.js
+// @require      https://raw.githubusercontent.com/kawanet/msgpack-lite/master/dist/msgpack.min.js
+// @require      https://raw.githubusercontent.com/kawanet/int64-buffer/master/dist/int64-buffer.min.js
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/GuildHelper.js
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/GuildHelper.js
 // ==/UserScript==
 
 (async function () {
@@ -40,62 +40,44 @@
       gvgMapper();
       break;
     }
-    case 'https://mentemori.icu/localgvg.html': {
-      gvgHint('local');
-      break;
-    }
-    case 'https://mentemori.icu/globalgvg.html': {
-      gvgHint('global');
-      break;
-    }
   }
   //初始化功能
   //初始化页面
   async function initPage() {
     console.log('脚本运行中');
-    //初始化导航栏
-    let nav = createElement('nav');
-    //初始化功能模块
-    let div = createElement('div');
-    //二进制文件转换功能
-    let converter = createElement('a', '数据转换');
-    converter.href = '/?function=fileConverter';
-    div.appendChild(converter);
-    //战斗布局功能
-    div.appendChild(createElement('text', ' | '));
-    let mapper = createElement('a', '战斗布局');
-    mapper.href = '/?function=gvgMapper';
-    div.appendChild(mapper);
-    //插入功能模块
-    nav.appendChild(div);
-    //初始化账号管理模块
-    let accountmanager = createElement('div', '', 'accountmanager');
-    accountmanager.appendChild(createElement('a', '登录状态:'));
-    //登录状态模块
-    let accountlogger = createElement('a', '无账号');
-    accountmanager.appendChild(accountlogger);
-    //登录模块
-    let login = createElement('button', '登录', 'login');
-    login.onclick = loginAccount;
-    accountmanager.appendChild(login);
-    //登出模块
-    let logout = createElement('button', '登出', 'logout');
-    logout.classList.add('hidden');
-    logout.onclick = logoutAccount;
-    accountmanager.appendChild(logout);
-    //插入账号管理模块
-    nav.appendChild(accountmanager);
-    //插入导航栏
-    document.body.insertBefore(nav, document.body.childNodes[1]);
-    //插入分割线
-    document.body.insertBefore(createElement('hr'), document.body.childNodes[1]);
+    //获取原导航栏
+    const navDefault = document.querySelector('nav');
     //获取语言模块
-    let localdiv = document.getElementsByTagName('nav')[1].childNodes[3].childNodes[3];
+    const divLocal = navDefault.childNodes[3].childNodes[3];
     //插入中文模块
-    localdiv.appendChild(createElement('text', ' | '));
-    let zh = createElement('a', 'ZH');
-    /*zh.href = '?lang=zh';*/
-    localdiv.appendChild(zh);
+    divLocal.appendChild(createElement('text', ' | '));
+    divLocal.appendChild(createElement('a', 'ZH', { href: '?lang=zh' }));
+    //初始化导航栏
+    const navExtend = createElement('nav');
+    //初始化功能模块
+    const divFunction = createElement('div');
+    //二进制文件转换功能
+    divFunction.appendChild(createElement('a', '数据转换', { href: '/?function=fileConverter' }));
+    divFunction.appendChild(createElement('text', ' | '));
+    //战斗布局功能
+    divFunction.appendChild(createElement('a', '战斗布局', { href: '/?function=gvgMapper' }));
+    //插入功能模块
+    navExtend.appendChild(divFunction);
+    //初始化账号管理模块
+    const divAccount = createElement('div', '', 'accountmanager');
+    divAccount.appendChild(createElement('a', '登录状态:'));
+    //登录状态模块
+    divAccount.appendChild(createElement('a', '无账号'));
+    //登出模块
+    const buttonLogout = createElement('button', '登出', 'logout');
+    buttonLogout.classList.add('hidden');
+    buttonLogout.onclick = logoutAccount;
+    divAccount.appendChild(buttonLogout);
+    //插入账号管理模块
+    navExtend.appendChild(divAccount);
+    //插入导航栏
+    navDefault.insertAdjacentElement('afterend', navExtend);
+    navDefault.insertAdjacentElement('afterend', createElement('hr'));
     //初始化AppVersion
     const AppVersion = await getAppVersion();
     if (AppVersion) {
@@ -118,22 +100,23 @@
     //选择栏样式
     const staticStyle = createElement('style');
     const styleList = [
-      `#selectpanel {width:640px;display:inline-block;vertical-align:top;}`, //
-      `#selectpanel p a{display:inline-block;}`,
-      `#selectpanel p a:nth-child(1){width:75px;}`,
-      `#selectpanel p a:nth-child(2){width:25px;}`,
-      `#selectpanel p select{width:520px;}`,
-      `#selectpanel p button{width:33%;}`,
+      `#selectpanel{width:640px;display:inline-block;vertical-align:top;}`, //
+      `#selectpanel>p>a{display:inline-block;}`,
+      `#selectpanel>p>a:nth-child(1){width:75px;}`,
+      `#selectpanel>p>a:nth-child(2){width:25px;}`,
+      `#selectpanel>p>select{width:520px;}`,
+      `#selectpanel>p>button{width:33%;}`,
       `option{display:none;}`,
       `option.default{display:inline;}`,
-      `#guildpanel{width:640px;display:inline-block;vertical-align:top;}`,
-      `#guildpanel div{width:300px;display:inline-block;padding-left: 20px;}`,
-      `#guildpanel div *{text-align: center;display:inline-block;margin:0px;}`,
-      `#guildpanel div :nth-child(1){width:200px;text-align: left}`,
-      `#guildpanel div :nth-child(2){width:25px}`,
-      `#guildpanel div :nth-child(3){width:25px}`,
-      `#guildpanel div :nth-child(4){width:25px}`,
-      `#guildpanel div :nth-child(5){width:25px}`,
+      `th,td{height:24px;border:1px solid black;text-align:center;}`,
+      `table{width:300px;border-collapse:collapse;display:inline-table;vertical-align:top;}`,
+      `#guilds1{margin-left:20px;}`,
+      `#guilds2{margin-right:20px;}`,
+      `tr>:nth-child(1){width:25px;}`,
+      `tr>:nth-child(2){text-align:left;}`,
+      `tr>:nth-child(3){width:25px;}`,
+      `tr>:nth-child(4){width:25px;}`,
+      `tr>:nth-child(5){width:25px;}`,
     ];
     for (let i = 0; i < styleList.length; i++) {
       staticStyle.appendChild(createElement('text', styleList[i]));
@@ -152,49 +135,81 @@
     const pWorld = createElement('p', '<a>World</a><a> : </a>');
     const selectWorld = createElement('select', '', 'listWorld');
     const pRequest = createElement('p');
-    const buttonGetServer = createElement('button', `从服务器获取`, { disabled: true });
+    const buttonGetServer = createElement('button', `从服务器获取`);
     buttonGetServer.onclick = async () => {
-      if (selectWorld.options[selectWorld.selectedIndex].value < 0) {
+      if (selectWorld.value < 0) {
         alert('未选择世界');
         return;
       }
-      const _getGuildWar = await getGuildWar(getStorage('GrandId'), getStorage('WorldId'), getStorage('GradeId'));
-      let CastalData = _getGuildWar?.data;
-      if (CastalData) {
-        for (let i in CastalData.guilds) {
-          const GuildName = CastalData.guilds[i];
-          CastalData.data.guilds[i] = {
-            'Name': GuildName,
-            'Color': '255,255,255',
+      const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+      const _getGuildWar = await getGuildWar(getStorage('GrandId'), getStorage('WorldId'), getStorage('GroupId'));
+      let Matching = _getGuildWar?.data;
+      if (Matching) {
+        for (let i in Matching.guilds) {
+          Matching.guilds[i] = {
+            'Name': Matching.guilds[i],
+            'Color': GuildData[i] ?? '0,0,0',
           };
         }
-        fillMap(CastalData);
+        fillMap(Matching.castles, Matching.guilds);
+      } else {
+        alert('无法获取战斗信息');
       }
     };
-    const buttonGetLocal = createElement('button', `从上一次恢复`, { disabled: true });
+    const buttonGetLocal = createElement('button', `从上一次恢复`);
     buttonGetLocal.onclick = () => {
-      if (selectWorld.options[selectWorld.selectedIndex].value < 0) {
+      if (selectWorld.value < 0) {
         alert('未选择世界');
         return;
       }
-      const CastalDataList = JSON.parse(getStorage('CastalData')) ?? {};
-      let CastalData = CastalDataList[`${getStorage('GrandId')}-${getStorage('GradeId')}-${getStorage('WorldId')}`];
-      if (CastalData) {
-        fillMap(CastalData);
+      const MatchingData = JSON.parse(getStorage('MatchingData')) ?? {};
+      const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+      let Matching = MatchingData[`${getStorage('GroupId')}-${getStorage('GrandId')}-${getStorage('WorldId')}`];
+      if (Matching) {
+        for (let i in Matching.guilds) {
+          Matching.guilds[i] = {
+            'Name': Matching.guilds[i],
+            'Color': GuildData[i] ?? '0,0,0',
+          };
+        }
+        fillMap(Matching.castles, Matching.guilds);
       } else {
         alert('没有该对战的城池信息');
       }
     };
     const buttonSetLocal = createElement('button', `保存设置`);
     buttonSetLocal.onclick = () => {
-      if (selectWorld.options[selectWorld.selectedIndex].value < 0) {
+      if (selectWorld.value < 0) {
         alert('未选择世界');
         return;
       }
-      let CastalDataList = JSON.parse(getStorage('CastalData')) ?? {};
-      if (CastalData) {
-        CastalDataList[`${getStorage('GrandId')}-${getStorage('GradeId')}-${getStorage('WorldId')}`] = CastalData;
-        setStorage('CastalData');
+      let Matching = { 'castles': [], 'guilds': {} };
+      const GuildList = document.querySelectorAll('tr[id]');
+      let GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+      for (let i = 0; i < GuildList.length; i++) {
+        const Guild = GuildList[i];
+        const GuildId = Guild.id;
+        GuildData[GuildId] = document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
+        Matching.guilds[GuildId] = Guild.childNodes[1].innerHTML;
+      }
+      setStorage('GuildData', JSON.stringify(GuildData));
+      const CastalList = document.querySelectorAll('gvg-castle');
+      let MatchingData = JSON.parse(getStorage('MatchingData')) ?? {};
+      if (MatchingData) {
+        for (let i = 0; i < CastalList.length; i++) {
+          const Castal = CastalList[i];
+          const CastalId = Castal.getAttribute('castle-id');
+          Matching.castles.push({
+            'CastleId': CastalId,
+            'GuildId': Castal.getAttribute('defense'),
+            'AttackerGuildId': Castal.getAttribute('offense'),
+            'AttackPartyCount': Castal.querySelector('gvg-status-icon-offense').innerHTML,
+            'DefensePartyCount': Castal.querySelector('gvg-status-icon-defense').innerHTML,
+            'LastWinPartyKnockOutCount': Castal.querySelector('gvg-ko-count').innerHTML,
+          });
+        }
+        MatchingData[`${getStorage('GroupId')}-${getStorage('GrandId')}-${getStorage('WorldId')}`] = Matching;
+        setStorage('MatchingData', JSON.stringify(MatchingData));
       }
     };
     pRequest.appendChild(buttonGetServer);
@@ -277,38 +292,33 @@
       selectWorld.options.add(option);
     }
     selectRegion.onchange = () => {
-      resetGuild();
-      document.getElementById('styleGroup')?.remove();
+      document.querySelector('#styleGroup')?.remove();
+      resetTable();
       selectGroup.value = '-1';
       selectGrand.value = '-1';
       selectWorld.value = '-1';
-      const RegionId = selectRegion.options[selectRegion.selectedIndex].value;
-      document.head.appendChild(createElement('style', `#listGroup option.R${RegionId} {display:inline}`, 'styleGroup'));
+      document.head.appendChild(createElement('style', `#listGroup option.R${selectRegion.value} {display:inline}`, 'styleGroup'));
     };
     selectGroup.onchange = () => {
-      resetGuild();
-      document.getElementById('styleGrand')?.remove();
+      document.querySelector('#styleGrand')?.remove();
+      resetTable();
       selectGrand.value = '-1';
       selectWorld.value = '-1';
-      const GroupId = selectGroup.options[selectGroup.selectedIndex].value;
-      const RegionId = selectRegion.options[selectRegion.selectedIndex].value;
-      document.head.appendChild(createElement('style', `#listGrand .static${GroupId == `N${RegionId}` ? '' : ',.dynamic'}{display:inline}`, 'styleGrand'));
+      document.head.appendChild(createElement('style', `#listGrand .static${selectGroup.value == `N${selectRegion.value}` ? '' : ',.dynamic'}{display:inline}`, 'styleGrand'));
     };
     selectGrand.onchange = () => {
-      resetGuild();
-      document.getElementById('styleWorld')?.remove();
+      document.querySelector('#styleWorld')?.remove();
+      resetTable();
       selectWorld.value = '-1';
-      const GrandId = selectGrand.options[selectGrand.selectedIndex].value;
-      const GroupId = selectGroup.options[selectGroup.selectedIndex].value;
-      document.head.appendChild(createElement('style', `#listWorld ${GrandId > 0 ? '.global' : '.G' + GroupId} {display:inline}`, 'styleWorld'));
-      drawMap(GrandId);
+      document.head.appendChild(createElement('style', `#listWorld ${selectGrand.value > 0 ? '.global' : '.G' + selectGroup.value} {display:inline}`, 'styleWorld'));
     };
     selectWorld.onchange = () => {
-      resetGuild();
-      setStorage('RegionId', selectRegion.options[selectRegion.selectedIndex].value);
-      setStorage('GroupId', selectGroup.options[selectGroup.selectedIndex].value);
-      setStorage('GrandId', selectGrand.options[selectGrand.selectedIndex].value);
-      setStorage('WorldId', selectWorld.options[selectWorld.selectedIndex].value);
+      resetTable();
+      setStorage('RegionId', selectRegion.value);
+      setStorage('GroupId', selectGroup.value);
+      setStorage('GrandId', selectGrand.value);
+      setStorage('WorldId', selectWorld.value);
+      drawMap(selectGrand.value);
     };
     pRegion.appendChild(selectRegion);
     pGroup.appendChild(selectGroup);
@@ -320,7 +330,38 @@
     divSelect.appendChild(pWorld);
     divSelect.appendChild(pRequest);
     document.body.appendChild(divSelect);
-    document.body.appendChild(createElement('div', '<div><a>公会名称</a><a>:</a><a>友</a><a>中</a><a>敌</a></div><div><a>公会名称</a><a>:</a><a>友</a><a>中</a><a>敌</a></div>', 'guildpanel'));
+    document.body.appendChild(
+      createElement(
+        'table',
+        `<thead>
+        <tr>
+          <th>图</th>
+          <th>公会名称</th>
+          <th>友</th>
+          <th>中</th>
+          <th>敌</th>
+        </tr>
+      </thead>
+      <tbody></tbody>`,
+        'guilds1'
+      )
+    );
+    document.body.appendChild(
+      createElement(
+        'table',
+        `<thead>
+        <tr>
+          <th>图</th>
+          <th>公会名称</th>
+          <th>友</th>
+          <th>中</th>
+          <th>敌</th>
+        </tr>
+      </thead>
+      <tbody></tbody>`,
+        'guilds2'
+      )
+    );
     document.body.appendChild(createElement('hr'));
   }
   //主功能
@@ -332,9 +373,10 @@
     }
     let divData = createElement('div');
     divData.setAttribute('style', 'width:100%;display:flex;flex-direction:column;flex-wrap: nowrap');
-    let uploadButton = createElement('input');
-    uploadButton.type = 'file';
-    uploadButton.multiple = 'multiple';
+    let uploadButton = createElement('input', '', {
+      type: 'file',
+      multiple: 'multiple',
+    });
     uploadButton.onchange = function () {
       for (let i = 0; i < this.files.length; i++) {
         let file = this.files[i];
@@ -373,14 +415,14 @@
     const GroupId = getStorage('GroupId');
     const GrandId = getStorage('GrandId');
     const WorldId = getStorage('WorldId');
-    if (WorldId > 0) {
-      document.getElementById('listRegion').value = RegionId;
-      document.getElementById('listGroup').value = GroupId;
-      document.getElementById('listGrand').value = GrandId;
-      document.getElementById('listWorld').value = WorldId;
+    if (WorldId >= 0) {
+      document.querySelector('#listRegion').value = RegionId;
+      document.querySelector('#listGroup').value = GroupId;
+      document.querySelector('#listGrand').value = GrandId;
+      document.querySelector('#listWorld').value = WorldId;
       document.head.appendChild(createElement('style', `#listGroup option.R${RegionId} {display:inline}`, 'styleGroup'));
       document.head.appendChild(createElement('style', `#listGrand .static${GroupId == `N${RegionId}` ? '' : ',.dynamic'}{display:inline}`, 'styleGrand'));
-      document.head.appendChild(createElement('style', `#listWorld ${GrandId > 1 ? '.global' : '.G' + GroupId} {display:inline}`, 'styleWorld'));
+      document.head.appendChild(createElement('style', `#listWorld ${GrandId > 0 ? '.global' : '.G' + GroupId} {display:inline}`, 'styleWorld'));
     }
     if (GrandId >= 0) {
       drawMap(GrandId);
@@ -479,13 +521,13 @@
       setStorage('Account');
       setStorage('ortegaaccesstoken', '');
       this.classList.add('hidden');
-      document.getElementById('login').classList.remove('hidden');
+      document.querySelector('#login').classList.remove('hidden');
     }
   }
   //战斗布局-绘制地图
   function drawMap(GrandId) {
-    document.getElementById('gvgMapStyle')?.remove();
-    document.getElementsByTagName('gvg-viewer')[0]?.remove();
+    document.querySelector('#gvgMapStyle')?.remove();
+    document.querySelector('gvg-viewer')?.remove();
     const castalList = {
       'local': {
         '1': {
@@ -748,7 +790,7 @@
     const image = Grand == 'local' ? 'base_ribbon_01' : 'base_metal';
     let style = createElement('style', '', 'gvgMapStyle');
     let styleList = [
-      `gvg-status{width:164px;height:50px;position:relative;display:block}`,
+      `gvg-status{width:164px;height:50px;position:relative;display:block}`, //
       `gvg-status-icon-defense,gvg-status-icon-offense{display:block;width:32px;height:33px;text-align:center;line-height:37px;background-size:cover;color:#fff;font-size:12px}`,
       `gvg-status-icon-defense{background-image:url(assets/icon_gvg_party_defense.png)}`,
       `gvg-status-icon-offense{background-image:url(assets/icon_gvg_party_offense.png)}`,
@@ -773,30 +815,23 @@
       `gvg-ko-count-container{position:absolute;width:76px;left:-38px;top:-19px;display:block;color:#eee;text-shadow:red 0 0 30px,red 0 0 5px}`,
       `gvg-ko-count{display:block;font-size:26px;text-align:center;width:100%}`,
       `gvg-ko-count-label:after{content:'KOs';font-size:14px;position:absolute;display:block;text-align:center;width:100%;height:14px;top:26px;left:0}`,
-      `gvg-attacker{position:absolute;width:40px;left:-20px;top:-19px;display:block;font-size:30px;text-align:center;}`,
-      `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-icon{position:absolute;left:-28px;right:-28px;bottom:-25px;width:56px;height:50px;background-image:url(assets/Castle_0_0.png)}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-icon{position:absolute;left:-31px;right:-31px;bottom:-33px;width:62px;height:67px;background-image:url(assets/Castle_0_1.png)}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-icon{position:absolute;left:-39px;right:-39px;bottom:-40px;width:78px;height:80px;background-image:url(assets/Castle_0_2.png)}`,
-      `gvg-viewer[${Grand}] gvg-castle-name{background-image:url(assets/${image}.png);width:140px;height:26px;color:${Grand == 'local' ? '#473d3b' : 'white'};line-height:33px}`,
-      `gvg-viewer[${Grand}] gvg-castle>gvg-castle-name{left:-70px;right:-70px}`,
-      `gvg-viewer[${Grand}] gvg-castle[church]>gvg-castle-name{bottom:-45px}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle]>gvg-castle-name{bottom:-50px}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple]>gvg-castle-name{bottom:-58px}`,
-      `gvg-viewer[${Grand}]{background-image:url(assets/${Grand}gvg.png)}`,
+      `gvg-attacker{position:absolute;width:160px;left:-80px;bottom:72px;display:block;font-size:16px;text-align:center;opacity:0.5;}`,
+      `gvg-castle[church]>gvg-castle-icon{position:absolute;left:-28px;right:-28px;bottom:-25px;width:56px;height:50px;background-image:url(assets/Castle_0_0.png)}`,
+      `gvg-castle[castle]>gvg-castle-icon{position:absolute;left:-31px;right:-31px;bottom:-33px;width:62px;height:67px;background-image:url(assets/Castle_0_1.png)}`,
+      `gvg-castle[temple]>gvg-castle-icon{position:absolute;left:-39px;right:-39px;bottom:-40px;width:78px;height:80px;background-image:url(assets/Castle_0_2.png)}`,
+      `gvg-castle-name{background-image:url(assets/${image}.png);width:140px;height:26px;color:${Grand == 'local' ? '#473d3b' : 'white'};line-height:33px}`,
+      `gvg-castle>gvg-castle-name{left:-70px;right:-70px}`,
+      `gvg-castle[church]>gvg-castle-name{bottom:-45px}`,
+      `gvg-castle[castle]>gvg-castle-name{bottom:-50px}`,
+      `gvg-castle[temple]>gvg-castle-name{bottom:-58px}`,
+      `gvg-viewer{background-image:url(assets/${Grand}gvg.png)}`,
+      `gvg-castle[temple]>.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-castle[castle]>.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
+      `gvg-castle[church]>.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
       `gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple] >gvg-castle-hint{top:58px}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle] >gvg-castle-hint{top:50px}`,
-      `gvg-viewer[${Grand}] gvg-castle[church] >gvg-castle-hint{top:45px}`,
-      `gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple] >gvg-castle-hint{top:58px}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle] >gvg-castle-hint{top:50px}`,
-      `gvg-viewer[${Grand}] gvg-castle[church] >gvg-castle-hint{top:45px}`,
+      `gvg-castle[temple]>gvg-castle-hint{top:58px}`,
+      `gvg-castle[castle]>gvg-castle-hint{top:50px}`,
+      `gvg-castle[church]>gvg-castle-hint{top:45px}`,
     ];
     let viewer = createElement('gvg-viewer');
     viewer.setAttribute(Grand, '');
@@ -809,7 +844,15 @@
       status.setAttribute('neutral', '');
       const NodeOffense = createElement('gvg-status-bar-offense');
       NodeOffense.onclick = (e) => {
-        const 
+        const trList = document.querySelectorAll('tr');
+        let GuildList = {};
+        for (let i = 0; i < trList.length; i++) {
+          const tr = trList[i];
+          GuildList[tr.id] = tr.childNodes[1].innerHTML;
+        }
+        const GuildSelector = createElement('dialog', '<p>请选择公会</p>', {
+          style: `position:absolute;left:${e.clientX}px;top:${e.clientY}px`,
+        });
       };
       status.appendChild(NodeOffense);
       const NodeDefense = createElement('gvg-status-bar-defense');
@@ -844,49 +887,67 @@
     document.body.appendChild(viewer);
   }
   //战斗布局-填充数据
-  async function fillMap(Data) {
-    resetGuild();
-    const GuildList = Data.guilds;
+  async function fillMap(CastalList, GuildList) {
+    resetTable();
+    const table1 = document.querySelector('#guilds1').tBodies[0];
+    const table2 = document.querySelector('#guilds2').tBodies[0];
+    let trList = [];
     for (let i in GuildList) {
       const GuildId = i;
-      const GuildName = GuildList[i];
-      const divGuild = createElement('div', '', GuildId);
-      divGuild.appendChild(createElement('a', '■'));
-      divGuild.appendChild(createElement('a', GuildName));
-      divGuild.appendChild(createElement('a', ':'));
-      divGuild.appendChild(
-        createElement('input', '', {
-          'type': 'radio',
-          'name': GuildId,
-          'value': 'friendly',
-        })
-      );
-      divGuild.appendChild(
-        createElement('input', '', {
-          'type': 'radio',
-          'name': GuildId,
-          'value': 'neutral',
-        })
-      );
-      divGuild.appendChild(
-        createElement('input', '', {
-          'type': 'radio',
-          'name': GuildId,
-          'value': 'enermy',
-        })
-      );
-      document.getElementById('guildpanel').appendChild(divGuild);
+      const Guild = GuildList[i];
+      changeColor(GuildId, Guild.Color);
+      const divGuild = createElement('tr', '', GuildId);
+      const aColor = createElement('td', '■');
+      aColor.classList.add('GuildId');
+      aColor.onclick = (e) => {
+        const GuildId = e.target.parentNode.id;
+        const Color = prompt('请输入设定颜色，形式为R,G,B');
+        changeColor(GuildId, Color);
+      };
+      divGuild.appendChild(aColor);
+      divGuild.appendChild(createElement('td', GuildList[i].Name));
+      divGuild.appendChild(createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`));
+      divGuild.appendChild(createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`));
+      divGuild.appendChild(createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`));
+      trList.push(divGuild);
+    }
+    for (let i = 0; i < trList.length; i++) {
+      if (i < trList.length / 2) {
+        table1.appendChild(trList[i]);
+      } else {
+        table2.appendChild(trList[i]);
+      }
+    }
+    for (let i = 0; i < CastalList.length; i++) {
+      const CastalData = CastalList[i];
+      const CastalNode = document.querySelector(`gvg-castle[castle-id="${CastalData.CastleId}"]`);
+      CastalNode.setAttribute('defense', CastalData.GuildId);
+      CastalNode.setAttribute('offense', CastalData.AttackerGuildId);
+      CastalNode.querySelector('gvg-status-bar-defense').innerHTML = GuildList[CastalData.GuildId]?.Name;
+      CastalNode.querySelector('gvg-status-bar-offense').innerHTML = GuildList[CastalData.AttackerGuildId]?.Name;
+      CastalNode.querySelector('gvg-status-icon-defense').innerHTML = CastalData.DefensePartyCount;
+      CastalNode.querySelector('gvg-status-icon-offense').innerHTML = CastalData.AttackPartyCount;
+      if (CastalData.AttackerGuildId > 0) {
+        CastalNode.querySelector('gvg-status').removeAttribute('neutral');
+        CastalNode.querySelector('gvg-status').setAttribute('active', '');
+        CastalNode.querySelector('gvg-attacker').classList.remove('hidden');
+      } else {
+        CastalNode.querySelector('gvg-status').removeAttribute('active');
+        CastalNode.querySelector('gvg-status').setAttribute('neutral', '');
+        CastalNode.querySelector('gvg-attacker').classList.add('hidden');
+      }
+      CastalNode.querySelector('gvg-ko-count').innerHTML = CastalData.LastWinPartyKnockOutCount;
     }
   }
-  //战斗布局-重置公会栏
-  function resetGuild() {
-    document.getElementById('guildpanel').innerHTML = '<div><a>图例</a><a>公会名称</a><a>:</a><a>友</a><a>中</a><a>敌</a></div><div><a>公会名称</a><a>:</a><a>友</a><a>中</a><a>敌</a></div>';
-    setStorage('GuildList', null);
+  //战斗布局-重置表格
+  function resetTable() {
+    document.querySelector('#guilds1').tBodies[0].innerHTML = '';
+    document.querySelector('#guilds2').tBodies[0].innerHTML = '';
   }
   //战斗布局-增加提示
   async function addHint() {
-    let exist = this.parentNode.getElementsByTagName('gvg-castle-hint')[0];
-    let image = this.parentNode.getElementsByClassName('gvg-castle-symbol')[0];
+    let exist = this.parentNode.querySelector('gvg-castle-hint');
+    let image = this.parentNode.querySelector('.gvg-castle-symbol');
     let hint = prompt('输入添加的提示，然后输入|，再输入标识代码（A1：攻击1；A2：攻击2；D1：防御1；D2：防御2；FB：禁止；NN：旗帜）', exist ? exist.innerHTML : '');
     if (hint == '' || hint == undefined) {
       exist.remove();
@@ -920,33 +981,34 @@
     this.parentNode.removeAttribute('active');
     this.parentNode.setAttribute('neutral', '');
   }
-  //Guild Battle/Grand War-附加功能
+  //战斗布局-修改颜色
+  function changeColor(GuildId, Color) {
+    document.querySelector(`#style${GuildId}`)?.remove();
+    const style = createElement('style', '', `style${GuildId}`);
+    style.appendChild(createElement('text', `gvg-castle[defense="${GuildId}"] gvg-castle-icon{background-color:rgba(${Color},0.5)}`));
+    style.appendChild(createElement('text', `gvg-castle[offense="${GuildId}"] gvg-attacker{background-color:rgba(${Color},1)}`));
+    style.appendChild(createElement('text', `tr[id="${GuildId}"] td:nth-child(1){color:rgba(${Color},1)}`));
+    document.head.appendChild(style);
+  }
+  /*/Guild Battle/Grand War-附加功能
   function gvgHint(Grand) {
-    document.getElementById('gvgHintStyle')?.remove();
+    document.querySelector('#gvgHintStyle')?.remove();
     let style = createElement('style', '', 'gvgHintStyle');
-    const styleList = [
-      `gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`,
-      `gvg-viewer[${Grand}] gvg-castle[temple] >gvg-castle-hint{top:58px}`,
-      `gvg-viewer[${Grand}] gvg-castle[castle] >gvg-castle-hint{top:50px}`,
-      `gvg-viewer[${Grand}] gvg-castle[church] >gvg-castle-hint{top:45px}`,
-    ];
+    const styleList = [`gvg-castle-hint{left:-70px;right:-70px;background:rgba(32, 32, 32, 0.5);width:140px;color: white;position: absolute;display: block;font-size: 10px;text-align: center;}`, `gvg-viewer[${Grand}] gvg-castle[temple] >.gvg-castle-symbol{left:-70px;bottom:-58px;width:33px;height:29px;position: absolute;display: block;}`, `gvg-viewer[${Grand}] gvg-castle[castle] >.gvg-castle-symbol{left:-70px;bottom:-50px;width:33px;height:29px;position: absolute;display: block;}`, `gvg-viewer[${Grand}] gvg-castle[church] >.gvg-castle-symbol{left:-70px;bottom:-45px;width:33px;height:29px;position: absolute;display: block;}`, `gvg-viewer[${Grand}] gvg-castle[temple] >gvg-castle-hint{top:58px}`, `gvg-viewer[${Grand}] gvg-castle[castle] >gvg-castle-hint{top:50px}`, `gvg-viewer[${Grand}] gvg-castle[church] >gvg-castle-hint{top:45px}`];
     for (let i = 0; i < styleList.length; i++) {
       style.appendChild(createElement('text', styleList[i]));
     }
     document.head.appendChild(style);
-    let listCastal = document.getElementsByTagName('gvg-castle');
+    let listCastal = document.querySelector('gvg-castle');
     for (let i = 0; i < listCastal.length; i++) {
       let castal = listCastal[i];
       //增加备注
-      castal.getElementsByTagName('gvg-castle-name')[0].onclick = addHint;
-      castal.getElementsByTagName('gvg-status-bar-defense')[0].onclick = changeContent;
-      castal.getElementsByTagName('gvg-status-bar-offense')[0].onclick = changeContent;
-      castal.getElementsByTagName('gvg-status-icon-defense')[0].onclick = showOffense;
-      castal.getElementsByTagName('gvg-status-icon-offense')[0].onclick = hideOffense;
-      castal.getElementsByTagName('gvg-castle-icon')[0].onclick = changeColor;
+      castal.querySelector('gvg-castle-name').onclick = addHint;
+      castal.querySelector('gvg-status-bar-defense').onclick = changeContent;
+      castal.querySelector('gvg-status-bar-offense').onclick = changeContent;
+      castal.querySelector('gvg-status-icon-defense').onclick = showOffense;
+      castal.querySelector('gvg-status-icon-offense').onclick = hideOffense;
+      castal.querySelector('gvg-castle-icon').onclick = changeColor;
     }
   }
   //Guild Battle/Grand War-改变内容
@@ -962,7 +1024,7 @@
     if (color) {
       this.setAttribute('style', `background-color: rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`);
     }
-    let div = document.getElementById(color.join('_'));
+    let div = document.querySelector(`#${color.join('_')}`);
     if (!div) {
       div = createElement('div', '', color.join('_'));
       let square = createElement('a', '█');
@@ -974,9 +1036,9 @@
       let commment = createElement('a', '点击此处输入图例');
       commment.onclick = changeContent;
       div.appendChild(commment);
-      document.getElementById('legend').appendChild(div);
+      document.querySelector('#legend').appendChild(div);
     }
-  }
+  }*/
   //API函数
   //获取option
   function buildOption() {
@@ -1139,11 +1201,11 @@
   async function getGuildWar(GrandId, WorldId, GroupId) {
     let request;
     if (GrandId == 0) {
-      request = sendRequest(`https://api.mentemori.icu/${WorldId}/localgvg/latest`);
+      request = await sendRequest(`https://api.mentemori.icu/${WorldId}/localgvg/latest`);
     } else {
-      request = sendRequest(`https://api.mentemori.icu/wg/${GroupId}/globalgvg/${GrandId}/${WorldId}/latest`);
+      request = await sendRequest(`https://api.mentemori.icu/wg/${GroupId}/globalgvg/${GrandId}/${WorldId}/latest`);
     }
-    return request;
+    return JSON.parse(request);
   }
   //https://prd1-auth.mememori-boi.com/api/auth/getDataUri
   async function getDataUri(defaultOpting) {
@@ -1377,6 +1439,7 @@
       //*/
     });
   }
+  //一般请求函数
   async function sendXMLRequest(url, option = {}) {
     return new Promise((resolve) => {
       let method = option.method ?? 'GET';
@@ -1465,41 +1528,8 @@
     };
     return connect;
   }
-  //改变颜色
-  function changeNode() {
-    let showMiddle = document.getElementById('showMiddle').checked;
-    let radioList = document.querySelectorAll('[type="radio"]');
-    let guildList = {
-      enermy: [],
-      friend: [],
-      middle: [],
-    };
-    for (let i = 0; i < radioList.length; i++) {
-      if (radioList[i].checked == true) {
-        guildList[radioList[i].value].push(radioList[i].name);
-      }
-    }
-    let playerList = document.getElementsByClassName('nodePlayer');
-    for (let i = 0; i < playerList.length; i++) {
-      let player = playerList[i];
-      let playerGuild = player.getAttribute('guild');
-      let indexFriendGuild = guildList.friend.indexOf(playerGuild);
-      let indexEnermyGuild = guildList.enermy.indexOf(playerGuild);
-      if (indexFriendGuild > -1) {
-        player.setAttribute('relation', 'friend' + indexFriendGuild);
-      } else if (indexEnermyGuild > -1) {
-        player.setAttribute('relation', 'enermy' + indexEnermyGuild);
-      } else {
-        if (showMiddle) {
-          player.setAttribute('relation', 'middle');
-        } else {
-          player.setAttribute('relation', 'none');
-        }
-      }
-    }
-  }
   //新建DOM
-  function createElement(type, text = '', id) {
+  function createElement(type, text = '', option) {
     let node;
     if (type == 'text') {
       node = document.createTextNode(text);
@@ -1507,8 +1537,12 @@
       node = document.createElement(type);
       node.innerHTML = text;
     }
-    if (id) {
-      node.id = id;
+    if (option?.constructor === String) {
+      node.id = option;
+    } else if (option?.constructor === Object) {
+      for (let i in option) {
+        node.setAttribute(i, option[i]);
+      }
     }
     return node;
   }
