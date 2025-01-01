@@ -61,14 +61,6 @@
     navExtend.appendChild(divFunction);
     //初始化账号管理模块
     const divAccount = createElement('div', '', 'accountmanager');
-    divAccount.appendChild(createElement('a', '登录状态:'));
-    //登录状态模块
-    divAccount.appendChild(createElement('a', '无账号'));
-    //登出模块
-    const buttonLogout = createElement('button', '登出', 'logout');
-    buttonLogout.classList.add('hidden');
-    buttonLogout.onclick = logoutAccount;
-    divAccount.appendChild(buttonLogout);
     //插入账号管理模块
     navExtend.appendChild(divAccount);
     //插入导航栏
