@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.5
+// @version      0.51
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -25,6 +25,7 @@
   const ModelName = 'Xiaomi 2203121C';
   const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
   const assetURL = 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/';
+  const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
   initPage();
   //const account = getStorage('Account') ? getStorage('Account') : await createUser();
   switch (document.URL) {
@@ -1221,6 +1222,27 @@
     dialogGuild.showModal();
   }
   //API函数
+  //获取option
+  function buildOption() {
+    let option = {
+      method: 'POST',
+      headers: {
+        'ortegaaccesstoken': getStorage('ortegaaccesstoken'), //从cookie获取
+        'ortegaappversion': getStorage('AppVersion'), //跟随版本
+        'ortegadevicetype': 2, //固定为2
+        'ortegauuid': getStorage('ortegauuid'), //随机uuid，登录后绑定账号
+        //'Host':'*.mememori-boi.com', //自动
+        'Content-Type': 'application/json; charset=UTF-8', //固定
+        'Accept-Encoding': 'gzip', //固定
+        'User-Agent': 'BestHTTP/2 v2.3.0', //固定
+        //'Content-Length':399, //自动
+      },
+      type: 'arraybuffer',
+      msgpack: true,
+      //body: null, //消息体
+    };
+    return option;
+  }
   //获取世界组
   async function getWorldGroup() {
     const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer', msgpack: true });
