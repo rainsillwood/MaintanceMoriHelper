@@ -24,11 +24,6 @@
   'use strict';
   const ModelName = 'Xiaomi 2203121C';
   const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
-  const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
-  let userURL;
-  let MagicOnionHost;
-  let MagicOnionPort;
-  let AuthTokenOfMagicOnion;
   initPage();
   //const account = getStorage('Account') ? getStorage('Account') : await createUser();
   switch (document.URL) {
@@ -78,16 +73,6 @@
     //插入导航栏
     navDefault.insertAdjacentElement('afterend', navExtend);
     navDefault.insertAdjacentElement('afterend', createElement('hr'));
-    //初始化AppVersion
-    const AppVersion = await getAppVersion();
-    if (AppVersion) {
-      setStorage('AppVersion', AppVersion);
-    }
-    //初始化ErrorCode
-    const ErrorCode = await getErrorCode();
-    if (ErrorCode) {
-      setStorage('ErrorCode', JSON.stringify(ErrorCode));
-    }
   }
   //初始化选择栏
   async function initSelect() {
@@ -496,101 +481,6 @@
     }
   }
   //子功能
-  //登录账号
-  async function loginAccount() {
-    console.log('开始登陆');
-    setStorage('ortegaaccesstoken', '');
-    const WorldId = getStorage('WorldId') * 1;
-    const RegionId = Math.floor(WorldId / 1000);
-    const RegionList = {
-      '1': 'JP', //日本
-      '2': 'KR', //韩国
-      '3': 'TW', //台湾省，HK(香港区)/MO(澳门区)
-      '4': 'US', //美国，CA(加拿大)/PM(圣皮埃尔和密克隆)
-      '5': 'GB' /*英国，IS(冰岛)/IE(爱尔兰)/AZ(阿塞拜疆)/AL(阿尔巴尼亚)/AM(亚美尼亚)/
-                        AD(安道尔)/IT(意大利)/UA(乌克兰)/EE(爱沙尼亚)/AT(奥地利)/
-                        AX(奥兰)/GG(根西)/MK(北马其顿)/GR(希腊)/GL(格陵兰)/
-                        HR(克罗地亚)/SM(圣马力诺)/GI(直布罗陀)/JE(泽西)/GE(格鲁吉亚)/
-                        CH(瑞士)/SE(瑞典)/SJ(斯瓦尔巴和扬马延)/ES(西班牙)/SK(斯洛伐克)/
-                        SI(斯洛文尼亚)/RS(塞尔维亚)/CZ(捷克)/DK(丹麦)/DE(德国)/
-                        NO(挪威)/VA(梵蒂冈)/HU(匈牙利)/FI(芬兰)/FO(法罗群岛)/
-                        FR(法国)/BG(保加利亚)/BY(白俄罗斯)/PL(波兰)/BA(波黑)/
-                        PT(葡萄牙)/IM(马恩岛)/MC(摩纳哥)/MD(摩尔多瓦)/ME(黑山)/
-                        LV(拉脱维亚)/LT(立陶宛)/LI(列支敦士登)/RO(罗马尼亚)/LU(卢森堡)*/,
-      '6': 'CN', //所有不在上面的
-    };
-    const CountryCode = RegionList[RegionId];
-    let Accounts = JSON.parse(getStorage('Accounts'));
-    if (!Accounts) {
-      Accounts = {};
-    }
-    let Account = Accounts[RegionId];
-    //若Account不存在
-    if (!Account) {
-      const AuthToken = await getAuthToken();
-      const ortegauuid = crypto.randomUUID().replaceAll('-', '');
-      const AdverisementId = crypto.randomUUID();
-      const _createUser = await createUser(AuthToken, AdverisementId, CountryCode, ortegauuid);
-      Account = {};
-      Account.AdverisementId = AdverisementId;
-      Account.ortegauuid = ortegauuid;
-      setStorage('ortegauuid', ortegauuid);
-      let UserId = prompt('请输入引继码，若使用临时账号请留空或点取消\n警告：本工具使用时会多次进行账号操作，及易被判定为违规，建议使用临时账号！');
-      //若不使用引继码
-      if (!UserId) {
-        Account.UserId = _createUser.UserId.toString();
-        Account.ClientKey = _createUser.ClientKey;
-      }
-      //若使用引继码
-      else {
-        Account.UserId = UserId.toString();
-        const FromUserId = _createUser.UserId.toString();
-        const Password = prompt('请输入引继码，若使用临时账号请留空');
-        const _getComebackUserData = await getComebackUserData(FromUserId, UserId, Password, AuthToken);
-        const _comebackUser = await comebackUser(FromUserId, _getComebackUserData.OneTimeToken, UserId);
-        Account.ClientKey = _comebackUser.ClientKey;
-      }
-      Accounts[RegionId] = Account;
-    }
-    setStorage('ortegauuid', Account.ortegauuid);
-    const _login = await login(Account.ClientKey, Account.AdverisementId, Account.UserId);
-    const PlayerDataInfoList = _login.PlayerDataInfoList;
-    let WorldData;
-    for (let i = 0; i < PlayerDataInfoList.length; i++) {
-      const PlayerData = PlayerDataInfoList[i];
-      if (PlayerData.WorldId == WorldId) {
-        WorldData = {
-          'PlayerId': PlayerData.PlayerId.toString(),
-          'Password': PlayerData.Password,
-        };
-      }
-    }
-    if (!WorldData) {
-      const _createWorldPlayer = await createWorldPlayer(WorldId);
-      WorldData = {
-        'PlayerId': _createWorldPlayer.PlayerId.toString(),
-        'Password': _createWorldPlayer.Password,
-      };
-    }
-    const _getServerHost = await getServerHost(WorldId);
-    userURL = _getServerHost.ApiHost;
-    MagicOnionHost = _getServerHost.MagicOnionHost;
-    MagicOnionPort = _getServerHost.MagicOnionPort;
-    const _loginPlayer = await loginPlayer(WorldData.PlayerId, WorldData.Password);
-    AuthTokenOfMagicOnion = _loginPlayer.AuthTokenOfMagicOnion;
-    const _getUserData = await getUserData();
-    setStorage('Accounts', JSON.stringify(Accounts));
-  }
-  //登出账号
-  function logoutAccount() {
-    let confirm = prompt('真的要清除账号吗，请输入：确认清除');
-    if (confirm == '确认清除') {
-      setStorage('Account');
-      setStorage('ortegaaccesstoken', '');
-      this.classList.add('hidden');
-      document.querySelector('#login').classList.remove('hidden');
-    }
-  }
   //战斗布局-绘制地图
   function drawMap(GrandId) {
     document.querySelector('#gvgMapStyle')?.remove();
@@ -1330,69 +1220,6 @@
     dialogGuild.showModal();
   }
   //API函数
-  //获取option
-  function buildOption() {
-    let option = {
-      method: 'POST',
-      headers: {
-        'ortegaaccesstoken': getStorage('ortegaaccesstoken'), //从cookie获取
-        'ortegaappversion': getStorage('AppVersion'), //跟随版本
-        'ortegadevicetype': 2, //固定为2
-        'ortegauuid': getStorage('ortegauuid'), //随机uuid，登录后绑定账号
-        //'Host':'*.mememori-boi.com', //自动
-        'Content-Type': 'application/json; charset=UTF-8', //固定
-        'Accept-Encoding': 'gzip', //固定
-        'User-Agent': 'BestHTTP/2 v2.3.0', //固定
-        //'Content-Length':399, //自动
-      },
-      type: 'arraybuffer',
-      msgpack: true,
-      //body: null, //消息体
-    };
-    return option;
-  }
-  //获取apkversion
-  async function getAppVersion() {
-    let option = buildOption();
-    const varjs = await sendGMRequest('https://mememori-game.com/apps/vars.js', {});
-    if (!varjs) {
-      console.log('获取var.js失败');
-      alert('获取var.js失败，请重试');
-    } else {
-      const apkVersion = getVariable(varjs, 'apkVersion').split('.');
-      let max = 20;
-      for (let i = 0; i < max + 1; i++) {
-        //版本号递增
-        apkVersion[2] = apkVersion[2] * 1 + i;
-        option.headers.ortegaappversion = apkVersion.join('.');
-        //最后一次手动请求版本号
-        if (i == max) {
-          option.headers.ortegaappversion = prompt('版本号不在正常范围内，请手动输入版本号', option.headers.ortegaappversion);
-        }
-        //请求getDataUri
-        let result = await getDataUri(option);
-        //正确
-        if (!result.ErrorCode) {
-          //存储版本号
-          return option.headers.ortegaappversion;
-        }
-      }
-    }
-  }
-  //获取错误码
-  async function getErrorCode() {
-    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResourceZhTwMB`, { type: 'arraybuffer', msgpack: true });
-    const TextResourceZhTwMB = await msgpack.decode(new Uint8Array(buffer));
-    if (!TextResourceZhTwMB) return;
-    let result = {};
-    for (let i = 0; i < TextResourceZhTwMB.length; i++) {
-      const TextResourceZhTw = TextResourceZhTwMB[i];
-      if (TextResourceZhTw.StringKey.includes('ErrorMessage')) {
-        result[TextResourceZhTw.StringKey.replace(/\[ErrorMessage(.*?)\]/, '$1') * 1] = TextResourceZhTw.Text;
-      }
-    }
-    return result;
-  }
   //获取世界组
   async function getWorldGroup() {
     const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer', msgpack: true });
@@ -1478,15 +1305,6 @@
     }
     return result;
   }
-  //获取AuthToken
-  async function getAuthToken() {
-    let jsonAuthTokenData = await sendGMRequest('https://list.moonheart.dev/d/public/mmtm/AddressableLocalAssets/ScriptableObjects/AuthToken/AuthTokenData.json?v=' + Date.now(), { type: 'json' });
-    if (!jsonAuthTokenData) {
-      console.log('获取AuthToken失败');
-      alert('获取AuthToken失败，请重试');
-    }
-    return jsonAuthTokenData._authToken;
-  }
   //获取gvg信息
   async function getGuildWar(GrandId, WorldId, GroupId) {
     let request;
@@ -1497,176 +1315,11 @@
     }
     return JSON.parse(request);
   }
-  //https://prd1-auth.mememori-boi.com/api/auth/getDataUri
-  async function getDataUri(defaultOpting) {
-    //生成配置
-    let option = defaultOpting ?? buildOption();
-    //随机ortegauuid
-    option.headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
-    //不设ortegaaccesstoken
-    option.headers.ortegaaccesstoken = '';
-    //生成包体
-    const data = {
-      'CountryCode': 'TW',
-      'UserId': 0,
-    };
-    option.body = data;
-    //发包
-    let result = await sendRequest(authURL + 'getDataUri', option);
-    return result;
-  }
-  //https://prd1-auth.mememori-boi.com/api/auth/createUser
-  async function createUser(AuthToken, AdverisementId, CountryCode, ortegauuid) {
-    let option = buildOption();
-    const data = {
-      'AdverisementId': AdverisementId,
-      'AppVersion': getStorage('AppVersion'),
-      'CountryCode': CountryCode,
-      'DeviceToken': '',
-      'DisplayLanguage': 4,
-      'ModelName': ModelName,
-      'OSVersion': OSVersion,
-      'SteamTicket': '',
-      'AuthToken': AuthToken,
-    };
-    option.body = data;
-    option.headers.ortegauuid = ortegauuid;
-    let result = await sendRequest(authURL + 'createUser', option);
-    return result;
-  }
-  //https://prd1-auth.mememori-boi.com/api/auth/setUserSetting
-  async function setUserSetting() {
-    let option = buildOption();
-    const data = {
-      'UserSettingsType': 2,
-      'Value': 2,
-      'DeviceToken': '',
-    };
-    option.body = data;
-    let result = await sendRequest(authURL + 'setUserSetting', option);
-    return result;
-  }
-  //https://prd1-auth.mememori-boi.com/api/auth/createWorldPlayer
-  async function createWorldPlayer(WorldId) {
-    let option = buildOption();
-    const data = {
-      'WorldId': WorldId,
-      'Comment': '侦查员一号',
-      'Name': '侦查员一号',
-      'DeepLinkId': 0,
-      'SteamTicket': null,
-    };
-    option.body = data;
-    let result = await sendRequest(authURL + 'createWorldPlayer', option);
-    return result;
-  }
-  //https://prd1-auth.mememori-boi.com/api/auth/getComebackUserData
-  async function getComebackUserData(FromUserId, UserId, Password, AuthToken) {
-    let option = buildOption();
-    const data = {
-      'AppleIdToken': null,
-      'FromUserId': new Uint64BE(FromUserId),
-      'GoogleAuthorizationCode': null,
-      'Password': Password,
-      'SnsType': 1,
-      'TwitterAccessToken': null,
-      'TwitterAccessTokenSecret': null,
-      'UserId': new Uint64BE(UserId),
-      'AuthToken': AuthToken,
-    };
-    option.body = data;
-    let result = await sendRequest(authURL + 'getComebackUserData', option);
-    return result;
-  }
-  //https://prd1-auth.mememori-boi.com/api/auth/comebackUser
-  async function comebackUser(FromUserId, OneTimeToken, UserId) {
-    let option = buildOption();
-    const data = {
-      'FromUserId': new Uint64BE(FromUserId, 10),
-      'OneTimeToken': OneTimeToken,
-      'ToUserId': new Uint64BE(UserId, 10),
-      'SteamTicket': null,
-    };
-    option.body = data;
-    let result = await sendRequest(authURL + 'comebackUser', option);
-    return result;
-  }
-  //https://prd1-auth.mememori-boi.com/api/auth/login
-  async function login(ClientKey, AdverisementId, UserId) {
-    let option = buildOption();
-    const data = {
-      'ClientKey': ClientKey,
-      'DeviceToken': '',
-      'AppVersion': getStorage('AppVersion'),
-      'OSVersion': OSVersion,
-      'ModelName': ModelName,
-      'AdverisementId': AdverisementId,
-      'UserId': new Uint64BE(UserId, 10),
-      'IsPushNotificationAllowed': false,
-    };
-    option.body = data;
-    let result = await sendRequest(authURL + 'login', option);
-    return result;
-  }
-  //https://prd1-auth.mememori-boi.com/api/auth/getServerHost
-  async function getServerHost(WorldId) {
-    let option = buildOption();
-    const data = {
-      'WorldId': WorldId,
-    };
-    option.body = data;
-    let result = await sendRequest(authURL + 'getServerHost', option);
-    return result;
-  }
-  //user/loginPlayer
-  async function loginPlayer(PlayerId, Password) {
-    let option = buildOption();
-    const data = {
-      'Password': Password,
-      'PlayerId': new Uint64BE(PlayerId, 10),
-      'ErrorLogInfoList': null,
-      'SteamTicket': null,
-    };
-    option.body = data;
-    let result = await sendRequest(userURL + 'user/loginPlayer', option);
-    return result;
-  }
-  //user/getUserData
-  async function getUserData() {
-    let option = buildOption();
-    const data = {};
-    option.body = data;
-    let result = await sendRequest(userURL + 'user/getUserData', option);
-    return result;
-  }
-  //localGvg/getLocalGvgSceneTransitionData
-  async function getLocalGvgSceneTransitionData() {
-    let option = buildOption();
-    const data = {};
-    option.body = data;
-    let result = await sendRequest(userURL + 'localGvg/getLocalGvgSceneTransitionData', option);
-    return result;
-  }
-  //localGvg/getLocalGvgCastleInfoDialogData
-  async function getLocalGvgCastleInfoDialogData(CastleId) {
-    let option = buildOption();
-    const data = {
-      'CastleId': CastleId,
-    };
-    option.body = data;
-    let result = await sendRequest(userURL + 'localGvg/getLocalGvgCastleInfoDialogData', option);
-    return result;
-  }
   //工具函数
   //请求函数
   async function sendRequest(url, option) {
     let request = await sendGMRequest(url, option);
     return request;
-  }
-  //连接函数
-  async function connectServer(params) {
-    let connect = await connectWebsocket(params);
-    return connect;
   }
   //跨域请求函数
   async function sendGMRequest(url, option = {}) {
@@ -1729,95 +1382,6 @@
       //*/
     });
   }
-  //一般请求函数
-  async function sendXMLRequest(url, option = {}) {
-    return new Promise((resolve) => {
-      let method = option.method ?? 'GET';
-      let headers = option.headers ?? {};
-      let data;
-      if (option.body) {
-        if (option.msgpack) {
-          //每次重新生成uuid
-          if (!headers.ortegauuid) {
-            headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
-          }
-          headers.ortegaaccesstoken = getStorage('ortegaaccesstoken');
-          data = msgpack.encode(option.body);
-        } else {
-          data = option.body;
-        }
-      }
-      let responseType = option.type ?? null;
-      let request = new XMLHttpRequest();
-      request.open(method, url);
-      request.responseType = responseType;
-      for (let i in headers) {
-        request.setRequestHeader(i, headers[i]);
-      }
-      request.send(data);
-      request.onload = async function () {
-        if (request.status != 200) {
-          // 分析响应的 HTTP 状态
-          console.log(`Error ${request.status}: ${request.statusText}`); // 例如 404: Not Found
-        } else {
-          // 显示结果
-          const response = request.response;
-          console.log(`Done, got ${response.length} bytes`); // response 是服务器响应
-          const type = request.getResponseHeader('content-type');
-          setStorage('ortegaaccesstoken', request.getResponseHeader('orteganextaccesstoken'));
-          setStorage('AssetVersion', request.getResponseHeader('assetversion'));
-          setStorage('MasterVersion', request.getResponseHeader('masterversion'));
-          setStorage('utcnowtimestamp', request.getResponseHeader('utcnowtimestamp'));
-          let data;
-          if (type == 'application/octet-stream') {
-            data = await msgpack.decode(new Uint8Array(response));
-            if (data.ErrorCode) {
-              const ErrorCode = JSON.parse(getStorage('ErrorCode'));
-              console.log(`${request.responseURL.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
-            } else {
-              console.log(`${request.responseURL.split('/').pop()}:获取成功`);
-            }
-          } else {
-            data = response;
-          }
-          resolve(data);
-        }
-        request.onprogress = function (event) {
-          if (event.lengthComputable) {
-            console.log(`Received ${event.loaded} of ${event.total} bytes`);
-          } else {
-            console.log(`Received ${event.loaded} bytes`); // 没有 Content-Length
-          }
-        };
-        request.onerror = function () {
-          console.log('Request failed');
-        };
-      };
-    });
-  }
-  //Websocket链接
-  async function connectWebsocket(url, port) {
-    const connect = new WebSocket(`wss://${url}:${port}`);
-    connect.onopen = function (e) {
-      alert('[open] Connection established');
-    };
-    connect.onmessage = function (event) {
-      alert(`[message] Data received from server: ${event.data}`);
-    };
-    connect.onclose = function (event) {
-      if (event.wasClean) {
-        alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-      } else {
-        // 例如服务器进程被杀死或网络中断
-        // 在这种情况下，event.code 通常为 1006
-        alert('[close] Connection died');
-      }
-    };
-    connect.onerror = function (error) {
-      alert(`[error] ${error.message}`);
-    };
-    return connect;
-  }
   //新建DOM
   function createElement(type, text = '', option) {
     let node;
@@ -1845,14 +1409,6 @@
       result = match.groups.token;
     }
     return result;
-  }
-  //获取代码定义
-  function getVariable(script, variable) {
-    let reg = new RegExp(`${variable} *?= *('|"|\`)?(?<value>.*?)('|"|\`)? *(;)?(\\n|\\r)`);
-    let match = reg.exec(script);
-    if (match) {
-      return match.groups.value;
-    }
   }
   //获取存储对象
   function getStorage(key) {
