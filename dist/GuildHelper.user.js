@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.52
+// @version      0.53
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -67,6 +67,11 @@
     //插入导航栏
     navDefault.insertAdjacentElement('afterend', navExtend);
     navDefault.insertAdjacentElement('afterend', createElement('hr'));
+    //初始化AppVersion
+    const AppVersion = await getAppVersion();
+    if (AppVersion) {
+      setStorage('AppVersion', AppVersion);
+    }
   }
   //初始化选择栏
   async function initSelect() {
@@ -1242,6 +1247,34 @@
       //body: null, //消息体
     };
     return option;
+  }
+  //获取apkversion
+  async function getAppVersion() {
+    let option = buildOption();
+    const varjs = await sendGMRequest('https://mememori-game.com/apps/vars.js', {});
+    if (!varjs) {
+      console.log('获取var.js失败');
+      alert('获取var.js失败，请重试');
+    } else {
+      const apkVersion = getVariable(varjs, 'apkVersion').split('.');
+      let max = 20;
+      for (let i = 0; i < max + 1; i++) {
+        //版本号递增
+        apkVersion[2] = apkVersion[2] * 1 + i;
+        option.headers.ortegaappversion = apkVersion.join('.');
+        //最后一次手动请求版本号
+        if (i == max) {
+          option.headers.ortegaappversion = prompt('版本号不在正常范围内，请手动输入版本号', option.headers.ortegaappversion);
+        }
+        //请求getDataUri
+        let result = await getDataUri(option);
+        //正确
+        if (!result.ErrorCode) {
+          //存储版本号
+          return option.headers.ortegaappversion;
+        }
+      }
+    }
   }
   //获取世界组
   async function getWorldGroup() {
