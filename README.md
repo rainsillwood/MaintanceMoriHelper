@@ -3,6 +3,8 @@
  
  一个基于Maintenance Mori的工具，需要安装TamperMonkey来使用，暂时只有中文版
 
+ 安装地址：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.js
+
 # 功能介绍
  数据转换：选择MessagePack格式的二进制文件（如游戏的MB文件，抓包发包的数据），自动转化为可读的JSON格式，可一次性多选
  
