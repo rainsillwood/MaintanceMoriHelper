@@ -1478,6 +1478,14 @@
     }
     return result;
   }
+  //获取代码定义
+  function getVariable(script, variable) {
+    let reg = new RegExp(`${variable} *?= *('|"|\`)?(?<value>.*?)('|"|\`)? *(;)?(\\n|\\r)`);
+    let match = reg.exec(script);
+    if (match) {
+      return match.groups.value;
+    }
+  }
   //获取存储对象
   function getStorage(key) {
     return localStorage.getItem(key);
