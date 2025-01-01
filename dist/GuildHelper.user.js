@@ -1316,6 +1316,24 @@
     }
     return JSON.parse(request);
   }
+  //https://prd1-auth.mememori-boi.com/api/auth/getDataUri
+  async function getDataUri(defaultOpting) {
+    //生成配置
+    let option = defaultOpting ?? buildOption();
+    //随机ortegauuid
+    option.headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
+    //不设ortegaaccesstoken
+    option.headers.ortegaaccesstoken = '';
+    //生成包体
+    const data = {
+      'CountryCode': 'TW',
+      'UserId': 0,
+    };
+    option.body = data;
+    //发包
+    let result = await sendRequest(authURL + 'getDataUri', option);
+    return result;
+  }
   //工具函数
   //请求函数
   async function sendRequest(url, option) {
