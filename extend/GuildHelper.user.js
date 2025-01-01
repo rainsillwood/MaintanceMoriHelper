@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         MementoMori Guild Helper
 // @namespace    https://suzunemaiki.moe/
-// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.4
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
+// @version      0.5
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -24,6 +24,7 @@
   'use strict';
   const ModelName = 'Xiaomi 2203121C';
   const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
+  const assetURL = 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/';
   const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
   let userURL;
   let MagicOnionHost;
@@ -969,7 +970,7 @@
             gvg-status[counter] > gvg-status-icon-defense {
               left: 0;
               bottom: 0;
-              background-image: url(https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/icon_gvg_party_offense_counter.png);
+              background-image: url(${assetURL}icon_gvg_party_offense_counter.png);
             }
             gvg-status[counter] > gvg-status-icon-offense {
               right: 0;
@@ -1234,7 +1235,7 @@
   async function addHint() {
     let exist = this.parentNode.querySelector('gvg-castle-hint');
     let image = this.parentNode.querySelector('.gvg-castle-symbol');
-    let hint = prompt('输入添加的提示，然后输入|，再输入标识代码（A1：攻击1；A2：攻击2；D1：防御1；D2：防御2；FB：禁止；NN：旗帜）', exist ? exist.innerHTML : '');
+    let hint = prompt('输入添加的提示,然后输入"|"(不带引号),再输入标识代码(A1:攻击1;A2:攻击2;D1:防御1;D2:防御2;F1:禁止;F2:旗帜)\n若标识代码为空则移除图标,其他代码则为你确认知道的图片名称,包含相对路径,路经确认:\nhttps://github.com/rainsillwood/MementoMoriGuildHelper/tree/main/assets', exist ? exist.innerHTML : '');
     if (hint == '' || hint == undefined) {
       exist.remove();
       return;
@@ -1252,8 +1253,16 @@
       image = createElement('img');
       image.classList.add('gvg-castle-symbol');
     }
-    if ('A1|A2|D1|D2|FB|NN'.includes(hint[1])) {
-      image.src = `https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/refs/heads/main/${hint[1]}.png`;
+    const imageName = {
+      'A1': 'icon_gvg_marker_1',
+      'A2': 'icon_gvg_marker_2',
+      'D1': 'icon_gvg_marker_3',
+      'D2': 'icon_gvg_marker_4',
+      'F1': 'icon_gvg_marker_5',
+      'F2': 'icon_gvg_marker_6',
+    };
+    if (hint[1]) {
+      image.src = `${assetURL}${imageName[hint[1]] ?? hint[1]}.png`;
       this.parentNode.appendChild(image);
     }
   }
