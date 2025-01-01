@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.51
+// @version      0.52
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -1404,12 +1404,6 @@
               setStorage('MasterVersion', getHeader(response.responseHeaders, 'ortegamasterversion'));
               setStorage('utcnowtimestamp', getHeader(response.responseHeaders, 'ortegautcnowtimestamp'));
               data = await msgpack.decode(new Uint8Array(response.response));
-              if (data.ErrorCode) {
-                const ErrorCode = JSON.parse(getStorage('ErrorCode'));
-                console.log(`${response.finalUrl.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
-              } else {
-                console.log(`${response.finalUrl.split('/').pop()}:获取成功`);
-              }
             } else {
               data = response.response;
             }
