@@ -30,8 +30,13 @@
   let MagicOnionHost;
   let MagicOnionPort;
   let AuthTokenOfMagicOnion;
+  let SocketGvG;
+  //初始化所有页面
   initPage();
-  //const account = getStorage('Account') ? getStorage('Account') : await createUser();
+  //初始化ErrorCode
+  const ErrorCode = await getErrorCode();
+  //初始化AppVersion
+  const AppVersion = await getAppVersion();
   switch (document.URL) {
     case 'https://mentemori.icu/?function=fileConverter': {
       fileConverter();
@@ -51,44 +56,35 @@
     //获取语言模块
     const divLocal = navDefault.childNodes[3].childNodes[3];
     //插入中文模块
-    divLocal.appendChild(createElement('text', ' | '));
-    divLocal.appendChild(createElement('a', 'ZH', { href: '?lang=zh' }));
+    divLocal.append(
+      createElement('text', ' | '),
+      createElement('a', 'ZH', {
+        href: '?lang=zh',
+      })
+    );
     //初始化导航栏
-    const navExtend = createElement('nav');
+    const navExtend = navDefault.insertAdjacentElement('afterend', createElement('nav'));
+    navDefault.insertAdjacentElement('afterend', createElement('hr'));
     //初始化功能模块
-    const divFunction = createElement('div');
-    //二进制文件转换功能
-    divFunction.appendChild(createElement('a', '数据转换', { href: '/?function=fileConverter' }));
-    divFunction.appendChild(createElement('text', ' | '));
-    //战斗布局功能
-    divFunction.appendChild(createElement('a', '战斗布局', { href: '/?function=gvgMapper' }));
-    //插入功能模块
-    navExtend.appendChild(divFunction);
+    const divFunction = navExtend.appendChild(createElement('div'));
+    divFunction.append(
+      //二进制文件转换功能
+      createElement('a', '数据转换', {
+        href: '/?function=fileConverter',
+      }),
+      createElement('text', ' | '),
+      //战斗布局功能
+      createElement('a', '战斗布局', {
+        href: '/?function=gvgMapper',
+      })
+    );
     //初始化账号管理模块
-    const divAccount = createElement('div', '', 'accountmanager');
-    divAccount.appendChild(createElement('a', '登录状态:'));
-    //登录状态模块
-    divAccount.appendChild(createElement('a', '无账号'));
+    const divAccount = navExtend.appendChild(createElement('div', '', 'accountmanager'));
+    divAccount.append(createElement('a', '登录状态:'), createElement('a', '无账号'));
     //登出模块
-    const buttonLogout = createElement('button', '登出', 'logout');
+    const buttonLogout = divAccount.appendChild(createElement('button', '登出', 'logout'));
     buttonLogout.classList.add('hidden');
     buttonLogout.onclick = logoutAccount;
-    divAccount.appendChild(buttonLogout);
-    //插入账号管理模块
-    navExtend.appendChild(divAccount);
-    //插入导航栏
-    navDefault.insertAdjacentElement('afterend', navExtend);
-    navDefault.insertAdjacentElement('afterend', createElement('hr'));
-    //初始化AppVersion
-    const AppVersion = await getAppVersion();
-    if (AppVersion) {
-      setStorage('AppVersion', AppVersion);
-    }
-    //初始化ErrorCode
-    const ErrorCode = await getErrorCode();
-    if (ErrorCode) {
-      setStorage('ErrorCode', JSON.stringify(ErrorCode));
-    }
   }
   //初始化选择栏
   async function initSelect() {
@@ -99,19 +95,24 @@
       return option;
     };
     //选择栏样式
-    const Style = createElement(
-      'style',
-      `
+    document.head.appendChild(
+      createElement(
+        'style',
+        `
             #selectpanel {
               width: 640px;
               display: inline-block;
               vertical-align: top;
+            }
+            #selectpanel > p {
+              text-align: center;
             }
             #selectpanel a {
               display: inline-block;
             }
             #selectpanel a:nth-child(1) {
               width: 75px;
+              text-align: left;
             }
             #selectpanel a:nth-child(2) {
               width: 25px;
@@ -120,7 +121,7 @@
               width: 520px;
             }
             #selectpanel button {
-              width: 33%;
+              width: 20%;
             }
             #selectpanel option {
               display: none;
@@ -161,105 +162,13 @@
             tr > :nth-child(5) {
               width: 25px;
             }`
+      )
     );
-    document.head.appendChild(Style);
     //获取世界分组
     const WorldGroup = await getWorldGroup();
-    //初始化选择区
-    const divSelect = createElement('div', '', 'selectpanel');
-    const pRegion = createElement('p', '<a>Region</a><a> : </a>');
-    const selectRegion = createElement('select', '', 'listRegion');
-    const pGroup = createElement('p', '<a>Group</a><a> : </a>');
-    const selectGroup = createElement('select', '', 'listGroup');
-    const pGrand = createElement('p', '<a>Grand</a><a> : </a>');
-    const selectGrand = createElement('select', '', 'listGrand');
-    const pWorld = createElement('p', '<a>World</a><a> : </a>');
-    const selectWorld = createElement('select', '', 'listWorld');
-    const pRequest = createElement('p');
-    const buttonGetServer = createElement('button', `从服务器获取`);
-    buttonGetServer.onclick = async () => {
-      if (selectWorld.value < 0) {
-        alert('未选择世界');
-        return;
-      }
-      const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
-      const _getGuildWar = await getGuildWar(getStorage('GrandId'), getStorage('WorldId'), getStorage('GroupId'));
-      let Matching = _getGuildWar?.data;
-      if (Matching) {
-        for (let i in Matching.guilds) {
-          Matching.guilds[i] = {
-            'Name': Matching.guilds[i],
-            'Color': GuildData[i] ?? '0,0,0',
-          };
-        }
-        fillMap(Matching.castles, Matching.guilds);
-      } else {
-        alert('无法获取战斗信息');
-      }
-    };
-    const buttonGetLocal = createElement('button', `从上一次恢复`);
-    buttonGetLocal.onclick = () => {
-      if (selectWorld.value < 0) {
-        alert('未选择世界');
-        return;
-      }
-      const MatchingData = JSON.parse(getStorage('MatchingData')) ?? {};
-      const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
-      let Matching = MatchingData[`${getStorage('GroupId')}-${getStorage('GrandId')}-${getStorage('WorldId')}`];
-      if (Matching) {
-        for (let i in Matching.guilds) {
-          Matching.guilds[i] = {
-            'Name': Matching.guilds[i],
-            'Color': GuildData[i] ?? '0,0,0',
-          };
-        }
-        fillMap(Matching.castles, Matching.guilds);
-      } else {
-        alert('没有该对战的城池信息');
-      }
-    };
-    const buttonSetLocal = createElement('button', `保存设置`);
-    buttonSetLocal.onclick = () => {
-      if (selectWorld.value < 0) {
-        alert('未选择世界');
-        return;
-      }
-      let Matching = { 'castles': [], 'guilds': {} };
-      const GuildList = document.querySelectorAll('tr[id]');
-      let GuildData = JSON.parse(getStorage('GuildData')) ?? {};
-      for (let i = 0; i < GuildList.length; i++) {
-        const Guild = GuildList[i];
-        const GuildId = Guild.id;
-        GuildData[GuildId] = document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
-        Matching.guilds[GuildId] = Guild.childNodes[1].innerHTML;
-      }
-      setStorage('GuildData', JSON.stringify(GuildData));
-      const CastalList = document.querySelectorAll('gvg-castle');
-      let MatchingData = JSON.parse(getStorage('MatchingData')) ?? {};
-      if (MatchingData) {
-        for (let i = 0; i < CastalList.length; i++) {
-          const Castal = CastalList[i];
-          const CastalId = Castal.getAttribute('castle-id');
-          Matching.castles.push({
-            'CastleId': CastalId,
-            'GuildId': Castal.getAttribute('defense'),
-            'AttackerGuildId': Castal.getAttribute('offense'),
-            'AttackPartyCount': Castal.querySelector('gvg-status-icon-offense').innerHTML,
-            'DefensePartyCount': Castal.querySelector('gvg-status-icon-defense').innerHTML,
-            'GvgCastleState': Castal.querySelector('gvg-status').hasAttribute('active') + Castal.querySelector('gvg-status').hasAttribute('counter'),
-            'LastWinPartyKnockOutCount': Castal.querySelector('gvg-ko-count').innerHTML,
-          });
-        }
-        MatchingData[`${getStorage('GroupId')}-${getStorage('GrandId')}-${getStorage('WorldId')}`] = Matching;
-        setStorage('MatchingData', JSON.stringify(MatchingData));
-      }
-    };
-    pRequest.appendChild(buttonGetServer);
-    pRequest.appendChild(buttonGetLocal);
-    pRequest.appendChild(buttonSetLocal);
     const RegionList = WorldGroup.RegionList;
     const GroupList = WorldGroup.GroupList;
-    const GrandList = {
+    const ClassList = {
       '0': {
         'Name': 'Local',
         'Class': 'static',
@@ -292,6 +201,11 @@
         'Name': 'Block D',
       },
     };
+    //初始化选择区
+    const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
+    //区域选择
+    const pRegion = divSelect.appendChild(createElement('p', '<a>Region</a><a>:</a>'));
+    const selectRegion = pRegion.appendChild(createElement('select', '', 'listRegion'));
     selectRegion.options.add(NullOption());
     for (let i in RegionList) {
       const Region = RegionList[i];
@@ -301,25 +215,84 @@
         selectRegion.options.add(option);
       }
     }
+    selectRegion.onchange = () => {
+      document.querySelector('#styleGroup')?.remove();
+      resetTable();
+      selectGroup.value = '-1';
+      selectClass.value = '-1';
+      selectWorld.value = '-1';
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listGroup > option.R${selectRegion.value} {
+              display: inline;
+            }`,
+          'styleGroup'
+        )
+      );
+    };
+    //群组选择
+    const pGroup = divSelect.appendChild(createElement('p', '<a>Group</a><a>:</a>'));
+    const selectGroup = pGroup.appendChild(createElement('select', '', 'listGroup'));
     selectGroup.options.add(NullOption());
     for (let i in GroupList) {
       const Group = GroupList[i];
       if (Group.WorldList.length > 0) {
         const text = Group.WorldList.map((value) => {
-          return `${WorldList[value].SName}`;
+          return WorldList[value].SName;
         });
         const option = new Option(`${Group.Name}(${text})`, i);
         option.classList.add('R' + Group.Region);
         selectGroup.options.add(option);
       }
     }
-    selectGrand.options.add(NullOption());
-    for (let i in GrandList) {
-      const Grand = GrandList[i];
-      const option = new Option(Grand.Name, i);
-      option.classList.add(Grand.Class);
-      selectGrand.options.add(option);
+    selectGroup.onchange = () => {
+      document.querySelector('#styleClass')?.remove();
+      resetTable();
+      selectClass.value = '-1';
+      selectWorld.value = '-1';
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listClass > .static
+            ${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listClass > .dynamic'} {
+              display: inline;
+            }`,
+          'styleClass'
+        )
+      );
+    };
+    //等级选择
+    const pClass = divSelect.appendChild(createElement('p', '<a>Class</a><a>:</a>'));
+    const selectClass = pClass.appendChild(createElement('select', '', 'listClass'));
+    selectClass.options.add(NullOption());
+    for (let i in ClassList) {
+      const Class = ClassList[i];
+      const option = new Option(Class.Name, i);
+      option.classList.add(Class.Class);
+      selectClass.options.add(option);
     }
+    selectClass.onchange = () => {
+      document.querySelector('#styleWorld')?.remove();
+      resetTable();
+      selectWorld.value = '-1';
+      document.head.appendChild(
+        createElement(
+          'style',
+          `
+            #listWorld > ${selectClass.value > 0 ? '.global' : '.G' + selectGroup.value} {
+              display: inline;
+            }`,
+          'styleWorld'
+        )
+      );
+      drawMap(selectClass.value);
+    };
+    //世界/块选择
+    const pWorld = divSelect.appendChild(createElement('p', '<a>World</a><a>:</a>'));
+    const selectWorld = pWorld.appendChild(createElement('select', '', 'listWorld'));
     selectWorld.options.add(NullOption());
     for (let i in WorldList) {
       const World = WorldList[i];
@@ -333,76 +306,137 @@
       option.classList.add('global');
       selectWorld.options.add(option);
     }
-    selectRegion.onchange = () => {
-      document.querySelector('#styleGroup')?.remove();
-      resetTable();
-      selectGroup.value = '-1';
-      selectGrand.value = '-1';
-      selectWorld.value = '-1';
-      document.head.appendChild(
-        createElement(
-          'style',
-          `
-            #listGroup > option.R${selectRegion.value} {
-              display: inline;
-            }`,
-          'styleGroup'
-        )
-      );
-    };
-    selectGroup.onchange = () => {
-      document.querySelector('#styleGrand')?.remove();
-      resetTable();
-      selectGrand.value = '-1';
-      selectWorld.value = '-1';
-      document.head.appendChild(
-        createElement(
-          'style',
-          `
-            #listGrand > .static
-            ${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listGrand > .dynamic'} {
-              display: inline;
-            }`,
-          'styleGrand'
-        )
-      );
-    };
-    selectGrand.onchange = () => {
-      document.querySelector('#styleWorld')?.remove();
-      resetTable();
-      selectWorld.value = '-1';
-      document.head.appendChild(
-        createElement(
-          'style',
-          `
-            #listWorld > ${selectGrand.value > 0 ? '.global' : '.G' + selectGroup.value} {
-              display: inline;
-            }`,
-          'styleWorld'
-        )
-      );
-    };
     selectWorld.onchange = () => {
       resetTable();
       setStorage('RegionId', selectRegion.value);
       setStorage('GroupId', selectGroup.value);
-      setStorage('GrandId', selectGrand.value);
+      setStorage('ClassId', selectClass.value);
       setStorage('WorldId', selectWorld.value);
-      drawMap(selectGrand.value);
+      drawMap(selectClass.value);
     };
-    pRegion.appendChild(selectRegion);
-    pGroup.appendChild(selectGroup);
-    pGrand.appendChild(selectGrand);
-    pWorld.appendChild(selectWorld);
-    divSelect.appendChild(pRegion);
-    divSelect.appendChild(pGroup);
-    divSelect.appendChild(pGrand);
-    divSelect.appendChild(pWorld);
-    divSelect.appendChild(pRequest);
-    document.body.appendChild(divSelect);
-    document.body.appendChild(createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds1'));
-    document.body.appendChild(createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds2'));
-    document.body.appendChild(createElement('hr'));
+    //开启监听
+    //初始化请求功能组
+    const pRequest = divSelect.appendChild(createElement('p'));
+    //从服务器获取
+    const buttonGetServer = pRequest.appendChild(createElement('button', `从服务器获取`));
+    buttonGetServer.onclick = async () => {
+      if (selectWorld.value < 0) {
+        alert('未选择世界');
+        return;
+      }
+      const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+      const _getGuildWar = await getGuildWar(getStorage('ClassId'), getStorage('WorldId'), getStorage('GroupId'));
+      let Matching = _getGuildWar?.data;
+      if (Matching) {
+        for (let i in Matching.guilds) {
+          Matching.guilds[i] = {
+            'Name': Matching.guilds[i],
+            'Color': GuildData[i] ?? '0,0,0',
+          };
+        }
+        fillMap(Matching.castles, Matching.guilds);
+      } else {
+        alert('无法获取战斗信息');
+      }
+    };
+    //从缓存恢复
+    const buttonGetLocal = pRequest.appendChild(createElement('button', `从上一次恢复`));
+    buttonGetLocal.onclick = () => {
+      if (selectWorld.value < 0) {
+        alert('未选择世界');
+        return;
+      }
+      const MatchingData = JSON.parse(getStorage('MatchingData')) ?? {};
+      const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+      let Matching = MatchingData[`${getStorage('GroupId')}-${getStorage('ClassId')}-${getStorage('WorldId')}`];
+      if (Matching) {
+        for (let i in Matching.guilds) {
+          Matching.guilds[i] = {
+            'Name': Matching.guilds[i],
+            'Color': GuildData[i] ?? '0,0,0',
+          };
+        }
+        fillMap(Matching.castles, Matching.guilds);
+      } else {
+        alert('没有该对战的城池信息');
+      }
+    };
+    //初始化监听功能组
+    const pConnect = divSelect.appendChild(createElement('p'));
+    //开始监听
+    const buttonConnectServer = pConnect.appendChild(
+      createElement('button', `开启实时模式`, {
+        'name': 'Connect',
+      })
+    );
+    buttonConnectServer.onclick = (e) => {
+      e.target.setAttribute('disabled', 'true');
+      document.querySelector('button[name="Disconnect"]').removeAttribute('disabled');
+      SocketGvG = new WebSocket('wss://api.mentemori.icu/gvg');
+      const StreamID = getStreamID(Castle, selectGroup.value, selectClass.value, selectWorld.value);
+      SocketGvG.open = () => {
+        console.log('开始接收数据');
+        socket.send('My name is John');
+      };
+      SocketGvG.onmessage = (e) => {};
+      SocketGvG.onclose = (e) => {};
+    };
+    //关闭监听
+    const buttonDisconnectServer = pConnect.appendChild(
+      createElement('button', `关闭实时模式`, {
+        'name': 'Disconnect',
+        'disabled': 'true',
+      })
+    );
+    buttonConnectServer.onclick = (e) => {
+      e.target.setAttribute('disabled', 'true');
+      document.querySelector('button[name="Connect"]').removeAttribute('disabled');
+      SocketGvG.close();
+    };
+    //初始化设置功能组
+    const pSet = divSelect.appendChild(createElement('p'));
+    //保存到缓存
+    const buttonSetLocal = pSet.appendChild(createElement('button', `保存设置`));
+    buttonSetLocal.onclick = () => {
+      if (selectWorld.value < 0) {
+        alert('未选择世界');
+        return;
+      }
+      let Matching = { 'castles': [], 'guilds': {} };
+      const GuildList = document.querySelectorAll('tr[id]');
+      let GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+      for (let i = 0; i < GuildList.length; i++) {
+        const Guild = GuildList[i];
+        const GuildId = Guild.id;
+        GuildData[GuildId] = document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
+        Matching.guilds[GuildId] = Guild.childNodes[1].innerHTML;
+      }
+      setStorage('GuildData', JSON.stringify(GuildData));
+      const CastleList = document.querySelectorAll('gvg-castle');
+      let MatchingData = JSON.parse(getStorage('MatchingData')) ?? {};
+      if (MatchingData) {
+        for (let i = 0; i < CastleList.length; i++) {
+          const Castle = CastleList[i];
+          const CastleId = Castle.getAttribute('castle-id');
+          Matching.castles.push({
+            'CastleId': CastleId,
+            'GuildId': Castle.getAttribute('defense'),
+            'AttackerGuildId': Castle.getAttribute('offense'),
+            'AttackPartyCount': Castle.querySelector('gvg-status-icon-offense').innerHTML,
+            'DefensePartyCount': Castle.querySelector('gvg-status-icon-defense').innerHTML,
+            'GvgCastleState': Castle.querySelector('gvg-status').hasAttribute('active') + Castle.querySelector('gvg-status').hasAttribute('counter'),
+            'LastWinPartyKnockOutCount': Castle.querySelector('gvg-ko-count').innerHTML,
+          });
+        }
+        MatchingData[`${getStorage('GroupId')}-${getStorage('ClassId')}-${getStorage('WorldId')}`] = Matching;
+        setStorage('MatchingData', JSON.stringify(MatchingData));
+      }
+    };
+    document.body.append(
+      createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds1'), //
+      createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds2'),
+      createElement('hr')
+    );
   }
   //主功能
   //文件转换
@@ -411,12 +445,17 @@
     while (document.body.childNodes.length > 6) {
       document.body.lastChild.remove();
     }
-    let divData = createElement('div');
-    divData.setAttribute('style', 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;');
-    let uploadButton = createElement('input', '', {
-      type: 'file',
-      multiple: 'multiple',
-    });
+    let divData = document.body.appendChild(
+      createElement('div', '', {
+        style: 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;',
+      })
+    );
+    let uploadButton = divData.appendChild(
+      createElement('input', '', {
+        type: 'file',
+        multiple: 'multiple',
+      })
+    );
     uploadButton.onchange = function () {
       for (let i = 0; i < this.files.length; i++) {
         let file = this.files[i];
@@ -440,9 +479,7 @@
         };
       }
     };
-    divData.appendChild(uploadButton);
-    divData.appendChild(createElement('br'));
-    document.body.appendChild(divData);
+    divData.append(createElement('br'));
   }
   //战斗布局
   async function gvgMapper() {
@@ -453,14 +490,14 @@
     await initSelect();
     const RegionId = getStorage('RegionId');
     const GroupId = getStorage('GroupId');
-    const GrandId = getStorage('GrandId');
+    const ClassId = getStorage('ClassId');
     const WorldId = getStorage('WorldId');
     if (WorldId >= 0) {
       document.querySelector('#listRegion').value = RegionId;
       document.querySelector('#listGroup').value = GroupId;
-      document.querySelector('#listGrand').value = GrandId;
+      document.querySelector('#listClass').value = ClassId;
       document.querySelector('#listWorld').value = WorldId;
-      document.head.appendChild(
+      document.head.append(
         createElement(
           'style',
           `
@@ -468,32 +505,28 @@
               display: inline;
             }`,
           'styleGroup'
-        )
-      );
-      document.head.appendChild(
+        ),
         createElement(
           'style',
           `
-            #listGrand > .static
-            ${GroupId == 'N' + RegionId ? '' : ',#listGrand > .dynamic'} {
+            #listClass > .static
+            ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
               display: inline;
             }`,
-          'styleGrand'
-        )
-      );
-      document.head.appendChild(
+          'styleClass'
+        ),
         createElement(
           'style',
           `
-            #listWorld > ${GrandId > 0 ? '.global' : '.G' + GroupId} {
+            #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
               display: inline;
             }`,
           'styleWorld'
         )
       );
     }
-    if (GrandId >= 0) {
-      drawMap(GrandId);
+    if (ClassId >= 0) {
+      drawMap(ClassId);
     }
   }
   //子功能
@@ -593,10 +626,10 @@
     }
   }
   //战斗布局-绘制地图
-  function drawMap(GrandId) {
+  function drawMap(ClassId) {
     document.querySelector('#gvgMapStyle')?.remove();
     document.querySelector('gvg-viewer')?.remove();
-    const castalList = {
+    const castleList = {
       'local': {
         '1': {
           'left': '640px',
@@ -854,11 +887,12 @@
         },
       },
     };
-    const Grand = GrandId == 0 ? 'local' : 'global';
-    const image = Grand == 'local' ? 'base_ribbon_01' : 'base_metal';
-    let style = createElement(
-      'style',
-      `
+    const Class = ClassId == 0 ? 'local' : 'global';
+    const image = Class == 'local' ? 'base_ribbon_01' : 'base_metal';
+    let style = document.head.appendChild(
+      createElement(
+        'style',
+        `
             gvg-viewer {
               display: block;
               position: relative;
@@ -866,7 +900,7 @@
               height: 1280px;
               font-family: sans-serif;
               background-size: cover;
-              background-image: url(assets/${Grand}gvg.png);
+              background-image: url(assets/${Class}gvg.png);
             }
             gvg-castle {
               display: block;
@@ -1061,9 +1095,7 @@
               height: 26px;
               left: -70px;
               right: -70px;
-              color: $ {
-                grand== 'local' ? '#473d3b' : 'white';
-              }
+              color: ${Class == 'local' ? '#473d3b' : 'white'};
               line-height: 33px;
             }
             gvg-castle[church] > gvg-castle-name {
@@ -1120,110 +1152,100 @@
             gvg-castle[church] > gvg-castle-hint {
               top: 45px;
             }`,
-      'gvgMapStyle'
+        'gvgMapStyle'
+      )
     );
-    let viewer = createElement('gvg-viewer');
-    viewer.setAttribute(Grand, '');
-    for (let i in castalList[Grand]) {
-      let castal = castalList[Grand][i];
-      let castleNode = createElement('gvg-castle');
-      castleNode.setAttribute('castle-id', i);
-      castleNode.setAttribute(castal.type, 'true');
-      let status = createElement('gvg-status');
-      status.setAttribute('neutral', '');
-      const NodeOffense = createElement('gvg-status-bar-offense');
+    let viewer = document.body.appendChild(createElement('gvg-viewer'));
+    viewer.setAttribute(Class, '');
+    for (let i in castleList[Class]) {
+      let castle = castleList[Class][i];
+      let castleNode = viewer.appendChild(createElement('gvg-castle', '', { 'castle-id': i }));
+      castleNode.setAttribute(castle.type, 'true');
+      let status = castleNode.appendChild(
+        createElement('gvg-status', '', {
+          'neutral': '',
+        })
+      );
+      const NodeOffense = status.appendChild(createElement('gvg-status-bar-offense'));
       NodeOffense.onclick = (e) => {
         changeGuild(e.target);
       };
-      status.appendChild(NodeOffense);
-      const NodeDefense = createElement('gvg-status-bar-defense');
+      const NodeDefense = status.appendChild(createElement('gvg-status-bar-defense'));
       NodeDefense.onclick = (e) => {
         changeGuild(e.target);
       };
-      status.appendChild(NodeDefense);
-      const IconOffense = createElement('gvg-status-icon-offense', 0);
+      const IconOffense = status.appendChild(createElement('gvg-status-icon-offense', 0));
       IconOffense.onclick = hideOffense;
-      status.appendChild(IconOffense);
-      const IconDefense = createElement('gvg-status-icon-defense', 0);
+      const IconDefense = status.appendChild(createElement('gvg-status-icon-defense', 0));
       IconDefense.onclick = showOffense;
-      status.appendChild(IconDefense);
-      const NodeAttacker = createElement('gvg-attacker', '⚔️');
+      const NodeAttacker = status.appendChild(createElement('gvg-attacker', '⚔️'));
       NodeAttacker.onclick = counterOffense;
-      status.appendChild(NodeAttacker);
-      castleNode.appendChild(status);
-      castleNode.appendChild(createElement('gvg-castle-icon'));
-      const NodeCastalName = createElement('gvg-castle-name', castal.name);
-      NodeCastalName.onclick = addHint;
-      castleNode.appendChild(NodeCastalName);
-      let kos = createElement('gvg-ko-count-container');
+      castleNode.append(createElement('gvg-castle-icon'));
+      const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', castle.name));
+      NodeCastleName.onclick = addHint;
+      let kos = castleNode.appendChild(createElement('gvg-ko-count-container'));
       kos.classList.add('hidden');
-      kos.appendChild(createElement('gvg-ko-count', 0));
-      kos.appendChild(createElement('gvg-ko-count-label'));
-      castleNode.appendChild(kos);
-      viewer.appendChild(castleNode);
-      style.appendChild(
+      kos.append(createElement('gvg-ko-count', 0), createElement('gvg-ko-count-label'));
+      style.append(
         createElement(
           'text',
           `
-            gvg-viewer[${Grand}] gvg-castle[castle-id='${i}'] {
-              left: ${castal.left};
-              top: ${castal.top};
+            gvg-viewer[${Class}] gvg-castle[castle-id='${i}'] {
+              left: ${castle.left};
+              top: ${castle.top};
             }`
         )
       );
     }
-    document.head.appendChild(style);
-    document.body.appendChild(viewer);
   }
   //战斗布局-填充数据
-  async function fillMap(CastalList, GuildList) {
+  async function fillMap(CastleList, GuildList) {
     resetTable();
     const table1 = document.querySelector('#guilds1').tBodies[0];
     const table2 = document.querySelector('#guilds2').tBodies[0];
-    let trList = [];
+    let count = 0;
     for (let i in GuildList) {
       const GuildId = i;
       const Guild = GuildList[i];
       changeColor(GuildId, Guild.Color);
       const divGuild = createElement('tr', '', GuildId);
-      const aColor = createElement('td', '■');
+      const aColor = divGuild.appendChild(createElement('td', '■'));
       aColor.classList.add('GuildId');
       aColor.onclick = (e) => {
         const GuildId = e.target.parentNode.id;
         const Color = prompt('请输入设定颜色，形式为R,G,B');
         changeColor(GuildId, Color);
       };
-      divGuild.appendChild(aColor);
-      divGuild.appendChild(createElement('td', GuildList[i].Name));
-      divGuild.appendChild(createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`));
-      divGuild.appendChild(createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`));
-      divGuild.appendChild(createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`));
-      trList.push(divGuild);
-    }
-    for (let i = 0; i < trList.length; i++) {
-      if (i < trList.length / 2) {
-        table1.appendChild(trList[i]);
+      divGuild.append(
+        createElement('td', GuildList[i].Name), //
+        createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`),
+        createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`),
+        createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`)
+      );
+      if (count < Object.keys(GuildList).length / 2) {
+        table1.append(divGuild);
       } else {
-        table2.appendChild(trList[i]);
+        table2.appendChild(divGuild);
       }
+      count++;
     }
-    for (let i = 0; i < CastalList.length; i++) {
-      const CastalData = CastalList[i];
-      const CastalNode = document.querySelector(`gvg-castle[castle-id="${CastalData.CastleId}"]`);
-      CastalNode.setAttribute('defense', CastalData.GuildId);
-      CastalNode.setAttribute('offense', CastalData.AttackerGuildId);
-      CastalNode.querySelector('gvg-status-bar-defense').innerHTML = GuildList[CastalData.GuildId]?.Name ?? '';
-      CastalNode.querySelector('gvg-status-bar-offense').innerHTML = GuildList[CastalData.AttackerGuildId]?.Name ?? '';
-      CastalNode.querySelector('gvg-status-icon-defense').innerHTML = CastalData.DefensePartyCount;
-      CastalNode.querySelector('gvg-status-icon-offense').innerHTML = CastalData.AttackPartyCount;
-      if (CastalData.GvgCastleState == 1) {
-        CastalNode.querySelector('gvg-status').removeAttribute('neutral');
-        CastalNode.querySelector('gvg-status').setAttribute('active', '');
+    for (let i = 0; i < CastleList.length; i++) {
+      const CastleData = CastleList[i];
+      const CastleNode = document.querySelector(`gvg-castle[castle-id="${CastleData.CastleId}"]`);
+      CastleNode.setAttribute('defense', CastleData.GuildId);
+      CastleNode.setAttribute('offense', CastleData.AttackerGuildId);
+      CastleNode.querySelector('gvg-status-bar-defense').innerHTML = GuildList[CastleData.GuildId]?.Name ?? '';
+      CastleNode.querySelector('gvg-status-bar-offense').innerHTML = GuildList[CastleData.AttackerGuildId]?.Name ?? '';
+      CastleNode.querySelector('gvg-status-icon-defense').innerHTML = CastleData.DefensePartyCount;
+      CastleNode.querySelector('gvg-status-icon-offense').innerHTML = CastleData.AttackPartyCount;
+      if (CastleData.GvgCastleState == 1) {
+        CastleNode.querySelector('gvg-status').removeAttribute('neutral');
+        CastleNode.querySelector('gvg-status').setAttribute('active', '');
       } else {
-        CastalNode.querySelector('gvg-status').removeAttribute('active');
-        CastalNode.querySelector('gvg-status').setAttribute('neutral', '');
+        CastleNode.querySelector('gvg-status').removeAttribute('active');
+        CastleNode.querySelector('gvg-status').setAttribute('neutral', '');
       }
-      CastalNode.querySelector('gvg-ko-count').innerHTML = CastalData.LastWinPartyKnockOutCount;
+      CastleNode.querySelector('gvg-ko-count').innerHTML = CastleData.LastWinPartyKnockOutCount;
     }
   }
   //战斗布局-重置表格
@@ -1242,17 +1264,15 @@
     }
     hint = hint.split('|');
     if (!exist) {
-      exist = createElement('gvg-castle-hint', hint[0]);
-      this.parentNode.appendChild(exist);
+      exist = this.parentNode.appendChild(createElement('gvg-castle-hint', hint[0]));
     } else {
       exist.innerHTML = hint[0];
     }
     if (image) {
       image.remove();
-    } else {
-      image = createElement('img');
-      image.classList.add('gvg-castle-symbol');
     }
+    image = this.parentNode.appendChild(createElement('img'));
+    image.classList.add('gvg-castle-symbol');
     const imageName = {
       'A1': 'icon_gvg_marker_1',
       'A2': 'icon_gvg_marker_2',
@@ -1263,7 +1283,6 @@
     };
     if (hint[1]) {
       image.src = `${assetURL}${imageName[hint[1]] ?? hint[1]}.png`;
-      this.parentNode.appendChild(image);
     }
   }
   //战斗布局-显示进攻方
@@ -1287,9 +1306,10 @@
   //战斗布局-修改颜色
   function changeColor(GuildId, Color) {
     document.querySelector(`#style${GuildId}`)?.remove();
-    const style = createElement(
-      'style',
-      `
+    document.head.append(
+      createElement(
+        'style',
+        `
             gvg-castle[defense='${GuildId}'] gvg-castle-icon {
               background-color: rgba(${Color}, 0.5);
             }
@@ -1301,17 +1321,28 @@
             tr[id='${GuildId}'] td:nth-child(1) {
               color: rgba(${Color}, 1);
             }`,
-      `style${GuildId}`
+        `style${GuildId}`
+      )
     );
-    document.head.appendChild(style);
   }
   //战斗布局-修改公会
   function changeGuild(target) {
     const trList = document.querySelectorAll('tbody > tr');
-    const selectGuild = createElement('select', '', {
-      castal: target.parentNode.parentNode.getAttribute('castle-id'),
-      target: target.tagName,
-    });
+    const dialogGuild = document.body.appendChild(createElement('dialog', `<a>请选择公会：</a>`));
+    dialogGuild.onclose = (e) => {
+      const select = e.target.querySelector('select');
+      const castle = document.querySelector(`gvg-castle[castle-id="${select.getAttribute('castle')}"]`);
+      const target = select.getAttribute('target');
+      castle.setAttribute(target.split('-').pop(), select.value);
+      castle.querySelector(target).innerHTML = select.selectedOptions[0].innerHTML;
+      dialogGuild.remove();
+    };
+    const selectGuild = dialogGuild.appendChild(
+      createElement('select', '', {
+        castle: target.parentNode.parentNode.getAttribute('castle-id'),
+        target: target.tagName,
+      })
+    );
     selectGuild.options.add(
       createElement('option', '', {
         value: '0',
@@ -1325,27 +1356,16 @@
         })
       );
     }
-    const dialogGuild = createElement('dialog', `<a>请选择公会：</a>`);
-    dialogGuild.onclose = (e) => {
-      const select = e.target.querySelector('select');
-      const castal = document.querySelector(`gvg-castle[castle-id="${select.getAttribute('castal')}"]`);
-      const target = select.getAttribute('target');
-      castal.setAttribute(target.split('-').pop(), select.value);
-      castal.querySelector(target).innerHTML = select.selectedOptions[0].innerHTML;
-      dialogGuild.remove();
-    };
-    dialogGuild.appendChild(selectGuild);
-    document.body.appendChild(dialogGuild);
     dialogGuild.showModal();
   }
   //API函数
   //获取option
-  function buildOption() {
+  function buildOption(apkVersion) {
     let option = {
       method: 'POST',
       headers: {
         'ortegaaccesstoken': getStorage('ortegaaccesstoken'), //从cookie获取
-        'ortegaappversion': getStorage('AppVersion'), //跟随版本
+        'ortegaappversion': apkVersion ?? AppVersion, //跟随版本
         'ortegadevicetype': 2, //固定为2
         'ortegauuid': getStorage('ortegauuid'), //随机uuid，登录后绑定账号
         //'Host':'*.mememori-boi.com', //自动
@@ -1362,7 +1382,7 @@
   }
   //获取apkversion
   async function getAppVersion() {
-    let option = buildOption();
+    let option = buildOption(0);
     const varjs = await sendGMRequest('https://mememori-game.com/apps/vars.js', {});
     if (!varjs) {
       console.log('获取var.js失败');
@@ -1497,12 +1517,12 @@
     return jsonAuthTokenData._authToken;
   }
   //获取gvg信息
-  async function getGuildWar(GrandId, WorldId, GroupId) {
+  async function getGuildWar(ClassId, WorldId, GroupId) {
     let request;
-    if (GrandId == 0) {
+    if (ClassId == 0) {
       request = await sendRequest(`https://api.mentemori.icu/${WorldId}/localgvg/latest`);
     } else {
-      request = await sendRequest(`https://api.mentemori.icu/wg/${GroupId}/globalgvg/${GrandId}/${WorldId}/latest`);
+      request = await sendRequest(`https://api.mentemori.icu/wg/${GroupId}/globalgvg/${ClassId}/${WorldId}/latest`);
     }
     return JSON.parse(request);
   }
@@ -1529,7 +1549,7 @@
     let option = buildOption();
     const data = {
       'AdverisementId': AdverisementId,
-      'AppVersion': getStorage('AppVersion'),
+      'AppVersion': AppVersion,
       'CountryCode': CountryCode,
       'DeviceToken': '',
       'DisplayLanguage': 4,
@@ -1606,7 +1626,7 @@
     const data = {
       'ClientKey': ClientKey,
       'DeviceToken': '',
-      'AppVersion': getStorage('AppVersion'),
+      'AppVersion': AppVersion,
       'OSVersion': OSVersion,
       'ModelName': ModelName,
       'AdverisementId': AdverisementId,
@@ -1720,7 +1740,6 @@
               setStorage('utcnowtimestamp', getHeader(response.responseHeaders, 'ortegautcnowtimestamp'));
               data = await msgpack.decode(new Uint8Array(response.response));
               if (data.ErrorCode) {
-                const ErrorCode = JSON.parse(getStorage('ErrorCode'));
                 console.log(`${response.finalUrl.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
               } else {
                 console.log(`${response.finalUrl.split('/').pop()}:获取成功`);
@@ -1781,7 +1800,6 @@
           if (type == 'application/octet-stream') {
             data = await msgpack.decode(new Uint8Array(response));
             if (data.ErrorCode) {
-              const ErrorCode = JSON.parse(getStorage('ErrorCode'));
               console.log(`${request.responseURL.split('/').pop()}:${ErrorCode[data.ErrorCode]}`);
             } else {
               console.log(`${request.responseURL.split('/').pop()}:获取成功`);
@@ -1874,5 +1892,36 @@
       localStorage.setItem(key, value);
     }
     return value;
+  }
+  //组合StreamID
+  function getStreamID(Castle, Group, Class, World) {
+    let bitCastle = Castle.toString(2);
+    bitCastle = '0'.repeat(5 - bitCastle.length) + bitCastle;
+    let bitBlock = Class == 0 ? '0' : (World * 1).toString(2);
+    bitBlock = '0'.repeat(3 - bitBlock.length) + bitBlock;
+    let bitGroup = Class == 0 ? '0' : (Group * 1).toString(2);
+    bitGroup = '0'.repeat(8 - bitGroup.length) + bitGroup;
+    let bitClass = Class == 0 ? '0' : (Class * 1).toString(2);
+    bitClass = '0'.repeat(3 - bitClass.length) + bitClass;
+    let bitWorld = Class == 0 ? World.toString(2) : '0';
+    bitWorld = '0'.repeat(13 - bitWorld.length) + bitWorld;
+    let bit = bitClass + bitWorld + bitGroup + bitBlock + bitCastle;
+    let array = [`0b${bit.slice(0, 8)}` * 1, `0b${bit.slice(8, 16)}` * 1, `0b${bit.slice(16, 24)}` * 1, `0b${bit.slice(24, 32)}` * 1];
+    let buffer = new ArrayBuffer(4);
+    let view = new Uint8Array(buffer);
+    view[0] = array[0];
+    view[1] = array[1];
+    view[2] = array[2];
+    view[3] = array[3];
+    return buffer;
+  }
+  function getGuildInformation(buffer) {
+    let view = new DataView(buffer);
+    let length = view.getUint8(8);
+    return {
+      StreamID: view.getUint32(0),
+      GuildID: view.getUint32(4),
+      GuildName: new DataView(buffer, 9, length),
+    };
   }
 })();
