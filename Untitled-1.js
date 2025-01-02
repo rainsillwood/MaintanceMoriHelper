@@ -65,7 +65,7 @@ let e = {
   },
   t = (t) => t.replace(/[&"'<> ]/g, (t) => e[t]);
 document.__proto__.$ = document.__proto__.querySelector;
-let l = document.$.bind(document);
+let getDivError = document.$.bind(document);
 {
   HTMLElement.prototype.$ = HTMLElement.prototype.querySelector;
   document.__proto__.$$ = document.__proto__.querySelectorAll;
@@ -78,7 +78,7 @@ document.$$.bind(document);
   });
 }
 let getMatchInfo = (e, t) => {
-    let l = e.getUint32(t, !0);
+    let l = e.getUint32(t, true);
     return {
       value: {
         WorldId: l >>> 19,
@@ -91,8 +91,8 @@ let getMatchInfo = (e, t) => {
     };
   },
   getGuildInformation = (e, t) => {
-    let l = e.getUint32(t, !0),
-      r = e.getUint8(t + 4, !0);
+    let l = e.getUint32(t, true),
+      r = e.getUint8(t + 4, true);
     return {
       value: {
         GuildId: 1000 * l + 0,
@@ -103,20 +103,20 @@ let getMatchInfo = (e, t) => {
   },
   getCastle = (e, t) => ({
     value: {
-      GuildId: 1000 * e.getUint32(t, !0) + 0,
-      AttackerGuildId: 1000 * e.getUint32(t + 4, !0) + 0,
-      UtcFallenTimeStamp: 1000 * e.getUint32(t + 8, !0),
-      DefensePartyCount: e.getUint16(t + 12, !0),
-      AttackPartyCount: e.getUint16(t + 14, !0),
-      GvgCastleState: e.getUint8(t + 16, !0),
-      LastWinPartyKnockOutCount: e.getUint16(t + 18, !0),
+      GuildId: 1000 * e.getUint32(t, true) + 0,
+      AttackerGuildId: 1000 * e.getUint32(t + 4, true) + 0,
+      UtcFallenTimeStamp: 1000 * e.getUint32(t + 8, true),
+      DefensePartyCount: e.getUint16(t + 12, true),
+      AttackPartyCount: e.getUint16(t + 14, true),
+      GvgCastleState: e.getUint8(t + 16, true),
+      LastWinPartyKnockOutCount: e.getUint16(t + 18, true),
     },
     offset: t + 20,
   }),
   getPlayer = (e, t, l) => {
-    let r = e.getUint32(t, !0),
-      n = e.getUint32(t + 4, !0),
-      a = e.getUint8(t + 8, !0);
+    let r = e.getUint32(t, true),
+      n = e.getUint32(t + 4, true),
+      a = e.getUint8(t + 8, true);
     return {
       value: {
         PlayerId: 1000 * r + (l % 1000),
@@ -127,9 +127,9 @@ let getMatchInfo = (e, t) => {
     };
   },
   getAttack = (e, t, l) => {
-    let r = e.getUint32(t, !0),
-      n = e.getUint16(t + 4, !0),
-      a = e.getUint16(t + 6, !0);
+    let r = e.getUint32(t, true),
+      n = e.getUint16(t + 4, true),
+      a = e.getUint16(t + 6, true);
     return {
       value: {
         PlayerId: 1000 * r + (l % 1000),
@@ -142,19 +142,19 @@ let getMatchInfo = (e, t) => {
   },
   LastLoginTime = (e, t, l) => ({
     value: {
-      PlayerId: 1000 * e.getUint32(t, !0) + (l % 1000),
-      LastLoginTime: e.getUint32(t + 4, !0),
+      PlayerId: 1000 * e.getUint32(t, true) + (l % 1000),
+      LastLoginTime: e.getUint32(t + 4, true),
     },
     offset: t + 16,
   }),
   isSameWorld = (e, t) => ((0 == e.GroupId && 0 == e.Class && 0 == e.Block) || (0 == t.GroupId && 0 == t.Class && 0 == t.Block) ? e.WorldId == t.WorldId : e.GroupId == t.GroupId && e.Class == t.Class && e.Block == t.Block),
-  sendData = (e, t) => {
+  sendData = (socket, t) => {
     let buffer = new ArrayBuffer(4);
     ((view, position, MatchInfo) => {
       let data = (MatchInfo.WorldId << 19) | (MatchInfo.Class << 16) | (MatchInfo.GroupId << 8) | (MatchInfo.Block << 5) | MatchInfo.CastleId;
-      view.setUint32(position, data, !0);
+      view.setUint32(position, data, true);
     })(new DataView(buffer), 0, t);
-    e.send(buffer);
+    socket.send(buffer);
   },
   c = (() => {
     let e,
@@ -171,7 +171,7 @@ let getMatchInfo = (e, t) => {
           return (
             (socket.binaryType = 'arraybuffer'),
             socket.addEventListener('open', () => {
-              l('#error').innerText = '';
+              getDivError('#error').innerText = '';
               e(socket);
             }),
             socket.addEventListener('message', (event) => {
@@ -242,11 +242,11 @@ let getMatchInfo = (e, t) => {
               }
             }),
             socket.addEventListener('error', () => {
-              l('#error').innerText = 'WebSocket error';
+              getDivError('#error').innerText = 'WebSocket error';
             }),
             socket.addEventListener('close', () => {
               if (u()) {
-                l('#error').innerText = 'Connection closed, retrying in 5s';
+                getDivError('#error').innerText = 'Connection closed, retrying in 5s';
                 setTimeout(t, 5000);
               }
             }),
@@ -257,7 +257,7 @@ let getMatchInfo = (e, t) => {
             if (null !== MatchInfo) sendData(e, MatchInfo);
           },
           f,
-          () => !0,
+          () => true,
           () => MatchInfo,
           (e) => {
             c = e;
@@ -266,13 +266,13 @@ let getMatchInfo = (e, t) => {
             g = e;
             ((e) => {
               let t = g[e - 1],
-                r = l(`gvg-castle[castle-id="${e}"]`),
+                r = getDivError(`gvg-castle[castle-id="${e}"]`),
                 n = r.$('gvg-status'),
                 a = [-32400, -32400, -28800, 25200, -3600, -3600][Math.floor(t.StreamId.WorldId / 1000) - 1];
               new Date(Math.max(0, t.UtcFallenTimeStamp + 1000 * a));
               n.$('gvg-status-icon-offense').innerText = t.AttackPartyCount;
               n.$('gvg-status-icon-defense').innerText = t.DefensePartyCount;
-              let o = c[t.GuildId] || l(`gvg-castle[castle-id="${e}"] > gvg-castle-name`).innerText + _(' Forces'),
+              let o = c[t.GuildId] || getDivError(`gvg-castle[castle-id="${e}"] > gvg-castle-name`).innerText + _(' Forces'),
                 d = c[t.AttackerGuildId] || '';
               if (t.GvgCastleState % 2 == 0) {
                 n.removeAttribute('active');
@@ -323,16 +323,16 @@ Object.assign(window.m.ja, {
         break;
       }
     }
-    let n = l('gvg-viewer'),
+    let n = getDivError('gvg-viewer'),
       a = n.$('gvg-castle');
     for (let e = 1; e < r.length; ++e) {
-      let l = a.cloneNode(!0);
-      l.setAttribute(e < 5 ? 'castle' : 'church', !0);
+      let l = a.cloneNode(true);
+      l.setAttribute(e < 5 ? 'castle' : 'church', true);
       l.setAttribute('castle-id', e + 1);
       l.$('gvg-castle-name').innerText = t(r[e]);
       n.appendChild(l);
     }
-    a.setAttribute('temple', !0);
+    a.setAttribute('temple', true);
     a.$('gvg-castle-name').innerText = t(r[0]);
   })({
     en: ['Brussell', 'Wissekerke', 'Modave', 'Chimay', 'Gravensteen', 'Cambre', 'Quentin', 'Lambert', 'Saint-Jacques', 'Michael', 'Namur', 'Charleroi', 'Alzette', 'Hainaut', 'Wavre', 'Mons', 'Christophe', 'Kortrijk', 'Ypres', 'Salvador', 'Bavo'],
@@ -344,11 +344,11 @@ Object.assign(window.m.ja, {
       ((e, t, r, n) => {
         e.data.sort((e, t) => e.world_id - t.world_id);
         if (n) {
-          l('#server').value = ['jp', 'kr', 'as', 'na', 'eu', 'gl'][(n / 1000 - 1) | 0];
+          getDivError('#server').value = ['jp', 'kr', 'as', 'na', 'eu', 'gl'][(n / 1000 - 1) | 0];
         }
         let a = () => {
-          let a = l('#world'),
-            o = l('#server').value;
+          let a = getDivError('#world'),
+            o = getDivError('#server').value;
           for (let e of [...a.children]) a.removeChild(e);
           for (let l of e.data) {
             if (!t(l)) continue;
@@ -359,13 +359,13 @@ Object.assign(window.m.ja, {
             a.appendChild(e);
           }
           if (n) {
-            l('#world').value = n;
+            getDivError('#world').value = n;
             n = null;
           }
-          l('#world').onchange = (e) => r(e.target.value);
-          r(l('#world').value);
+          getDivError('#world').onchange = (e) => r(e.target.value);
+          r(getDivError('#world').value);
         };
-        l('#server').onchange = a;
+        getDivError('#server').onchange = a;
         a();
       })(
         e,

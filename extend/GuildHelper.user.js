@@ -33,6 +33,12 @@
   let SocketGvG;
   //初始化所有页面
   initPage();
+  //清除元素
+  if (document.URL.includes('?function=')) {
+    while (document.body.childNodes.length > 6) {
+      document.body.lastChild.remove();
+    }
+  }
   //初始化ErrorCode
   const ErrorCode = await getErrorCode();
   //初始化AppVersion
@@ -444,10 +450,6 @@
   //主功能
   //文件转换
   function fileConverter() {
-    //清除元素
-    while (document.body.childNodes.length > 6) {
-      document.body.lastChild.remove();
-    }
     let divData = document.body.appendChild(
       createElement('div', '', {
         style: 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;',
@@ -486,10 +488,6 @@
   }
   //战斗布局
   async function gvgMapper() {
-    //清除元素
-    while (document.body.childNodes.length > 6) {
-      document.body.lastChild.remove();
-    }
     await initSelect();
     const RegionId = getStorage('RegionId');
     const GroupId = getStorage('GroupId');
@@ -1177,15 +1175,60 @@
       NodeDefense.onclick = (e) => {
         changeGuild(e.target);
       };
+      //隐藏进攻方
       const IconOffense = status.appendChild(createElement('gvg-status-icon-offense', 0));
-      IconOffense.onclick = hideOffense;
+      IconOffense.onclick = (e) => {
+        e.targe.parentNode.removeAttribute('active');
+        e.targe.parentNode.removeAttribute('counter');
+        e.targe.parentNode.setAttribute('neutral', '');
+      };
+      //显示进攻方
       const IconDefense = status.appendChild(createElement('gvg-status-icon-defense', 0));
-      IconDefense.onclick = showOffense;
+      IconDefense.onclick = (e) => {
+        e.target.parentNode.removeAttribute('neutral');
+        e.target.parentNode.removeAttribute('counter');
+        e.target.parentNode.setAttribute('active', '');
+      };
       const NodeAttacker = status.appendChild(createElement('gvg-attacker', '⚔️'));
-      NodeAttacker.onclick = counterOffense;
+      NodeAttacker.onclick = (e) => {
+        e.target.parentNode.removeAttribute('active');
+        e.target.parentNode.removeAttribute('neutral');
+        e.target.parentNode.setAttribute('counter', '');
+      };
       castleNode.append(createElement('gvg-castle-icon'));
+      //增加提示
       const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', castle.name));
-      NodeCastleName.onclick = addHint;
+      NodeCastleName.onclick = (e) => {
+        let exist = e.target.parentNode.querySelector('gvg-castle-hint');
+        let image = e.target.parentNode.querySelector('.gvg-castle-symbol');
+        let hint = prompt('输入添加的提示,然后输入"|"(不带引号),再输入标识代码(A1:攻击1;A2:攻击2;D1:防御1;D2:防御2;F1:禁止;F2:旗帜)\n若标识代码为空则移除图标,其他代码则为你确认知道的图片名称,包含相对路径,路经确认:\nhttps://github.com/rainsillwood/MementoMoriGuildHelper/tree/main/assets', exist ? exist.innerHTML : '');
+        if (hint == '' || hint == undefined) {
+          exist.remove();
+          return;
+        }
+        hint = hint.split('|');
+        if (!exist) {
+          exist = e.target.parentNode.appendChild(createElement('gvg-castle-hint', hint[0]));
+        } else {
+          exist.innerHTML = hint[0];
+        }
+        if (image) {
+          image.remove();
+        }
+        image = e.target.parentNode.appendChild(createElement('img'));
+        image.classList.add('gvg-castle-symbol');
+        const imageName = {
+          'A1': 'icon_gvg_marker_1',
+          'A2': 'icon_gvg_marker_2',
+          'D1': 'icon_gvg_marker_3',
+          'D2': 'icon_gvg_marker_4',
+          'F1': 'icon_gvg_marker_5',
+          'F2': 'icon_gvg_marker_6',
+        };
+        if (hint[1]) {
+          image.src = `${assetURL}${imageName[hint[1]] ?? hint[1]}.png`;
+        }
+      };
       let kos = castleNode.appendChild(createElement('gvg-ko-count-container'));
       kos.classList.add('hidden');
       kos.append(createElement('gvg-ko-count', 0), createElement('gvg-ko-count-label'));
@@ -1255,56 +1298,6 @@
   function resetTable() {
     document.querySelector('#guilds1').tBodies[0].innerHTML = '';
     document.querySelector('#guilds2').tBodies[0].innerHTML = '';
-  }
-  //战斗布局-增加提示
-  async function addHint() {
-    let exist = this.parentNode.querySelector('gvg-castle-hint');
-    let image = this.parentNode.querySelector('.gvg-castle-symbol');
-    let hint = prompt('输入添加的提示,然后输入"|"(不带引号),再输入标识代码(A1:攻击1;A2:攻击2;D1:防御1;D2:防御2;F1:禁止;F2:旗帜)\n若标识代码为空则移除图标,其他代码则为你确认知道的图片名称,包含相对路径,路经确认:\nhttps://github.com/rainsillwood/MementoMoriGuildHelper/tree/main/assets', exist ? exist.innerHTML : '');
-    if (hint == '' || hint == undefined) {
-      exist.remove();
-      return;
-    }
-    hint = hint.split('|');
-    if (!exist) {
-      exist = this.parentNode.appendChild(createElement('gvg-castle-hint', hint[0]));
-    } else {
-      exist.innerHTML = hint[0];
-    }
-    if (image) {
-      image.remove();
-    }
-    image = this.parentNode.appendChild(createElement('img'));
-    image.classList.add('gvg-castle-symbol');
-    const imageName = {
-      'A1': 'icon_gvg_marker_1',
-      'A2': 'icon_gvg_marker_2',
-      'D1': 'icon_gvg_marker_3',
-      'D2': 'icon_gvg_marker_4',
-      'F1': 'icon_gvg_marker_5',
-      'F2': 'icon_gvg_marker_6',
-    };
-    if (hint[1]) {
-      image.src = `${assetURL}${imageName[hint[1]] ?? hint[1]}.png`;
-    }
-  }
-  //战斗布局-显示进攻方
-  function showOffense() {
-    this.parentNode.removeAttribute('neutral');
-    this.parentNode.removeAttribute('counter');
-    this.parentNode.setAttribute('active', '');
-  }
-  //战斗布局-隐藏进攻方
-  function hideOffense() {
-    this.parentNode.removeAttribute('active');
-    this.parentNode.removeAttribute('counter');
-    this.parentNode.setAttribute('neutral', '');
-  }
-  //战斗布局-反击进攻方
-  function counterOffense() {
-    this.parentNode.removeAttribute('active');
-    this.parentNode.removeAttribute('neutral');
-    this.parentNode.setAttribute('counter', '');
   }
   //战斗布局-修改颜色
   function changeColor(GuildId, Color) {
@@ -1695,11 +1688,6 @@
     let request = await sendGMRequest(url, option);
     return request;
   }
-  //连接函数
-  async function connectServer(params) {
-    let connect = await connectWebsocket(params);
-    return connect;
-  }
   //跨域请求函数
   async function sendGMRequest(url, option = {}) {
     return new Promise((resolve) => {
@@ -1825,29 +1813,6 @@
       };
     });
   }
-  //Websocket链接
-  async function connectWebsocket(url, port) {
-    const connect = new WebSocket(`wss://${url}:${port}`);
-    connect.onopen = function (e) {
-      alert('[open] Connection established');
-    };
-    connect.onmessage = function (event) {
-      alert(`[message] Data received from server: ${event.data}`);
-    };
-    connect.onclose = function (event) {
-      if (event.wasClean) {
-        alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-      } else {
-        // 例如服务器进程被杀死或网络中断
-        // 在这种情况下，event.code 通常为 1006
-        alert('[close] Connection died');
-      }
-    };
-    connect.onerror = function (error) {
-      alert(`[error] ${error.message}`);
-    };
-    return connect;
-  }
   //新建DOM
   function createElement(type, text = '', option) {
     let node;
@@ -1901,10 +1866,6 @@
     return '0'.repeat(length - bit.length).concat(bit);
   }
   //组合StreamID
-  function getStreamID(Castle, Group, Class, World) {
-    let bit = (Class == 0 ? getBit(0, 3) + getBit(World, 13) + getBit(0, 8) + getBit(0, 3) : getBit(Class, 3) + getBit(0, 13) + getBit(Group, 8) + getBit(World, 3)) + getBit(Castle, 5);
-    return new Uint8Array([`0b${bit.slice(0, 8)}` * 1, `0b${bit.slice(8, 16)}` * 1, `0b${bit.slice(16, 24)}` * 1, `0b${bit.slice(24, 32)}` * 1]).buffer;
-  }
   function getMatch(buffer, index) {
     let Int32 = buffer.getUint32(index, true);
     return {
@@ -1918,7 +1879,7 @@
       offset: index + 4,
     };
   }
-  function getGuildInformation(buffer, index) {
+  function getGuild(buffer, index) {
     const GuildId = buffer.getUint32(index, true);
     const GuildNameLength = buffer.getUint8(index + 4, true);
     return {
