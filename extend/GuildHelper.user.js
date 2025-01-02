@@ -373,12 +373,15 @@
       e.target.setAttribute('disabled', 'true');
       document.querySelector('button[name="Disconnect"]').removeAttribute('disabled');
       SocketGvG = new WebSocket('wss://api.mentemori.icu/gvg');
-      const StreamID = getStreamID(Castle, selectGroup.value, selectClass.value, selectWorld.value);
-      SocketGvG.open = () => {
+      SocketGvG.binaryType = 'arraybuffer';
+      const StreamID = getStreamID(0, selectGroup.value, selectClass.value, selectWorld.value);
+      SocketGvG.onopen = () => {
         console.log('开始接收数据');
-        socket.send('My name is John');
+        SocketGvG.send(new Uint8Array([0x15, 0x00, 0x81, 0x17]).buffer);
       };
-      SocketGvG.onmessage = (e) => {};
+      SocketGvG.onmessage = (e) => {
+        console.log(new Uint8Array(e.data));
+      };
       SocketGvG.onclose = (e) => {};
     };
     //关闭监听
@@ -388,7 +391,7 @@
         'disabled': 'true',
       })
     );
-    buttonConnectServer.onclick = (e) => {
+    buttonDisconnectServer.onclick = (e) => {
       e.target.setAttribute('disabled', 'true');
       document.querySelector('button[name="Connect"]').removeAttribute('disabled');
       SocketGvG.close();
@@ -1893,35 +1896,94 @@
     }
     return value;
   }
+  function getBit(number, length) {
+    const bit = (number * 1).toString(2);
+    return '0'.repeat(length - bit.length).concat(bit);
+  }
   //组合StreamID
   function getStreamID(Castle, Group, Class, World) {
-    let bitCastle = Castle.toString(2);
-    bitCastle = '0'.repeat(5 - bitCastle.length) + bitCastle;
-    let bitBlock = Class == 0 ? '0' : (World * 1).toString(2);
-    bitBlock = '0'.repeat(3 - bitBlock.length) + bitBlock;
-    let bitGroup = Class == 0 ? '0' : (Group * 1).toString(2);
-    bitGroup = '0'.repeat(8 - bitGroup.length) + bitGroup;
-    let bitClass = Class == 0 ? '0' : (Class * 1).toString(2);
-    bitClass = '0'.repeat(3 - bitClass.length) + bitClass;
-    let bitWorld = Class == 0 ? World.toString(2) : '0';
-    bitWorld = '0'.repeat(13 - bitWorld.length) + bitWorld;
-    let bit = bitClass + bitWorld + bitGroup + bitBlock + bitCastle;
-    let array = [`0b${bit.slice(0, 8)}` * 1, `0b${bit.slice(8, 16)}` * 1, `0b${bit.slice(16, 24)}` * 1, `0b${bit.slice(24, 32)}` * 1];
-    let buffer = new ArrayBuffer(4);
-    let view = new Uint8Array(buffer);
-    view[0] = array[0];
-    view[1] = array[1];
-    view[2] = array[2];
-    view[3] = array[3];
-    return buffer;
+    let bit = (Class == 0 ? getBit(0, 3) + getBit(World, 13) + getBit(0, 8) + getBit(0, 3) : getBit(Class, 3) + getBit(0, 13) + getBit(Group, 8) + getBit(World, 3)) + getBit(Castle, 5);
+    return new Uint8Array([`0b${bit.slice(0, 8)}` * 1, `0b${bit.slice(8, 16)}` * 1, `0b${bit.slice(16, 24)}` * 1, `0b${bit.slice(24, 32)}` * 1]).buffer;
   }
-  function getGuildInformation(buffer) {
-    let view = new DataView(buffer);
-    let length = view.getUint8(8);
+  function getMatch(buffer, index) {
+    let Int32 = buffer.getUint32(index, true);
     return {
-      StreamID: view.getUint32(0),
-      GuildID: view.getUint32(4),
-      GuildName: new DataView(buffer, 9, length),
+      value: {
+        WorldId: Int32 >>> 19,
+        GroupId: (Int32 >>> 8) & 255,
+        Class: (Int32 >>> 16) & 7,
+        Block: (Int32 >>> 5) & 7,
+        CastleId: 31 & Int32,
+      },
+      offset: index + 4,
     };
+  }
+  function getGuildInformation(buffer, index) {
+    const GuildId = buffer.getUint32(index, true);
+    const GuildNameLength = buffer.getUint8(index + 4, true);
+    return {
+      GuildId: 1000 * GuildId + 0,
+      GuildName: new TextDecoder('utf-8').decode(new Uint8Array(index.buffer, index + 5, GuildNameLength)),
+    };
+  }
+  function getCastle(buffer, index) {
+    return {
+      value: {
+        GuildId: 1000 * buffer.getUint32(index, true) + 0,
+        AttackerGuildId: 1000 * buffer.getUint32(index + 4, true) + 0,
+        UtcFallenTimeStamp: 1000 * buffer.getUint32(index + 8, true),
+        DefensePartyCount: buffer.getUint16(index + 12, true),
+        AttackPartyCount: buffer.getUint16(index + 14, true),
+        GvgCastleState: buffer.getUint8(index + 16, true),
+        LastWinPartyKnockOutCount: buffer.getUint16(index + 18, true),
+      },
+      offset: index + 20,
+    };
+  }
+  function getPlayer(buffer, index, WorldId) {
+    const PlayerId = buffer.getUint32(index, true);
+    const GuildId = buffer.getUint32(index + 4, true);
+    const PlayerNameLength = buffer.getUint8(index + 8, true);
+    return {
+      value: {
+        PlayerId: 1000 * PlayerId + (WorldId % 1000),
+        GuildId: 1000 * GuildId + (WorldId % 1000),
+        PlayerName: new TextDecoder('utf-8').decode(new Uint8Array(buffer.buffer, index + 16, PlayerNameLength)),
+      },
+      offset: index + 16 + PlayerNameLength,
+    };
+  }
+  function getAttack(buffer, index, WorldId) {
+    const PlayerId = buffer.getUint32(index, true);
+    const CharacterId = buffer.getUint16(index + 4, true);
+    const CastleId = buffer.getUint16(index + 6, true);
+    return {
+      value: {
+        PlayerId: 1000 * PlayerId + (WorldId % 1000),
+        CharacterId: CharacterId,
+        CastleId: 31 & CastleId,
+        DeployCount: (CastleId >> 5) & 3,
+      },
+      offset: index + 8,
+    };
+  }
+  function getLastLoginTime(buffer, index, WorldId) {
+    return {
+      value: {
+        PlayerId: 1000 * buffer.getUint32(index, true) + (WorldId % 1000),
+        LastLoginTime: buffer.getUint32(index + 4, true),
+      },
+      offset: index + 16,
+    };
+  }
+  function checkSameWorld(e, t) {
+    return (0 == e.GroupId && 0 == e.Class && 0 == e.Block) || (0 == t.GroupId && 0 == t.Class && 0 == t.Block) ? e.WorldId == t.WorldId : e.GroupId == t.GroupId && e.Class == t.Class && e.Block == t.Block;
+  }
+  function sendData(socket, MatchInfo) {
+    let buffer = new ArrayBuffer(4);
+    let view = new DataView(buffer);
+    let data = (MatchInfo.WorldId << 19) | (MatchInfo.Class << 16) | (MatchInfo.GroupId << 8) | (MatchInfo.Block << 5) | MatchInfo.CastleId;
+    view.setUint32(0, data, true);
+    socket.send(buffer);
   }
 })();
