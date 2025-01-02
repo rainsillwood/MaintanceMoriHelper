@@ -43,7 +43,7 @@
   const ErrorCode = await getErrorCode();
   //初始化AppVersion
   const AppVersion = await getAppVersion();
-  switch (document.URL) {
+  switch (document.URL.replace(/https?\:\/\/mentemori\.icu\/\?function=(.*?)\?/,'$1')) {
     case 'https://mentemori.icu/?function=fileConverter': {
       fileConverter();
       break;
