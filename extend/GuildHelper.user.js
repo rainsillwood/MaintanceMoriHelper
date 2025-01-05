@@ -26,37 +26,47 @@
   const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
   const assetURL = 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/';
   const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
+  const lang = {
+    'メンテもりもり': {
+      'ja': 'メンテもりもり',
+      'en': 'Maintenance Mori',
+      'zhs': '维护莫来',
+      'zht': '维护莫来',
+    },
+    '幻影の神殿': {
+      'ja': '幻影の神殿',
+      'en': 'Temple',
+      'zhs': '幻影神殿',
+      'zht': '幻影神殿',
+    },
+  };
   let userURL;
   let MagicOnionHost;
   let MagicOnionPort;
   let AuthTokenOfMagicOnion;
   let SocketGvG;
-  //初始化所有页面
+  /*初始化所有页面*/
   initPage();
-  //清除元素
-  if (document.URL.includes('?function=')) {
-    while (document.body.childNodes.length > 6) {
-      document.body.lastChild.remove();
-    }
-  }
   //初始化ErrorCode
   const ErrorCode = await getErrorCode();
   //初始化AppVersion
   const AppVersion = await getAppVersion();
-  switch (document.URL.replace(/https?\:\/\/mentemori\.icu\/\?function=(.*?)\?/,'$1')) {
-    case 'https://mentemori.icu/?function=fileConverter': {
-      fileConverter();
-      break;
-    }
-    case 'https://mentemori.icu/?function=gvgMapper': {
-      gvgMapper();
-      break;
-    }
+  //重构页面
+  if (document.URL.includes('function=fileConverter')) {
+    fileConverter();
+  } else if (document.URL.includes('function=gvgMapper')) {
+    gvgMapper();
   }
-  //初始化功能
+  /*初始化功能*/
   //初始化页面
   async function initPage() {
     console.log('脚本运行中');
+    //清除元素
+    if (document.URL.includes('?function=')) {
+      while (document.body.childNodes.length > 6) {
+        document.body.lastChild.remove();
+      }
+    }
     //获取原导航栏
     const navDefault = document.querySelector('nav');
     //获取语言模块
@@ -433,7 +443,7 @@
             'AttackerGuildId': Castle.getAttribute('offense'),
             'AttackPartyCount': Castle.querySelector('gvg-status-icon-offense').innerHTML,
             'DefensePartyCount': Castle.querySelector('gvg-status-icon-defense').innerHTML,
-            'GvgCastleState': Castle.querySelector('gvg-status').hasAttribute('active') + Castle.querySelector('gvg-status').hasAttribute('counter'),
+            'GvgCastleState': Castle.querySelector('gvg-status').getAttribute('state') == 'common' ? 0 : 1,
             'LastWinPartyKnockOutCount': Castle.querySelector('gvg-ko-count').innerHTML,
           });
         }
@@ -954,19 +964,19 @@
               color: #fff;
               background-size: cover;
             }
-            gvg-status[neutral] > gvg-attacker {
+            gvg-status[state="common"] > gvg-attacker {
               display: none;
             }
-            gvg-status[neutral] > gvg-status-icon-defense {
+            gvg-status[state="common"] > gvg-status-icon-defense {
               margin: auto;
               left: 0;
               right: 0;
               top: 0;
             }
-            gvg-status[neutral] > gvg-status-icon-offense {
+            gvg-status[state="common"] > gvg-status-icon-offense {
               display: none;
             }
-            gvg-status[neutral] > gvg-status-bar-defense {
+            gvg-status[state="common"] > gvg-status-bar-defense {
               width: 131px;
               height: 12px;
               margin: auto;
@@ -977,49 +987,49 @@
               line-height: 12px;
               background-image: url(assets/base_s_08_blue.png);
             }
-            gvg-status[neutral] > gvg-status-bar-offense {
+            gvg-status[state="common"] > gvg-status-bar-offense {
               display: none;
             }
-            gvg-status[active] > gvg-status-icon-defense {
+            gvg-status[state="active"] > gvg-status-icon-defense {
               right: 0;
               bottom: 0;
             }
-            gvg-status[active] > gvg-status-icon-offense {
+            gvg-status[state="active"] > gvg-status-icon-offense {
               left: 0;
               bottom: 0;
             }
-            gvg-status[active] > gvg-status-bar-defense {
+            gvg-status[state="active"] > gvg-status-bar-defense {
               right: 25px;
               bottom: 0;
               text-align: right;
               line-height: 24px;
               background-image: url(assets/base_s_09_blue.png);
             }
-            gvg-status[active] > gvg-status-bar-offense {
+            gvg-status[state="active"] > gvg-status-bar-offense {
               left: 25px;
               bottom: 10px;
               text-align: left;
               line-height: 16px;
               background-image: url(assets/base_s_09_red.png);
             }
-            gvg-status[counter] > gvg-status-icon-defense {
+            gvg-status[state="counter"] > gvg-status-icon-defense {
               left: 0;
               bottom: 0;
               background-image: url(${assetURL}icon_gvg_party_offense_counter.png);
             }
-            gvg-status[counter] > gvg-status-icon-offense {
+            gvg-status[state="counter"] > gvg-status-icon-offense {
               right: 0;
               bottom: 0;
               background-image: url(assets/icon_gvg_party_defense.png);
             }
-            gvg-status[counter] > gvg-status-bar-defense {
+            gvg-status[state="counter"] > gvg-status-bar-defense {
               left: 25px;
               bottom: 10px;
               text-align: left;
               line-height: 16px;
               background-image: url(assets/base_s_09_red.png);
             }
-            gvg-status[counter] > gvg-status-bar-offense {
+            gvg-status[state="counter"] > gvg-status-bar-offense {
               right: 25px;
               bottom: 0;
               text-align: right;
@@ -1164,7 +1174,7 @@
       castleNode.setAttribute(castle.type, 'true');
       let status = castleNode.appendChild(
         createElement('gvg-status', '', {
-          'neutral': '',
+          'state': '',
         })
       );
       const NodeOffense = status.appendChild(createElement('gvg-status-bar-offense'));
@@ -1178,22 +1188,16 @@
       //隐藏进攻方
       const IconOffense = status.appendChild(createElement('gvg-status-icon-offense', 0));
       IconOffense.onclick = (e) => {
-        e.targe.parentNode.removeAttribute('active');
-        e.targe.parentNode.removeAttribute('counter');
-        e.targe.parentNode.setAttribute('neutral', '');
+        e.target.parentNode.setAttribute('state', 'common');
       };
       //显示进攻方
       const IconDefense = status.appendChild(createElement('gvg-status-icon-defense', 0));
       IconDefense.onclick = (e) => {
-        e.target.parentNode.removeAttribute('neutral');
-        e.target.parentNode.removeAttribute('counter');
-        e.target.parentNode.setAttribute('active', '');
+        e.target.parentNode.setAttribute('state', 'active');
       };
       const NodeAttacker = status.appendChild(createElement('gvg-attacker', '⚔️'));
       NodeAttacker.onclick = (e) => {
-        e.target.parentNode.removeAttribute('active');
-        e.target.parentNode.removeAttribute('neutral');
-        e.target.parentNode.setAttribute('counter', '');
+        e.target.parentNode.setAttribute('state', 'counter');
       };
       castleNode.append(createElement('gvg-castle-icon'));
       //增加提示
@@ -1285,11 +1289,9 @@
       CastleNode.querySelector('gvg-status-icon-defense').innerHTML = CastleData.DefensePartyCount;
       CastleNode.querySelector('gvg-status-icon-offense').innerHTML = CastleData.AttackPartyCount;
       if (CastleData.GvgCastleState == 1) {
-        CastleNode.querySelector('gvg-status').removeAttribute('neutral');
-        CastleNode.querySelector('gvg-status').setAttribute('active', '');
+        CastleNode.querySelector('gvg-status').setAttribute('state', 'active');
       } else {
-        CastleNode.querySelector('gvg-status').removeAttribute('active');
-        CastleNode.querySelector('gvg-status').setAttribute('neutral', '');
+        CastleNode.querySelector('gvg-status').setAttribute('state', 'common');
       }
       CastleNode.querySelector('gvg-ko-count').innerHTML = CastleData.LastWinPartyKnockOutCount;
     }
@@ -1680,6 +1682,18 @@
     };
     option.body = data;
     let result = await sendRequest(userURL + 'localGvg/getLocalGvgCastleInfoDialogData', option);
+    return result;
+  }
+  //character/getDetailsInfo
+  async function getDetailsInfo(PlayerId, arrayCharacterId) {
+    let option = buildOption();
+    const data = {
+      'DeckType': 1,
+      'TargetUserCharacterGuids': arrayCharacterId,
+      'TargetPlayerId': new Uint64BE(PlayerId, 10),
+    };
+    option.body = data;
+    let result = await sendRequest(userURL + 'character/getDetailsInfo', option);
     return result;
   }
   //工具函数
