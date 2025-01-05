@@ -63,7 +63,7 @@
     console.log('脚本运行中');
     //清除元素
     if (document.URL.includes('?function=')) {
-      while (document.body.childNodes.length > 6) {
+      while (document.body.childNodes.length > 4) {
         document.body.lastChild.remove();
       }
     }
@@ -75,7 +75,7 @@
     divLocal.append(
       createElement('text', ' | '),
       createElement('a', 'ZH', {
-        href: '?lang=zh',
+        //href: '?lang=zh',
       })
     );
     //初始化导航栏
@@ -86,12 +86,12 @@
     divFunction.append(
       //二进制文件转换功能
       createElement('a', '数据转换', {
-        href: '/?function=fileConverter',
+        href: '?function=fileConverter',
       }),
       createElement('text', ' | '),
       //战斗布局功能
       createElement('a', '战斗布局', {
-        href: '/?function=gvgMapper',
+        href: '?function=gvgMapper',
       })
     );
     //初始化账号管理模块
@@ -330,7 +330,6 @@
       setStorage('WorldId', selectWorld.value);
       drawMap(selectClass.value);
     };
-    //开启监听
     //初始化请求功能组
     const pRequest = divSelect.appendChild(createElement('p'));
     //从服务器获取
@@ -377,45 +376,8 @@
         alert('没有该对战的城池信息');
       }
     };
-    //初始化监听功能组
-    const pConnect = divSelect.appendChild(createElement('p'));
-    //开始监听
-    const buttonConnectServer = pConnect.appendChild(
-      createElement('button', `开启实时模式`, {
-        'name': 'Connect',
-      })
-    );
-    buttonConnectServer.onclick = (e) => {
-      e.target.setAttribute('disabled', 'true');
-      document.querySelector('button[name="Disconnect"]').removeAttribute('disabled');
-      SocketGvG = new WebSocket('wss://api.mentemori.icu/gvg');
-      SocketGvG.binaryType = 'arraybuffer';
-      const StreamID = getStreamID(0, selectGroup.value, selectClass.value, selectWorld.value);
-      SocketGvG.onopen = () => {
-        console.log('开始接收数据');
-        SocketGvG.send(new Uint8Array([0x15, 0x00, 0x81, 0x17]).buffer);
-      };
-      SocketGvG.onmessage = (e) => {
-        console.log(new Uint8Array(e.data));
-      };
-      SocketGvG.onclose = (e) => {};
-    };
-    //关闭监听
-    const buttonDisconnectServer = pConnect.appendChild(
-      createElement('button', `关闭实时模式`, {
-        'name': 'Disconnect',
-        'disabled': 'true',
-      })
-    );
-    buttonDisconnectServer.onclick = (e) => {
-      e.target.setAttribute('disabled', 'true');
-      document.querySelector('button[name="Connect"]').removeAttribute('disabled');
-      SocketGvG.close();
-    };
-    //初始化设置功能组
-    const pSet = divSelect.appendChild(createElement('p'));
     //保存到缓存
-    const buttonSetLocal = pSet.appendChild(createElement('button', `保存设置`));
+    const buttonSetLocal = pRequest.appendChild(createElement('button', `保存设置`));
     buttonSetLocal.onclick = () => {
       if (selectWorld.value < 0) {
         alert('未选择世界');
@@ -450,6 +412,116 @@
         MatchingData[`${getStorage('GroupId')}-${getStorage('ClassId')}-${getStorage('WorldId')}`] = Matching;
         setStorage('MatchingData', JSON.stringify(MatchingData));
       }
+    };
+    //初始化监听功能组
+    const pConnect = divSelect.appendChild(createElement('p'));
+    //开始监听按钮
+    const buttonConnectServer = pConnect.appendChild(
+      createElement('button', `开启实时模式`, {
+        'name': 'Connect',
+      })
+    );
+    //关闭监听按钮
+    const buttonDisconnectServer = pConnect.appendChild(
+      createElement('button', `关闭实时模式`, {
+        'name': 'Disconnect',
+        'disabled': 'true',
+      })
+    );
+    //开始监听
+    buttonConnectServer.onclick = (e) => {
+      if (selectWorld.value < 0) {
+        alert('未选择世界');
+        return;
+      }
+      //loginAccount();
+      SocketGvG = new WebSocket('wss://api.mentemori.icu/gvg');
+      SocketGvG.binaryType = 'arraybuffer';
+      const MatchInfo = {
+        'WorldId': selectClass.value == 0 ? selectWorld.value * 1 : 0, //
+        'Class': selectClass.value == 0 ? 0 : selectClass.value * 1,
+        'GroupId': selectClass.value == 0 ? 0 : selectGroup.value * 1,
+        'Block': selectClass.value == 0 ? 0 : selectWorld.value * 1,
+        'CastleId': 0,
+      };
+      SocketGvG.onopen = () => {
+        console.log('开始接收数据');
+        buttonConnectServer.setAttribute('disabled', 'true');
+        buttonDisconnectServer.removeAttribute('disabled');
+        sendData(SocketGvG, MatchInfo);
+      };
+      SocketGvG.onmessage = (e) => {
+        const view = new DataView(e.data);
+        let index = 0;
+        let GuildList = {};
+        let CastleList = [];
+        const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+        const GuildTable = {};
+        while (index < view.byteLength) {
+          let data = getStreamId(view, index);
+          const StreamId = data.value;
+          index = data.offset;
+          switch (StreamId.CastleId) {
+            case 0: {
+              data = getGuild(view, index, StreamId.WorldId);
+              const Guild = data.value;
+              const GuildId = Guild.GuildId.toString();
+              GuildList[GuildId] = {
+                'Color': GuildData[GuildId] ?? '0, 0, 0',
+                'Name': Guild.GuildName,
+              };
+              break;
+            }
+            case 31: {
+              data = getPlayer(view, index, StreamId.WorldId);
+              let Player = data.value;
+              Player.StreamId = StreamId;
+              break;
+            }
+            case 30: {
+              data = getAttacker(view, index, StreamId.WorldId);
+              let Attacker = data.value;
+              Attacker.StreamId = StreamId;
+              break;
+            }
+            case 28: {
+              data = getLastLoginTime(view, index, StreamId.WorldId);
+              let LastLoginTime = data.value;
+              LastLoginTime.StreamId = StreamId;
+              break;
+            }
+            default: {
+              data = getCastle(view, index, StreamId.WorldId);
+              const Castle = data.value;
+              Castle.CastleId = StreamId.CastleId.toString();
+              CastleList.push(Castle);
+              break;
+            }
+          }
+          index = data.offset;
+        }
+        fillMap(CastleList, GuildList);
+      };
+      SocketGvG.error = (e) => {
+        console.log('WebSocket error');
+      };
+      SocketGvG.onclose = (e) => {
+        if (e.code == 1000) {
+          console.log('Connection closed, User Stop');
+          buttonDisconnectServer.setAttribute('disabled', 'true');
+          buttonConnectServer.removeAttribute('disabled');
+        } else {
+          console.log('Connection closed, retrying in 5s');
+          setTimeout(() => {
+            buttonConnectServer.removeAttribute('disabled');
+            buttonConnectServer.click();
+          }, 5000);
+        }
+      };
+    };
+    //关闭监听
+    buttonDisconnectServer.onclick = (e) => {
+      SocketGvG.close(1000, 'User Stop');
     };
     document.body.append(
       createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds1'), //
@@ -1174,7 +1246,7 @@
       castleNode.setAttribute(castle.type, 'true');
       let status = castleNode.appendChild(
         createElement('gvg-status', '', {
-          'state': '',
+          'state': 'common',
         })
       );
       const NodeOffense = status.appendChild(createElement('gvg-status-bar-offense'));
@@ -1195,6 +1267,7 @@
       IconDefense.onclick = (e) => {
         e.target.parentNode.setAttribute('state', 'active');
       };
+      //反攻形态
       const NodeAttacker = status.appendChild(createElement('gvg-attacker', '⚔️'));
       NodeAttacker.onclick = (e) => {
         e.target.parentNode.setAttribute('state', 'counter');
@@ -1219,17 +1292,17 @@
         if (image) {
           image.remove();
         }
-        image = e.target.parentNode.appendChild(createElement('img'));
-        image.classList.add('gvg-castle-symbol');
-        const imageName = {
-          'A1': 'icon_gvg_marker_1',
-          'A2': 'icon_gvg_marker_2',
-          'D1': 'icon_gvg_marker_3',
-          'D2': 'icon_gvg_marker_4',
-          'F1': 'icon_gvg_marker_5',
-          'F2': 'icon_gvg_marker_6',
-        };
         if (hint[1]) {
+          image = e.target.parentNode.appendChild(createElement('img'));
+          image.classList.add('gvg-castle-symbol');
+          const imageName = {
+            'A1': 'icon_gvg_marker_1',
+            'A2': 'icon_gvg_marker_2',
+            'D1': 'icon_gvg_marker_3',
+            'D2': 'icon_gvg_marker_4',
+            'F1': 'icon_gvg_marker_5',
+            'F2': 'icon_gvg_marker_6',
+          };
           image.src = `${assetURL}${imageName[hint[1]] ?? hint[1]}.png`;
         }
       };
@@ -1250,7 +1323,9 @@
   }
   //战斗布局-填充数据
   async function fillMap(CastleList, GuildList) {
-    resetTable();
+    if (GuildList) {
+      resetTable();
+    }
     const table1 = document.querySelector('#guilds1').tBodies[0];
     const table2 = document.querySelector('#guilds2').tBodies[0];
     let count = 0;
@@ -1354,6 +1429,7 @@
         })
       );
     }
+    selectGuild.value = target.parentNode.parentNode.getAttribute(target.tagName.replace('GVG-STATUS-BAR-', ''));
     dialogGuild.showModal();
   }
   //API函数
@@ -1880,79 +1956,84 @@
     return '0'.repeat(length - bit.length).concat(bit);
   }
   //组合StreamID
-  function getMatch(buffer, index) {
+  function getStreamId(buffer, index) {
     let Int32 = buffer.getUint32(index, true);
     return {
-      value: {
-        WorldId: Int32 >>> 19,
-        GroupId: (Int32 >>> 8) & 255,
-        Class: (Int32 >>> 16) & 7,
-        Block: (Int32 >>> 5) & 7,
-        CastleId: 31 & Int32,
+      'value': {
+        'WorldId': Int32 >>> 19,
+        'GroupId': (Int32 >>> 8) & 255,
+        'Class': (Int32 >>> 16) & 7,
+        'Block': (Int32 >>> 5) & 7,
+        'CastleId': 31 & Int32,
       },
-      offset: index + 4,
+      'offset': index + 4,
     };
   }
-  function getGuild(buffer, index) {
-    const GuildId = buffer.getUint32(index, true);
-    const GuildNameLength = buffer.getUint8(index + 4, true);
+  function getGuild(view, index, WorldId) {
+    const GuildId = view.getUint32(index, true);
+    const GuildNameLength = view.getUint8(index + 4, true);
     return {
-      GuildId: 1000 * GuildId + 0,
-      GuildName: new TextDecoder('utf-8').decode(new Uint8Array(index.buffer, index + 5, GuildNameLength)),
-    };
-  }
-  function getCastle(buffer, index) {
-    return {
-      value: {
-        GuildId: 1000 * buffer.getUint32(index, true) + 0,
-        AttackerGuildId: 1000 * buffer.getUint32(index + 4, true) + 0,
-        UtcFallenTimeStamp: 1000 * buffer.getUint32(index + 8, true),
-        DefensePartyCount: buffer.getUint16(index + 12, true),
-        AttackPartyCount: buffer.getUint16(index + 14, true),
-        GvgCastleState: buffer.getUint8(index + 16, true),
-        LastWinPartyKnockOutCount: buffer.getUint16(index + 18, true),
+      'value': {
+        'GuildId': 1000 * GuildId + (WorldId % 1000),
+        'GuildName': new TextDecoder('utf-8').decode(new Uint8Array(view.buffer, index + 5, GuildNameLength)),
       },
-      offset: index + 20,
+      'offset': index + 5 + GuildNameLength,
     };
   }
-  function getPlayer(buffer, index, WorldId) {
-    const PlayerId = buffer.getUint32(index, true);
-    const GuildId = buffer.getUint32(index + 4, true);
-    const PlayerNameLength = buffer.getUint8(index + 8, true);
+  function getCastle(view, index, WorldId) {
     return {
-      value: {
-        PlayerId: 1000 * PlayerId + (WorldId % 1000),
-        GuildId: 1000 * GuildId + (WorldId % 1000),
-        PlayerName: new TextDecoder('utf-8').decode(new Uint8Array(buffer.buffer, index + 16, PlayerNameLength)),
+      'value': {
+        'GuildId': 1000 * view.getUint32(index, true) + +(WorldId % 1000),
+        'AttackerGuildId': 1000 * view.getUint32(index + 4, true) + +(WorldId % 1000),
+        'UtcFallenTimeStamp': 1000 * view.getUint32(index + 8, true),
+        'DefensePartyCount': view.getUint16(index + 12, true),
+        'AttackPartyCount': view.getUint16(index + 14, true),
+        'GvgCastleState': view.getUint8(index + 16, true),
+        'LastWinPartyKnockOutCount': view.getUint16(index + 18, true),
       },
-      offset: index + 16 + PlayerNameLength,
+      'offset': index + 20,
     };
   }
-  function getAttack(buffer, index, WorldId) {
-    const PlayerId = buffer.getUint32(index, true);
-    const CharacterId = buffer.getUint16(index + 4, true);
-    const CastleId = buffer.getUint16(index + 6, true);
+  function getPlayer(view, index, WorldId) {
+    const PlayerId = view.getUint32(index, true);
+    const GuildId = view.getUint32(index + 4, true);
+    const PlayerNameLength = view.getUint8(index + 8, true);
     return {
-      value: {
-        PlayerId: 1000 * PlayerId + (WorldId % 1000),
-        CharacterId: CharacterId,
-        CastleId: 31 & CastleId,
-        DeployCount: (CastleId >> 5) & 3,
+      'value': {
+        'PlayerId': 1000 * PlayerId + (WorldId % 1000),
+        'GuildId': 1000 * GuildId + (WorldId % 1000),
+        'PlayerName': new TextDecoder('utf-8').decode(new Uint8Array(view.buffer, index + 16, PlayerNameLength)),
       },
-      offset: index + 8,
+      'offset': index + 16 + PlayerNameLength,
     };
   }
-  function getLastLoginTime(buffer, index, WorldId) {
+  function getAttacker(view, index, WorldId) {
+    const PlayerId = view.getUint32(index, true);
+    const CharacterId = view.getUint16(index + 4, true);
+    const CastleId = view.getUint16(index + 6, true);
     return {
-      value: {
-        PlayerId: 1000 * buffer.getUint32(index, true) + (WorldId % 1000),
-        LastLoginTime: buffer.getUint32(index + 4, true),
+      'value': {
+        'PlayerId': 1000 * PlayerId + (WorldId % 1000),
+        'CharacterId': CharacterId,
+        'CastleId': 31 & CastleId,
+        'DeployCount': (CastleId >> 5) & 3,
       },
-      offset: index + 16,
+      'offset': index + 8,
     };
   }
-  function checkSameWorld(e, t) {
-    return (0 == e.GroupId && 0 == e.Class && 0 == e.Block) || (0 == t.GroupId && 0 == t.Class && 0 == t.Block) ? e.WorldId == t.WorldId : e.GroupId == t.GroupId && e.Class == t.Class && e.Block == t.Block;
+  function getLastLoginTime(view, index, WorldId) {
+    return {
+      'value': {
+        'PlayerId': 1000 * view.getUint32(index, true) + (WorldId % 1000),
+        'LastLoginTime': view.getUint32(index + 4, true),
+      },
+      'offset': index + 16,
+    };
+  }
+  function checkSameWorld(StraemA, StreamB) {
+    const isLocalA = 0 == StraemA.GroupId && 0 == StraemA.Class && 0 == StraemA.Block;
+    const isLocalB = 0 == StreamB.GroupId && 0 == StreamB.Class && 0 == StreamB.Block;
+    return isLocalA || isLocalB ? StraemA.WorldId == StreamB.WorldId : StraemA.GroupId == StreamB.GroupId && StraemA.Class == StreamB.Class && StraemA.Block == StreamB.Block;
   }
   function sendData(socket, MatchInfo) {
     let buffer = new ArrayBuffer(4);
