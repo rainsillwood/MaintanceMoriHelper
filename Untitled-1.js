@@ -209,7 +209,7 @@ let getMatch = (e, t) => {
           socket.addEventListener('close', () => {
             true && ((getElementById('#error').innerText = ''), setTimeout(t114514, 5000));
           });
-          return socket;
+          socket;
         })(
           (e) => {
             null !== BasicStreamId && sendData(e, BasicStreamId);

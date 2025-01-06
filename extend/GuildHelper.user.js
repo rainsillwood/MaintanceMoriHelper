@@ -86,12 +86,12 @@
     divFunction.append(
       //二进制文件转换功能
       createElement('a', '数据转换', {
-        href: '?function=fileConverter',
+        href: '/?function=fileConverter',
       }),
       createElement('text', ' | '),
       //战斗布局功能
       createElement('a', '战斗布局', {
-        href: '?function=gvgMapper',
+        href: '/?function=gvgMapper',
       })
     );
     //初始化账号管理模块
@@ -332,7 +332,7 @@
     };
     //初始化请求功能组
     const pRequest = divSelect.appendChild(createElement('p'));
-    //从服务器获取
+    /*/从服务器获取
     const buttonGetServer = pRequest.appendChild(createElement('button', `从服务器获取`));
     buttonGetServer.onclick = async () => {
       if (selectWorld.value < 0) {
@@ -353,7 +353,7 @@
       } else {
         alert('无法获取战斗信息');
       }
-    };
+    };*/
     //从缓存恢复
     const buttonGetLocal = pRequest.appendChild(createElement('button', `从上一次恢复`));
     buttonGetLocal.onclick = () => {
@@ -384,28 +384,46 @@
         return;
       }
       let Matching = { 'castles': [], 'guilds': {} };
-      const GuildList = document.querySelectorAll('tr[id]');
-      let GuildData = JSON.parse(getStorage('GuildData')) ?? {};
-      for (let i = 0; i < GuildList.length; i++) {
-        const Guild = GuildList[i];
-        const GuildId = Guild.id;
-        GuildData[GuildId] = document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
-        Matching.guilds[GuildId] = Guild.childNodes[1].innerHTML;
+      const GuildTable = document.querySelectorAll('tr[id]');
+      let GuildList = JSON.parse(getStorage('GuildData')) ?? {};
+      for (let i = 0; i < GuildTable.length; i++) {
+        const GuildNode = GuildTable[i];
+        const GuildId = GuildNode.id;
+        GuildList[GuildId].Color = document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
+        Matching.guilds[GuildId] = GuildNode.childNodes[1].innerHTML;
       }
-      setStorage('GuildData', JSON.stringify(GuildData));
+      setStorage('GuildData', JSON.stringify(GuildList));
       const CastleList = document.querySelectorAll('gvg-castle');
       let MatchingData = JSON.parse(getStorage('MatchingData')) ?? {};
       if (MatchingData) {
         for (let i = 0; i < CastleList.length; i++) {
           const Castle = CastleList[i];
           const CastleId = Castle.getAttribute('castle-id');
+          let state;
+          switch (Castle.querySelector('gvg-status').getAttribute('state')) {
+            case 'common': {
+              state = 0;
+              break;
+            }
+            case 'active': {
+              state = 1;
+              break;
+            }
+            case 'counter': {
+              state = 3;
+              break;
+            }
+            default: {
+              state = 0;
+            }
+          }
           Matching.castles.push({
             'CastleId': CastleId,
             'GuildId': Castle.getAttribute('defense'),
             'AttackerGuildId': Castle.getAttribute('offense'),
             'AttackPartyCount': Castle.querySelector('gvg-status-icon-offense').innerHTML,
             'DefensePartyCount': Castle.querySelector('gvg-status-icon-defense').innerHTML,
-            'GvgCastleState': Castle.querySelector('gvg-status').getAttribute('state') == 'common' ? 0 : 1,
+            'GvgCastleState': state,
             'LastWinPartyKnockOutCount': Castle.querySelector('gvg-ko-count').innerHTML,
           });
         }
@@ -417,46 +435,43 @@
     const pConnect = divSelect.appendChild(createElement('p'));
     //开始监听按钮
     const buttonConnectServer = pConnect.appendChild(
-      createElement('button', `开启实时模式`, {
+      createElement('button', `从服务器获取`, {
         'name': 'Connect',
       })
     );
     //关闭监听按钮
     const buttonDisconnectServer = pConnect.appendChild(
-      createElement('button', `关闭实时模式`, {
+      createElement('button', `暂停同步`, {
         'name': 'Disconnect',
         'disabled': 'true',
       })
     );
     //开始监听
-    buttonConnectServer.onclick = (e) => {
+    buttonConnectServer.onclick = async (e) => {
       if (selectWorld.value < 0) {
         alert('未选择世界');
         return;
       }
-      //loginAccount();
+      await loginAccount();
       SocketGvG = new WebSocket('wss://api.mentemori.icu/gvg');
       SocketGvG.binaryType = 'arraybuffer';
-      const MatchInfo = {
-        'WorldId': selectClass.value == 0 ? selectWorld.value * 1 : 0, //
-        'Class': selectClass.value == 0 ? 0 : selectClass.value * 1,
-        'GroupId': selectClass.value == 0 ? 0 : selectGroup.value * 1,
-        'Block': selectClass.value == 0 ? 0 : selectWorld.value * 1,
-        'CastleId': 0,
-      };
       SocketGvG.onopen = () => {
-        console.log('开始接收数据');
         buttonConnectServer.setAttribute('disabled', 'true');
         buttonDisconnectServer.removeAttribute('disabled');
+        const MatchInfo = {
+          'WorldId': selectClass.value == 0 ? selectWorld.value * 1 : 0, //
+          'Class': selectClass.value == 0 ? 0 : selectClass.value * 1,
+          'GroupId': selectClass.value == 0 ? 0 : selectGroup.value * 1,
+          'Block': selectClass.value == 0 ? 0 : selectWorld.value * 1,
+          'CastleId': 0,
+        };
         sendData(SocketGvG, MatchInfo);
       };
-      SocketGvG.onmessage = (e) => {
+      SocketGvG.onmessage = async (e) => {
         const view = new DataView(e.data);
         let index = 0;
-        let GuildList = {};
         let CastleList = [];
-        const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
-        const GuildTable = {};
+        let GuildList = JSON.parse(getStorage('GuildData')) ?? {};
         while (index < view.byteLength) {
           let data = getStreamId(view, index);
           const StreamId = data.value;
@@ -466,28 +481,36 @@
               data = getGuild(view, index, StreamId.WorldId);
               const Guild = data.value;
               const GuildId = Guild.GuildId.toString();
+              const _searchGuildId = await searchGuildId(GuildId);
+              
               GuildList[GuildId] = {
                 'Color': GuildData[GuildId] ?? '0, 0, 0',
                 'Name': Guild.GuildName,
+                'PlayerList': [],
               };
+              for (let i = 0; i < _searchGuildId?.SearchResult.PlayerInfoList.length; i++) {
+                const getPlayer = _searchGuildId?.SearchResult.PlayerInfoList[i];
+                let Player = GuildList[GuildId].PlayerList[getPlayer.PlayerId] ?? {};
+                Player.PlayerName = getPlayer.PlayerName;
+                Player.BattlePower = getPlayer.BattlePower;
+                Player.CardList = Player.CardList ?? {};
+                GuildList[GuildId].PlayerList[getPlayer.PlayerId] = Player;
+              }
               break;
             }
             case 31: {
               data = getPlayer(view, index, StreamId.WorldId);
               let Player = data.value;
-              Player.StreamId = StreamId;
               break;
             }
             case 30: {
               data = getAttacker(view, index, StreamId.WorldId);
               let Attacker = data.value;
-              Attacker.StreamId = StreamId;
               break;
             }
             case 28: {
               data = getLastLoginTime(view, index, StreamId.WorldId);
               let LastLoginTime = data.value;
-              LastLoginTime.StreamId = StreamId;
               break;
             }
             default: {
@@ -501,6 +524,7 @@
           index = data.offset;
         }
         fillMap(CastleList, GuildList);
+        setStorage()
       };
       SocketGvG.error = (e) => {
         console.log('WebSocket error');
@@ -637,10 +661,7 @@
       '6': 'CN', //所有不在上面的
     };
     const CountryCode = RegionList[RegionId];
-    let Accounts = JSON.parse(getStorage('Accounts'));
-    if (!Accounts) {
-      Accounts = {};
-    }
+    let Accounts = JSON.parse(getStorage('Accounts')) ?? {};
     let Account = Accounts[RegionId];
     //若Account不存在
     if (!Account) {
@@ -668,8 +689,9 @@
         Account.ClientKey = _comebackUser.ClientKey;
       }
       Accounts[RegionId] = Account;
+    } else {
+      setStorage('ortegauuid', Account.ortegauuid);
     }
-    setStorage('ortegauuid', Account.ortegauuid);
     const _login = await login(Account.ClientKey, Account.AdverisementId, Account.UserId);
     const PlayerDataInfoList = _login.PlayerDataInfoList;
     let WorldData;
@@ -696,16 +718,17 @@
     const _loginPlayer = await loginPlayer(WorldData.PlayerId, WorldData.Password);
     AuthTokenOfMagicOnion = _loginPlayer.AuthTokenOfMagicOnion;
     const _getUserData = await getUserData();
+    document.querySelector('#accountmanager>a:nth-child(2)').innerHTML = _getUserData.UserSyncData.UserStatusDtoInfo.Name;
+    document.querySelector('#accountmanager>button').classList.remove('hidden');
     setStorage('Accounts', JSON.stringify(Accounts));
   }
   //登出账号
   function logoutAccount() {
     let confirm = prompt('真的要清除账号吗，请输入：确认清除');
     if (confirm == '确认清除') {
-      setStorage('Account');
+      setStorage('Accounts');
       setStorage('ortegaaccesstoken', '');
       this.classList.add('hidden');
-      document.querySelector('#login').classList.remove('hidden');
     }
   }
   //战斗布局-绘制地图
@@ -1322,40 +1345,58 @@
     }
   }
   //战斗布局-填充数据
-  async function fillMap(CastleList, GuildList) {
-    if (GuildList) {
+  async function fillMap(CastleList, Guilds) {
+    let GuildList = {};
+    if (Object.keys(Guilds).length != 0) {
       resetTable();
-    }
-    const table1 = document.querySelector('#guilds1').tBodies[0];
-    const table2 = document.querySelector('#guilds2').tBodies[0];
-    let count = 0;
-    for (let i in GuildList) {
-      const GuildId = i;
-      const Guild = GuildList[i];
-      changeColor(GuildId, Guild.Color);
-      const divGuild = createElement('tr', '', GuildId);
-      const aColor = divGuild.appendChild(createElement('td', '■'));
-      aColor.classList.add('GuildId');
-      aColor.onclick = (e) => {
-        const GuildId = e.target.parentNode.id;
-        const Color = prompt('请输入设定颜色，形式为R,G,B');
-        changeColor(GuildId, Color);
-      };
-      divGuild.append(
-        createElement('td', GuildList[i].Name), //
-        createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`),
-        createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`),
-        createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`)
-      );
-      if (count < Object.keys(GuildList).length / 2) {
-        table1.append(divGuild);
-      } else {
-        table2.appendChild(divGuild);
+      const table1 = document.querySelector('#guilds1').tBodies[0];
+      const table2 = document.querySelector('#guilds2').tBodies[0];
+      let count = 0;
+      for (let i in Guilds) {
+        const GuildId = i;
+        const Guild = Guilds[i];
+        GuildList[GuildId] = Guild;
+        changeColor(GuildId, Guild.Color);
+        const divGuild = createElement('tr', '', GuildId);
+        const aColor = divGuild.appendChild(createElement('td', '■'));
+        aColor.classList.add('GuildId');
+        aColor.onclick = (e) => {
+          const GuildId = e.target.parentNode.id;
+          const Color = prompt('请输入设定颜色，形式为R,G,B');
+          changeColor(GuildId, Color);
+        };
+        divGuild.append(
+          createElement('td', Guilds[i].Name), //
+          createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`),
+          createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`),
+          createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`)
+        );
+        if (count < Object.keys(Guilds).length / 2) {
+          table1.append(divGuild);
+        } else {
+          table2.appendChild(divGuild);
+        }
+        count++;
       }
-      count++;
+    } else {
+      const GuildTable = document.querySelectorAll('tr[id]');
+      for (let i = 0; i < GuildTable.length; i++) {
+        const GuildNode = GuildTable[i];
+        const GuildId = GuildNode.id;
+        GuildList[GuildId] = {
+          Color: document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1'),
+          Name: GuildNode.childNodes[1].innerHTML,
+        };
+      }
     }
     for (let i = 0; i < CastleList.length; i++) {
-      const CastleData = CastleList[i];
+      let CastleData = JSON.parse(JSON.stringify(CastleList[i]));
+      if (CastleData.GvgCastleState == 2) {
+        CastleData.GuildId = CastleData.AttackerGuildId;
+      }
+      if (CastleData.GvgCastleState % 2 == 0) {
+        CastleData.AttackerGuildId = 0;
+      }
       const CastleNode = document.querySelector(`gvg-castle[castle-id="${CastleData.CastleId}"]`);
       CastleNode.setAttribute('defense', CastleData.GuildId);
       CastleNode.setAttribute('offense', CastleData.AttackerGuildId);
@@ -1365,6 +1406,8 @@
       CastleNode.querySelector('gvg-status-icon-offense').innerHTML = CastleData.AttackPartyCount;
       if (CastleData.GvgCastleState == 1) {
         CastleNode.querySelector('gvg-status').setAttribute('state', 'active');
+      } else if (CastleData.GvgCastleState == 3) {
+        CastleNode.querySelector('gvg-status').setAttribute('state', 'counter');
       } else {
         CastleNode.querySelector('gvg-status').setAttribute('state', 'common');
       }
@@ -1654,8 +1697,8 @@
     let option = buildOption();
     const data = {
       'WorldId': WorldId,
-      'Comment': '侦查员一号',
-      'Name': '侦查员一号',
+      'Comment': `W${WorldId}的偵察姬器人`,
+      'Name': `御坂${WorldId}號`,
       'DeepLinkId': 0,
       'SteamTicket': null,
     };
@@ -1758,6 +1801,16 @@
     };
     option.body = data;
     let result = await sendRequest(userURL + 'localGvg/getLocalGvgCastleInfoDialogData', option);
+    return result;
+  }
+  //guild/searchGuildId
+  async function searchGuildId(GuildId) {
+    let option = buildOption();
+    const data = {
+      'GuildId': new Uint64BE(GuildId, 10),
+    };
+    option.body = data;
+    let result = await sendRequest(userURL + 'guild/searchGuildId', option);
     return result;
   }
   //character/getDetailsInfo
