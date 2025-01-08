@@ -8,7 +8,7 @@ Account = {
 };
 WorldGroup = {
   RegionList: {
-    '3': {
+    3: {
       Name: 'Asia',
       SName: 'ap',
       WorldList: [3019, 3020],
@@ -16,13 +16,13 @@ WorldGroup = {
     },
   },
   GroupList: {
-    'N3': {
+    N3: {
       Name: `Group NA`,
       SName: `GNA`,
       Region: 3,
       WorldList: [3020],
     },
-    '21': {
+    21: {
       Name: `Group ${GroupId}`,
       SName: `G${GroupId}`,
       Region: 3,
@@ -30,7 +30,7 @@ WorldGroup = {
     },
   },
   WorldList: {
-    '3019': {
+    3019: {
       Name: `World ${3019 % 1000}`,
       SName: `W${3019 % 1000}`,
       Region: 3,

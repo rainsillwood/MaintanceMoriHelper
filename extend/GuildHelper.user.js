@@ -405,7 +405,6 @@
     /*按钮功能*/
     selectRegion.onchange = () => {
       document.querySelector('#styleGroup')?.remove();
-      fillGuilds();
       selectGroup.value = '-1';
       selectClass.value = '-1';
       selectWorld.value = '-1';
@@ -424,7 +423,6 @@
     };
     selectGroup.onchange = () => {
       document.querySelector('#styleClass')?.remove();
-      fillGuilds();
       selectClass.value = '-1';
       selectWorld.value = '-1';
       document.head.appendChild(
@@ -443,7 +441,6 @@
     };
     selectClass.onchange = () => {
       document.querySelector('#styleWorld')?.remove();
-      fillGuilds();
       selectWorld.value = '-1';
       document.head.appendChild(
         createElement(
@@ -1456,6 +1453,26 @@
     fillGuilds(GuildList);
     for (let i = 0; i < CastleList.length; i++) {
       changeCastle(CastleList[i]);
+    }
+    updateServerData(GuildList);
+  }
+  //战斗布局-更新数据
+  async function updateServerData(GuildList) {
+    for (let i = 0; i < GuildList.length; i++) {
+      let Guild = (await getData('Guild', `${getStorage('RegionId')}_${GuildList[i]}`)) ?? {
+        Guid: `${getStorage('RegionId')}_${GuildList[i]}`,
+        GuildId: GuildList[i],
+        Color: '0, 0, 0',
+      };
+      const _searchGuildId = await searchGuildId(GuildList[i]);
+      const GuildData = _searchGuildId?.SearchResult.GuildInfo;
+      const PlayerListData = _searchGuildId?.SearchResult.PlayerInfoList;
+      Guild.Name = GuildData.GuildOverView.GuildName;
+      for (let j = 0; j < PlayerListData.length; j++) {
+        const PlayerId = PlayerListData[j]?.PlayerId;
+        PlayerList.push(PlayerId);
+        const PlayerData = await;
+      }
     }
   }
   //战斗布局-修改城池
