@@ -1,88 +1,92 @@
 Account = {
   RegionId: {
-    ClientKey: ClientKey,
-    UserId: UserId,
-    AdverisementId: AdverisementId,
-    ortegauuid: ortegauuid,
+    'ClientKey': ClientKey,
+    'UserId': UserId,
+    'AdverisementId': AdverisementId,
+    'ortegauuid': ortegauuid,
   },
 };
 WorldGroup = {
   RegionList: {
-    3: {
-      Name: 'Asia',
-      SName: 'ap',
-      WorldList: [3019, 3020],
-      GroupList: [`N${3}`, 21],
+    RegionId: {
+      'Name': 'Asia',
+      'SName': 'ap',
+      'WorldList': [WorldId],
+      'GroupList': [`N${RegionId}`, GroupId],
     },
   },
   GroupList: {
-    N3: {
-      Name: `Group NA`,
-      SName: `GNA`,
-      Region: 3,
-      WorldList: [3020],
+    GroupId: {
+      'Name': `Group NA`,
+      'SName': `GNA`,
+      'Region': `${RegionId}`,
+      'WorldList': [WorldId],
     },
-    21: {
-      Name: `Group ${GroupId}`,
-      SName: `G${GroupId}`,
-      Region: 3,
-      WorldList: [3019],
+    GroupId: {
+      'Name': `Group ${GroupId}`,
+      'SName': `G${GroupId}`,
+      'Region': RegionId,
+      'WorldList': [WorldId],
     },
   },
   WorldList: {
-    3019: {
-      Name: `World ${3019 % 1000}`,
-      SName: `W${3019 % 1000}`,
-      Region: 3,
-      Group: 21,
+    WorldId: {
+      'Name': `World ${WorldId % 1000}`,
+      'SName': `W${WorldId % 1000}`,
+      'Region': RegionId,
+      'Group': GroupId,
     },
   },
 };
 Match = {
-  Guid: '21_0_3019',
-  Guilds: [],
-  Castles: [
+  'Guid': `${GroupId}_${ClassId}_${WorldId}`,
+  'Guilds': [],
+  'Castles': [
     {
-      CastleId: 1,
-      GuildId: 864636787003,
-      AttackerGuildId: 0,
-      AttackPartyCount: 0,
-      DefensePartyCount: 0,
-      GvgCastleState: 0,
-      UtcFallenTimeStamp: 0,
-      LastWinPartyKnockOutCount: 0,
+      'CastleId': CastleId,
+      'GuildId': GuildId,
+      'AttackerGuildId': AttackerGuildId,
+      'AttackPartyCount': AttackPartyCount,
+      'DefensePartyCount': DefensePartyCount,
+      'GvgCastleState': GvgCastleState,
+      'UtcFallenTimeStamp': UtcFallenTimeStamp,
+      'LastWinPartyKnockOutCount': LastWinPartyKnockOutCount,
     },
   ],
 };
 Guild = {
-  Guid: `${3}_864636787003`,
-  GuildId: 864636787003,
-  Name: 'θωθ',
-  Color: '255, 127, 127',
+  'Guid': `${RegionId}_${GuildId}`,
+  'GuildId': GuildId,
+  'Name': Name,
+  'Color': Color,
+  'GuildLevel': GuildLevel,
+  'Relation': Relation,
 };
 Player = {
-  Guid: `${3}_864636787003`,
-  PlayerId: 864636787003,
-  Name: Name,
-  Guild: 864636787003,
-  Level: Level,
+  'Guid': `${RegionId}_${PlayerId}`,
+  'PlayerId': PlayerId,
+  'Name': Name,
+  'Guild': GuildId,
+  'Level': Level,
+  'BattlePower': BattlePower,
 };
 Deck = {
-  Guid: Guid_Time,
-  Date: Time,
-  DeckId: Guid,
-  Player: PlayerId,
-  Content: [CharacterId1, CharacterId2, CharacterId3, CharacterId4, CharacterId5],
+  'Guid': `${Time}_${Guid}`,
+  'DeckId': Guid,
+  'Player': PlayerId,
+  'Content': [CharacterId1, CharacterId2, CharacterId3, CharacterId4, CharacterId5],
+  'LastUpdate': Time,
 };
 Character = {
-  Guid: Guid,
-  CharacterId: CharacterId,
-  Player: PlayerId,
-  Level: Level,
-  SubLevel: SubLevel,
-  BattlePower: BattlePower,
+  'Guid': Guid,
+  'CharacterId': CharacterId,
+  'Player': PlayerId,
+  'Level': Level,
+  'SubLevel': SubLevel,
+  'BattlePower': BattlePower,
+  'LastUpdate': Time,
 };
 Battle = {
-  Guid: Guid,
-  Date: Time,
+  'Guid': Guid,
+  'LastUpdate': Time,
 };

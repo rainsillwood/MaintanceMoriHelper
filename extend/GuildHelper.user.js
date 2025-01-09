@@ -29,17 +29,17 @@
   const LocalURL = 'https://mentemori.icu/';
   let userURL;
   const lang = {
-    メンテもりもり: {
-      ja: 'メンテもりもり',
-      en: 'Maintenance Mori',
-      zhs: '维护莫来',
-      zht: '维护莫来',
+    'メンテもりもり': {
+      'jpn': 'メンテもりもり',
+      'eng': 'Maintenance Mori',
+      'chs': '维护莫来',
+      'cht': '维护莫来',
     },
-    幻影の神殿: {
-      ja: '幻影の神殿',
-      en: 'Temple',
-      zhs: '幻影神殿',
-      zht: '幻影神殿',
+    '幻影の神殿': {
+      'jpn': '幻影の神殿',
+      'eng': 'Temple',
+      'chs': '幻影神殿',
+      'cht': '幻影神殿',
     },
   };
   let MagicOnionHost;
@@ -165,15 +165,15 @@
       }),
       createElement('a', '|'),
       createElement('a', '🇯🇵', {
-        href: `https://mentemori.icu/${URLFunction}?lang=eng`,
+        href: `https://mentemori.icu/${URLFunction}?lang=jpn`,
       }),
       createElement('a', '|'),
       createElement('a', '🇨🇳', {
-        href: `https://mentemori.icu/${URLFunction}?lang=zhs`,
+        href: `https://mentemori.icu/${URLFunction}?lang=chs`,
       }),
       createElement('a', '|'),
       createElement('a', '🇹🇼', {
-        href: `https://mentemori.icu/${URLFunction}?lang=zht`,
+        href: `https://mentemori.icu/${URLFunction}?lang=cht`,
       })
     );
     //初始化扩展导航栏
@@ -292,36 +292,36 @@
     const RegionList = WorldGroup.RegionList;
     const GroupList = WorldGroup.GroupList;
     const ClassList = {
-      0: {
-        Name: 'Local',
-        Class: 'static',
+      '0': {
+        'Name': 'Local',
+        'Class': 'static',
       },
-      1: {
-        Name: 'Elite',
-        Class: 'dynamic',
+      '1': {
+        'Name': 'Elite',
+        'Class': 'dynamic',
       },
-      2: {
-        Name: 'Expert',
-        Class: 'dynamic',
+      '2': {
+        'Name': 'Expert',
+        'Class': 'dynamic',
       },
-      3: {
-        Name: 'Master',
-        Class: 'dynamic',
+      '3': {
+        'Name': 'Master',
+        'Class': 'dynamic',
       },
     };
     const WorldList = WorldGroup.WorldList;
     const BlockList = {
-      0: {
-        Name: 'Block A',
+      '0': {
+        'Name': 'Block A',
       },
-      1: {
-        Name: 'Block B',
+      '1': {
+        'Name': 'Block B',
       },
-      2: {
-        Name: 'Block C',
+      '2': {
+        'Name': 'Block C',
       },
-      3: {
-        Name: 'Block D',
+      '3': {
+        'Name': 'Block D',
       },
     };
     //初始化选择区
@@ -471,7 +471,7 @@
       }
       const Match = await getData('Match', `${selectGroup.value}_${selectClass.value}_${selectWorld.value}`);
       if (Match) {
-        fillMap(Match.Castles, Match.Guilds);
+        await fillMap(Match.Castles, Match.Guilds);
       } else {
         alert('没有该对战的城池信息，请从服务器获取');
       }
@@ -482,18 +482,23 @@
         alert('未选择世界');
         return;
       }
+      const RegionId = selectRegion.value;
+      const GroupId = selectGroup.value;
+      const ClassId = selectClass.value;
+      const WorldId = selectWorld.value;
       let Match = {
-        Guid: `${selectGroup.value}_${selectClass.value}_${selectWorld.value}`,
-        Castles: [],
-        Guilds: [],
+        'Guid': `${GroupId}_${ClassId}_${WorldId}`,
+        'Castles': [],
+        'Guilds': [],
       };
       const GuildDataList = document.querySelectorAll('tr[id]');
       for (let i = 0; i < GuildDataList.length; i++) {
         const GuildNode = GuildDataList[i];
         const GuildId = GuildNode.id;
+        const Guid = `${RegionId}_${GuildId}`;
         Match.Guilds.push(GuildId);
-        let Guild = (await getData('Guild', `${selectRegion.value}_${GuildId}`)) ?? {
-          Guid: `${selectRegion.value}_${GuildId}`,
+        let Guild = (await getData('Guild', Guid)) ?? {
+          Guid: Guid,
           GuildId: GuildId,
           Name: GuildNode.childNodes[1].innerHTML,
           Color: document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1'),
@@ -505,12 +510,12 @@
         const CastleData = CastleDataList[i];
         const CastleId = CastleData.getAttribute('castle-id');
         let Castle = {
-          CastleId: CastleId,
-          GuildId: CastleData.getAttribute('defense'),
-          AttackerGuildId: CastleData.getAttribute('offense'),
-          AttackPartyCount: CastleData.querySelector('gvg-status-icon-offense').innerHTML,
-          DefensePartyCount: CastleData.querySelector('gvg-status-icon-defense').innerHTML,
-          LastWinPartyKnockOutCount: CastleData.querySelector('gvg-ko-count').innerHTML,
+          'CastleId': CastleId,
+          'GuildId': CastleData.getAttribute('defense'),
+          'AttackerGuildId': CastleData.getAttribute('offense'),
+          'AttackPartyCount': CastleData.querySelector('gvg-status-icon-offense').innerHTML,
+          'DefensePartyCount': CastleData.querySelector('gvg-status-icon-defense').innerHTML,
+          'LastWinPartyKnockOutCount': CastleData.querySelector('gvg-ko-count').innerHTML,
         };
         switch (CastleData.querySelector('gvg-status').getAttribute('state')) {
           case 'common': {
@@ -558,7 +563,7 @@
           for (let i in Match.guilds) {
             GuildList.push(i);
           }
-          fillMap(Match.castles, GuildList);
+          await fillMap(Match.castles, GuildList);
           sendData(SocketGvG, StreamID);
           LogCastleList = { 1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50, 9: 50, 10: 50, 11: 50, 12: 50, 13: 50, 14: 50, 15: 50, 16: 50, 17: 50, 18: 50, 19: 50, 20: 50, 21: 50 };
           LogCastle();
@@ -570,8 +575,6 @@
       SocketGvG.onmessage = async (e) => {
         const view = new DataView(e.data);
         let index = 0;
-        let CastleList = {};
-        let GuildList = {};
         while (index < view.byteLength) {
           let data = getStreamId(view, index);
           const StreamId = data.value;
@@ -837,262 +840,266 @@
   function drawMap(ClassId) {
     document.querySelector('#gvgMapStyle')?.remove();
     document.querySelector('gvg-viewer')?.remove();
+    document.querySelector('gvg-list')?.remove();
+    document.querySelector('gvg-list')?.remove();
+    document.body.append(createElement('gvg-list', '', { class: ['enermy'] }));
+    document.body.append(createElement('gvg-list', '', { class: ['friend'] }));
     if (ClassId) {
       const castleList = {
-        local: {
-          1: {
-            left: '640px',
-            top: '560px',
-            type: 'temple',
-            name: 'Brussell',
+        'local': {
+          '1': {
+            'left': '640px',
+            'top': '560px',
+            'type': 'temple',
+            'name': 'Brussell',
           },
-          2: {
-            left: '858px',
-            top: '514px',
-            type: 'castle',
-            name: 'Wissekerke',
+          '2': {
+            'left': '858px',
+            'top': '514px',
+            'type': 'castle',
+            'name': 'Wissekerke',
           },
-          3: {
-            left: '741px',
-            top: '699px',
-            type: 'castle',
-            name: 'Modave',
+          '3': {
+            'left': '741px',
+            'top': '699px',
+            'type': 'castle',
+            'name': 'Modave',
           },
-          4: {
-            left: '422px',
-            top: '695px',
-            type: 'castle',
-            name: 'Chimay',
+          '4': {
+            'left': '422px',
+            'top': '695px',
+            'type': 'castle',
+            'name': 'Chimay',
           },
-          5: {
-            left: '470px',
-            top: '433px',
-            type: 'castle',
-            name: 'Gravensteen',
+          '5': {
+            'left': '470px',
+            'top': '433px',
+            'type': 'castle',
+            'name': 'Gravensteen',
           },
-          6: {
-            left: '708px',
-            top: '360px',
-            type: 'church',
-            name: 'Cambre',
+          '6': {
+            'left': '708px',
+            'top': '360px',
+            'type': 'church',
+            'name': 'Cambre',
           },
-          7: {
-            left: '1000px',
-            top: '280px',
-            type: 'church',
-            name: 'Quentin',
+          '7': {
+            'left': '1000px',
+            'top': '280px',
+            'type': 'church',
+            'name': 'Quentin',
           },
-          8: {
-            left: '1145px',
-            top: '391px',
-            type: 'church',
-            name: 'Lambert',
+          '8': {
+            'left': '1145px',
+            'top': '391px',
+            'type': 'church',
+            'name': 'Lambert',
           },
-          9: {
-            left: '1089px',
-            top: '600px',
-            type: 'church',
-            name: 'Saint-Jacques',
+          '9': {
+            'left': '1089px',
+            'top': '600px',
+            'type': 'church',
+            'name': 'Saint-Jacques',
           },
-          10: {
-            left: '945px',
-            top: '690px',
-            type: 'church',
-            name: 'Michael',
+          '10': {
+            'left': '945px',
+            'top': '690px',
+            'type': 'church',
+            'name': 'Michael',
           },
-          11: {
-            left: '815px',
-            top: '171px',
-            type: 'church',
-            name: 'Namur',
+          '11': {
+            'left': '815px',
+            'top': '171px',
+            'type': 'church',
+            'name': 'Namur',
           },
-          12: {
-            left: '828px',
-            top: '872px',
-            type: 'church',
-            name: 'Charleroi',
+          '12': {
+            'left': '828px',
+            'top': '872px',
+            'type': 'church',
+            'name': 'Charleroi',
           },
-          13: {
-            left: '761px',
-            top: '1092px',
-            type: 'church',
-            name: 'Alzette',
+          '13': {
+            'left': '761px',
+            'top': '1092px',
+            'type': 'church',
+            'name': 'Alzette',
           },
-          14: {
-            left: '646px',
-            top: '969px',
-            type: 'church',
-            name: 'Hainaut',
+          '14': {
+            'left': '646px',
+            'top': '969px',
+            'type': 'church',
+            'name': 'Hainaut',
           },
-          15: {
-            left: '560px',
-            top: '807px',
-            type: 'church',
-            name: 'Wavre',
+          '15': {
+            'left': '560px',
+            'top': '807px',
+            'type': 'church',
+            'name': 'Wavre',
           },
-          16: {
-            left: '435px',
-            top: '1008px',
-            type: 'church',
-            name: 'Mons',
+          '16': {
+            'left': '435px',
+            'top': '1008px',
+            'type': 'church',
+            'name': 'Mons',
           },
-          17: {
-            left: '261px',
-            top: '734px',
-            type: 'church',
-            name: 'Christophe',
+          '17': {
+            'left': '261px',
+            'top': '734px',
+            'type': 'church',
+            'name': 'Christophe',
           },
-          18: {
-            left: '186px',
-            top: '549px',
-            type: 'church',
-            name: 'Kortrijk',
+          '18': {
+            'left': '186px',
+            'top': '549px',
+            'type': 'church',
+            'name': 'Kortrijk',
           },
-          19: {
-            left: '258px',
-            top: '367px',
-            type: 'church',
-            name: 'Ypres',
+          '19': {
+            'left': '258px',
+            'top': '367px',
+            'type': 'church',
+            'name': 'Ypres',
           },
-          20: {
-            left: '358px',
-            top: '219px',
-            type: 'church',
-            name: 'Salvador',
+          '20': {
+            'left': '358px',
+            'top': '219px',
+            'type': 'church',
+            'name': 'Salvador',
           },
-          21: {
-            left: '563px',
-            top: '177px',
-            type: 'church',
-            name: 'Bavo',
+          '21': {
+            'left': '563px',
+            'top': '177px',
+            'type': 'church',
+            'name': 'Bavo',
           },
         },
-        global: {
-          1: {
-            left: '640px',
-            top: '560px',
-            type: 'temple',
-            name: 'Ein',
+        'global': {
+          '1': {
+            'left': '640px',
+            'top': '560px',
+            'type': 'temple',
+            'name': 'Ein',
           },
-          2: {
-            left: '803px',
-            top: '503px',
-            type: 'castle',
-            name: 'Yesod',
+          '2': {
+            'left': '803px',
+            'top': '503px',
+            'type': 'castle',
+            'name': 'Yesod',
           },
-          3: {
-            left: '747px',
-            top: '718px',
-            type: 'castle',
-            name: 'Malkuth',
+          '3': {
+            'left': '747px',
+            'top': '718px',
+            'type': 'castle',
+            'name': 'Malkuth',
           },
-          4: {
-            left: '418px',
-            top: '725px',
-            type: 'castle',
-            name: 'Keter',
+          '4': {
+            'left': '418px',
+            'top': '725px',
+            'type': 'castle',
+            'name': 'Keter',
           },
-          5: {
-            left: '484px',
-            top: '439px',
-            type: 'castle',
-            name: 'Tiferet',
+          '5': {
+            'left': '484px',
+            'top': '439px',
+            'type': 'castle',
+            'name': 'Tiferet',
           },
-          6: {
-            left: '691px',
-            top: '265px',
-            type: 'church',
-            name: 'Cushel',
+          '6': {
+            'left': '691px',
+            'top': '265px',
+            'type': 'church',
+            'name': 'Cushel',
           },
-          7: {
-            left: '986px',
-            top: '301px',
-            type: 'church',
-            name: 'Citri',
+          '7': {
+            'left': '986px',
+            'top': '301px',
+            'type': 'church',
+            'name': 'Citri',
           },
-          8: {
-            left: '1144px',
-            top: '402px',
-            type: 'church',
-            name: 'Toppaz',
+          '8': {
+            'left': '1144px',
+            'top': '402px',
+            'type': 'church',
+            'name': 'Toppaz',
           },
-          9: {
-            left: '1107px',
-            top: '567px',
-            type: 'church',
-            name: 'Meral',
+          '9': {
+            'left': '1107px',
+            'top': '567px',
+            'type': 'church',
+            'name': 'Meral',
           },
-          10: {
-            left: '958px',
-            top: '627px',
-            type: 'church',
-            name: 'Perido',
+          '10': {
+            'left': '958px',
+            'top': '627px',
+            'type': 'church',
+            'name': 'Perido',
           },
-          11: {
-            left: '891px',
-            top: '177px',
-            type: 'church',
-            name: 'Pharia',
+          '11': {
+            'left': '891px',
+            'top': '177px',
+            'type': 'church',
+            'name': 'Pharia',
           },
-          12: {
-            left: '906px',
-            top: '884px',
-            type: 'church',
-            name: 'Lapis',
+          '12': {
+            'left': '906px',
+            'top': '884px',
+            'type': 'church',
+            'name': 'Lapis',
           },
-          13: {
-            left: '743px',
-            top: '1131px',
-            type: 'church',
-            name: 'Larimal',
+          '13': {
+            'left': '743px',
+            'top': '1131px',
+            'type': 'church',
+            'name': 'Larimal',
           },
-          14: {
-            left: '520px',
-            top: '1007px',
-            type: 'church',
-            name: 'Marin',
+          '14': {
+            'left': '520px',
+            'top': '1007px',
+            'type': 'church',
+            'name': 'Marin',
           },
-          15: {
-            left: '560px',
-            top: '851px',
-            type: 'church',
-            name: 'Amest',
+          '15': {
+            'left': '560px',
+            'top': '851px',
+            'type': 'church',
+            'name': 'Amest',
           },
-          16: {
-            left: '309px',
-            top: '985px',
-            type: 'church',
-            name: 'Laven',
+          '16': {
+            'left': '309px',
+            'top': '985px',
+            'type': 'church',
+            'name': 'Laven',
           },
-          17: {
-            left: '250px',
-            top: '728px',
-            type: 'church',
-            name: 'Zircon',
+          '17': {
+            'left': '250px',
+            'top': '728px',
+            'type': 'church',
+            'name': 'Zircon',
           },
-          18: {
-            left: '112px',
-            top: '602px',
-            type: 'church',
-            name: 'Onyx',
+          '18': {
+            'left': '112px',
+            'top': '602px',
+            'type': 'church',
+            'name': 'Onyx',
           },
-          19: {
-            left: '260px',
-            top: '420px',
-            type: 'church',
-            name: 'Floryte',
+          '19': {
+            'left': '260px',
+            'top': '420px',
+            'type': 'church',
+            'name': 'Floryte',
           },
-          20: {
-            left: '198px',
-            top: '259px',
-            type: 'church',
-            name: 'Ganette',
+          '20': {
+            'left': '198px',
+            'top': '259px',
+            'type': 'church',
+            'name': 'Ganette',
           },
-          21: {
-            left: '495px',
-            top: '158px',
-            type: 'church',
-            name: 'Rula',
+          '21': {
+            'left': '495px',
+            'top': '158px',
+            'type': 'church',
+            'name': 'Rula',
           },
         },
       };
@@ -1102,6 +1109,21 @@
         createElement(
           'style',
           `
+            gvg-list {
+              display: block;
+              position: fixed;
+              top: 0px;
+              width: 200px;
+              height: 100%;
+            }
+            gvg-list.enermy {
+              left: 1680px
+              background: red;
+            }
+            gvg-list.friend {
+              right: 1680px
+              background: blue;
+            }
             gvg-viewer {
               display: block;
               position: relative;
@@ -1121,7 +1143,7 @@
               height: 50px;
               display: block;
               position: absolute;
-              left: -82px;
+              'left': -82px;
               right: -82px;
               bottom: 43px;
             }
@@ -1167,9 +1189,9 @@
             }
             gvg-status[state="common"] > gvg-status-icon-defense {
               margin: auto;
-              left: 0;
+   'left': 0;
               right: 0;
-              top: 0;
+   'top': 0;
             }
             gvg-status[state="common"] > gvg-status-icon-offense {
               display: none;
@@ -1178,9 +1200,9 @@
               width: 131px;
               height: 12px;
               margin: auto;
-              left: 0;
+   'left': 0;
               right: 0;
-              top: 35px;
+   'top': 35px;
               text-align: center;
               line-height: 12px;
               background-image: url(assets/base_s_08_blue.png);
@@ -1193,7 +1215,7 @@
               bottom: 0;
             }
             gvg-status[state="active"] > gvg-status-icon-offense {
-              left: 0;
+   'left': 0;
               bottom: 0;
             }
             gvg-status[state="active"] > gvg-status-bar-defense {
@@ -1204,14 +1226,14 @@
               background-image: url(assets/base_s_09_blue.png);
             }
             gvg-status[state="active"] > gvg-status-bar-offense {
-              left: 25px;
+   'left': 25px;
               bottom: 10px;
               text-align: left;
               line-height: 16px;
               background-image: url(assets/base_s_09_red.png);
             }
             gvg-status[state="counter"] > gvg-status-icon-defense {
-              left: 0;
+   'left': 0;
               bottom: 0;
               background-image: url(${assetURL}icon_gvg_party_offense_counter.png);
             }
@@ -1221,7 +1243,7 @@
               background-image: url(assets/icon_gvg_party_defense.png);
             }
             gvg-status[state="counter"] > gvg-status-bar-defense {
-              left: 25px;
+   'left': 25px;
               bottom: 10px;
               text-align: left;
               line-height: 16px;
@@ -1237,8 +1259,8 @@
             gvg-ko-count-container {
               position: absolute;
               width: 76px;
-              left: -38px;
-              top: -19px;
+   'left': -38px;
+   'top': -19px;
               display: block;
               color: #eee;
               text-shadow: red 0 0 30px red 0 0 5px;
@@ -1257,8 +1279,8 @@
               text-align: center;
               width: 100%;
               height: 14px;
-              top: 26px;
-              left: 0;
+   'top': 26px;
+   'left': 0;
             }
             gvg-castle-icon {
               display: block;
@@ -1266,7 +1288,7 @@
               background-size: cover;
             }
             gvg-castle[church] > gvg-castle-icon {
-              left: -28px;
+   'left': -28px;
               right: -28px;
               bottom: -25px;
               width: 56px;
@@ -1274,7 +1296,7 @@
               background-image: url(assets/Castle_0_0.png);
             }
             gvg-castle[castle] > gvg-castle-icon {
-              left: -31px;
+   'left': -31px;
               right: -31px;
               bottom: -33px;
               width: 62px;
@@ -1282,7 +1304,7 @@
               background-image: url(assets/Castle_0_1.png);
             }
             gvg-castle[temple] > gvg-castle-icon {
-              left: -39px;
+   'left': -39px;
               right: -39px;
               bottom: -40px;
               width: 78px;
@@ -1302,7 +1324,7 @@
               background-image: url(assets/${image}.png);
               width: 140px;
               height: 26px;
-              left: -70px;
+   'left': -70px;
               right: -70px;
               color: ${Class == 'local' ? '#473d3b' : 'white'};
               line-height: 33px;
@@ -1317,7 +1339,7 @@
               bottom: -58px;
             }
             gvg-castle[temple] > .gvg-castle-symbol {
-              left: -70px;
+   'left': -70px;
               bottom: -58px;
               width: 33px;
               height: 29px;
@@ -1325,7 +1347,7 @@
               display: block;
             }
             gvg-castle[castle] > .gvg-castle-symbol {
-              left: -70px;
+   'left': -70px;
               bottom: -50px;
               width: 33px;
               height: 29px;
@@ -1333,7 +1355,7 @@
               display: block;
             }
             gvg-castle[church] > .gvg-castle-symbol {
-              left: -70px;
+   'left': -70px;
               bottom: -45px;
               width: 33px;
               height: 29px;
@@ -1341,7 +1363,7 @@
               display: block;
             }
             gvg-castle-hint {
-              left: -70px;
+   'left': -70px;
               right: -70px;
               background: rgba(32, 32, 32, 0.5);
               width: 140px;
@@ -1353,13 +1375,13 @@
               word-break: break-word;
             }
             gvg-castle[temple] > gvg-castle-hint {
-              top: 58px;
+   'top': 58px;
             }
             gvg-castle[castle] > gvg-castle-hint {
-              top: 50px;
+   'top': 50px;
             }
             gvg-castle[church] > gvg-castle-hint {
-              top: 45px;
+   'top': 45px;
             }`,
           'gvgMapStyle'
         )
@@ -1449,30 +1471,52 @@
     }
   }
   //战斗布局-填充数据
-  function fillMap(CastleList, GuildList) {
+  async function fillMap(CastleList, GuildList) {
+    await updateServerData(GuildList);
     fillGuilds(GuildList);
     for (let i = 0; i < CastleList.length; i++) {
       changeCastle(CastleList[i]);
     }
-    updateServerData(GuildList);
   }
   //战斗布局-更新数据
   async function updateServerData(GuildList) {
+    let PlayerDataList = [];
     for (let i = 0; i < GuildList.length; i++) {
-      let Guild = (await getData('Guild', `${getStorage('RegionId')}_${GuildList[i]}`)) ?? {
-        Guid: `${getStorage('RegionId')}_${GuildList[i]}`,
-        GuildId: GuildList[i],
-        Color: '0, 0, 0',
+      const Guid = `${getStorage('RegionId')}_${GuildList[i]}`;
+      let Guild = (await getData('Guild', Guid)) ?? {
+        'Guid': Guid,
+        'GuildId': GuildList[i],
+        'Color': '0, 0, 0',
+        'Relation': 'neutral',
       };
       const _searchGuildId = await searchGuildId(GuildList[i]);
       const GuildData = _searchGuildId?.SearchResult.GuildInfo;
-      const PlayerListData = _searchGuildId?.SearchResult.PlayerInfoList;
       Guild.Name = GuildData.GuildOverView.GuildName;
-      for (let j = 0; j < PlayerListData.length; j++) {
-        const PlayerId = PlayerListData[j]?.PlayerId;
-        PlayerList.push(PlayerId);
-        const PlayerData = await;
-      }
+      Guild.GuildLevel = GuildData.GuildLevel;
+      updateData('Guild', Guild);
+      PlayerDataList = PlayerDataList.concat(_searchGuildId?.SearchResult.PlayerInfoList);
+    }
+    for (let i = 0; i < PlayerDataList.length; i++) {
+      const PlayerData = PlayerDataList[i];
+      const Guid = `${getStorage('RegionId')}_${PlayerData.PlayerId}`;
+      let Player = (await getData('Player', Guid)) ?? {
+        'Guid': Guid,
+        'PlayerId': PlayerData.PlayerId,
+      };
+      Player.Name = PlayerData.PlayerName;
+      Player.Guild = PlayerData.GuildId;
+      Player.Level = PlayerData.PlayerLevel;
+      Player.BattlePower = PlayerData.BattlePower;
+      updateData('Player', Player);
+    }
+    const Day = new Date() - 7 * 24 * 3600 * 1000;
+    const DeckData = await getArray('Deck', { '<': Day }, 'LastUpdate');
+    const CharacterData = await getArray('Character', { '<': Day }, 'LastUpdate');
+    const BattleData = await getArray('Battle', { '<': Day }, 'LastUpdate');
+    while (DeckData.length == 0 && CharacterData.length == 0 && BattleData.length == 0) {
+      removeData('Deck', DeckData.shift()?.Guid);
+      removeData('Character', CharacterData.shift()?.Guid);
+      removeData('Battle', BattleData.shift()?.Guid);
     }
   }
   //战斗布局-修改城池
@@ -1505,23 +1549,23 @@
   async function fillGuilds(GuildList) {
     document.querySelector('#guilds1')?.remove();
     document.querySelector('#guilds2')?.remove();
-    table1 = createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds1');
-    table12 = createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead><tbody></tbody>`, 'guilds2');
-    document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('nav'));
+    table2 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds2'));
+    table1 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds1'));
+    const RegionId = getStorage('RegionId');
     if (GuildList) {
-      const table1 = document.querySelector('#guilds1').tBodies[0];
-      const table2 = document.querySelector('#guilds2').tBodies[0];
+      const tbody1 = table1.appendChild(createElement('tbody'));
+      const tbody2 = table2.appendChild(createElement('tbody'));
       let count = 0;
       for (let i in GuildList) {
         const GuildId = GuildList[i];
-        const Guild = await getData('guilds', GuildId);
+        const Guid = `${RegionId}_${GuildId}`;
+        const Guild = await getData('Guild', Guid);
         changeColor(GuildId, Guild.Color);
         const divGuild = createElement('tr', '', GuildId);
         const aColor = divGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
         aColor.onclick = (e) => {
-          const GuildId = e.target.parentNode.id;
           const Color = prompt('请输入设定颜色，形式为R,G,B');
-          changeColor(GuildId, Color);
+          changeColor(e.target.parentNode.id, Color);
         };
         divGuild.append(
           createElement('td', GuildList[GuildId].Name), //
@@ -1530,9 +1574,9 @@
           createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`)
         );
         if (count < GuildList.length / 2) {
-          table1.append(divGuild);
+          tbody1.append(divGuild);
         } else {
-          table2.append(divGuild);
+          tbody2.append(divGuild);
         }
         count++;
       }
@@ -1606,36 +1650,38 @@
             const Time = (Now > BattleTime ? Now : new Date(Now.getTime() - 24 * 3600 * 1000)).toLocaleDateString().replaceAll('/', '_');
             for (let i = 0; i < _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos.length; i++) {
               const BattleData = _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos[i];
-              let Battle = await getData('battles', BattleData[0]);
+              let Battle = await getData('Battle', BattleData[0]);
               if (!Battle) {
-                updateData('battles', {
-                  Guid: BattleData[0],
-                  Date: Time,
+                updateData('Battle', {
+                  'Guid': BattleData[0],
+                  'LastUpdate': Time,
                 });
                 const DeckDataList = [BattleData[2][0], BattleData[3][0]];
                 for (let j in DeckDataList) {
                   const DeckData = DeckDataList[j];
                   let Deck = {
-                    Guid: `${DeckData[6]}_${Time}`,
-                    Date: Time,
-                    DeckId: DeckData[6],
-                    PlayerId: DeckData[2],
-                    Content: [],
+                    'Guid': `${Time}_${DeckData[6]}`,
+                    'DeckId': DeckData[6],
+                    'PlayerId': DeckData[2],
+                    'Content': [],
+                    'LastUpdate': Now,
                   };
                   for (let k in DeckData[1]) {
+                    const RegionId = getStorage('RegionId');
                     const CharacterData = DeckData[1][k];
                     let Character = {
-                      Guid: CharacterData.UserCharacterInfo.Guid,
-                      CharacterId: CharacterData.UserCharacterInfo.CharacterId,
-                      PlayerId: CharacterData.UserCharacterInfo.PlayerId,
-                      Level: CharacterData.UserCharacterInfo.Level,
-                      SubLevel: CharacterData.UserCharacterInfo.SubLevel,
-                      BattlePower: CharacterData.BattlePower,
+                      'Guid': CharacterData.UserCharacterInfo.Guid,
+                      'CharacterId': CharacterData.UserCharacterInfo.CharacterId,
+                      'PlayerId': CharacterData.UserCharacterInfo.PlayerId,
+                      'Level': CharacterData.UserCharacterInfo.Level,
+                      'SubLevel': CharacterData.UserCharacterInfo.SubLevel,
+                      'BattlePower': CharacterData.BattlePower,
+                      'LastUpdate': Now,
                     };
                     Deck.Content.push(Character.Guid);
-                    updateData('characters', Character);
+                    updateData('Character', Character);
                   }
-                  updateData('decks', Deck);
+                  updateData('Deck', Deck);
                 }
               }
             }
@@ -1732,14 +1778,14 @@
         let Region = WorldGroup.RegionList[RegionId];
         if (!Region) {
           Region = {
-            Name: RegionList[RegionMemo],
+            'name': RegionList[RegionMemo],
             SName: RegionMemo,
             WorldList: [],
             GroupList: [`N${RegionId}`],
           };
           WorldGroup.RegionList[RegionId] = Region;
           WorldGroup.GroupList[`N${RegionId}`] = {
-            Name: `Group NA`,
+            'name': `Group NA`,
             SName: `GNA`,
             Region: RegionId,
             WorldList: [],
@@ -1750,7 +1796,7 @@
         if (!Group) {
           Group = {
             Region: RegionId,
-            Name: `Group ${GroupId}`,
+            'name': `Group ${GroupId}`,
             SName: `G${GroupId}`,
             WorldList: [],
           };
@@ -1761,7 +1807,7 @@
           const WorldId = WorldIdList[j];
           Region.WorldList.push(WorldId);
           WorldGroup.WorldList[WorldId] = {
-            Name: `World ${WorldId % 1000}`,
+            'name': `World ${WorldId % 1000}`,
             SName: `W${WorldId % 1000}`,
             Region: RegionId,
             Group: GroupId,
@@ -1775,7 +1821,7 @@
     for (let i = 0; i < _getDataUri.WorldInfos.length; i++) {
       const WorldData = _getDataUri.WorldInfos[i];
       const GameServerId = WorldData.GameServerId;
-      const RegionId = Math.floor(GameServerId / 10);
+      const RegionId = Math.floor(GameServerId / 10) ? Math.floor(GameServerId / 10) : 1;
       const WorldId = WorldData.Id;
       let Region = WorldGroup.RegionList[RegionId];
       Region.WorldList.push(WorldId);
@@ -2340,10 +2386,10 @@
         objectStore.createIndex('DeckId', 'DeckId', {
           unique: false,
         });
-        objectStore.createIndex('Date', 'Date', {
+        objectStore.createIndex('Player', 'Player', {
           unique: false,
         });
-        objectStore.createIndex('Player', 'Player', {
+        objectStore.createIndex('LastUpdate', 'LastUpdate', {
           unique: false,
         });
       }
@@ -2365,6 +2411,9 @@
           unique: false,
         });
         objectStore.createIndex('BattlePower', 'BattlePower', {
+          unique: false,
+        });
+        objectStore.createIndex('LastUpdate', 'LastUpdate', {
           unique: false,
         });
       }
@@ -2439,7 +2488,7 @@
       };
     });
   }
-  //获取数据组
+  //获取数据组,留空获取全部，{'>':,'>=':,'<':,'<=':}获取指定范围，字符串获取固定
   async function getArray(table, index, key, isFuzzy) {
     return new Promise(function (resolve, reject) {
       let oArray = [];
@@ -2450,31 +2499,26 @@
       };
       let objectStore = transaction.objectStore(table);
       let request;
-      if (index == 'all' || isFuzzy) {
-        request = objectStore.openCursor();
-        request.onsuccess = function (success) {
-          let cursor = this.result;
-          if (cursor) {
-            if (index == 'all' || cursor.value.local.indexOf(index) >= 0) {
-              oArray.push(cursor.value.value);
-            }
-            cursor.continue();
-          } else {
-            resolve(oArray);
-          }
-        };
-      } else {
+      if ((index['>'] || index['>=']) && !index['<'] && !index['<=']) {
+        request = objectStore.index(key).openCursor(IDBKeyRange.lowerBound(index['>='] ?? index['>'], !index['>=']));
+      } else if (!index['>'] && !index['>='] && (index['<'] || index['<='])) {
+        request = objectStore.index(key).openCursor(IDBKeyRange.upperBound(index['<='] ?? index['<'], !index['<=']));
+      } else if ((index['>'] || index['>=']) && (index['<'] || index['<='])) {
+        request = objectStore.index(key).openCursor(IDBKeyRange.bound(index['>='] ?? index['>'], index['<='] ?? index['<'], !index['>='], !index['<=']));
+      } else if (!index) {
         request = objectStore.index(key).openCursor(IDBKeyRange.only(index));
-        request.onsuccess = function (sucess) {
-          let cursor = this.result;
-          if (cursor) {
-            oArray.push(cursor.value.value);
-            cursor.continue();
-          } else {
-            resolve(oArray);
-          }
-        };
+      } else {
+        request = objectStore.openCursor();
       }
+      request.onsuccess = function (success) {
+        let cursor = this.result;
+        if (cursor) {
+          oArray.push(cursor.value.value);
+          cursor.continue();
+        } else {
+          resolve(oArray);
+        }
+      };
       request.onerror = function (error) {};
     });
   }
