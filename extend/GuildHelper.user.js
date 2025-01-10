@@ -27,37 +27,282 @@
   const assetURL = 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/';
   const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
   const LocalURL = 'https://mentemori.icu/';
-  let userURL;
-  const lang = {
-    'メンテもりもり': {
-      'jpn': 'メンテもりもり',
-      'eng': 'Maintenance Mori',
-      'chs': '维护莫来',
-      'cht': '维护莫来',
+  let userURL = '';
+  const LanguageTable = {
+    'static': {
+      'title': {
+        'jpn': 'メンテもりもり',
+        'eng': 'Maintenance Mori',
+        'chs': '维护超多',
+        'cht': '维护超多',
+      },
+      'basic': {
+        'jpn': '通常： ',
+        'eng': 'Basic&ensp;&ensp;: ',
+        'cht': '通用功能： ',
+        'chs': '通用功能： ',
+      },
+      'temple': {
+        'jpn': '幻影の神殿',
+        'eng': 'Temple',
+        'cht': '幻影神殿',
+        'chs': '幻影神殿',
+      },
+      'rankings': {
+        'jpn': 'ランキング',
+        'eng': 'Ranking',
+        'cht': '排行榜',
+        'chs': '排行榜',
+      },
+      'arena': {
+        'jpn': 'バトリ',
+        'eng': 'Battle League',
+        'cht': '古競技場',
+        'chs': '古竞技场',
+      },
+      'legend': {
+        'jpn': 'レジェリ',
+        'eng': 'Legend League',
+        'cht': '巔峰競技場',
+        'chs': '巅峰竞技场',
+      },
+      'localgvg': {
+        'jpn': 'ギルバト',
+        'eng': 'Guild Battle',
+        'cht': '公會戰',
+        'chs': '公会战',
+      },
+      'globalgvg': {
+        'jpn': 'グラバト',
+        'eng': 'Grand War',
+        'cht': '跨服公會戰',
+        'chs': '跨服公会战',
+      },
+      'battle_log': {
+        'jpn': 'バトルレポート再生',
+        'eng': 'Battle Log Viewer',
+        'cht': '戰鬥記錄回放',
+        'chs': '战斗记录回放',
+      },
+      'weekly': {
+        'jpn': '週間: ',
+        'eng': 'Weekly : ',
+        'cht': '每週特報: ',
+        'chs': '每周特报: ',
+      },
+      'weekly_chara': {
+        'jpn': 'キャラ育成',
+        'eng': 'Character',
+        'cht': '角色培育',
+        'chs': '角色培育',
+      },
+      'weekly_boss': {
+        'jpn': 'クエスト',
+        'eng': 'Quest',
+        'cht': '主線冒險',
+        'chs': '幻影神殿',
+      },
+      'weekly_arena': {
+        'jpn': 'バトリ',
+        'eng': 'BL',
+        'cht': '古競技場',
+        'chs': '古竞技场',
+      },
+      'weekly_legend': {
+        'jpn': '幻影の神殿',
+        'eng': 'LL',
+        'cht': '巔峰競技場',
+        'chs': '巅峰竞技场',
+      },
+      'extend': {
+        'jpn': '拡張： ',
+        'eng': 'Extend : ',
+        'cht': '擴展功能： ',
+        'chs': '扩展功能： ',
+      },
+      'dataconvert': {
+        'jpn': 'データ変換',
+        'eng': 'Data Convert',
+        'cht': '數據轉換',
+        'chs': '数据转换',
+      },
+      'battlehelper': {
+        'jpn': '戦闘監視',
+        'eng': 'Battle Helper',
+        'cht': '戰鬥監控',
+        'chs': '战斗监控',
+      },
+      'account': {
+        'jpn': 'アカウント',
+        'eng': 'Account:',
+        'cht': '登錄狀態：',
+        'chs': '登录状态：',
+      },
+      'noaccount': {
+        'jpn': 'アカウントなし',
+        'eng': 'No Account',
+        'cht': '無賬號',
+        'chs': '无账号',
+      },
     },
-    '幻影の神殿': {
-      'jpn': '幻影の神殿',
-      'eng': 'Temple',
-      'chs': '幻影神殿',
-      'cht': '幻影神殿',
+    'dynamic': {
+      'jpn': {
+        'Rank': 'ランク',
+        'STR': '腕力',
+        'MAG': '魔力',
+        'DEX': '技力',
+        'STA': '耐久力',
+        'ATK': '攻撃力',
+        'DEF': '防御力',
+        'DEF Break': '防御貫通',
+        'SPD': 'スピード',
+        'PM.DEF Break': '物魔防御貫通',
+        'P.DEF': '物理防御力',
+        'M.DEF': '魔法防御力',
+        'ACC': '命中',
+        'EVD': '回避',
+        'CRIT': 'クリティカル',
+        'CRIT RES': 'クリティカル耐性',
+        'CRIT DMG Boost': 'クリダメ強化',
+        'P.CRIT DMG Cut': '物理クリダメ緩和',
+        'M.CRIT DMG Cut': '魔法クリダメ緩和',
+        'Debuff ACC': '弱体効果命中',
+        'Debuff RES': '弱体効果耐性',
+        'Counter': 'カウンタ',
+        'HP Drain': 'HPドレイン',
+        'Locked': '未加工',
+        'None': '未装着',
+        ' pts, ': ' ポイント ',
+        ' streak': ' 連勝中',
+        'EXP Orb': '経験珠',
+        'Upgrade Water': '強化水',
+        'Upgrade Panacea': '強化秘薬',
+        'Kindling Orb': '潜在宝珠',
+        'Rune Ticket': 'ルーンチケット',
+        'Event': 'イベント',
+        'All Worlds': 'すべて',
+        ' Forces': '軍',
+        ' Wins': '連勝',
+      },
+      'eng': {
+        'Rank': 'Rank',
+        'STR': 'STR',
+        'MAG': 'MAG',
+        'DEX': 'DEX',
+        'STA': 'STA',
+        'ATK': 'ATK',
+        'DEF': 'DEF',
+        'DEF Break': 'DEF Break',
+        'SPD': 'SPD',
+        'PM.DEF Break': 'PM.DEF Break',
+        'P.DEF': 'P.DEF',
+        'M.DEF': 'M.DEF',
+        'ACC': 'ACC',
+        'EVD': 'EVD',
+        'CRIT': 'CRIT',
+        'CRIT RES': 'CRIT RES',
+        'CRIT DMG Boost': 'CRIT DMG Boost',
+        'P.CRIT DMG Cut': 'P.CRIT DMG Cut',
+        'M.CRIT DMG Cut': 'M.CRIT DMG Cut',
+        'Debuff ACC': 'Debuff ACC',
+        'Debuff RES': 'Debuff RES',
+        'Counter': 'Counter',
+        'HP Drain': 'HP Drain',
+        'Locked': 'Locked',
+        'None': 'None',
+        ' pts, ': ' pts, ',
+        ' streak': '  streak',
+        'EXP Orb': 'EXP Orb',
+        'Upgrade Water': 'Upgrade Water',
+        'Upgrade Panacea': 'Upgrade Panacea',
+        'Kindling Orb': 'Kindling Orb',
+        'Rune Ticket': 'Rune Ticket',
+        'Event': 'Event',
+        'All Worlds': 'All Worlds',
+        ' Forces': ' Forces',
+        ' Wins': ' Wins',
+      },
+      'cht': {
+        'Rank': '排行榜',
+        'STR': '力量',
+        'MAG': '魔力',
+        'DEX': '戰技',
+        'STA': '耐力',
+        'ATK': '攻擊力',
+        'DEF': '防禦力',
+        'DEF Break': '防禦穿透',
+        'SPD': '速度',
+        'PM.DEF Break': '物魔防禦穿透',
+        'P.DEF': '物理防禦力',
+        'M.DEF': '魔法防禦力',
+        'ACC': '命中',
+        'EVD': '閃避',
+        'CRIT': '暴擊',
+        'CRIT RES': '暴擊抗性',
+        'CRIT DMG Boost': '暴擊傷害強化',
+        'P.CRIT DMG Cut': '物理暴擊傷害降低',
+        'M.CRIT DMG Cut': '魔法暴擊傷害降低',
+        'Debuff ACC': '弱化效果命中',
+        'Debuff RES': '弱化效果抗性',
+        'Counter': '傷害反彈',
+        'HP Drain': '吸血',
+        'Locked': '未加工',
+        'None': '未裝備',
+        ' pts, ': ' 積分, ',
+        ' streak': '  連勝中',
+        'EXP Orb': '經驗珠',
+        'Upgrade Water': '強化水',
+        'Upgrade Panacea': '強化秘藥',
+        'Kindling Orb': '潛能寶珠',
+        'Rune Ticket': '符石兌換券',
+        'Event': '活動',
+        'All Worlds': '所有世界',
+        ' Forces': ' 軍',
+        ' Wins': ' 連勝',
+      },
+    },
+    'local': {
+      'jpn': ['ブラッセル', 'ウィスケルケー', 'モダーヴ', 'シメイ', 'グラベンスティン', 'カンブル', 'クインティヌス', 'ランベール', 'サンジャック', 'ミヒャエル', 'ナミュール', 'シャルルロア', 'アルゼット', 'エノー', 'ワーヴル', 'モンス', 'クリストフ', 'コルトレイク', 'イーペル', 'サルヴァトール', 'バーフ'],
+      'eng': ['Brussell', 'Wissekerke', 'Modave', 'Chimay', 'Gravensteen', 'Cambre', 'Quentin', 'Lambert', 'Saint-Jacques', 'Michael', 'Namur', 'Charleroi', 'Alzette', 'Hainaut', 'Wavre', 'Mons', 'Christophe', 'Kortrijk', 'Ypres', 'Salvador', 'Bavo'],
+      'cht': ['Brussell', 'Wissekerke', 'Modave', 'Chimay', 'Gravensteen', 'Cambre', 'Quentin', 'Lambert', 'Saint-Jacques', 'Michael', 'Namur', 'Charleroi', 'Alzette', 'Hainaut', 'Wavre', 'Mons', 'Christophe', 'Kortrijk', 'Ypres', 'Salvador', 'Bavo'],
+    },
+    'global': {
+      'jpn': ['アイン', 'イエソド', 'マルクト', 'ケテル', 'テフォレト', 'クシェル', 'シトリ', 'トパズ', 'メラル', 'ペリド', 'ファリア', 'ラピス', 'ラリマル', 'マリン', 'アメト', 'ラベン', 'シルコン', 'オニキス', 'フロライト', 'ガネット', 'ルラ'],
+      'eng': ['Ein', 'Yesod', 'Malkuth', 'Keter', 'Tiferet', 'Cushel', 'Citri', 'Toppaz', 'Meral', 'Perido', 'Pharia', 'Lapis', 'Larimal', 'Marin', 'Amest', 'Laven', 'Zircon', 'Onyx', 'Floryte', 'Ganette', 'Rula'],
+      'cht': ['Ein', 'Yesod', 'Malkuth', 'Keter', 'Tiferet', 'Cushel', 'Citri', 'Toppaz', 'Meral', 'Perido', 'Pharia', 'Lapis', 'Larimal', 'Marin', 'Amest', 'Laven', 'Zircon', 'Onyx', 'Floryte', 'Ganette', 'Rula'],
     },
   };
-  let MagicOnionHost;
-  let MagicOnionPort;
-  let AuthTokenOfMagicOnion;
+  let language = '';
+  let MagicOnionHost = '';
+  let MagicOnionPort = '';
+  let AuthTokenOfMagicOnion = '';
+  let LogCastleList = [];
+  let ortegaaccesstoken = '';
+  //初始化ErrorCode
+  let ErrorCode = {};
+  //初始化AppVersion
+  let AppVersion = '';
   let SocketGvG;
   let LogCastleTimer;
-  let LogCastleList;
   let database;
-  let ortegaaccesstoken = '';
   const URLFunction = document.URL.replace(/https?\:\/\/.*?\/(.*?\.html)?(\?function=.*?)?(\?lang=.*?)?$/, '$1$2');
   const URLLanguage = document.URL.replace(/https?\:\/\/.*?\/(.*?\.html)?(\?function=.*?)?(\?lang=.*?)?$/, '$3');
+  if (!URLLanguage) {
+    language = 'eng';
+  } else {
+    language = URLLanguage.replace('?lang=', '');
+    language = LanguageTable.dynamic[language] ? language : 'eng';
+  }
+  //清除元素
+  if (URLFunction.includes('?function=')) {
+    while (document.body.childNodes.length > 4) {
+      document.body.lastChild.remove();
+    }
+  } else {
+    //let script=x=document.getElementsByTagName('script')[0].innerHTML.replaceAll(/Object\.assign\(window\.m\.ja,.*?\),/g,`Object.assign(window.m.ja,${}),`);
+  }
   /*初始化所有页面*/
   initPage();
-  //初始化ErrorCode
-  const ErrorCode = await getErrorCode();
-  //初始化AppVersion
-  const AppVersion = await getAppVersion();
   //重构页面
   switch (URLFunction) {
     case '?function=fileConverter': {
@@ -65,6 +310,8 @@
       break;
     }
     case '?function=gvgMapper': {
+      ErrorCode = await getErrorCode();
+      AppVersion = await getAppVersion();
       gvgMapper();
       break;
     }
@@ -73,12 +320,6 @@
   //初始化页面
   async function initPage() {
     console.log('脚本运行中');
-    //清除元素
-    if (URLFunction.includes('?function=')) {
-      while (document.body.childNodes.length > 4) {
-        document.body.lastChild.remove();
-      }
-    }
     document.querySelector('style').appendChild(createElement('text', 'nav a{display: inline-block;min-width: 22px;text-align: center;}'));
     //获取原导航栏
     const navDefault = document.querySelector('nav');
@@ -86,69 +327,54 @@
     const divFunction = navDefault.childNodes[1];
     divFunction.innerHTML = '';
     divFunction.append(
-      createElement('a', 'Basic&ensp;&ensp;: ', {
-        'data-ja': '通常： ',
-      }),
+      createElement('a', LanguageTable.static['basic'][language]),
       createElement('a', 'API', {
-        href: `${LocalURL}${URLLanguage}`,
+        'href': `${LocalURL}${URLLanguage}`,
       }),
       createElement('a', '|'),
-      createElement('a', 'Temple', {
+      createElement('a', LanguageTable.static['temple'][language], {
         'href': `${LocalURL}temple.html${URLLanguage}`,
-        'data-ja': '幻影の神殿',
       }),
       createElement('a', '|'),
-      createElement('a', 'Ranking', {
+      createElement('a', LanguageTable.static['rankings'][language], {
         'href': `${LocalURL}rankings.html${URLLanguage}`,
-        'data-ja': 'ランキング',
       }),
       createElement('a', '|'),
-      createElement('a', 'Battle League', {
+      createElement('a', LanguageTable.static['arena'][language], {
         'href': `${LocalURL}arena.html${URLLanguage}`,
-        'data-ja': 'バトリ',
       }),
       createElement('a', '|'),
-      createElement('a', 'Legend League', {
+      createElement('a', LanguageTable.static['legend'][language], {
         'href': `${LocalURL}legend.html${URLLanguage}`,
-        'data-ja': 'レジェリ',
       }),
       createElement('a', '|'),
-      createElement('a', 'Guild Battle', {
+      createElement('a', LanguageTable.static['localgvg'][language], {
         'href': `${LocalURL}localgvg.html${URLLanguage}`,
-        'data-ja': 'ギルバト',
       }),
       createElement('a', '|'),
-      createElement('a', 'Grand War', {
+      createElement('a', LanguageTable.static['globalgvg'][language], {
         'href': `${LocalURL}globalgvg.html${URLLanguage}`,
-        'data-ja': 'グラバト',
       }),
       createElement('a', '|'),
-      createElement('a', 'Battle Log Viewer', {
+      createElement('a', LanguageTable.static['battle_log'][language], {
         'href': `${LocalURL}battle_log.html${URLLanguage}`,
-        'data-ja': 'バトルレポート再生',
       }),
       createElement('br'),
-      createElement('a', 'Weekly : ', {
-        'data-ja': '週間: ',
-      }),
-      createElement('a', 'Character', {
+      createElement('a', LanguageTable.static['weekly'][language], {}),
+      createElement('a', LanguageTable.static['weekly_chara'][language], {
         'href': `${LocalURL}weekly_chara.html${URLLanguage}`,
-        'data-ja': 'キャラ育成',
       }),
       createElement('a', '|'),
-      createElement('a', 'Quest', {
+      createElement('a', LanguageTable.static['weekly_boss'][language], {
         'href': `${LocalURL}weekly_boss.html${URLLanguage}`,
-        'data-ja': 'クエスト',
       }),
       createElement('a', '|'),
-      createElement('a', 'BL', {
+      createElement('a', LanguageTable.static['weekly_arena'][language], {
         'href': `${LocalURL}weekly_arena.html${URLLanguage}`,
-        'data-ja': 'バトリ',
       }),
       createElement('a', '|'),
-      createElement('a', 'LL', {
+      createElement('a', LanguageTable.static['weekly_legend'][language], {
         'href': `${LocalURL}weekly_legend.html${URLLanguage}`,
-        'data-ja': 'レジェリ',
       })
     );
     //获取语言模块
@@ -169,12 +395,12 @@
       }),
       createElement('a', '|'),
       createElement('a', '🇨🇳', {
-        href: `https://mentemori.icu/${URLFunction}?lang=chs`,
-      }),
+        href: `https://mentemori.icu/${URLFunction}?lang=cht`,
+      }) /*,
       createElement('a', '|'),
       createElement('a', '🇹🇼', {
         href: `https://mentemori.icu/${URLFunction}?lang=cht`,
-      })
+      })*/
     );
     //初始化扩展导航栏
     const navExtend = navDefault.insertAdjacentElement('afterend', createElement('nav'));
@@ -182,30 +408,22 @@
     //初始化功能模块
     const divExtend = navExtend.appendChild(createElement('div'));
     divExtend.append(
-      createElement('a', 'Extend&ensp;: ', {
-        'data-ja': '扩展： ',
-      }),
+      createElement('a', LanguageTable.static['extend'][language]),
       //二进制文件转换功能
-      createElement('a', 'Data Convert', {
+      createElement('a', LanguageTable.static['dataconvert'][language], {
         'href': `${LocalURL}?function=fileConverter${URLLanguage}`,
-        'data-ja': '数据转换',
       }),
       createElement('a', '|'),
       //战斗布局功能
-      createElement('a', 'Battle Helper', {
+      createElement('a', LanguageTable.static['battlehelper'][language], {
         'href': `${LocalURL}?function=gvgMapper${URLLanguage}`,
-        'data-ja': '战斗布局',
       })
     );
     //初始化账号管理模块
     const divAccount = navExtend.appendChild(createElement('div', '', 'accountmanager'));
     divAccount.append(
-      createElement('a', 'Account:', {
-        'data-ja': '登录状态',
-      }),
-      createElement('a', 'No Account', {
-        'data-ja': '无账号',
-      })
+      createElement('a', LanguageTable.static['account'][language]), //
+      createElement('a', LanguageTable.static['noaccount'][language])
     );
   }
   //初始化选择栏
@@ -1778,27 +1996,27 @@
         let Region = WorldGroup.RegionList[RegionId];
         if (!Region) {
           Region = {
-            'name': RegionList[RegionMemo],
-            SName: RegionMemo,
-            WorldList: [],
-            GroupList: [`N${RegionId}`],
+            'Name': RegionList[RegionMemo],
+            'SName': RegionMemo,
+            'WorldList': [],
+            'GroupList': [`N${RegionId}`],
           };
           WorldGroup.RegionList[RegionId] = Region;
           WorldGroup.GroupList[`N${RegionId}`] = {
-            'name': `Group NA`,
-            SName: `GNA`,
-            Region: RegionId,
-            WorldList: [],
+            'Name': `Group NA`,
+            'SName': `GNA`,
+            'Region': RegionId,
+            'WorldList': [],
           };
         }
         const GroupId = WorldGroupData.Id;
         let Group = WorldGroup.GroupList[GroupId];
         if (!Group) {
           Group = {
-            Region: RegionId,
-            'name': `Group ${GroupId}`,
-            SName: `G${GroupId}`,
-            WorldList: [],
+            'Name': `Group ${GroupId}`,
+            'SName': `G${GroupId}`,
+            'Region': RegionId,
+            'WorldList': [],
           };
           WorldGroup.GroupList[GroupId] = Group;
         }
@@ -1807,10 +2025,10 @@
           const WorldId = WorldIdList[j];
           Region.WorldList.push(WorldId);
           WorldGroup.WorldList[WorldId] = {
-            'name': `World ${WorldId % 1000}`,
-            SName: `W${WorldId % 1000}`,
-            Region: RegionId,
-            Group: GroupId,
+            'Name': `World ${WorldId % 1000}`,
+            'SName': `W${WorldId % 1000}`,
+            'Region': RegionId,
+            'Group': GroupId,
           };
           Region.WorldList.push(WorldId);
           Group.WorldList.push(WorldId);
