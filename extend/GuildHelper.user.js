@@ -144,6 +144,558 @@ const LanguageTable = {
       'cht': '無賬號',
       'chs': '无账号',
     },
+    'Region': {
+      'jpn': 'サーバー',
+      'eng': 'Region',
+      'cht': '區域',
+      'chs': '区域',
+    },
+    'Group': {
+      'jpn': 'グループ',
+      'eng': 'Group',
+      'cht': '戰區',
+      'chs': '战区',
+    },
+    'Class': {
+      'jpn': 'クラス',
+      'eng': 'Class',
+      'cht': '級別',
+      'chs': '级别',
+    },
+    'World': {
+      'jpn': 'ワールド',
+      'eng': 'World',
+      'cht': '世界',
+      'chs': '世界',
+    },
+    'Block': {
+      'jpn': 'ブロック',
+      'eng': 'Block',
+      'cht': '組別',
+      'chs': '组别',
+    },
+    'Local': {
+      'jpn': 'Local',
+      'eng': 'Local',
+      'cht': '本地',
+      'chs': '本地',
+    },
+    'Elite': {
+      'jpn': 'Elite',
+      'eng': 'Elite',
+      'cht': '菁英級',
+      'chs': '精英级',
+    },
+    'Expert': {
+      'jpn': 'ブロック',
+      'eng': 'Expert',
+      'cht': '專家級',
+      'chs': '专家级',
+    },
+    'Master': {
+      'jpn': 'ブロック',
+      'eng': 'Master',
+      'cht': '大師級',
+      'chs': '大师级',
+    },
+    'ワールド': {
+      'jpn': 'ワールド',
+      'eng': 'World ',
+      'cht': '世界',
+      'chs': '世界',
+    },
+    'レベル': {
+      'jpn': 'レベル',
+      'eng': 'Level ',
+      'cht': '等級',
+      'chs': '等级',
+    },
+    '幻影の神殿': {
+      'jpn': '幻影の神殿',
+      'eng': 'Temple of Illusions',
+      'cht': '幻影神殿',
+      'chs': '幻影神殿',
+    },
+    'サーバー': {
+      'jpn': 'サーバー',
+      'eng': 'Server',
+      'cht': '区域',
+      'chs': '区域',
+    },
+    '更新': {
+      'jpn': '更新',
+      'eng': 'Updated',
+      'cht': '更新時間',
+      'chs': '更新時間',
+    },
+    'プレイヤーランキング': {
+      'jpn': 'プレイヤーランキング',
+      'eng': 'Player Rankings',
+      'cht': '玩家排行榜',
+      'chs': '玩家排行榜',
+    },
+    '戦闘力': {
+      'jpn': '戦闘力',
+      'eng': 'Battle Power',
+      'cht': '戰鬥力',
+      'chs': '战斗力',
+    },
+    'プレイヤーランク': {
+      'jpn': 'プレイヤーランク',
+      'eng': 'Player Rank',
+      'cht': '玩家等級',
+      'chs': '玩家等级',
+    },
+    'メインクエスト': {
+      'jpn': 'メインクエスト',
+      'eng': 'Quest',
+      'cht': '主線冒險',
+      'chs': '主线冒险',
+    },
+    '無窮の塔': {
+      'jpn': '無窮の塔',
+      'eng': 'Tower',
+      'cht': '無窮之塔',
+      'chs': '无穷之塔',
+    },
+    '藍の塔': {
+      'jpn': '藍の塔',
+      'eng': 'Tower of Azure',
+      'cht': '憂藍之塔',
+      'chs': '忧蓝之塔',
+    },
+    '紅の塔': {
+      'jpn': '紅の塔',
+      'eng': 'Tower of Crimson',
+      'cht': '葉紅之塔',
+      'chs': '叶红之塔',
+    },
+    '翠の塔': {
+      'jpn': '翠の塔',
+      'eng': 'Tower of Emerald',
+      'cht': '蒼翠之塔',
+      'chs': '苍翠之塔',
+    },
+    '黄の塔': {
+      'jpn': '黄の塔',
+      'eng': 'Tower of Amber',
+      'cht': '流金之塔',
+      'chs': '流金之塔',
+    },
+    'ギルドランキング': {
+      'jpn': 'ギルドランキング',
+      'eng': 'Guild Rankings',
+      'cht': '公會排行榜',
+      'chs': '公会排行榜',
+    },
+    'ギルドレベル': {
+      'jpn': 'ギルドレベル',
+      'eng': 'Guild Level',
+      'cht': '公會等級',
+      'chs': '公会等级',
+    },
+    'ギルドストック': {
+      'jpn': 'ギルドストック',
+      'eng': 'Guild Stock',
+      'cht': '公會積分',
+      'chs': '公会积分',
+    },
+    'ギルド総戦闘力': {
+      'jpn': 'ギルド総戦闘力',
+      'eng': 'Battle Power',
+      'cht': '公會總戰力',
+      'chs': '公会总战力',
+    },
+    'プレイヤー名': {
+      'jpn': 'プレイヤー名',
+      'eng': 'Name ',
+      'cht': '玩家名稱',
+      'chs': '玩家名称',
+    },
+    '階': {
+      'jpn': '階',
+      'eng': 'Floor ',
+      'cht': '層數',
+      'chs': '层数',
+    },
+    'ランク': {
+      'jpn': 'ランク',
+      'eng': 'Rank ',
+      'cht': '等級',
+      'chs': '等级',
+    },
+    'クエスト': {
+      'jpn': 'クエスト',
+      'eng': 'Quest ',
+      'cht': '關卡',
+      'chs': '关卡',
+    },
+    'ギルド名': {
+      'jpn': 'ギルド名',
+      'eng': 'Name ',
+      'cht': '公會名稱',
+      'chs': '公会名称',
+    },
+    '人数': {
+      'jpn': '人数',
+      'eng': 'Members ',
+      'cht': '人數',
+      'chs': '人数',
+    },
+    'バトルリーグ': {
+      'jpn': 'バトルリーグ',
+      'eng': 'Battle League',
+      'cht': '古競技場',
+      'chs': '古竞技场',
+    },
+    'プレイヤー': {
+      'jpn': 'プレイヤー',
+      'eng': 'Player ',
+      'cht': '玩家名稱',
+      'chs': '玩家名称',
+    },
+    '枠１': {
+      'jpn': '枠１',
+      'eng': 'Slot 1 ',
+      'cht': '欄１',
+      'chs': '栏１',
+    },
+    '枠２': {
+      'jpn': '枠２',
+      'eng': 'Slot 2 ',
+      'cht': '欄２',
+      'chs': '栏２',
+    },
+    '枠３': {
+      'jpn': '枠３',
+      'eng': 'Slot 3 ',
+      'cht': '欄３',
+      'chs': '栏３',
+    },
+    '枠４': {
+      'jpn': '枠４',
+      'eng': 'Slot 4 ',
+      'cht': '欄４',
+      'chs': '栏４',
+    },
+    '枠５': {
+      'jpn': '枠５',
+      'eng': 'Slot 5 ',
+      'cht': '欄５',
+      'chs': '栏５',
+    },
+    '武具': {
+      'jpn': '武具',
+      'eng': 'Equipment ',
+      'cht': '裝備',
+      'chs': '装备',
+    },
+    '腕力': {
+      'jpn': '腕力',
+      'eng': 'STR',
+      'cht': '力量',
+      'chs': '力量',
+    },
+    '技力': {
+      'jpn': '技力',
+      'eng': 'DEX',
+      'cht': '戰技',
+      'chs': '战技',
+    },
+    '聖装': {
+      'jpn': '聖装',
+      'eng': 'Holy Effects',
+      'cht': '聖装',
+      'chs': '圣装',
+    },
+    '魔装': {
+      'jpn': '魔装',
+      'eng': 'Dark Effects',
+      'cht': '魔装',
+      'chs': '魔装',
+    },
+    '魔力': {
+      'jpn': '魔力',
+      'eng': 'MAG',
+      'cht': '魔力',
+      'chs': '魔力',
+    },
+    '耐久力': {
+      'jpn': '耐久力',
+      'eng': 'STA',
+      'cht': '耐力',
+      'chs': '耐力',
+    },
+    'キャラ': {
+      'jpn': 'キャラ',
+      'eng': 'Character',
+      'cht': '角色名稱',
+      'chs': '角色名称',
+    },
+    'Lv.': {
+      'jpn': 'Lv.',
+      'eng': 'Level',
+      'cht': '等級',
+      'chs': '等级',
+    },
+    '攻撃力': {
+      'jpn': '攻撃力',
+      'eng': 'ATK',
+      'cht': '攻擊力',
+      'chs': '攻击力',
+    },
+    '防御力': {
+      'jpn': '防御力',
+      'eng': 'DEF',
+      'cht': '防御力',
+      'chs': '防御力',
+    },
+    '防御貫通': {
+      'jpn': '防御貫通',
+      'eng': 'DEF Break',
+      'cht': '防禦穿透',
+      'chs': '防御穿透',
+    },
+    'スピード': {
+      'jpn': 'スピード',
+      'eng': 'SPD',
+      'cht': '速度',
+      'chs': '速度',
+    },
+    '物魔防御貫通': {
+      'jpn': '物魔防御貫通',
+      'eng': 'PM.DEF Break',
+      'cht': '物魔防禦穿透',
+      'chs': '物魔防御穿透',
+    },
+    '物理防御力': {
+      'jpn': '物理防御力',
+      'eng': 'P.DEF',
+      'cht': '物理防御力',
+      'chs': '物理防御力',
+    },
+    '魔法防御力': {
+      'jpn': '魔法防御力',
+      'eng': 'M.DEF',
+      'cht': '魔法防御力',
+      'chs': '魔法防御力',
+    },
+    '命中': {
+      'jpn': '命中',
+      'eng': 'ACC',
+      'cht': '命中',
+      'chs': '命中',
+    },
+    'クリティカル': {
+      'jpn': 'クリティカル',
+      'eng': 'CRIT',
+      'cht': '暴擊',
+      'chs': '暴击',
+    },
+    'クリダメ強化': {
+      'jpn': 'クリダメ強化',
+      'eng': 'CRIT DMG Boost',
+      'cht': '暴擊傷害強化',
+      'chs': '暴击伤害强化',
+    },
+    '魔法クリダメ緩和': {
+      'jpn': '魔法クリダメ緩和',
+      'eng': 'M.CRIT DMG Cut',
+      'cht': '魔法暴擊傷害降低',
+      'chs': '魔法暴击伤害降低',
+    },
+    '物理クリダメ緩和': {
+      'jpn': '物理クリダメ緩和',
+      'eng': 'P.CRIT DMG Cut',
+      'cht': '物理暴擊傷害降低',
+      'chs': '物理暴击伤害降低',
+    },
+    '弱体効果命中': {
+      'jpn': '弱体効果命中',
+      'eng': 'Debuff ACC',
+      'cht': '弱化效果命中',
+      'chs': '弱化效果命中',
+    },
+    '弱体効果耐性': {
+      'jpn': '弱体効果耐性',
+      'eng': 'Debuff RES',
+      'cht': '弱化效果抗性',
+      'chs': '弱化效果抗性',
+    },
+    'カウンタ': {
+      'jpn': 'カウンタ',
+      'eng': 'Counter',
+      'cht': '傷害反彈',
+      'chs': '伤害反弹',
+    },
+    'HPドレイン': {
+      'jpn': 'HPドレイン',
+      'eng': 'HP Drain',
+      'cht': '吸血',
+      'chs': '吸血',
+    },
+    '回避': {
+      'jpn': '回避',
+      'eng': 'EVD',
+      'cht': '閃避',
+      'chs': '闪避',
+    },
+    'クリティカル耐性': {
+      'jpn': 'クリティカル耐性',
+      'eng': 'CRIT RES',
+      'cht': '暴擊抗性',
+      'chs': '暴击抗性',
+    },
+    'グループ': {
+      'jpn': 'グループ',
+      'eng': 'Group',
+      'cht': '戰區',
+      'chs': '战区',
+    },
+    'レジェンドリーグ': {
+      'jpn': 'レジェンドリーグ',
+      'eng': 'Legend League',
+      'cht': '巔峰競技場',
+      'chs': '巅峰竞技场',
+    },
+    'ギルドバトル': {
+      'jpn': 'ギルドバトル',
+      'eng': 'Guild Battle',
+      'cht': '公會戰',
+      'chs': '公会战',
+    },
+    'クラス': {
+      'jpn': 'クラス',
+      'eng': 'Class',
+      'cht': '級別',
+      'chs': '级别',
+    },
+    'ブロック': {
+      'jpn': 'ブロック',
+      'eng': 'Block',
+      'cht': '組別',
+      'chs': '组别',
+    },
+    'グランドバトル': {
+      'jpn': 'グランドバトル',
+      'eng': 'Grand War',
+      'cht': '跨服公會戰',
+      'chs': '跨服公会战',
+    },
+    'バトルレポート再生': {
+      'jpn': 'バトルレポート再生',
+      'eng': 'Battle Log Viewer',
+      'cht': '戰鬥記錄回放',
+      'chs': '战斗记录回放',
+    },
+    '週間トピックス・属性別キャラ育成': {
+      'jpn': '週間トピックス・属性別キャラ育成',
+      'eng': 'Weekly Topics - Character Growth by Soul',
+      'cht': '每週特報 - 角色培育',
+      'chs': '每周特报 - 角色培育',
+    },
+    '天属性': {
+      'jpn': '天属性',
+      'eng': 'Radiance ',
+      'cht': '天光',
+      'chs': '天光',
+    },
+    '冥属性': {
+      'jpn': '冥属性',
+      'eng': 'Chaos ',
+      'cht': '幽冥',
+      'chs': '幽冥',
+    },
+    '藍属性': {
+      'jpn': '藍属性',
+      'eng': 'Azure ',
+      'cht': '憂藍',
+      'chs': '忧蓝',
+    },
+    '紅属性': {
+      'jpn': '紅属性',
+      'eng': 'Crimson ',
+      'cht': '葉紅',
+      'chs': '叶红',
+    },
+    '翠属性': {
+      'jpn': '翠属性',
+      'eng': 'Emerald ',
+      'cht': '蒼翠',
+      'chs': '苍翠',
+    },
+    '黄属性': {
+      'jpn': '黄属性',
+      'eng': 'Amber ',
+      'cht': '流金',
+      'chs': '流金',
+    },
+    '週間トピックス・バトルリーグ': {
+      'jpn': '週間トピックス・バトルリーグ',
+      'eng': 'Weekly Topics - Quest',
+      'cht': '每週特報 - 主線冒險',
+      'chs': '每周特报 - 主线冒险',
+    },
+    '章': {
+      'jpn': '章',
+      'eng': 'Chapter ',
+      'cht': '領先章節',
+      'chs': '领先章节',
+    },
+    '前線': {
+      'jpn': '前線',
+      'eng': 'Frontline ',
+      'cht': '領先梯隊',
+      'chs': '领先梯队',
+    },
+    '全体': {
+      'jpn': '全体',
+      'eng': 'Overall ',
+      'cht': '全體玩家',
+      'chs': '全体玩家',
+    },
+    '到達人数': {
+      'jpn': '到達人数',
+      'eng': 'Clear Count ',
+      'cht': '到達人数',
+      'chs': '到达人数',
+    },
+    '週間トピックス・バトルリーグ': {
+      'jpn': '週間トピックス・バトルリーグ',
+      'eng': 'Weekly Topics - Battle League',
+      'cht': '每週特報 - 古競技場',
+      'chs': '每周特报 - 古竞技场',
+    },
+    '30位以内': {
+      'jpn': '30位以内',
+      'eng': 'Top 30 ',
+      'cht': '前30名',
+      'chs': '前30名',
+    },
+    '全体': {
+      'jpn': '全体',
+      'eng': 'Overall ',
+      'cht': '全體玩家',
+      'chs': '全体玩家',
+    },
+    '連勝記録': {
+      'jpn': '連勝記録',
+      'eng': 'Consecutive Wins ·',
+      'cht': '連勝記録',
+      'chs': '连胜纪录',
+    },
+    '週間トピックス・レジェンドリーグ': {
+      'jpn': '週間トピックス・レジェンドリーグ',
+      'eng': 'Weekly Topics - Legend League',
+      'cht': '每週特報 - 巅峰競技場',
+      'chs': '每周特报 - 巅峰竞技场',
+    },
+    'ステータス': {
+      'jpn': 'ステータス',
+      'eng': 'Stats ',
+      'cht': '狀態',
+      'chs': '状态',
+    },
   },
   'dynamic': {
     'jpn': {
@@ -223,7 +775,7 @@ const LanguageTable = {
       ' Wins': ' Wins',
     },
     'cht': {
-      'Rank': '排行榜',
+      'Rank': '等级',
       'STR': '力量',
       'MAG': '魔力',
       'DEX': '戰技',
@@ -278,6 +830,7 @@ let MagicOnionPort = '';
 let AuthTokenOfMagicOnion = '';
 let LogCastleList = [];
 let ortegaaccesstoken = '';
+let TextResource = {};
 let ErrorCode = {};
 let AppVersion = getStorage('AppVersion') ?? '';
 let SocketGvG;
@@ -298,6 +851,11 @@ if (URLFunction.includes('?function=')) {
   }
 } else {
   unsafeWindow.m = LanguageTable.dynamic;
+  let jalist = document.querySelectorAll('[data-ja]');
+  for (let i = 0; i < jalist.length; i++) {
+    dataja = jalist[i].getAttribute('data-ja');
+    jalist[i].innerHTML = LanguageTable.static[dataja]?.[language] ?? jalist[i].innerHTML;
+  }
 }
 /*初始化所有页面*/
 initPage();
@@ -483,39 +1041,6 @@ async function initSelect() {
             }
             #selectpanel option.default {
               display: inline;
-            }
-            th,
-            td {
-              height: 24px;
-              border: 1px solid black;
-              text-align: center;
-            }
-            table {
-              width: 300px;
-              border-collapse: collapse;
-              display: inline-table;
-              vertical-align: top;
-            }
-            #guilds1 {
-              margin-left: 20px;
-            }
-            #guilds2 {
-              margin-right: 20px;
-            }
-            tr > :nth-child(1) {
-              width: 25px;
-            }
-            tr > :nth-child(2) {
-              text-align: left;
-            }
-            tr > :nth-child(3) {
-              width: 25px;
-            }
-            tr > :nth-child(4) {
-              width: 25px;
-            }
-            tr > :nth-child(5) {
-              width: 25px;
             }`
     )
   );
@@ -525,41 +1050,41 @@ async function initSelect() {
   const GroupList = WorldGroup.GroupList;
   const ClassList = {
     '0': {
-      'Name': 'Local',
+      'Name': LanguageTable.static['Local'][language],
       'Class': 'static',
     },
     '1': {
-      'Name': 'Elite',
+      'Name': LanguageTable.static['Elite'][language],
       'Class': 'dynamic',
     },
     '2': {
-      'Name': 'Expert',
+      'Name': LanguageTable.static['Expert'][language],
       'Class': 'dynamic',
     },
     '3': {
-      'Name': 'Master',
+      'Name': LanguageTable.static['Master'][language],
       'Class': 'dynamic',
     },
   };
   const WorldList = WorldGroup.WorldList;
   const BlockList = {
     '0': {
-      'Name': 'Block A',
+      'Name': `${LanguageTable.static['Block'][language]} A`,
     },
     '1': {
-      'Name': 'Block B',
+      'Name': `${LanguageTable.static['Block'][language]} B`,
     },
     '2': {
-      'Name': 'Block C',
+      'Name': `${LanguageTable.static['Block'][language]} C`,
     },
     '3': {
-      'Name': 'Block D',
+      'Name': `${LanguageTable.static['Block'][language]} D`,
     },
   };
   //初始化选择区
   const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
   //区域选择
-  const pRegion = divSelect.appendChild(createElement('p', '<a>Region</a><a>:</a>'));
+  const pRegion = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['Region'][language]}</a><a>:</a>`));
   const selectRegion = pRegion.appendChild(createElement('select', '', 'listRegion'));
   selectRegion.options.add(NullOption());
   for (let RegionId in RegionList) {
@@ -571,7 +1096,7 @@ async function initSelect() {
     }
   }
   //群组选择
-  const pGroup = divSelect.appendChild(createElement('p', '<a>Group</a><a>:</a>'));
+  const pGroup = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['Group'][language]}</a><a>:</a>`));
   const selectGroup = pGroup.appendChild(createElement('select', '', 'listGroup'));
   selectGroup.options.add(NullOption());
   for (let GroupId in GroupList) {
@@ -586,7 +1111,7 @@ async function initSelect() {
     }
   }
   //等级选择
-  const pClass = divSelect.appendChild(createElement('p', '<a>Class</a><a>:</a>'));
+  const pClass = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['Class'][language]}</a><a>:</a>`));
   const selectClass = pClass.appendChild(createElement('select', '', 'listClass'));
   selectClass.options.add(NullOption());
   for (let ClassId in ClassList) {
@@ -596,7 +1121,7 @@ async function initSelect() {
     selectClass.options.add(option);
   }
   //世界/块选择
-  const pWorld = divSelect.appendChild(createElement('p', '<a>World</a><a>:</a>'));
+  const pWorld = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['World'][language]}</a><a>:</a>`));
   const selectWorld = pWorld.appendChild(createElement('select', '', 'listWorld'));
   selectWorld.options.add(NullOption());
   for (let BlockId in BlockList) {
@@ -611,27 +1136,6 @@ async function initSelect() {
     option.classList.add('G' + World.Group);
     selectWorld.options.add(option);
   }
-  //初始化读写功能组
-  const pRequest = divSelect.appendChild(createElement('p'));
-  //读取按钮
-  const buttonGetLocal = pRequest.appendChild(createElement('button', `从上一次恢复`));
-  //保存按钮
-  const buttonSetLocal = pRequest.appendChild(createElement('button', `保存设置`));
-  //初始化监听功能组
-  const pConnect = divSelect.appendChild(createElement('p'));
-  //开始监听按钮
-  const buttonConnectServer = pConnect.appendChild(
-    createElement('button', `从服务器获取`, {
-      name: 'Connect',
-    })
-  );
-  //关闭监听按钮
-  const buttonDisconnectServer = pConnect.appendChild(
-    createElement('button', `暂停同步`, {
-      name: 'Disconnect',
-      disabled: 'true',
-    })
-  );
   //插入分割线
   document.body.append(createElement('hr'));
   /*按钮功能*/
@@ -695,13 +1199,151 @@ async function initSelect() {
     drawMap(selectClass.value);
     fillGuilds();
   };
+}
+/*主功能*/
+//文件转换
+function fileConverter() {
+  let divData = document.body.appendChild(
+    createElement('div', '', {
+      style: 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;',
+    })
+  );
+  let uploadButton = divData.appendChild(
+    createElement('input', '', {
+      type: 'file',
+      multiple: 'multiple',
+    })
+  );
+  uploadButton.onchange = function () {
+    for (let i = 0; i < this.files.length; i++) {
+      let file = this.files[i];
+      let filename = file.name;
+      let reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = async () => {
+        let buffer = reader.result;
+        let view = new Uint8Array(buffer);
+        let data = await msgpack.decode(view);
+        let file = new Blob([JSON.stringify(data)], { type: 'text/plain' });
+        let link = createElement('a', filename + '.json');
+        let url = window.URL.createObjectURL(file);
+        link.href = url;
+        link.download = filename + '.json';
+        divData.appendChild(link);
+        divData.appendChild(createElement('br'));
+      };
+      reader.onerror = function () {
+        console.log(reader.error);
+      };
+    }
+  };
+  divData.append(createElement('br'));
+}
+//战斗布局
+async function gvgMapper() {
+  await initSelect();
+  const RegionId = getStorage('RegionId');
+  const GroupId = getStorage('GroupId');
+  const ClassId = getStorage('ClassId');
+  const WorldId = getStorage('WorldId');
+  document.querySelector('style').appendChild(
+    createElement(
+      'text',
+      `
+              th,
+              td {
+                height: 24px;
+                border: 1px solid black;
+                text-align: center;
+              }
+              table {
+                width: 300px;
+                border-collapse: collapse;
+                display: inline-table;
+                vertical-align: top;
+              }
+              #guilds1 {
+                margin-left: 20px;
+              }
+              #guilds2 {
+                margin-right: 20px;
+              }
+              tr > * {
+                width: 25px;
+              }
+              tr > :nth-child(2) {
+                width: calc(100% - 25px);
+              }`
+    )
+  );
+  const divSelect = document.querySelector('#selectpanel');
+  //初始化读写功能组
+  const pRequest = divSelect.appendChild(createElement('p'));
+  //读取按钮
+  const buttonGetLocal = pRequest.appendChild(createElement('button', `从上一次恢复`));
+  //保存按钮
+  const buttonSetLocal = pRequest.appendChild(createElement('button', `保存设置`));
+  //初始化监听功能组
+  const pConnect = divSelect.appendChild(createElement('p'));
+  //开始监听按钮
+  const buttonConnectServer = pConnect.appendChild(
+    createElement('button', `从服务器获取`, {
+      name: 'Connect',
+    })
+  );
+  //关闭监听按钮
+  const buttonDisconnectServer = pConnect.appendChild(
+    createElement('button', `暂停同步`, {
+      name: 'Disconnect',
+      disabled: 'true',
+    })
+  );
+  //初始化世界选择
+  if (WorldId >= 0) {
+    divSelect.querySelector('#listRegion').value = RegionId;
+    divSelect.querySelector('#listGroup').value = GroupId;
+    divSelect.querySelector('#listClass').value = ClassId;
+    divSelect.querySelector('#listWorld').value = WorldId;
+    document.head.append(
+      createElement(
+        'style',
+        `
+            #listGroup > option.R${RegionId} {
+              display: inline;
+            }`,
+        'styleGroup'
+      ),
+      createElement(
+        'style',
+        `
+            #listClass > .static
+            ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
+              display: inline;
+            }`,
+        'styleClass'
+      ),
+      createElement(
+        'style',
+        `
+            #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
+              display: inline;
+            }`,
+        'styleWorld'
+      )
+    );
+  }
+  //初始化地图
+  if (ClassId >= 0) {
+    drawMap(ClassId);
+  }
+  /* 功能设定 */
   //读取数据
   buttonGetLocal.onclick = async () => {
-    if (selectWorld.value < 0) {
+    if (WorldId < 0) {
       alert('未选择世界');
       return;
     }
-    const Match = await getData('Match', `${selectGroup.value}_${selectClass.value}_${selectWorld.value}`);
+    const Match = await getData('Match', `${GroupId}_${ClassId}_${WorldId}`);
     if (Match) {
       await fillMap(Match.Castles, Match.Guilds);
     } else {
@@ -714,10 +1356,6 @@ async function initSelect() {
       alert('未选择世界');
       return;
     }
-    const RegionId = selectRegion.value;
-    const GroupId = selectGroup.value;
-    const ClassId = selectClass.value;
-    const WorldId = selectWorld.value;
     let Match = {
       'Guid': `${GroupId}_${ClassId}_${WorldId}`,
       'Castles': [],
@@ -729,12 +1367,8 @@ async function initSelect() {
       const GuildId = GuildNode.id;
       const Guid = `${RegionId}_${GuildId}`;
       Match.Guilds.push(GuildId);
-      let Guild = (await getData('Guild', Guid)) ?? {
-        Guid: Guid,
-        GuildId: GuildId,
-        Name: GuildNode.childNodes[1].innerHTML,
-        Color: document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1'),
-      };
+      let Guild = await getData('Guild', Guid);
+      Guild.Color = document.querySelector(`#style${GuildId}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
       updateData('Guild', Guild);
     }
     const CastleDataList = document.querySelectorAll('gvg-castle');
@@ -772,7 +1406,7 @@ async function initSelect() {
   };
   //开始监听
   buttonConnectServer.onclick = () => {
-    if (selectWorld.value == -1) {
+    if (WorldId == -1) {
       alert('未选择世界');
       return;
     }
@@ -783,10 +1417,10 @@ async function initSelect() {
       buttonDisconnectServer.removeAttribute('disabled');
       await loginAccount();
       const StreamID = {
-        WorldId: (selectClass.value == 0) * selectWorld.value, //
-        ClassId: selectClass.value * 1,
-        GroupId: (selectClass.value != 0) * selectGroup.value,
-        BlockId: (selectClass.value != 0) * selectWorld.value,
+        WorldId: (ClassId == 0) * WorldId, //
+        ClassId: ClassId * 1,
+        GroupId: (ClassId != 0) * GroupId,
+        BlockId: (ClassId != 0) * WorldId,
         CastleId: 0,
       };
       const _getGuildWar = await getGuildWar(StreamID.ClassId, StreamID.WorldId, StreamID.GroupId);
@@ -893,90 +1527,8 @@ async function initSelect() {
   //关闭监听
   buttonDisconnectServer.onclick = () => {
     SocketGvG.close(1000, 'User Stop');
+    setStorage('ortegaaccesstoken', '');
   };
-}
-/*主功能*/
-//文件转换
-function fileConverter() {
-  let divData = document.body.appendChild(
-    createElement('div', '', {
-      style: 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;',
-    })
-  );
-  let uploadButton = divData.appendChild(
-    createElement('input', '', {
-      type: 'file',
-      multiple: 'multiple',
-    })
-  );
-  uploadButton.onchange = function () {
-    for (let i = 0; i < this.files.length; i++) {
-      let file = this.files[i];
-      let filename = file.name;
-      let reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = async () => {
-        let buffer = reader.result;
-        let view = new Uint8Array(buffer);
-        let data = await msgpack.decode(view);
-        let file = new Blob([JSON.stringify(data)], { type: 'text/plain' });
-        let link = createElement('a', filename + '.json');
-        let url = window.URL.createObjectURL(file);
-        link.href = url;
-        link.download = filename + '.json';
-        divData.appendChild(link);
-        divData.appendChild(createElement('br'));
-      };
-      reader.onerror = function () {
-        console.log(reader.error);
-      };
-    }
-  };
-  divData.append(createElement('br'));
-}
-//战斗布局
-async function gvgMapper() {
-  await initSelect();
-  const RegionId = getStorage('RegionId');
-  const GroupId = getStorage('GroupId');
-  const ClassId = getStorage('ClassId');
-  const WorldId = getStorage('WorldId');
-  if (WorldId >= 0) {
-    document.querySelector('#listRegion').value = RegionId;
-    document.querySelector('#listGroup').value = GroupId;
-    document.querySelector('#listClass').value = ClassId;
-    document.querySelector('#listWorld').value = WorldId;
-    document.head.append(
-      createElement(
-        'style',
-        `
-            #listGroup > option.R${RegionId} {
-              display: inline;
-            }`,
-        'styleGroup'
-      ),
-      createElement(
-        'style',
-        `
-            #listClass > .static
-            ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
-              display: inline;
-            }`,
-        'styleClass'
-      ),
-      createElement(
-        'style',
-        `
-            #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
-              display: inline;
-            }`,
-        'styleWorld'
-      )
-    );
-  }
-  if (ClassId >= 0) {
-    drawMap(ClassId);
-  }
 }
 /*子功能*/
 //登录账号
@@ -1679,10 +2231,13 @@ async function updateServerData(GuildList) {
       'Color': '0, 0, 0',
       'Relation': 'neutral',
     };
-    const _searchGuildId = await searchGuildId(GuildList[i]);
-    const GuildData = _searchGuildId?.SearchResult.GuildInfo;
-    Guild.Name = GuildData.GuildOverView.GuildName;
-    Guild.GuildLevel = GuildData.GuildLevel;
+    if (Guild.LastUpdate < Today(4, 0, 0)) {
+      const _searchGuildId = await searchGuildId(GuildList[i]);
+      const GuildData = _searchGuildId?.SearchResult.GuildInfo;
+      Guild.Name = GuildData.GuildOverView.GuildName;
+      Guild.GuildLevel = GuildData.GuildLevel;
+      Guild.LastUpdate = new Date();
+    }
     updateData('Guild', Guild);
     PlayerDataList = PlayerDataList.concat(_searchGuildId?.SearchResult.PlayerInfoList);
   }
@@ -2675,7 +3230,7 @@ async function getData(table, index, key) {
       request = objectStore.index(key).get(index);
     }
     request.onerror = function (error) {
-      console.log('获取失败:' + index);
+      console.log('请求失败:' + index);
       resolve(undefined);
     };
     request.onsuccess = function (success) {
