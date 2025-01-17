@@ -198,6 +198,48 @@ const LanguageTable = {
       'cht': '大師級',
       'chs': '大师级',
     },
+    'Asia': {
+      'jpn': 'Asia',
+      'eng': 'Asia',
+      'cht': '亞服',
+      'chs': '亚服',
+    },
+    'Japan': {
+      'jpn': 'Japan',
+      'eng': 'Japan',
+      'cht': '日服',
+      'chs': '日服',
+    },
+    'America': {
+      'jpn': 'America',
+      'eng': 'America',
+      'cht': '美服',
+      'chs': '美服',
+    },
+    'Europe': {
+      'jpn': 'Europe',
+      'eng': 'Europe',
+      'cht': '歐服',
+      'chs': '欧服',
+    },
+    'Korea': {
+      'jpn': 'Korea',
+      'eng': 'Korea',
+      'cht': '韓服',
+      'chs': '韩服',
+    },
+    'Global': {
+      'jpn': 'Global',
+      'eng': 'Global',
+      'cht': '國際',
+      'chs': '国际',
+    },
+    'HP': {
+      'jpn': 'HP',
+      'eng': 'HP',
+      'cht': '生命',
+      'chs': '生命',
+    },
     'ワールド': {
       'jpn': 'ワールド',
       'eng': 'World ',
@@ -812,16 +854,56 @@ const LanguageTable = {
       ' Forces': ' 軍',
       ' Wins': ' 連勝',
     },
+    'chs': {
+      'Rank': '等级',
+      'STR': '力量',
+      'MAG': '魔力',
+      'DEX': '戰技',
+      'STA': '耐力',
+      'ATK': '攻擊力',
+      'DEF': '防禦力',
+      'DEF Break': '防禦穿透',
+      'SPD': '速度',
+      'PM.DEF Break': '物魔防禦穿透',
+      'P.DEF': '物理防禦力',
+      'M.DEF': '魔法防禦力',
+      'ACC': '命中',
+      'EVD': '閃避',
+      'CRIT': '暴擊',
+      'CRIT RES': '暴擊抗性',
+      'CRIT DMG Boost': '暴擊傷害強化',
+      'P.CRIT DMG Cut': '物理暴擊傷害降低',
+      'M.CRIT DMG Cut': '魔法暴擊傷害降低',
+      'Debuff ACC': '弱化效果命中',
+      'Debuff RES': '弱化效果抗性',
+      'Counter': '傷害反彈',
+      'HP Drain': '吸血',
+      'Locked': '未加工',
+      'None': '未裝備',
+      ' pts, ': ' 積分, ',
+      ' streak': '  連勝中',
+      'EXP Orb': '經驗珠',
+      'Upgrade Water': '強化水',
+      'Upgrade Panacea': '強化秘藥',
+      'Kindling Orb': '潛能寶珠',
+      'Rune Ticket': '符石兌換券',
+      'Event': '活動',
+      'All Worlds': '所有世界',
+      ' Forces': ' 軍',
+      ' Wins': ' 連勝',
+    },
   },
   'local': {
     'jpn': ['ブラッセル', 'ウィスケルケー', 'モダーヴ', 'シメイ', 'グラベンスティン', 'カンブル', 'クインティヌス', 'ランベール', 'サンジャック', 'ミヒャエル', 'ナミュール', 'シャルルロア', 'アルゼット', 'エノー', 'ワーヴル', 'モンス', 'クリストフ', 'コルトレイク', 'イーペル', 'サルヴァトール', 'バーフ'],
     'eng': ['Brussell', 'Wissekerke', 'Modave', 'Chimay', 'Gravensteen', 'Cambre', 'Quentin', 'Lambert', 'Saint-Jacques', 'Michael', 'Namur', 'Charleroi', 'Alzette', 'Hainaut', 'Wavre', 'Mons', 'Christophe', 'Kortrijk', 'Ypres', 'Salvador', 'Bavo'],
     'cht': ['布魯塞爾', '維瑟克', '莫達沃', '希邁', '格拉文斯坦', '坎布爾', '昆汀', '朗博', '圣雅克', '米額爾', '那慕爾', '夏勒哇', '阿爾澤特', '埃諾', '瓦夫爾', '芒斯', '克里斯托夫', '克特雷特', '伊珀爾', '薩爾瓦多', '巴弗'],
+    'chs': ['布魯塞爾', '維瑟克', '莫達沃', '希邁', '格拉文斯坦', '坎布爾', '昆汀', '朗博', '圣雅克', '米額爾', '那慕爾', '夏勒哇', '阿爾澤特', '埃諾', '瓦夫爾', '芒斯', '克里斯托夫', '克特雷特', '伊珀爾', '薩爾瓦多', '巴弗'],
   },
   'global': {
     'jpn': ['アイン', 'イエソド', 'マルクト', 'ケテル', 'テフォレト', 'クシェル', 'シトリ', 'トパズ', 'メラル', 'ペリド', 'ファリア', 'ラピス', 'ラリマル', 'マリン', 'アメト', 'ラベン', 'シルコン', 'オニキス', 'フロライト', 'ガネット', 'ルラ'],
     'eng': ['Ein', 'Yesod', 'Malkuth', 'Keter', 'Tiferet', 'Cushel', 'Citri', 'Toppaz', 'Meral', 'Perido', 'Pharia', 'Lapis', 'Larimal', 'Marin', 'Amest', 'Laven', 'Zircon', 'Onyx', 'Floryte', 'Ganette', 'Rula'],
-    'cht': ['Ein', 'Yesod', 'Malkuth', 'Keter', 'Tiferet', 'Cushel', 'Citri', 'Toppaz', 'Meral', 'Perido', 'Pharia', 'Lapis', 'Larimal', 'Marin', 'Amest', 'Laven', 'Zircon', 'Onyx', 'Floryte', 'Ganette', 'Rula'],
+    'cht': ['虛無神殿艾茵', '基礎之城耶索多', '王國之城瑪克托', '王冠之城凱特爾', '美麗之城堤法瑞', '庫修爾', '希托利', '托帕茲', '瑪羅', '貝利托', '法利雅', '拉畢斯', '拉利瑪', '瑪令', '雅梅特', '拉維', '瑟康', '奧尼克斯', '弗羅萊特', '葛涅特', '盧拉'],
+    'chs': ['虛無神殿艾茵', '基礎之城耶索多', '王國之城瑪克托', '王冠之城凱特爾', '美麗之城堤法瑞', '庫修爾', '希托利', '托帕茲', '瑪羅', '貝利托', '法利雅', '拉畢斯', '拉利瑪', '瑪令', '雅梅特', '拉維', '瑟康', '奧尼克斯', '弗羅萊特', '葛涅特', '盧拉'],
   },
 };
 let language = '';
@@ -855,6 +937,17 @@ if (URLFunction.includes('?function=')) {
   for (let i = 0; i < jalist.length; i++) {
     dataja = jalist[i].getAttribute('data-ja');
     jalist[i].innerHTML = LanguageTable.static[dataja]?.[language] ?? jalist[i].innerHTML;
+  }
+  const HPNode = document.querySelector('#HP');
+  HPNode && (HPNode.previousElementSibling.innerHTML = LanguageTable.static['HP'][language]);
+  const CharacterNode = document.querySelector('#character');
+  if (CharacterNode) {
+    CharacterNode.addEventListener('change', () => {
+      let DOM = Array.from(CharacterNode.querySelectorAll('span'));
+      for (let i in DOM) {
+        DOM[i].innerHTML = DOM[i].innerHTML.replace('HP', LanguageTable.static['HP'][language]);
+      }
+    });
   }
 }
 /*初始化所有页面*/
@@ -1352,7 +1445,7 @@ async function gvgMapper() {
   };
   //保存数据
   buttonSetLocal.onclick = async () => {
-    if (selectWorld.value < 0) {
+    if (WorldId < 0) {
       alert('未选择世界');
       return;
     }
@@ -1537,24 +1630,24 @@ async function loginAccount() {
   let _getUserData = await getUserData();
   if (!_getUserData.UserSyncData) {
     console.log('未登录，开始登陆');
-    const WorldId = getStorage('WorldId') * 1;
+    const RegionId = getStorage('RegionId');
+    const WorldId = RegionId * 1000 + 1;
     ortegaaccesstoken = '';
-    const RegionId = Math.floor(WorldId / 1000);
     const RegionList = {
       1: 'JP', //日本
       2: 'KR', //韩国
       3: 'TW', //台湾省，HK(香港区)/MO(澳门区)
       4: 'US', //美国，CA(加拿大)/PM(圣皮埃尔和密克隆)
       5: 'GB' /*英国，IS(冰岛)/IE(爱尔兰)/AZ(阿塞拜疆)/AL(阿尔巴尼亚)/AM(亚美尼亚)/
-                            AD(安道尔)/IT(意大利)/UA(乌克兰)/EE(爱沙尼亚)/AT(奥地利)/
-                            AX(奥兰)/GG(根西)/MK(北马其顿)/GR(希腊)/GL(格陵兰)/
-                            HR(克罗地亚)/SM(圣马力诺)/GI(直布罗陀)/JE(泽西)/GE(格鲁吉亚)/
-                            CH(瑞士)/SE(瑞典)/SJ(斯瓦尔巴和扬马延)/ES(西班牙)/SK(斯洛伐克)/
-                            SI(斯洛文尼亚)/RS(塞尔维亚)/CZ(捷克)/DK(丹麦)/DE(德国)/
-                            NO(挪威)/VA(梵蒂冈)/HU(匈牙利)/FI(芬兰)/FO(法罗群岛)/
-                            FR(法国)/BG(保加利亚)/BY(白俄罗斯)/PL(波兰)/BA(波黑)/
-                            PT(葡萄牙)/IM(马恩岛)/MC(摩纳哥)/MD(摩尔多瓦)/ME(黑山)/
-                            LV(拉脱维亚)/LT(立陶宛)/LI(列支敦士登)/RO(罗马尼亚)/LU(卢森堡)*/,
+                      AD(安道尔)/IT(意大利)/UA(乌克兰)/EE(爱沙尼亚)/AT(奥地利)/
+                      AX(奥兰)/GG(根西)/MK(北马其顿)/GR(希腊)/GL(格陵兰)/
+                      HR(克罗地亚)/SM(圣马力诺)/GI(直布罗陀)/JE(泽西)/GE(格鲁吉亚)/
+                      CH(瑞士)/SE(瑞典)/SJ(斯瓦尔巴和扬马延)/ES(西班牙)/SK(斯洛伐克)/
+                      SI(斯洛文尼亚)/RS(塞尔维亚)/CZ(捷克)/DK(丹麦)/DE(德国)/
+                      NO(挪威)/VA(梵蒂冈)/HU(匈牙利)/FI(芬兰)/FO(法罗群岛)/
+                      FR(法国)/BG(保加利亚)/BY(白俄罗斯)/PL(波兰)/BA(波黑)/
+                      PT(葡萄牙)/IM(马恩岛)/MC(摩纳哥)/MD(摩尔多瓦)/ME(黑山)/
+                      LV(拉脱维亚)/LT(立陶宛)/LI(列支敦士登)/RO(罗马尼亚)/LU(卢森堡)*/,
       6: 'CN', //所有不在上面的
     };
     const CountryCode = RegionList[RegionId];
@@ -1626,8 +1719,8 @@ function drawMap(ClassId) {
   document.querySelector('gvg-viewer')?.remove();
   document.querySelector('gvg-list')?.remove();
   document.querySelector('gvg-list')?.remove();
-  document.body.append(createElement('gvg-list', '', { class: ['enermy'] }));
-  document.body.append(createElement('gvg-list', '', { class: ['friend'] }));
+  document.body.append(createElement('gvg-list', '<h2>我方列表</h2><div></div>', 'friendList'));
+  document.body.append(createElement('gvg-list', '<h2>敌方列表</h2><div></div>', 'enermyList'));
   if (ClassId) {
     const castleList = {
       'local': {
@@ -1854,17 +1947,25 @@ function drawMap(ClassId) {
             gvg-list {
               display: block;
               position: fixed;
-              top: 0px;
+              top: 5%;
               width: 200px;
-              height: 100%;
+              height: 95%;
             }
-            gvg-list.enermy {
-              left: 1680px
-              background: red;
+            gvg-list#enermyList {
+              left: calc(50% + 650px);
             }
-            gvg-list.friend {
-              right: 1680px
-              background: blue;
+            gvg-list#friendList {
+              right: calc(50% + 650px);
+            }
+            gvg-list > h2 {
+              text-align: center;
+              margin: 0px;
+            }
+            gvg-list > div {
+              height: calc(100% - 28px);
+              overflow-y: scroll;
+              scrollbar-width: thin;
+              background: rgb(255,127,127);
             }
             gvg-viewer {
               display: block;
@@ -2212,12 +2313,49 @@ function drawMap(ClassId) {
     }
   }
 }
-//战斗布局-填充数据
+//战斗布局-填充地图
 async function fillMap(CastleList, GuildList) {
   await updateServerData(GuildList);
   await fillGuilds(GuildList);
   for (let i = 0; i < CastleList.length; i++) {
     await changeCastle(CastleList[i]);
+  }
+}
+//战斗布局-重置表格
+async function fillGuilds(GuildList) {
+  document.querySelector('#guilds1')?.remove();
+  document.querySelector('#guilds2')?.remove();
+  table2 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds2'));
+  table1 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds1'));
+  const RegionId = getStorage('RegionId');
+  if (GuildList) {
+    const tbody1 = table1.appendChild(createElement('tbody'));
+    const tbody2 = table2.appendChild(createElement('tbody'));
+    let count = 0;
+    for (let i in GuildList) {
+      const GuildId = GuildList[i];
+      const Guid = `${RegionId}_${GuildId}`;
+      const Guild = await getData('Guild', Guid);
+      changeColor(GuildId, Guild.Color ?? '0,0,0');
+      const divGuild = createElement('tr', '', GuildId);
+      const aColor = divGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
+      aColor.onclick = (e) => {
+        const Color = prompt('请输入设定颜色，形式为R,G,B');
+        changeColor(e.target.parentNode.id, Color);
+      };
+      divGuild.append(
+        createElement('td', Guild.Name), //
+        createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`),
+        createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`),
+        createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`)
+      );
+      if (count < GuildList.length / 2) {
+        tbody1.append(divGuild);
+      } else {
+        tbody2.append(divGuild);
+      }
+      count++;
+    }
   }
 }
 //战斗布局-更新数据
@@ -2230,6 +2368,7 @@ async function updateServerData(GuildList) {
       'GuildId': GuildList[i],
       'Color': '0, 0, 0',
       'Relation': 'neutral',
+      'LastUpdate': new Date(),
     };
     if (Guild.LastUpdate < Today(4, 0, 0)) {
       const _searchGuildId = await searchGuildId(GuildList[i]);
@@ -2237,9 +2376,9 @@ async function updateServerData(GuildList) {
       Guild.Name = GuildData.GuildOverView.GuildName;
       Guild.GuildLevel = GuildData.GuildLevel;
       Guild.LastUpdate = new Date();
+      updateData('Guild', Guild);
+      PlayerDataList = PlayerDataList.concat(_searchGuildId?.SearchResult.PlayerInfoList);
     }
-    updateData('Guild', Guild);
-    PlayerDataList = PlayerDataList.concat(_searchGuildId?.SearchResult.PlayerInfoList);
   }
   for (let i = 0; i < PlayerDataList.length; i++) {
     const PlayerData = PlayerDataList[i];
@@ -2289,43 +2428,6 @@ async function changeCastle(CastleData) {
     CastleNode.querySelector('gvg-status').setAttribute('state', 'common');
   }
   CastleNode.querySelector('gvg-ko-count').innerHTML = CastleData.LastWinPartyKnockOutCount;
-}
-//战斗布局-重置表格
-async function fillGuilds(GuildList) {
-  document.querySelector('#guilds1')?.remove();
-  document.querySelector('#guilds2')?.remove();
-  table2 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds2'));
-  table1 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds1'));
-  const RegionId = getStorage('RegionId');
-  if (GuildList) {
-    const tbody1 = table1.appendChild(createElement('tbody'));
-    const tbody2 = table2.appendChild(createElement('tbody'));
-    let count = 0;
-    for (let i in GuildList) {
-      const GuildId = GuildList[i];
-      const Guid = `${RegionId}_${GuildId}`;
-      const Guild = await getData('Guild', Guid);
-      changeColor(GuildId, Guild.Color);
-      const divGuild = createElement('tr', '', GuildId);
-      const aColor = divGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
-      aColor.onclick = (e) => {
-        const Color = prompt('请输入设定颜色，形式为R,G,B');
-        changeColor(e.target.parentNode.id, Color);
-      };
-      divGuild.append(
-        createElement('td', Guild.Name), //
-        createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`),
-        createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`),
-        createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`)
-      );
-      if (count < GuildList.length / 2) {
-        tbody1.append(divGuild);
-      } else {
-        tbody2.append(divGuild);
-      }
-      count++;
-    }
-  }
 }
 //战斗布局-修改颜色
 function changeColor(GuildId, Color) {
@@ -2391,10 +2493,10 @@ function LogCastle() {
         const _getLocalGvgCastleInfoDialogData = await getLocalGvgCastleInfoDialogData(CastleId * 1);
         if (_getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos) {
           const Now = new Date();
-          const BattleTime = new Date(Now.getFullYear(), Now.getMonth(), Now.getDate(), 20, 45, 0);
-          const Time = (Now > BattleTime ? Now : new Date(Now.getTime() - 24 * 3600 * 1000)).toLocaleDateString().replaceAll('/', '_');
+          const BattleTime = Today(20, 45, 0);
           for (let i = 0; i < _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos.length; i++) {
             const BattleData = _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos[i];
+            const Time = Today(Math.floor(BattleData[1] / 100), BattleData[1] % 100, 0) - (Now > BattleTime ? 0 : 24 * 60 * 60 * 1000);
             let Battle = await getData('Battle', BattleData[0]);
             if (!Battle) {
               updateData('Battle', {
@@ -2405,14 +2507,13 @@ function LogCastle() {
               for (let j in DeckDataList) {
                 const DeckData = DeckDataList[j];
                 let Deck = {
-                  'Guid': `${Time}_${DeckData[6]}`,
+                  'Guid': `${Time.toLocaleDateString().replaceAll('/', '_')}_${DeckData[6]}`,
                   'DeckId': DeckData[6],
                   'PlayerId': DeckData[2],
                   'Content': [],
-                  'LastUpdate': Now,
+                  'LastUpdate': Time,
                 };
                 for (let k in DeckData[1]) {
-                  const RegionId = getStorage('RegionId');
                   const CharacterData = DeckData[1][k];
                   let Character = {
                     'Guid': CharacterData.UserCharacterInfo.Guid,
@@ -2421,7 +2522,7 @@ function LogCastle() {
                     'Level': CharacterData.UserCharacterInfo.Level,
                     'SubLevel': CharacterData.UserCharacterInfo.SubLevel,
                     'BattlePower': CharacterData.BattlePower,
-                    'LastUpdate': Now,
+                    'LastUpdate': Time,
                   };
                   Deck.Content.push(Character.Guid);
                   updateData('Character', Character);
@@ -2438,7 +2539,11 @@ function LogCastle() {
   }, 100);
 }
 //战斗布局-更新战力监控面板
-function updateBattlePanel() {}
+function updateBattlePanel() {
+  const divFrined = document.querySelector('gvg-list#friendList>div');
+  const divEnermy = document.querySelector('gvg-list#enermyList>div');
+  const trFrined = document.querySelectorAll('');
+}
 /*API函数*/
 //获取option
 function buildOption() {
@@ -2510,7 +2615,14 @@ async function getErrorCode() {
 async function getWorldGroup() {
   const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer' });
   const WorldGroupMB = await msgpack.decode(new Uint8Array(buffer));
-  const RegionList = { jp: 'Japan', kr: 'Korea', ap: 'Asia', us: 'America', eu: 'Europe', gl: 'Global' };
+  const RegionList = {
+    jp: LanguageTable.static.Japan[language], //
+    kr: LanguageTable.static.Korea[language],
+    ap: LanguageTable.static.Asia[language],
+    us: LanguageTable.static.America[language],
+    eu: LanguageTable.static.Europe[language],
+    gl: LanguageTable.static.Global[language],
+  };
   const RegionIdList = { jp: 1, kr: 2, ap: 3, us: 4, eu: 5, gl: 6 };
   let WorldGroup = {
     RegionList: {},
@@ -2533,7 +2645,7 @@ async function getWorldGroup() {
         };
         WorldGroup.RegionList[RegionId] = Region;
         WorldGroup.GroupList[`N${RegionId}`] = {
-          'Name': `Group NA`,
+          'Name': `${LanguageTable.static.Group[language]} NA`,
           'SName': `GNA`,
           'Region': RegionId,
           'WorldList': [],
@@ -2543,7 +2655,7 @@ async function getWorldGroup() {
       let Group = WorldGroup.GroupList[GroupId];
       if (!Group) {
         Group = {
-          'Name': `Group ${GroupId}`,
+          'Name': `${LanguageTable.static.Group[language]} ${GroupId}`,
           'SName': `G${GroupId}`,
           'Region': RegionId,
           'WorldList': [],
@@ -2555,7 +2667,7 @@ async function getWorldGroup() {
         const WorldId = WorldIdList[j];
         Region.WorldList.push(WorldId);
         WorldGroup.WorldList[WorldId] = {
-          'Name': `World ${WorldId % 1000}`,
+          'Name': `${LanguageTable.static.World[language]} ${WorldId % 1000}`,
           'SName': `W${WorldId % 1000}`,
           'Region': RegionId,
           'Group': GroupId,
@@ -2791,6 +2903,36 @@ async function getDetailsInfo(PlayerId, arrayCharacterId) {
   let result = await sendRequest(userURL + 'character/getDetailsInfo', option);
   return result;
 }
+//globalGvg/getGlobalGvgCastleInfoDialogData
+async function getGlobalGvgCastleInfoDialogData(CastleId, MatchingNumber) {
+  let option = buildOption();
+  const data = {
+    'CastleId': CastleId,
+    'MatchingNumber': MatchingNumber,
+  };
+  option.body = data;
+  let result = await sendRequest(userURL + 'globalGvg/getGlobalGvgCastleInfoDialogData', option);
+  return result;
+}
+//globalGvg/getGlobalGvgGroupAll
+async function getGlobalGvgGroupAll() {
+  let option = buildOption();
+  const data = {};
+  option.body = data;
+  let result = await sendRequest(userURL + 'globalGvg/getGlobalGvgGroupAll', option);
+  return result;
+}
+//globalGvg/getGlobalGvgSceneTransitionData
+async function getGlobalGvgSceneTransitionData(GlobalGvgGroupId, MatchingNumber) {
+  let option = buildOption();
+  const data = {
+    'GlobalGvgGroupId': GlobalGvgGroupId,
+    'MatchingNumber': MatchingNumber,
+  };
+  option.body = data;
+  let result = await sendRequest(userURL + 'globalGvg/getGlobalGvgSceneTransitionData', option);
+  return result;
+}
 /*工具函数*/
 //请求函数
 async function sendRequest(url, option) {
@@ -2984,9 +3126,14 @@ function setStorage(key, value) {
   }
   return value;
 }
+//获得今日日期
 function Today(hour, minute, second) {
   let Now = new Date();
-  return Now.setHours(hour).setMinutes(minute).setSeconds(second).setMilliseconds(0);
+  Now.setHours(hour);
+  Now.setMinutes(minute);
+  Now.setSeconds(second);
+  Now.setMilliseconds(0);
+  return Now;
 }
 /*Websocket流函数*/
 //组合StreamID
@@ -3199,10 +3346,10 @@ async function updateData(table, data) {
   let objectStore = transaction.objectStore(table);
   let request = objectStore.put(data);
   request.onsuccess = function (sucess) {
-    console.log('更新成功' + data.Guid);
+    //console.log(`${table} 更新成功${data.Guid}`);
   };
   request.onerror = function (error) {
-    console.error('更新失败:' + data.Guid);
+    console.error(`${table} 更新失败${data.Guid}`);
   };
 }
 //删除数据

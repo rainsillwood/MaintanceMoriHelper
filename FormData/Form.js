@@ -1,4 +1,4 @@
-Account = {
+let Account = {
   RegionId: {
     'ClientKey': ClientKey,
     'UserId': UserId,
@@ -6,7 +6,7 @@ Account = {
     'ortegauuid': ortegauuid,
   },
 };
-WorldGroup = {
+let WorldGroup = {
   RegionList: {
     RegionId: {
       'Name': 'Asia',
@@ -38,7 +38,7 @@ WorldGroup = {
     },
   },
 };
-Match = {
+const Match = {
   'Guid': `${GroupId}_${ClassId}_${WorldId}`,
   'Guilds': [],
   'Castles': [
@@ -53,16 +53,18 @@ Match = {
       'LastWinPartyKnockOutCount': LastWinPartyKnockOutCount,
     },
   ],
+  'LastUpdate': Time,
 };
-Guild = {
+const Guild = {
   'Guid': `${RegionId}_${GuildId}`,
   'GuildId': GuildId,
   'Name': Name,
   'Color': Color,
   'GuildLevel': GuildLevel,
   'Relation': Relation,
+  'LastUpdate': Time,
 };
-Player = {
+const Player = {
   'Guid': `${RegionId}_${PlayerId}`,
   'PlayerId': PlayerId,
   'Name': Name,
@@ -70,14 +72,14 @@ Player = {
   'Level': Level,
   'BattlePower': BattlePower,
 };
-Deck = {
+const Deck = {
   'Guid': `${Time}_${Guid}`,
   'DeckId': Guid,
   'Player': PlayerId,
   'Content': [CharacterId1, CharacterId2, CharacterId3, CharacterId4, CharacterId5],
   'LastUpdate': Time,
 };
-Character = {
+const Character = {
   'Guid': Guid,
   'CharacterId': CharacterId,
   'Player': PlayerId,
@@ -86,7 +88,7 @@ Character = {
   'BattlePower': BattlePower,
   'LastUpdate': Time,
 };
-Battle = {
+const Battle = {
   'Guid': Guid,
   'LastUpdate': Time,
 };
