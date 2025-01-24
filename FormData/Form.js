@@ -40,7 +40,13 @@ let WorldGroup = {
 };
 const Match = {
   'Guid': `${GroupId}_${ClassId}_${WorldId}`,
-  'Guilds': [],
+  'Guilds': {
+    GuildId: {
+      Clolor: Clolor,
+      Name: Name,
+      RelationShip: RelationShip,
+    },
+  },
   'Castles': [
     {
       'CastleId': CastleId,

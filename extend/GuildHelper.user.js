@@ -1432,6 +1432,9 @@ async function gvgMapper() {
   /* 功能设定 */
   //读取数据
   buttonGetLocal.onclick = async () => {
+    const GroupId = getStorage('GroupId');
+    const ClassId = getStorage('ClassId');
+    const WorldId = getStorage('WorldId');
     if (WorldId < 0) {
       alert('未选择世界');
       return;
@@ -1445,6 +1448,10 @@ async function gvgMapper() {
   };
   //保存数据
   buttonSetLocal.onclick = async () => {
+    const RegionId = getStorage('RegionId');
+    const GroupId = getStorage('GroupId');
+    const ClassId = getStorage('ClassId');
+    const WorldId = getStorage('WorldId');
     if (WorldId < 0) {
       alert('未选择世界');
       return;
@@ -1499,6 +1506,9 @@ async function gvgMapper() {
   };
   //开始监听
   buttonConnectServer.onclick = () => {
+    const GroupId = getStorage('GroupId');
+    const ClassId = getStorage('ClassId');
+    const WorldId = getStorage('WorldId');
     if (WorldId == -1) {
       alert('未选择世界');
       return;
@@ -2368,7 +2378,7 @@ async function updateServerData(GuildList) {
       'GuildId': GuildList[i],
       'Color': '0, 0, 0',
       'Relation': 'neutral',
-      'LastUpdate': new Date(),
+      'LastUpdate': 0,
     };
     if (Guild.LastUpdate < Today(4, 0, 0)) {
       const _searchGuildId = await searchGuildId(GuildList[i]);
@@ -2496,7 +2506,7 @@ function LogCastle() {
           const BattleTime = Today(20, 45, 0);
           for (let i = 0; i < _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos.length; i++) {
             const BattleData = _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos[i];
-            const Time = Today(Math.floor(BattleData[1] / 100), BattleData[1] % 100, 0) - (Now > BattleTime ? 0 : 24 * 60 * 60 * 1000);
+            const Time = new Date(Today(Math.floor(BattleData[1] / 100), BattleData[1] % 100, 0) - (Now > BattleTime ? 0 : 24 * 60 * 60 * 1000));
             let Battle = await getData('Battle', BattleData[0]);
             if (!Battle) {
               updateData('Battle', {
