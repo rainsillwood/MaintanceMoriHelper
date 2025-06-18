@@ -22,224 +22,8 @@
 // ==/UserScript==
 
 'use strict';
-const ModelName = 'Xiaomi 2203121C';
-const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
-const assetURL = 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/';
-const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
-const LocalURL = 'https://mentemori.icu/';
-let userURL = '';
 const LanguageTable = {
-  'static': {
-    'title': {
-      'jpn': 'メンテもりもり',
-      'eng': 'Maintenance Mori',
-      'chs': '维护多多',
-      'cht': '维护多多',
-    },
-    'basic': {
-      'jpn': '通常 ： ',
-      'eng': 'Normal&ensp;:&ensp;',
-      'cht': '通用功能 ： ',
-      'chs': '通用功能 ： ',
-    },
-    'temple': {
-      'jpn': '幻影の神殿',
-      'eng': 'Temple',
-      'cht': '幻影神殿',
-      'chs': '幻影神殿',
-    },
-    'rankings': {
-      'jpn': 'ランキング',
-      'eng': 'Ranking',
-      'cht': '排行榜',
-      'chs': '排行榜',
-    },
-    'arena': {
-      'jpn': 'バトリ',
-      'eng': 'Battle League',
-      'cht': '古競技場',
-      'chs': '古竞技场',
-    },
-    'legend': {
-      'jpn': 'レジェリ',
-      'eng': 'Legend League',
-      'cht': '巔峰競技場',
-      'chs': '巅峰竞技场',
-    },
-    'localgvg': {
-      'jpn': 'ギルバト',
-      'eng': 'Guild Battle',
-      'cht': '公會戰',
-      'chs': '公会战',
-    },
-    'globalgvg': {
-      'jpn': 'グラバト',
-      'eng': 'Grand War',
-      'cht': '跨服公會戰',
-      'chs': '跨服公会战',
-    },
-    'battle_log': {
-      'jpn': 'バトルレポート再生',
-      'eng': 'Battle Log Viewer',
-      'cht': '戰鬥記錄回放',
-      'chs': '战斗记录回放',
-    },
-    'weekly': {
-      'jpn': '週間 ： ',
-      'eng': 'Weekly&ensp;:&ensp;',
-      'cht': '每週特報 ： ',
-      'chs': '每周特报 ： ',
-    },
-    'weekly_chara': {
-      'jpn': 'キャラ育成',
-      'eng': 'Character',
-      'cht': '角色培育',
-      'chs': '角色培育',
-    },
-    'weekly_boss': {
-      'jpn': 'クエスト',
-      'eng': 'Quest',
-      'cht': '主線冒險',
-      'chs': '幻影神殿',
-    },
-    'weekly_arena': {
-      'jpn': 'バトリ',
-      'eng': 'BL',
-      'cht': '古競技場',
-      'chs': '古竞技场',
-    },
-    'weekly_legend': {
-      'jpn': '幻影の神殿',
-      'eng': 'LL',
-      'cht': '巔峰競技場',
-      'chs': '巅峰竞技场',
-    },
-    'extend': {
-      'jpn': '拡張 ： ',
-      'eng': 'Extend&ensp;:&ensp;',
-      'cht': '擴展功能 ： ',
-      'chs': '扩展功能 ： ',
-    },
-    'dataconvert': {
-      'jpn': 'データ変換',
-      'eng': 'Data Convert',
-      'cht': '數據轉換',
-      'chs': '数据转换',
-    },
-    'battlehelper': {
-      'jpn': '戦闘監視',
-      'eng': 'Battle Helper',
-      'cht': '戰鬥監控',
-      'chs': '战斗监控',
-    },
-    'account': {
-      'jpn': 'アカウント',
-      'eng': 'Account:',
-      'cht': '登錄狀態：',
-      'chs': '登录状态：',
-    },
-    'noaccount': {
-      'jpn': 'アカウントなし',
-      'eng': 'No Account',
-      'cht': '無賬號',
-      'chs': '无账号',
-    },
-    'Region': {
-      'jpn': 'サーバー',
-      'eng': 'Region',
-      'cht': '區域',
-      'chs': '区域',
-    },
-    'Group': {
-      'jpn': 'グループ',
-      'eng': 'Group',
-      'cht': '戰區',
-      'chs': '战区',
-    },
-    'Class': {
-      'jpn': 'クラス',
-      'eng': 'Class',
-      'cht': '級別',
-      'chs': '级别',
-    },
-    'World': {
-      'jpn': 'ワールド',
-      'eng': 'World',
-      'cht': '世界',
-      'chs': '世界',
-    },
-    'Block': {
-      'jpn': 'ブロック',
-      'eng': 'Block',
-      'cht': '組別',
-      'chs': '组别',
-    },
-    'Local': {
-      'jpn': 'Local',
-      'eng': 'Local',
-      'cht': '本地',
-      'chs': '本地',
-    },
-    'Elite': {
-      'jpn': 'Elite',
-      'eng': 'Elite',
-      'cht': '菁英級',
-      'chs': '精英级',
-    },
-    'Expert': {
-      'jpn': 'ブロック',
-      'eng': 'Expert',
-      'cht': '專家級',
-      'chs': '专家级',
-    },
-    'Master': {
-      'jpn': 'ブロック',
-      'eng': 'Master',
-      'cht': '大師級',
-      'chs': '大师级',
-    },
-    'Asia': {
-      'jpn': 'Asia',
-      'eng': 'Asia',
-      'cht': '亞服',
-      'chs': '亚服',
-    },
-    'Japan': {
-      'jpn': 'Japan',
-      'eng': 'Japan',
-      'cht': '日服',
-      'chs': '日服',
-    },
-    'America': {
-      'jpn': 'America',
-      'eng': 'America',
-      'cht': '美服',
-      'chs': '美服',
-    },
-    'Europe': {
-      'jpn': 'Europe',
-      'eng': 'Europe',
-      'cht': '歐服',
-      'chs': '欧服',
-    },
-    'Korea': {
-      'jpn': 'Korea',
-      'eng': 'Korea',
-      'cht': '韓服',
-      'chs': '韩服',
-    },
-    'Global': {
-      'jpn': 'Global',
-      'eng': 'Global',
-      'cht': '國際',
-      'chs': '国际',
-    },
-    'HP': {
-      'jpn': 'HP',
-      'eng': 'HP',
-      'cht': '生命',
-      'chs': '生命',
-    },
+  'dataja': {
     'ワールド': {
       'jpn': 'ワールド',
       'eng': 'World ',
@@ -739,6 +523,224 @@ const LanguageTable = {
       'chs': '状态',
     },
   },
+  'static': {
+    'Region': {
+      'jpn': 'サーバー',
+      'eng': 'Region',
+      'cht': '區域',
+      'chs': '区域',
+    },
+    'Group': {
+      'jpn': 'グループ',
+      'eng': 'Group',
+      'cht': '戰區',
+      'chs': '战区',
+    },
+    'Class': {
+      'jpn': 'クラス',
+      'eng': 'Class',
+      'cht': '級別',
+      'chs': '级别',
+    },
+    'World': {
+      'jpn': 'ワールド',
+      'eng': 'World',
+      'cht': '世界',
+      'chs': '世界',
+    },
+    'Block': {
+      'jpn': 'ブロック',
+      'eng': 'Block',
+      'cht': '組別',
+      'chs': '组别',
+    },
+    'Local': {
+      'jpn': 'Local',
+      'eng': 'Local',
+      'cht': '本地',
+      'chs': '本地',
+    },
+    'Elite': {
+      'jpn': 'Elite',
+      'eng': 'Elite',
+      'cht': '菁英級',
+      'chs': '精英级',
+    },
+    'Expert': {
+      'jpn': 'ブロック',
+      'eng': 'Expert',
+      'cht': '專家級',
+      'chs': '专家级',
+    },
+    'Master': {
+      'jpn': 'ブロック',
+      'eng': 'Master',
+      'cht': '大師級',
+      'chs': '大师级',
+    },
+    'Asia': {
+      'jpn': 'Asia',
+      'eng': 'Asia',
+      'cht': '亞服',
+      'chs': '亚服',
+    },
+    'Japan': {
+      'jpn': 'Japan',
+      'eng': 'Japan',
+      'cht': '日服',
+      'chs': '日服',
+    },
+    'America': {
+      'jpn': 'America',
+      'eng': 'America',
+      'cht': '美服',
+      'chs': '美服',
+    },
+    'Europe': {
+      'jpn': 'Europe',
+      'eng': 'Europe',
+      'cht': '歐服',
+      'chs': '欧服',
+    },
+    'Korea': {
+      'jpn': 'Korea',
+      'eng': 'Korea',
+      'cht': '韓服',
+      'chs': '韩服',
+    },
+    'Global': {
+      'jpn': 'Global',
+      'eng': 'Global',
+      'cht': '國際',
+      'chs': '国际',
+    },
+    'HP': {
+      'jpn': 'HP',
+      'eng': 'HP',
+      'cht': '生命',
+      'chs': '生命',
+    },
+    'title': {
+      'jpn': 'メンテもりもり',
+      'eng': 'Maintenance Mori',
+      'chs': '维护多多',
+      'cht': '维护多多',
+    },
+    'basic': {
+      'jpn': '通常 ： ',
+      'eng': 'Normal&ensp;:&ensp;',
+      'cht': '通用功能 ： ',
+      'chs': '通用功能 ： ',
+    },
+    'temple': {
+      'jpn': '幻影の神殿',
+      'eng': 'Temple',
+      'cht': '幻影神殿',
+      'chs': '幻影神殿',
+    },
+    'rankings': {
+      'jpn': 'ランキング',
+      'eng': 'Ranking',
+      'cht': '排行榜',
+      'chs': '排行榜',
+    },
+    'arena': {
+      'jpn': 'バトリ',
+      'eng': 'Battle League',
+      'cht': '古競技場',
+      'chs': '古竞技场',
+    },
+    'legend': {
+      'jpn': 'レジェリ',
+      'eng': 'Legend League',
+      'cht': '巔峰競技場',
+      'chs': '巅峰竞技场',
+    },
+    'localgvg': {
+      'jpn': 'ギルバト',
+      'eng': 'Guild Battle',
+      'cht': '公會戰',
+      'chs': '公会战',
+    },
+    'globalgvg': {
+      'jpn': 'グラバト',
+      'eng': 'Grand War',
+      'cht': '跨服公會戰',
+      'chs': '跨服公会战',
+    },
+    'battle_log': {
+      'jpn': 'バトルレポート再生',
+      'eng': 'Battle Log Viewer',
+      'cht': '戰鬥記錄回放',
+      'chs': '战斗记录回放',
+    },
+    'weekly': {
+      'jpn': '週間 ： ',
+      'eng': 'Weekly&ensp;:&ensp;',
+      'cht': '每週特報 ： ',
+      'chs': '每周特报 ： ',
+    },
+    'weekly_chara': {
+      'jpn': 'キャラ育成',
+      'eng': 'Character',
+      'cht': '角色培育',
+      'chs': '角色培育',
+    },
+    'weekly_boss': {
+      'jpn': 'クエスト',
+      'eng': 'Quest',
+      'cht': '主線冒險',
+      'chs': '幻影神殿',
+    },
+    'weekly_arena': {
+      'jpn': 'バトリ',
+      'eng': 'BL',
+      'cht': '古競技場',
+      'chs': '古竞技场',
+    },
+    'weekly_legend': {
+      'jpn': '幻影の神殿',
+      'eng': 'LL',
+      'cht': '巔峰競技場',
+      'chs': '巅峰竞技场',
+    },
+    'extend': {
+      'jpn': '拡張 ： ',
+      'eng': 'Extend&ensp;:&ensp;',
+      'cht': '擴展功能 ： ',
+      'chs': '扩展功能 ： ',
+    },
+    'hidden': {
+      'jpn': 'Hidden ： ',
+      'eng': 'Hidden&ensp;:&ensp;',
+      'cht': '隱藏功能 ： ',
+      'chs': '隐藏功能 ： ',
+    },
+    'dataconvert': {
+      'jpn': 'データ変換',
+      'eng': 'Data Convert',
+      'cht': '數據轉換',
+      'chs': '数据转换',
+    },
+    'battlehelper': {
+      'jpn': '戦闘監視',
+      'eng': 'Battle Helper',
+      'cht': '戰鬥監控',
+      'chs': '战斗监控',
+    },
+    'account': {
+      'jpn': 'アカウント',
+      'eng': 'Account:',
+      'cht': '登錄狀態：',
+      'chs': '登录状态：',
+    },
+    'noaccount': {
+      'jpn': 'アカウントなし',
+      'eng': 'No Account',
+      'cht': '無賬號',
+      'chs': '无账号',
+    },
+  },
   'dynamic': {
     'jpn': {
       'Rank': 'ランク',
@@ -906,6 +908,13 @@ const LanguageTable = {
     'chs': ['虛無神殿艾茵', '基礎之城耶索多', '王國之城瑪克托', '王冠之城凱特爾', '美麗之城堤法瑞', '庫修爾', '希托利', '托帕茲', '瑪羅', '貝利托', '法利雅', '拉畢斯', '拉利瑪', '瑪令', '雅梅特', '拉維', '瑟康', '奧尼克斯', '弗羅萊特', '葛涅特', '盧拉'],
   },
 };
+
+const ModelName = 'Xiaomi 2203121C';
+const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
+const assetURL = 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/';
+const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
+const LocalURL = 'https://mentemori.icu/';
+let userURL = '';
 let language = '';
 let MagicOnionHost = '';
 let MagicOnionPort = '';
@@ -918,8 +927,10 @@ let AppVersion = getStorage('AppVersion') ?? '';
 let SocketGvG;
 let LogCastleTimer;
 let database;
+let TextResourceMB;
 const URLFunction = document.URL.replace(/https?\:\/\/.*?\/(.*?\.html)?(\?function=.*?)?(\?lang=.*?)?$/, '$1$2');
 const URLLanguage = document.URL.replace(/https?\:\/\/.*?\/(.*?\.html)?(\?function=.*?)?(\?lang=.*?)?$/, '$3');
+setStorage('lang', '["en","en","en","en","en","en","en"]');
 if (!URLLanguage) {
   language = 'eng';
 } else {
@@ -932,23 +943,7 @@ if (URLFunction.includes('?function=')) {
     document.body.lastChild.remove();
   }
 } else {
-  unsafeWindow.m = LanguageTable.dynamic;
-  let jalist = document.querySelectorAll('[data-ja]');
-  for (let i = 0; i < jalist.length; i++) {
-    dataja = jalist[i].getAttribute('data-ja');
-    jalist[i].innerHTML = LanguageTable.static[dataja]?.[language] ?? jalist[i].innerHTML;
-  }
-  const HPNode = document.querySelector('#HP');
-  HPNode && (HPNode.previousElementSibling.innerHTML = LanguageTable.static['HP'][language]);
-  const CharacterNode = document.querySelector('#character');
-  if (CharacterNode) {
-    CharacterNode.addEventListener('change', () => {
-      let DOM = Array.from(CharacterNode.querySelectorAll('span'));
-      for (let i in DOM) {
-        DOM[i].innerHTML = DOM[i].innerHTML.replace('HP', LanguageTable.static['HP'][language]);
-      }
-    });
-  }
+  initTranslator();
 }
 /*初始化所有页面*/
 initPage();
@@ -962,6 +957,10 @@ switch (URLFunction) {
     gvgMapper();
     break;
   }
+  case 'arena.html': {
+    characterViewer();
+    break;
+  }
   default: {
   }
 }
@@ -969,6 +968,7 @@ switch (URLFunction) {
 //初始化页面
 async function initPage() {
   console.log('脚本运行中');
+  //本地化标题
   document.querySelector('h1').innerHTML = LanguageTable.static['title'][language];
   document.querySelector('title').innerHTML = LanguageTable.static['title'][language];
   document.querySelector('style').appendChild(
@@ -986,7 +986,7 @@ async function initPage() {
   );
   //获取原导航栏
   const navDefault = document.querySelector('nav');
-  //获取功能模块
+  //获取功能模块并本地化
   const divFunction = navDefault.childNodes[1];
   divFunction.innerHTML = '';
   divFunction.append(
@@ -1018,10 +1018,6 @@ async function initPage() {
     createElement('a', LanguageTable.static['globalgvg'][language], {
       'href': `${LocalURL}globalgvg.html${URLLanguage}`,
     }),
-    createElement('a', '|'),
-    createElement('a', LanguageTable.static['battle_log'][language], {
-      'href': `${LocalURL}battle_log.html${URLLanguage}`,
-    }),
     createElement('br'),
     createElement('a', LanguageTable.static['weekly'][language], {}),
     createElement('a', LanguageTable.static['weekly_chara'][language], {
@@ -1038,7 +1034,13 @@ async function initPage() {
     createElement('a', '|'),
     createElement('a', LanguageTable.static['weekly_legend'][language], {
       'href': `${LocalURL}weekly_legend.html${URLLanguage}`,
-    })
+    }),
+    createElement('br'),
+    createElement('a', LanguageTable.static['hidden'][language], {}),
+    createElement('a', LanguageTable.static['battle_log'][language], {
+      'href': `${LocalURL}battle_log.html${URLLanguage}`,
+    }),
+    createElement('a', '|')
   );
   //获取语言模块
   const divLocal = navDefault.childNodes[3];
@@ -1058,12 +1060,12 @@ async function initPage() {
     }),
     createElement('a', '|'),
     createElement('a', '🇨🇳', {
+      href: `https://mentemori.icu/${URLFunction}?lang=chs`,
+    }),
+    createElement('a', '|'),
+    createElement('a', '🇭🇰', {
       href: `https://mentemori.icu/${URLFunction}?lang=cht`,
-    }) /*,
-      createElement('a', '|'),
-      createElement('a', '🇹🇼', {
-        href: `https://mentemori.icu/${URLFunction}?lang=cht`,
-      })*/
+    })
   );
   //初始化扩展导航栏
   const navExtend = navDefault.insertAdjacentElement('afterend', createElement('nav'));
@@ -1292,6 +1294,17 @@ async function initSelect() {
     drawMap(selectClass.value);
     fillGuilds();
   };
+}
+//初始化翻译功能
+function initTranslator() {
+  //替换内置语言表，需人工维护
+  unsafeWindow.m = LanguageTable.dynamic;
+  //替换含data-ja的标签，需人工维护
+  let jalist = document.querySelectorAll('[data-ja]');
+  for (let i = 0; i < jalist.length; i++) {
+    dataja = jalist[i].getAttribute('data-ja');
+    jalist[i].innerHTML = LanguageTable.dataja[dataja]?.[language] ?? jalist[i].innerHTML + '|' + dataja;
+  }
 }
 /*主功能*/
 //文件转换
@@ -1632,6 +1645,27 @@ async function gvgMapper() {
     SocketGvG.close(1000, 'User Stop');
     setStorage('ortegaaccesstoken', '');
   };
+}
+/*优化功能*/
+//优化角色显示
+function characterViewer() {
+  let characterPanel = document.querySelector('#character');
+  /*document.querySelector('style').appendChild(
+    createElement(
+      'text',
+      `
+      #character {
+        width: 20%;
+        height: 420px;
+        overflow: scroll;
+      }
+      #ranking {
+        width: 80%;
+      }
+      `
+    )
+  );
+  document.querySelector('div.container').appendChild(characterPanel);*/
 }
 /*子功能*/
 //登录账号
@@ -2607,14 +2641,26 @@ async function getAppVersion() {
   setStorage('AppVersion', result.AppAssetVersionInfo.Version);
   return result.AppAssetVersionInfo.Version;
 }
+//获取本地化文件
+async function getTextResource() {
+  const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResourceZhTwMB`, { type: 'arraybuffer', msgpack: true });
+  const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
+  if (!TextResourceMB) return;
+  let result = {};
+  for (let i = 0; i < TextResourceMB.length; i++) {
+    const TextResource = TextResourceMB[i];
+    result[TextResource.StringKey.replace(/\[(.*?)\]/, '$1')] = TextResource.Text;
+  }
+  return result;
+}
 //获取错误码
 async function getErrorCode() {
   const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResourceZhTwMB`, { type: 'arraybuffer', msgpack: true });
-  const TextResourceZhTwMB = await msgpack.decode(new Uint8Array(buffer));
-  if (!TextResourceZhTwMB) return;
+  const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
+  if (!TextResourceMB) return;
   let result = {};
-  for (let i = 0; i < TextResourceZhTwMB.length; i++) {
-    const TextResourceZhTw = TextResourceZhTwMB[i];
+  for (let i = 0; i < TextResourceMB.length; i++) {
+    const TextResourceZhTw = TextResourceMB[i];
     if (TextResourceZhTw.StringKey.includes('ErrorMessage')) {
       result[TextResourceZhTw.StringKey.replace(/\[ErrorMessage(.*?)\]/, '$1') * 1] = TextResourceZhTw.Text;
     }
