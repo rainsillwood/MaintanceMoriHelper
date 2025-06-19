@@ -944,6 +944,9 @@ if (URLFunction.includes('?function=')) {
   }
 } else {
   initTranslator();
+  document.querySelector('#character')?.addEventListener('focus', () => {
+    initTranslator();
+  });
 }
 /*初始化所有页面*/
 initPage();
@@ -1300,10 +1303,19 @@ function initTranslator() {
   //替换内置语言表，需人工维护
   unsafeWindow.m = LanguageTable.dynamic;
   //替换含data-ja的标签，需人工维护
-  let jalist = document.querySelectorAll('[data-ja]');
+  let jalist = [];
+  jalist[0] = document.querySelectorAll('[data-ja]');
+  let template = document.querySelectorAll('template');
+  for (let i = 0; i < template.length; i++) {
+    jalist[i + 1] = template[i].content.querySelectorAll('[data-ja]');
+  }
+
   for (let i = 0; i < jalist.length; i++) {
-    dataja = jalist[i].getAttribute('data-ja');
-    jalist[i].innerHTML = LanguageTable.dataja[dataja]?.[language] ?? jalist[i].innerHTML + '|' + dataja;
+    for (let j = 0; j < jalist[i].length; j++) {
+      dataja = jalist[i][j].getAttribute('data-ja');
+      jalist[i][j].setAttribute('translanter', 'true');
+      jalist[i][j].innerHTML = LanguageTable.dataja[dataja]?.[language] ?? jalist[i][j].innerHTML + '|' + dataja;
+    }
   }
 }
 /*主功能*/
