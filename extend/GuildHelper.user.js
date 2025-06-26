@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.5
+// @version      0.6
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -22,969 +22,344 @@
 // ==/UserScript==
 
 'use strict';
-const LanguageTable = {
-  'dataja': {
-    'ワールド': {
-      'jpn': 'ワールド',
-      'eng': 'World ',
-      'cht': '世界',
-      'chs': '世界',
-    },
-    'レベル': {
-      'jpn': 'レベル',
-      'eng': 'Level ',
-      'cht': '等級',
-      'chs': '等级',
-    },
-    '幻影の神殿': {
-      'jpn': '幻影の神殿',
-      'eng': 'Temple of Illusions',
-      'cht': '幻影神殿',
-      'chs': '幻影神殿',
-    },
-    'サーバー': {
-      'jpn': 'サーバー',
-      'eng': 'Server',
-      'cht': '区域',
-      'chs': '区域',
-    },
-    '更新': {
-      'jpn': '更新',
-      'eng': 'Updated',
-      'cht': '更新時間',
-      'chs': '更新時間',
-    },
-    'プレイヤーランキング': {
-      'jpn': 'プレイヤーランキング',
-      'eng': 'Player Rankings',
-      'cht': '玩家排行榜',
-      'chs': '玩家排行榜',
-    },
-    '戦闘力': {
-      'jpn': '戦闘力',
-      'eng': 'Battle Power',
-      'cht': '戰鬥力',
-      'chs': '战斗力',
-    },
-    'プレイヤーランク': {
-      'jpn': 'プレイヤーランク',
-      'eng': 'Player Rank',
-      'cht': '玩家等級',
-      'chs': '玩家等级',
-    },
-    'メインクエスト': {
-      'jpn': 'メインクエスト',
-      'eng': 'Quest',
-      'cht': '主線冒險',
-      'chs': '主线冒险',
-    },
-    '無窮の塔': {
-      'jpn': '無窮の塔',
-      'eng': 'Tower',
-      'cht': '無窮之塔',
-      'chs': '无穷之塔',
-    },
-    '藍の塔': {
-      'jpn': '藍の塔',
-      'eng': 'Tower of Azure',
-      'cht': '憂藍之塔',
-      'chs': '忧蓝之塔',
-    },
-    '紅の塔': {
-      'jpn': '紅の塔',
-      'eng': 'Tower of Crimson',
-      'cht': '葉紅之塔',
-      'chs': '叶红之塔',
-    },
-    '翠の塔': {
-      'jpn': '翠の塔',
-      'eng': 'Tower of Emerald',
-      'cht': '蒼翠之塔',
-      'chs': '苍翠之塔',
-    },
-    '黄の塔': {
-      'jpn': '黄の塔',
-      'eng': 'Tower of Amber',
-      'cht': '流金之塔',
-      'chs': '流金之塔',
-    },
-    'ギルドランキング': {
-      'jpn': 'ギルドランキング',
-      'eng': 'Guild Rankings',
-      'cht': '公會排行榜',
-      'chs': '公会排行榜',
-    },
-    'ギルドレベル': {
-      'jpn': 'ギルドレベル',
-      'eng': 'Guild Level',
-      'cht': '公會等級',
-      'chs': '公会等级',
-    },
-    'ギルドストック': {
-      'jpn': 'ギルドストック',
-      'eng': 'Guild Stock',
-      'cht': '公會積分',
-      'chs': '公会积分',
-    },
-    'ギルド総戦闘力': {
-      'jpn': 'ギルド総戦闘力',
-      'eng': 'Battle Power',
-      'cht': '公會總戰力',
-      'chs': '公会总战力',
-    },
-    'プレイヤー名': {
-      'jpn': 'プレイヤー名',
-      'eng': 'Name ',
-      'cht': '玩家名稱',
-      'chs': '玩家名称',
-    },
-    '階': {
-      'jpn': '階',
-      'eng': 'Floor ',
-      'cht': '層數',
-      'chs': '层数',
-    },
-    'ランク': {
-      'jpn': 'ランク',
-      'eng': 'Rank ',
-      'cht': '等級',
-      'chs': '等级',
-    },
-    'クエスト': {
-      'jpn': 'クエスト',
-      'eng': 'Quest ',
-      'cht': '關卡',
-      'chs': '关卡',
-    },
-    'ギルド名': {
-      'jpn': 'ギルド名',
-      'eng': 'Name ',
-      'cht': '公會名稱',
-      'chs': '公会名称',
-    },
-    '人数': {
-      'jpn': '人数',
-      'eng': 'Members ',
-      'cht': '人數',
-      'chs': '人数',
-    },
-    'バトルリーグ': {
-      'jpn': 'バトルリーグ',
-      'eng': 'Battle League',
-      'cht': '古競技場',
-      'chs': '古竞技场',
-    },
-    'プレイヤー': {
-      'jpn': 'プレイヤー',
-      'eng': 'Player ',
-      'cht': '玩家名稱',
-      'chs': '玩家名称',
-    },
-    '枠１': {
-      'jpn': '枠１',
-      'eng': 'Slot 1 ',
-      'cht': '欄１',
-      'chs': '栏１',
-    },
-    '枠２': {
-      'jpn': '枠２',
-      'eng': 'Slot 2 ',
-      'cht': '欄２',
-      'chs': '栏２',
-    },
-    '枠３': {
-      'jpn': '枠３',
-      'eng': 'Slot 3 ',
-      'cht': '欄３',
-      'chs': '栏３',
-    },
-    '枠４': {
-      'jpn': '枠４',
-      'eng': 'Slot 4 ',
-      'cht': '欄４',
-      'chs': '栏４',
-    },
-    '枠５': {
-      'jpn': '枠５',
-      'eng': 'Slot 5 ',
-      'cht': '欄５',
-      'chs': '栏５',
-    },
-    '武具': {
-      'jpn': '武具',
-      'eng': 'Equipment ',
-      'cht': '裝備',
-      'chs': '装备',
-    },
-    '腕力': {
-      'jpn': '腕力',
-      'eng': 'STR',
-      'cht': '力量',
-      'chs': '力量',
-    },
-    '技力': {
-      'jpn': '技力',
-      'eng': 'DEX',
-      'cht': '戰技',
-      'chs': '战技',
-    },
-    '聖装': {
-      'jpn': '聖装',
-      'eng': 'Holy Effects',
-      'cht': '聖装',
-      'chs': '圣装',
-    },
-    '魔装': {
-      'jpn': '魔装',
-      'eng': 'Dark Effects',
-      'cht': '魔装',
-      'chs': '魔装',
-    },
-    '魔力': {
-      'jpn': '魔力',
-      'eng': 'MAG',
-      'cht': '魔力',
-      'chs': '魔力',
-    },
-    '耐久力': {
-      'jpn': '耐久力',
-      'eng': 'STA',
-      'cht': '耐力',
-      'chs': '耐力',
-    },
-    'キャラ': {
-      'jpn': 'キャラ',
-      'eng': 'Character',
-      'cht': '角色名稱',
-      'chs': '角色名称',
-    },
-    'Lv.': {
-      'jpn': 'Lv.',
-      'eng': 'Level',
-      'cht': '等級',
-      'chs': '等级',
-    },
-    '攻撃力': {
-      'jpn': '攻撃力',
-      'eng': 'ATK',
-      'cht': '攻擊力',
-      'chs': '攻击力',
-    },
-    '防御力': {
-      'jpn': '防御力',
-      'eng': 'DEF',
-      'cht': '防御力',
-      'chs': '防御力',
-    },
-    '防御貫通': {
-      'jpn': '防御貫通',
-      'eng': 'DEF Break',
-      'cht': '防禦穿透',
-      'chs': '防御穿透',
-    },
-    'スピード': {
-      'jpn': 'スピード',
-      'eng': 'SPD',
-      'cht': '速度',
-      'chs': '速度',
-    },
-    '物魔防御貫通': {
-      'jpn': '物魔防御貫通',
-      'eng': 'PM.DEF Break',
-      'cht': '物魔防禦穿透',
-      'chs': '物魔防御穿透',
-    },
-    '物理防御力': {
-      'jpn': '物理防御力',
-      'eng': 'P.DEF',
-      'cht': '物理防御力',
-      'chs': '物理防御力',
-    },
-    '魔法防御力': {
-      'jpn': '魔法防御力',
-      'eng': 'M.DEF',
-      'cht': '魔法防御力',
-      'chs': '魔法防御力',
-    },
-    '命中': {
-      'jpn': '命中',
-      'eng': 'ACC',
-      'cht': '命中',
-      'chs': '命中',
-    },
-    'クリティカル': {
-      'jpn': 'クリティカル',
-      'eng': 'CRIT',
-      'cht': '暴擊',
-      'chs': '暴击',
-    },
-    'クリダメ強化': {
-      'jpn': 'クリダメ強化',
-      'eng': 'CRIT DMG Boost',
-      'cht': '暴擊傷害強化',
-      'chs': '暴击伤害强化',
-    },
-    '魔法クリダメ緩和': {
-      'jpn': '魔法クリダメ緩和',
-      'eng': 'M.CRIT DMG Cut',
-      'cht': '魔法暴擊傷害降低',
-      'chs': '魔法暴击伤害降低',
-    },
-    '物理クリダメ緩和': {
-      'jpn': '物理クリダメ緩和',
-      'eng': 'P.CRIT DMG Cut',
-      'cht': '物理暴擊傷害降低',
-      'chs': '物理暴击伤害降低',
-    },
-    '弱体効果命中': {
-      'jpn': '弱体効果命中',
-      'eng': 'Debuff ACC',
-      'cht': '弱化效果命中',
-      'chs': '弱化效果命中',
-    },
-    '弱体効果耐性': {
-      'jpn': '弱体効果耐性',
-      'eng': 'Debuff RES',
-      'cht': '弱化效果抗性',
-      'chs': '弱化效果抗性',
-    },
-    'カウンタ': {
-      'jpn': 'カウンタ',
-      'eng': 'Counter',
-      'cht': '傷害反彈',
-      'chs': '伤害反弹',
-    },
-    'HPドレイン': {
-      'jpn': 'HPドレイン',
-      'eng': 'HP Drain',
-      'cht': '吸血',
-      'chs': '吸血',
-    },
-    '回避': {
-      'jpn': '回避',
-      'eng': 'EVD',
-      'cht': '閃避',
-      'chs': '闪避',
-    },
-    'クリティカル耐性': {
-      'jpn': 'クリティカル耐性',
-      'eng': 'CRIT RES',
-      'cht': '暴擊抗性',
-      'chs': '暴击抗性',
-    },
-    'グループ': {
-      'jpn': 'グループ',
-      'eng': 'Group',
-      'cht': '戰區',
-      'chs': '战区',
-    },
-    'レジェンドリーグ': {
-      'jpn': 'レジェンドリーグ',
-      'eng': 'Legend League',
-      'cht': '巔峰競技場',
-      'chs': '巅峰竞技场',
-    },
-    'ギルドバトル': {
-      'jpn': 'ギルドバトル',
-      'eng': 'Guild Battle',
-      'cht': '公會戰',
-      'chs': '公会战',
-    },
-    'クラス': {
-      'jpn': 'クラス',
-      'eng': 'Class',
-      'cht': '級別',
-      'chs': '级别',
-    },
-    'ブロック': {
-      'jpn': 'ブロック',
-      'eng': 'Block',
-      'cht': '組別',
-      'chs': '组别',
-    },
-    'グランドバトル': {
-      'jpn': 'グランドバトル',
-      'eng': 'Grand War',
-      'cht': '跨服公會戰',
-      'chs': '跨服公会战',
-    },
-    'バトルレポート再生': {
-      'jpn': 'バトルレポート再生',
-      'eng': 'Battle Log Viewer',
-      'cht': '戰鬥記錄回放',
-      'chs': '战斗记录回放',
-    },
-    '週間トピックス・属性別キャラ育成': {
-      'jpn': '週間トピックス・属性別キャラ育成',
-      'eng': 'Weekly Topics - Character Growth by Soul',
-      'cht': '每週特報 - 角色培育',
-      'chs': '每周特报 - 角色培育',
-    },
-    '天属性': {
-      'jpn': '天属性',
-      'eng': 'Radiance ',
-      'cht': '天光',
-      'chs': '天光',
-    },
-    '冥属性': {
-      'jpn': '冥属性',
-      'eng': 'Chaos ',
-      'cht': '幽冥',
-      'chs': '幽冥',
-    },
-    '藍属性': {
-      'jpn': '藍属性',
-      'eng': 'Azure ',
-      'cht': '憂藍',
-      'chs': '忧蓝',
-    },
-    '紅属性': {
-      'jpn': '紅属性',
-      'eng': 'Crimson ',
-      'cht': '葉紅',
-      'chs': '叶红',
-    },
-    '翠属性': {
-      'jpn': '翠属性',
-      'eng': 'Emerald ',
-      'cht': '蒼翠',
-      'chs': '苍翠',
-    },
-    '黄属性': {
-      'jpn': '黄属性',
-      'eng': 'Amber ',
-      'cht': '流金',
-      'chs': '流金',
-    },
-    '週間トピックス・バトルリーグ': {
-      'jpn': '週間トピックス・バトルリーグ',
-      'eng': 'Weekly Topics - Quest',
-      'cht': '每週特報 - 主線冒險',
-      'chs': '每周特报 - 主线冒险',
-    },
-    '章': {
-      'jpn': '章',
-      'eng': 'Chapter ',
-      'cht': '領先章節',
-      'chs': '领先章节',
-    },
-    '前線': {
-      'jpn': '前線',
-      'eng': 'Frontline ',
-      'cht': '領先梯隊',
-      'chs': '领先梯队',
-    },
-    '全体': {
-      'jpn': '全体',
-      'eng': 'Overall ',
-      'cht': '全體玩家',
-      'chs': '全体玩家',
-    },
-    '到達人数': {
-      'jpn': '到達人数',
-      'eng': 'Clear Count ',
-      'cht': '到達人数',
-      'chs': '到达人数',
-    },
-    '週間トピックス・バトルリーグ': {
-      'jpn': '週間トピックス・バトルリーグ',
-      'eng': 'Weekly Topics - Battle League',
-      'cht': '每週特報 - 古競技場',
-      'chs': '每周特报 - 古竞技场',
-    },
-    '30位以内': {
-      'jpn': '30位以内',
-      'eng': 'Top 30 ',
-      'cht': '前30名',
-      'chs': '前30名',
-    },
-    '全体': {
-      'jpn': '全体',
-      'eng': 'Overall ',
-      'cht': '全體玩家',
-      'chs': '全体玩家',
-    },
-    '連勝記録': {
-      'jpn': '連勝記録',
-      'eng': 'Consecutive Wins ·',
-      'cht': '連勝記録',
-      'chs': '连胜纪录',
-    },
-    '週間トピックス・レジェンドリーグ': {
-      'jpn': '週間トピックス・レジェンドリーグ',
-      'eng': 'Weekly Topics - Legend League',
-      'cht': '每週特報 - 巅峰競技場',
-      'chs': '每周特报 - 巅峰竞技场',
-    },
-    'ステータス': {
-      'jpn': 'ステータス',
-      'eng': 'Stats ',
-      'cht': '狀態',
-      'chs': '状态',
-    },
-  },
-  'static': {
-    'Region': {
-      'jpn': 'サーバー',
-      'eng': 'Region',
-      'cht': '區域',
-      'chs': '区域',
-    },
-    'Group': {
-      'jpn': 'グループ',
-      'eng': 'Group',
-      'cht': '戰區',
-      'chs': '战区',
-    },
-    'Class': {
-      'jpn': 'クラス',
-      'eng': 'Class',
-      'cht': '級別',
-      'chs': '级别',
-    },
-    'World': {
-      'jpn': 'ワールド',
-      'eng': 'World',
-      'cht': '世界',
-      'chs': '世界',
-    },
-    'Block': {
-      'jpn': 'ブロック',
-      'eng': 'Block',
-      'cht': '組別',
-      'chs': '组别',
-    },
-    'Local': {
-      'jpn': 'Local',
-      'eng': 'Local',
-      'cht': '本地',
-      'chs': '本地',
-    },
-    'Elite': {
-      'jpn': 'Elite',
-      'eng': 'Elite',
-      'cht': '菁英級',
-      'chs': '精英级',
-    },
-    'Expert': {
-      'jpn': 'ブロック',
-      'eng': 'Expert',
-      'cht': '專家級',
-      'chs': '专家级',
-    },
-    'Master': {
-      'jpn': 'ブロック',
-      'eng': 'Master',
-      'cht': '大師級',
-      'chs': '大师级',
-    },
-    'Asia': {
-      'jpn': 'Asia',
-      'eng': 'Asia',
-      'cht': '亞服',
-      'chs': '亚服',
-    },
-    'Japan': {
-      'jpn': 'Japan',
-      'eng': 'Japan',
-      'cht': '日服',
-      'chs': '日服',
-    },
-    'America': {
-      'jpn': 'America',
-      'eng': 'America',
-      'cht': '美服',
-      'chs': '美服',
-    },
-    'Europe': {
-      'jpn': 'Europe',
-      'eng': 'Europe',
-      'cht': '歐服',
-      'chs': '欧服',
-    },
-    'Korea': {
-      'jpn': 'Korea',
-      'eng': 'Korea',
-      'cht': '韓服',
-      'chs': '韩服',
-    },
-    'Global': {
-      'jpn': 'Global',
-      'eng': 'Global',
-      'cht': '國際',
-      'chs': '国际',
-    },
-    'HP': {
-      'jpn': 'HP',
-      'eng': 'HP',
-      'cht': '生命',
-      'chs': '生命',
-    },
-    'title': {
-      'jpn': 'メンテもりもり',
-      'eng': 'Maintenance Mori',
-      'chs': '维护多多',
-      'cht': '维护多多',
-    },
-    'basic': {
-      'jpn': '通常 ： ',
-      'eng': 'Normal&ensp;:&ensp;',
-      'cht': '通用功能 ： ',
-      'chs': '通用功能 ： ',
-    },
-    'temple': {
-      'jpn': '幻影の神殿',
-      'eng': 'Temple',
-      'cht': '幻影神殿',
-      'chs': '幻影神殿',
-    },
-    'rankings': {
-      'jpn': 'ランキング',
-      'eng': 'Ranking',
-      'cht': '排行榜',
-      'chs': '排行榜',
-    },
-    'arena': {
-      'jpn': 'バトリ',
-      'eng': 'Battle League',
-      'cht': '古競技場',
-      'chs': '古竞技场',
-    },
-    'legend': {
-      'jpn': 'レジェリ',
-      'eng': 'Legend League',
-      'cht': '巔峰競技場',
-      'chs': '巅峰竞技场',
-    },
-    'localgvg': {
-      'jpn': 'ギルバト',
-      'eng': 'Guild Battle',
-      'cht': '公會戰',
-      'chs': '公会战',
-    },
-    'globalgvg': {
-      'jpn': 'グラバト',
-      'eng': 'Grand War',
-      'cht': '跨服公會戰',
-      'chs': '跨服公会战',
-    },
-    'battle_log': {
-      'jpn': 'バトルレポート再生',
-      'eng': 'Battle Log Viewer',
-      'cht': '戰鬥記錄回放',
-      'chs': '战斗记录回放',
-    },
-    'weekly': {
-      'jpn': '週間 ： ',
-      'eng': 'Weekly&ensp;:&ensp;',
-      'cht': '每週特報 ： ',
-      'chs': '每周特报 ： ',
-    },
-    'weekly_chara': {
-      'jpn': 'キャラ育成',
-      'eng': 'Character',
-      'cht': '角色培育',
-      'chs': '角色培育',
-    },
-    'weekly_boss': {
-      'jpn': 'クエスト',
-      'eng': 'Quest',
-      'cht': '主線冒險',
-      'chs': '幻影神殿',
-    },
-    'weekly_arena': {
-      'jpn': 'バトリ',
-      'eng': 'BL',
-      'cht': '古競技場',
-      'chs': '古竞技场',
-    },
-    'weekly_legend': {
-      'jpn': '幻影の神殿',
-      'eng': 'LL',
-      'cht': '巔峰競技場',
-      'chs': '巅峰竞技场',
-    },
-    'extend': {
-      'jpn': '拡張 ： ',
-      'eng': 'Extend&ensp;:&ensp;',
-      'cht': '擴展功能 ： ',
-      'chs': '扩展功能 ： ',
-    },
-    'hidden': {
-      'jpn': 'Hidden ： ',
-      'eng': 'Hidden&ensp;:&ensp;',
-      'cht': '隱藏功能 ： ',
-      'chs': '隐藏功能 ： ',
-    },
-    'dataconvert': {
-      'jpn': 'データ変換',
-      'eng': 'Data Convert',
-      'cht': '數據轉換',
-      'chs': '数据转换',
-    },
-    'battlehelper': {
-      'jpn': '戦闘監視',
-      'eng': 'Battle Helper',
-      'cht': '戰鬥監控',
-      'chs': '战斗监控',
-    },
-    'account': {
-      'jpn': 'アカウント',
-      'eng': 'Account:',
-      'cht': '登錄狀態：',
-      'chs': '登录状态：',
-    },
-    'noaccount': {
-      'jpn': 'アカウントなし',
-      'eng': 'No Account',
-      'cht': '無賬號',
-      'chs': '无账号',
-    },
-  },
-  'dynamic': {
-    'jpn': {
-      'Rank': 'ランク',
-      'STR': '腕力',
-      'MAG': '魔力',
-      'DEX': '技力',
-      'STA': '耐久力',
-      'ATK': '攻撃力',
-      'DEF': '防御力',
-      'DEF Break': '防御貫通',
-      'SPD': 'スピード',
-      'PM.DEF Break': '物魔防御貫通',
-      'P.DEF': '物理防御力',
-      'M.DEF': '魔法防御力',
-      'ACC': '命中',
-      'EVD': '回避',
-      'CRIT': 'クリティカル',
-      'CRIT RES': 'クリティカル耐性',
-      'CRIT DMG Boost': 'クリダメ強化',
-      'P.CRIT DMG Cut': '物理クリダメ緩和',
-      'M.CRIT DMG Cut': '魔法クリダメ緩和',
-      'Debuff ACC': '弱体効果命中',
-      'Debuff RES': '弱体効果耐性',
-      'Counter': 'カウンタ',
-      'HP Drain': 'HPドレイン',
-      'Locked': '未加工',
-      'None': '未装着',
-      ' pts, ': ' ポイント ',
-      ' streak': ' 連勝中',
-      'EXP Orb': '経験珠',
-      'Upgrade Water': '強化水',
-      'Upgrade Panacea': '強化秘薬',
-      'Kindling Orb': '潜在宝珠',
-      'Rune Ticket': 'ルーンチケット',
-      'Event': 'イベント',
-      'All Worlds': 'すべて',
-      ' Forces': '軍',
-      ' Wins': '連勝',
-    },
-    'eng': {
-      'Rank': 'Rank',
-      'STR': 'STR',
-      'MAG': 'MAG',
-      'DEX': 'DEX',
-      'STA': 'STA',
-      'ATK': 'ATK',
-      'DEF': 'DEF',
-      'DEF Break': 'DEF Break',
-      'SPD': 'SPD',
-      'PM.DEF Break': 'PM.DEF Break',
-      'P.DEF': 'P.DEF',
-      'M.DEF': 'M.DEF',
-      'ACC': 'ACC',
-      'EVD': 'EVD',
-      'CRIT': 'CRIT',
-      'CRIT RES': 'CRIT RES',
-      'CRIT DMG Boost': 'CRIT DMG Boost',
-      'P.CRIT DMG Cut': 'P.CRIT DMG Cut',
-      'M.CRIT DMG Cut': 'M.CRIT DMG Cut',
-      'Debuff ACC': 'Debuff ACC',
-      'Debuff RES': 'Debuff RES',
-      'Counter': 'Counter',
-      'HP Drain': 'HP Drain',
-      'Locked': 'Locked',
-      'None': 'None',
-      ' pts, ': ' pts, ',
-      ' streak': '  streak',
-      'EXP Orb': 'EXP Orb',
-      'Upgrade Water': 'Upgrade Water',
-      'Upgrade Panacea': 'Upgrade Panacea',
-      'Kindling Orb': 'Kindling Orb',
-      'Rune Ticket': 'Rune Ticket',
-      'Event': 'Event',
-      'All Worlds': 'All Worlds',
-      ' Forces': ' Forces',
-      ' Wins': ' Wins',
-    },
-    'cht': {
-      'Rank': '等级',
-      'STR': '力量',
-      'MAG': '魔力',
-      'DEX': '戰技',
-      'STA': '耐力',
-      'ATK': '攻擊力',
-      'DEF': '防禦力',
-      'DEF Break': '防禦穿透',
-      'SPD': '速度',
-      'PM.DEF Break': '物魔防禦穿透',
-      'P.DEF': '物理防禦力',
-      'M.DEF': '魔法防禦力',
-      'ACC': '命中',
-      'EVD': '閃避',
-      'CRIT': '暴擊',
-      'CRIT RES': '暴擊抗性',
-      'CRIT DMG Boost': '暴擊傷害強化',
-      'P.CRIT DMG Cut': '物理暴擊傷害降低',
-      'M.CRIT DMG Cut': '魔法暴擊傷害降低',
-      'Debuff ACC': '弱化效果命中',
-      'Debuff RES': '弱化效果抗性',
-      'Counter': '傷害反彈',
-      'HP Drain': '吸血',
-      'Locked': '未加工',
-      'None': '未裝備',
-      ' pts, ': ' 積分, ',
-      ' streak': '  連勝中',
-      'EXP Orb': '經驗珠',
-      'Upgrade Water': '強化水',
-      'Upgrade Panacea': '強化秘藥',
-      'Kindling Orb': '潛能寶珠',
-      'Rune Ticket': '符石兌換券',
-      'Event': '活動',
-      'All Worlds': '所有世界',
-      ' Forces': ' 軍',
-      ' Wins': ' 連勝',
-    },
-    'chs': {
-      'Rank': '等级',
-      'STR': '力量',
-      'MAG': '魔力',
-      'DEX': '戰技',
-      'STA': '耐力',
-      'ATK': '攻擊力',
-      'DEF': '防禦力',
-      'DEF Break': '防禦穿透',
-      'SPD': '速度',
-      'PM.DEF Break': '物魔防禦穿透',
-      'P.DEF': '物理防禦力',
-      'M.DEF': '魔法防禦力',
-      'ACC': '命中',
-      'EVD': '閃避',
-      'CRIT': '暴擊',
-      'CRIT RES': '暴擊抗性',
-      'CRIT DMG Boost': '暴擊傷害強化',
-      'P.CRIT DMG Cut': '物理暴擊傷害降低',
-      'M.CRIT DMG Cut': '魔法暴擊傷害降低',
-      'Debuff ACC': '弱化效果命中',
-      'Debuff RES': '弱化效果抗性',
-      'Counter': '傷害反彈',
-      'HP Drain': '吸血',
-      'Locked': '未加工',
-      'None': '未裝備',
-      ' pts, ': ' 積分, ',
-      ' streak': '  連勝中',
-      'EXP Orb': '經驗珠',
-      'Upgrade Water': '強化水',
-      'Upgrade Panacea': '強化秘藥',
-      'Kindling Orb': '潛能寶珠',
-      'Rune Ticket': '符石兌換券',
-      'Event': '活動',
-      'All Worlds': '所有世界',
-      ' Forces': ' 軍',
-      ' Wins': ' 連勝',
-    },
-  },
-  'local': {
-    'jpn': ['ブラッセル', 'ウィスケルケー', 'モダーヴ', 'シメイ', 'グラベンスティン', 'カンブル', 'クインティヌス', 'ランベール', 'サンジャック', 'ミヒャエル', 'ナミュール', 'シャルルロア', 'アルゼット', 'エノー', 'ワーヴル', 'モンス', 'クリストフ', 'コルトレイク', 'イーペル', 'サルヴァトール', 'バーフ'],
-    'eng': ['Brussell', 'Wissekerke', 'Modave', 'Chimay', 'Gravensteen', 'Cambre', 'Quentin', 'Lambert', 'Saint-Jacques', 'Michael', 'Namur', 'Charleroi', 'Alzette', 'Hainaut', 'Wavre', 'Mons', 'Christophe', 'Kortrijk', 'Ypres', 'Salvador', 'Bavo'],
-    'cht': ['布魯塞爾', '維瑟克', '莫達沃', '希邁', '格拉文斯坦', '坎布爾', '昆汀', '朗博', '圣雅克', '米額爾', '那慕爾', '夏勒哇', '阿爾澤特', '埃諾', '瓦夫爾', '芒斯', '克里斯托夫', '克特雷特', '伊珀爾', '薩爾瓦多', '巴弗'],
-    'chs': ['布魯塞爾', '維瑟克', '莫達沃', '希邁', '格拉文斯坦', '坎布爾', '昆汀', '朗博', '圣雅克', '米額爾', '那慕爾', '夏勒哇', '阿爾澤特', '埃諾', '瓦夫爾', '芒斯', '克里斯托夫', '克特雷特', '伊珀爾', '薩爾瓦多', '巴弗'],
-  },
-  'global': {
-    'jpn': ['アイン', 'イエソド', 'マルクト', 'ケテル', 'テフォレト', 'クシェル', 'シトリ', 'トパズ', 'メラル', 'ペリド', 'ファリア', 'ラピス', 'ラリマル', 'マリン', 'アメト', 'ラベン', 'シルコン', 'オニキス', 'フロライト', 'ガネット', 'ルラ'],
-    'eng': ['Ein', 'Yesod', 'Malkuth', 'Keter', 'Tiferet', 'Cushel', 'Citri', 'Toppaz', 'Meral', 'Perido', 'Pharia', 'Lapis', 'Larimal', 'Marin', 'Amest', 'Laven', 'Zircon', 'Onyx', 'Floryte', 'Ganette', 'Rula'],
-    'cht': ['虛無神殿艾茵', '基礎之城耶索多', '王國之城瑪克托', '王冠之城凱特爾', '美麗之城堤法瑞', '庫修爾', '希托利', '托帕茲', '瑪羅', '貝利托', '法利雅', '拉畢斯', '拉利瑪', '瑪令', '雅梅特', '拉維', '瑟康', '奧尼克斯', '弗羅萊特', '葛涅特', '盧拉'],
-    'chs': ['虛無神殿艾茵', '基礎之城耶索多', '王國之城瑪克托', '王冠之城凱特爾', '美麗之城堤法瑞', '庫修爾', '希托利', '托帕茲', '瑪羅', '貝利托', '法利雅', '拉畢斯', '拉利瑪', '瑪令', '雅梅特', '拉維', '瑟康', '奧尼克斯', '弗羅萊特', '葛涅特', '盧拉'],
-  },
-};
-
+console.log('脚本运行中');
+const frameNode = document.querySelector('style').appendChild(
+  createElement(
+    'text',
+    `
+              #loading {
+                width: 100%;
+                height: 100%;
+                font-size: xx-large;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                background: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+          `
+  )
+);
+const frame = document.body.appendChild(createElement('div', 'Loading......', 'loading'));
+/*静态常量*/
+//机型信息
 const ModelName = 'Xiaomi 2203121C';
 const OSVersion = 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)';
+//服务器url
 const assetURL = 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/';
 const authURL = 'https://prd1-auth.mememori-boi.com/api/auth/';
 const LocalURL = 'https://mentemori.icu/';
-let userURL = '';
-let language = '';
-let MagicOnionHost = '';
-let MagicOnionPort = '';
-let AuthTokenOfMagicOnion = '';
-let LogCastleList = [];
-let ortegaaccesstoken = '';
-let TextResource = {};
-let ErrorCode = {};
-let AppVersion = getStorage('AppVersion') ?? '';
+//功能与语言
+setStorage('lang', '["en","en","en","en","en","en","en"]');
+const Function = document.URL.replace(/https?\:\/\/.*?\/(.*?)(\.html)?(\?function=)().*?)?(\?lang=.*?)?$/, '$1$4');
+const Language = getLanguage();
+/*变量*/
+//全局对象
 let SocketGvG;
 let LogCastleTimer;
 let database;
-let TextResourceMB;
-const URLFunction = document.URL.replace(/https?\:\/\/.*?\/(.*?\.html)?(\?function=.*?)?(\?lang=.*?)?$/, '$1$2');
-const URLLanguage = document.URL.replace(/https?\:\/\/.*?\/(.*?\.html)?(\?function=.*?)?(\?lang=.*?)?$/, '$3');
-setStorage('lang', '["en","en","en","en","en","en","en"]');
-if (!URLLanguage) {
-  language = 'eng';
-} else {
-  language = URLLanguage.replace('?lang=', '');
-  language = LanguageTable.dynamic[language] ? language : 'jpn';
-}
-//清除元素
-if (URLFunction.includes('?function=')) {
-  while (document.body.childNodes.length > 4) {
-    document.body.lastChild.remove();
-  }
-} else {
-  initTranslator();
-  document.querySelector('#character')?.addEventListener('focus', () => {
-    initTranslator();
-  });
-}
-/*初始化所有页面*/
+//全局变量
+let userURL = '';
+let MagicOnionHost = '';
+let MagicOnionPort = '';
+let AuthTokenOfMagicOnion = '';
+let ortegaaccesstoken = '';
+let orteganextaccesstoken = '';
+let ortegauuid = '';
+/*动态常量*/
+const AppVersion = await getAppVersion();
+const TextResource = await getTextResource();
+const ErrorCode = getErrorCode();
+const LanguageTable = {
+  'Region': {
+    'JaJp': 'サーバー',
+    'EnUs': 'Server',
+    'KoKr': 'Server',
+    'ZhTw': '區域',
+    'ZhCn': '区域',
+  },
+  'Class': {
+    'JaJp': 'クラス',
+    'EnUs': 'Class',
+    'KoKr': 'Class',
+    'ZhTw': '級別',
+    'ZhCn': '级别',
+  },
+  'Block': {
+    'JaJp': 'ブロック',
+    'EnUs': 'Block',
+    'KoKr': 'Block',
+    'ZhTw': '組別',
+    'ZhCn': '组别',
+  },
+  'Local': {
+    'JaJp': 'Local',
+    'EnUs': 'Local',
+    'KoKr': 'Local',
+    'ZhTw': '本地',
+    'ZhCn': '本地',
+  },
+  'title': {
+    'JaJp': 'メンテもりもり',
+    'EnUs': 'Maintenance Mori',
+    'KoKr': 'Maintenance Mori',
+    'ZhCn': '维护多多',
+    'ZhTw': '维护多多',
+  },
+  'basic': {
+    'JaJp': '通常 ： ',
+    'EnUs': 'Normal&ensp;:&ensp;',
+    'KoKr': 'Normal&ensp;:&ensp;',
+    'ZhTw': '通用功能 ： ',
+    'ZhCn': '通用功能 ： ',
+  },
+  'weekly': {
+    'JaJp': '週間 ： ',
+    'EnUs': 'Weekly&ensp;:&ensp;',
+    'KoKr': 'Weekly&ensp;:&ensp;',
+    'ZhTw': '每周特報 ： ',
+    'ZhCn': '每周特报 ： ',
+  },
+  'extend': {
+    'JaJp': '拡張 ： ',
+    'EnUs': 'Extend&ensp;:&ensp;',
+    'KoKr': 'Extend&ensp;:&ensp;',
+    'ZhTw': '擴展功能 ： ',
+    'ZhCn': '扩展功能 ： ',
+  },
+  'hidden': {
+    'JaJp': 'Hidden ： ',
+    'EnUs': 'Hidden&ensp;:&ensp;',
+    'KoKr': 'Hidden&ensp;:&ensp;',
+    'ZhTw': '隱藏功能 ： ',
+    'ZhCn': '隐藏功能 ： ',
+  },
+  'dataconvert': {
+    'JaJp': 'データ変換',
+    'EnUs': 'Data Convert',
+    'KoKr': 'Data Convert',
+    'ZhTw': '數據轉換',
+    'ZhCn': '数据转换',
+  },
+  'battlehelper': {
+    'JaJp': '戦闘監視',
+    'EnUs': 'Battle Helper',
+    'KoKr': 'Battle Helper',
+    'ZhTw': '戰鬥監控',
+    'ZhCn': '战斗监控',
+  },
+  'account': {
+    'JaJp': 'Account:',
+    'EnUs': 'Account:',
+    'KoKr': 'Account:',
+    'ZhTw': '登錄狀態：',
+    'ZhCn': '登录状态：',
+  },
+  'noaccount': {
+    'JaJp': 'No Account',
+    'EnUs': 'No Account',
+    'KoKr': 'No Account',
+    'ZhTw': '無賬號',
+    'ZhCn': '无账号',
+  },
+  'Locked': {
+    'JaJp': '未加工',
+    'EnUs': 'Locked',
+    'KoKr': 'Locked',
+    'ZhTw': '未加工',
+    'ZhCn': '未加工',
+  },
+  ' Forces': {
+    'JaJp': '軍',
+    'EnUs': ' Forces',
+    'KoKr': ' Forces',
+    'ZhTw': '軍',
+    'ZhCn': '军',
+  },
+  'All Worlds': {
+    'JaJp': 'すべて',
+    'EnUs': 'All Worlds',
+    'KoKr': 'All Worlds',
+    'ZhTw': '所有世界',
+    'ZhCn': '所有世界',
+  },
+  'Updated': {
+    'JaJp': '更新',
+    'EnUs': 'Updated',
+    'KoKr': 'Updated',
+    'ZhTw': '更新時間',
+    'ZhCn': '更新時間',
+  },
+  'Chapter ': {
+    'JaJp': '章',
+    'EnUs': 'Chapter ',
+    'KoKr': 'Chapter ',
+    'ZhTw': '領先章節',
+    'ZhCn': '领先章节',
+  },
+  'Slot 1': {
+    'JaJp': '枠１',
+    'EnUs': 'Slot 1 ',
+    'KoKr': 'Slot 1 ',
+    'ZhTw': '欄１',
+    'ZhCn': '栏１',
+  },
+  'Slot 2': {
+    'JaJp': '枠２',
+    'EnUs': 'Slot 2 ',
+    'KoKr': 'Slot 2 ',
+    'ZhTw': '欄２',
+    'ZhCn': '栏２',
+  },
+  'Slot 3': {
+    'JaJp': '枠３',
+    'EnUs': 'Slot 3 ',
+    'KoKr': 'Slot 3 ',
+    'ZhTw': '欄３',
+    'ZhCn': '栏３',
+  },
+  'Slot 4': {
+    'JaJp': '枠４',
+    'EnUs': 'Slot 4 ',
+    'KoKr': 'Slot 4 ',
+    'ZhTw': '欄４',
+    'ZhCn': '栏４',
+  },
+  'Slot 5': {
+    'JaJp': '枠５',
+    'EnUs': 'Slot 5 ',
+    'KoKr': 'Slot 5 ',
+    'ZhTw': '欄５',
+    'ZhCn': '栏５',
+  },
+};
+const LanguageJa = {
+  'メンテもりもり': LanguageTable['title'][Language],
+  'ワールド': TextResource['TitleWarningListWorld'],
+  'レベル': TextResource['CommonPlayerRankLabel'],
+  '幻影の神殿': TextResource['CommonHeaderLocalRaidLabel'],
+  'サーバー': LanguageTable['Region'][Language],
+  '更新': LanguageTable['Updated'][Language],
+  'プレイヤーランキング': TextResource['RankingGroupTypePlayer'],
+  '戦闘力': TextResource['CommonBattlePowerLabel'],
+  'プレイヤーランク': TextResource['PlayerRankingTypePlayerRank'],
+  'メインクエスト': TextResource['PlayerRankingTypeStage'],
+  '無窮の塔': TextResource['PlayerRankingTypeTowerBattle'],
+  '藍の塔': TextResource['ElementTowerRankingTypeBlue'],
+  '紅の塔': TextResource['ElementTowerRankingTypeRed'],
+  '翠の塔': TextResource['ElementTowerRankingTypeGreen'],
+  '黄の塔': TextResource['ElementTowerRankingTypeYellow'],
+  'ギルドランキング': TextResource['RankingGroupTypeGuild'],
+  'ギルドレベル': TextResource['GuildRankingTypeLevel'],
+  'ギルドストック': TextResource['GuildRankingTypeStock'],
+  'ギルド総戦闘力': TextResource['GuildRankingTypeBattlePower'],
+  'プレイヤー名': TextResource['CommonPlayerNameLabel'],
+  '階': TextResource['RankingTowerBattleLabel'],
+  'ランク': TextResource['CommonPlayerRankLabel'],
+  'クエスト': TextResource['RankingStageLabel'],
+  'ギルド名': TextResource['GuildName'],
+  '人数': TextResource['MemberNumber'],
+  'バトルリーグ': TextResource['CommonHeaderLocalPvpLabel'],
+  'プレイヤー': TextResource['CommonPlayerNameLabel'],
+  '枠１': LanguageTable['Slot 1'][Language],
+  '枠２': LanguageTable['Slot 2'][Language],
+  '枠３': LanguageTable['Slot 3'][Language],
+  '枠４': LanguageTable['Slot 4'][Language],
+  '枠５': LanguageTable['Slot 5'][Language],
+  '武具': TextResource['CommonEquipmentLabel'],
+  '腕力': TextResource['BaseParameterTypeMuscle'],
+  '技力': TextResource['BaseParameterTypeEnergy'],
+  '聖装': TextResource['EquipmentAscendSortLegendLv'],
+  '魔装': TextResource['EquipmentAscendSortMatchlessLv'],
+  '魔力': TextResource['BaseParameterTypeIntelligence'],
+  '耐久力': TextResource['BaseParameterTypeHealth'],
+  'キャラ': TextResource['CommonHeaderCharacterListLabel'],
+  'Lv.': TextResource['CommonLevelWithDot'],
+  '攻撃力': TextResource['BattleParameterTypeAttackPower'],
+  '防御力': TextResource['BattleParameterTypeDefense'],
+  '防御貫通': TextResource['BattleParameterTypeDefensePenetration'],
+  'スピード': TextResource['BattleParameterTypeSpeed'],
+  '物魔防御貫通': TextResource['BattleParameterTypeDamageEnhance'],
+  '物理防御力': TextResource['BattleParameterTypePhysicalDamageRelax'],
+  '魔法防御力': TextResource['BattleParameterTypeMagicDamageRelax'],
+  '命中': TextResource['BattleParameterTypeHit'],
+  'クリティカル': TextResource['BattleParameterTypeCritical'],
+  'クリダメ強化': TextResource['BattleParameterTypeCriticalDamageEnhance'],
+  '魔法クリダメ緩和': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
+  '物理クリダメ緩和': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
+  '弱体効果命中': TextResource['BattleParameterTypeDebuffHit'],
+  '弱体効果耐性': TextResource['BattleParameterTypeDebuffResist'],
+  'カウンタ': TextResource['BattleParameterTypeDamageReflect'],
+  'HPドレイン': TextResource['BattleParameterTypeHpDrain'],
+  '回避': TextResource['BattleParameterTypeAvoidance'],
+  'クリティカル耐性': TextResource['BattleParameterTypeCriticalResist'],
+  'グループ': TextResource['ChatTabSvS'],
+  'レジェンドリーグ': TextResource['CommonHeaderGlobalPvpLabel'],
+  'ギルドバトル': TextResource['CommonHeaderGvgLabel'],
+  'クラス': LanguageTable['Class'][Language],
+  'ブロック': LanguageTable['Block'][Language],
+  'グランドバトル': TextResource['CommonHeaderGlobalGvgLabel'],
+  'バトルレポート再生': TextResource['BattleReportTitle'] + TextResource['CommonPlayLabel'],
+  '週間トピックス・属性別キャラ育成': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['WeeklyTopicsTopCharacterHeadline']}`,
+  '天属性': TextResource['ElementTypeLight'],
+  '冥属性': TextResource['ElementTypeDark'],
+  '藍属性': TextResource['ElementTypeBlue'],
+  '紅属性': TextResource['ElementTypeRed'],
+  '翠属性': TextResource['ElementTypeGreen'],
+  '黄属性': TextResource['ElementTypeYellow'],
+  '週間トピックス・バトルリーグ': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['WeeklyTopicsTopQuestHeadline']}`,
+  '章': LanguageTable['Chapter '][Language],
+  '前線': TextResource['WeeklyTopicsQuestCharacterUsageRateLabelTop'].replace('{0}', ' '),
+  '全体': TextResource['WeeklyTopicsQuestCharacterUsageRateLabelAll'],
+  '到達人数': TextResource['WeeklyTopicsQuestFrontLineLabelFormat'].replace('{0}', ' '),
+  '週間トピックス・バトルリーグ': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['CommonHeaderLocalPvpLabel']}`,
+  '30位以内': TextResource['WeeklyTopicsLeagueCharacterUsageRateLabelTop'],
+  '全体': TextResource['WeeklyTopicsLeagueCharacterUsageRateLabelAll'],
+  '連勝記録': TextResource['WeeklyTopicsLeagueContinueWinLabel'].replace('{0}', ''),
+  '週間トピックス・レジェンドリーグ': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['CommonHeaderGlobalPvpLabel']}`,
+  'ステータス': TextResource['CommonBaseParameterLabel'],
+};
+//初始化所有页面
 initPage();
-//重构页面
-switch (URLFunction) {
-  case '?function=fileConverter': {
-    fileConverter();
-    break;
+frameNode.remove();
+/*常量函数*/
+//获取当前语言
+function getLanguage() {
+  const LanguageList = ['EnUs', 'JaJp', 'ZhCn', 'ZhTw', 'KoKr'];
+  const URLLanguage = document.URL.replace(/https?\:\/\/.*?\/(.*?\.html)?(\?function=.*?)?(\?lang=)(.*?)?$/, '$4');
+  return URLLanguage && LanguageList.includes(URLLanguage) ? URLLanguage : 'EnUs';
+}
+//获取错误码
+function getErrorCode() {
+  if (!TextResource) return;
+  let result = {};
+  for (let i in TextResource) {
+    if (i.includes('ErrorMessage')) {
+      result[i.replace(/ErrorMessage(.*?)/, '$1') * 1] = TextResource[i];
+    }
   }
-  case '?function=gvgMapper': {
-    gvgMapper();
-    break;
-  }
-  case 'arena.html': {
-    characterViewer();
-    break;
-  }
-  default: {
-  }
+  return result;
 }
 /*初始化功能*/
 //初始化页面
 async function initPage() {
-  console.log('脚本运行中');
   //本地化标题
-  document.querySelector('h1').innerHTML = LanguageTable.static['title'][language];
-  document.querySelector('title').innerHTML = LanguageTable.static['title'][language];
+  document.querySelector('h1').innerHTML = LanguageTable['title'][Language];
+  document.querySelector('title').innerHTML = LanguageTable['title'][Language];
+  //追加导航栏格式
   document.querySelector('style').appendChild(
     createElement(
       'text',
       `
-            nav a{
-              display: inline-block;
-              min-width: 22px;
-              text-align: center;
-              padding: 5px 0px;
-            }
-        `
+              nav a{
+                display: inline-block;
+                min-width: 22px;
+                text-align: center;
+                padding: 5px 0px;
+              }
+          `
     )
   );
   //获取原导航栏
@@ -993,57 +368,73 @@ async function initPage() {
   const divFunction = navDefault.childNodes[1];
   divFunction.innerHTML = '';
   divFunction.append(
-    createElement('a', LanguageTable.static['basic'][language]),
+    createElement('a', LanguageTable['basic'][Language]),
     createElement('a', 'API', {
-      'href': `${LocalURL}${URLLanguage}`,
+      'href': `${LocalURL}?lang=${Language}`,
+      'id': 'API',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['temple'][language], {
-      'href': `${LocalURL}temple.html${URLLanguage}`,
+    createElement('a', TextResource['CommonHeaderLocalRaidLabel'], {
+      'href': `${LocalURL}temple.html?lang=${Language}`,
+      'id': 'temple',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['rankings'][language], {
-      'href': `${LocalURL}rankings.html${URLLanguage}`,
+    createElement('a', TextResource['RankingMenuTitle'], {
+      'href': `${LocalURL}rankings.html?lang=${Language}`,
+      'id': 'rankings',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['arena'][language], {
-      'href': `${LocalURL}arena.html${URLLanguage}`,
+    createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
+      'href': `${LocalURL}arena.html?lang=${Language}`,
+      'id': 'arena',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['legend'][language], {
-      'href': `${LocalURL}legend.html${URLLanguage}`,
+    createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
+      'href': `${LocalURL}legend.html?lang=${Language}`,
+      'id': 'legend',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['localgvg'][language], {
-      'href': `${LocalURL}localgvg.html${URLLanguage}`,
+    createElement('a', TextResource['CommonHeaderGvgLabel'], {
+      'href': `${LocalURL}localgvg.html?lang=${Language}`,
+      'id': 'localgvg',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['globalgvg'][language], {
-      'href': `${LocalURL}globalgvg.html${URLLanguage}`,
+    createElement('a', TextResource['CommonHeaderGlobalGvgLabel'], {
+      'href': `${LocalURL}globalgvg.html?lang=${Language}`,
+      'id': 'globalgvg',
     }),
     createElement('br'),
-    createElement('a', LanguageTable.static['weekly'][language], {}),
-    createElement('a', LanguageTable.static['weekly_chara'][language], {
-      'href': `${LocalURL}weekly_chara.html${URLLanguage}`,
+    createElement('a', LanguageTable['weekly'][Language], {}),
+    createElement('a', TextResource['WeeklyTopicsTopCharacterHeadline'], {
+      'href': `${LocalURL}weekly_chara.html?lang=${Language}`,
+      'id': 'weekly_chara',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['weekly_boss'][language], {
-      'href': `${LocalURL}weekly_boss.html${URLLanguage}`,
+    createElement('a', TextResource['WeeklyTopicsTopQuestHeadline'], {
+      'href': `${LocalURL}weekly_boss.html?lang=${Language}`,
+      'id': 'weekly_boss',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['weekly_arena'][language], {
-      'href': `${LocalURL}weekly_arena.html${URLLanguage}`,
+    createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
+      'href': `${LocalURL}weekly_arena.html?lang=${Language}`,
+      'id': 'weekly_arena',
     }),
     createElement('a', '|'),
-    createElement('a', LanguageTable.static['weekly_legend'][language], {
-      'href': `${LocalURL}weekly_legend.html${URLLanguage}`,
+    createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
+      'href': `${LocalURL}weekly_legend.html?lang=${Language}`,
+      'id': 'weekly_legend',
     }),
     createElement('br'),
-    createElement('a', LanguageTable.static['hidden'][language], {}),
-    createElement('a', LanguageTable.static['battle_log'][language], {
-      'href': `${LocalURL}battle_log.html${URLLanguage}`,
+    createElement('a', LanguageTable['hidden'][Language], {}),
+    createElement('a', TextResource['BattleReportTitle'] + TextResource['CommonPlayLabel'], {
+      'href': `${LocalURL}battle_log.html?lang=${Language}`,
+      'id': 'battle_log',
     }),
-    createElement('a', '|')
+    createElement('a', '|'),
+    createElement('a', TextResource['BattleClearPartyTitle'], {
+      //'href': `${LocalURL}clearlist.html?lang=${Language}`,
+      //'id':'clearlist',
+    })
   );
   //获取语言模块
   const divLocal = navDefault.childNodes[3];
@@ -1055,19 +446,23 @@ async function initPage() {
     nodeSwitch[1],
     createElement('br'),
     createElement('a', '🇬🇧', {
-      href: `https://mentemori.icu/${URLFunction}?lang=eng`,
+      href: `${document.URL.replace(/\?lang=.*/, '')}?lang=EnUs`,
     }),
     createElement('a', '|'),
     createElement('a', '🇯🇵', {
-      href: `https://mentemori.icu/${URLFunction}?lang=jpn`,
+      href: `${document.URL.replace(/\?lang=.*/, '')}?lang=JaJp`,
     }),
     createElement('a', '|'),
     createElement('a', '🇨🇳', {
-      href: `https://mentemori.icu/${URLFunction}?lang=chs`,
+      href: `${document.URL.replace(/\?lang=.*/, '')}?lang=ZhCn`,
     }),
     createElement('a', '|'),
     createElement('a', '🇭🇰', {
-      href: `https://mentemori.icu/${URLFunction}?lang=cht`,
+      href: `${document.URL.replace(/\?lang=.*/, '')}?lang=ZhTw`,
+    }),
+    createElement('a', '|'),
+    createElement('a', '🇰🇷', {
+      href: `${document.URL.replace(/\?lang=.*/, '')}?lang=KoKr`,
     })
   );
   //初始化扩展导航栏
@@ -1076,23 +471,52 @@ async function initPage() {
   //初始化功能模块
   const divExtend = navExtend.appendChild(createElement('div'));
   divExtend.append(
-    createElement('a', LanguageTable.static['extend'][language]),
+    createElement('a', LanguageTable['extend'][Language]),
     //二进制文件转换功能
-    createElement('a', LanguageTable.static['dataconvert'][language], {
-      'href': `${LocalURL}?function=fileConverter${URLLanguage}`,
+    createElement('a', LanguageTable['dataconvert'][Language], {
+      'href': `${LocalURL}?function=fileConverter?lang=${Language}`,
+      'id': 'fileConverter',
     }),
     createElement('a', '|'),
     //战斗布局功能
-    createElement('a', LanguageTable.static['battlehelper'][language], {
-      'href': `${LocalURL}?function=gvgMapper${URLLanguage}`,
+    createElement('a', LanguageTable['battlehelper'][Language], {
+      'href': `${LocalURL}?function=gvgMapper?lang=${Language}`,
+      'id': 'gvgMapper',
     })
   );
   //初始化账号管理模块
   const divAccount = navExtend.appendChild(createElement('div', '', 'accountmanager'));
   divAccount.append(
-    createElement('a', LanguageTable.static['account'][language]), //
-    createElement('a', LanguageTable.static['noaccount'][language])
+    createElement('a', LanguageTable['account'][Language]), //
+    createElement('a', LanguageTable['noaccount'][Language])
   );
+  //清除元素
+  if (URLFunction.includes('?function=')) {
+    //附加功能清除内容
+    while (document.body.childNodes.length > 4) {
+      document.body.lastChild.remove();
+    }
+  } else {
+    //原有功能进行翻译
+    initTranslator();
+  }
+  //重构页面
+  switch (URLFunction) {
+    case '?function=fileConverter': {
+      fileConverter();
+      break;
+    }
+    case '?function=gvgMapper': {
+      gvgMapper();
+      break;
+    }
+    case 'arena.html': {
+      characterViewer();
+      break;
+    }
+    default: {
+    }
+  }
 }
 //初始化选择栏
 async function initSelect() {
@@ -1103,43 +527,41 @@ async function initSelect() {
     return option;
   };
   openDB();
-  ErrorCode = await getErrorCode();
-  AppVersion = await getAppVersion();
   //选择栏样式
   document.querySelector('style').appendChild(
     createElement(
       'text',
       `
-            #selectpanel {
-              width: 640px;
-              display: inline-block;
-              vertical-align: top;
-            }
-            #selectpanel > p {
-              text-align: center;
-            }
-            #selectpanel a {
-              display: inline-block;
-            }
-            #selectpanel a:nth-child(1) {
-              width: 75px;
-              text-align: left;
-            }
-            #selectpanel a:nth-child(2) {
-              width: 25px;
-            }
-            #selectpanel select {
-              width: 520px;
-            }
-            #selectpanel button {
-              width: 20%;
-            }
-            #selectpanel option {
-              display: none;
-            }
-            #selectpanel option.default {
-              display: inline;
-            }`
+              #selectpanel {
+                width: 640px;
+                display: inline-block;
+                vertical-align: top;
+              }
+              #selectpanel > p {
+                text-align: center;
+              }
+              #selectpanel a {
+                display: inline-block;
+              }
+              #selectpanel a:nth-child(1) {
+                width: 75px;
+                text-align: left;
+              }
+              #selectpanel a:nth-child(2) {
+                width: 25px;
+              }
+              #selectpanel select {
+                width: 520px;
+              }
+              #selectpanel button {
+                width: 20%;
+              }
+              #selectpanel option {
+                display: none;
+              }
+              #selectpanel option.default {
+                display: inline;
+              }`
     )
   );
   //获取世界分组
@@ -1148,41 +570,41 @@ async function initSelect() {
   const GroupList = WorldGroup.GroupList;
   const ClassList = {
     '0': {
-      'Name': LanguageTable.static['Local'][language],
+      'Name': LanguageTable['Local'][Language],
       'Class': 'static',
     },
     '1': {
-      'Name': LanguageTable.static['Elite'][language],
+      'Name': TextResource['GvgGroupLevelNameBronzeLabel'],
       'Class': 'dynamic',
     },
     '2': {
-      'Name': LanguageTable.static['Expert'][language],
+      'Name': TextResource['GvgGroupLevelNameSilverLabel'],
       'Class': 'dynamic',
     },
     '3': {
-      'Name': LanguageTable.static['Master'][language],
+      'Name': TextResource['GvgGroupLevelNameGoldenLabel'],
       'Class': 'dynamic',
     },
   };
   const WorldList = WorldGroup.WorldList;
   const BlockList = {
     '0': {
-      'Name': `${LanguageTable.static['Block'][language]} A`,
+      'Name': TextResource['GvgGroup1NameLabel'],
     },
     '1': {
-      'Name': `${LanguageTable.static['Block'][language]} B`,
+      'Name': TextResource['GvgGroup2NameLabel'],
     },
     '2': {
-      'Name': `${LanguageTable.static['Block'][language]} C`,
+      'Name': TextResource['GvgGroup3NameLabel'],
     },
     '3': {
-      'Name': `${LanguageTable.static['Block'][language]} D`,
+      'Name': TextResource['GvgGroup4NameLabel'],
     },
   };
   //初始化选择区
   const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
   //区域选择
-  const pRegion = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['Region'][language]}</a><a>:</a>`));
+  const pRegion = divSelect.appendChild(createElement('p', `<a>${LanguageTable['Region'][Language]}</a><a>:</a>`));
   const selectRegion = pRegion.appendChild(createElement('select', '', 'listRegion'));
   selectRegion.options.add(NullOption());
   for (let RegionId in RegionList) {
@@ -1194,7 +616,7 @@ async function initSelect() {
     }
   }
   //群组选择
-  const pGroup = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['Group'][language]}</a><a>:</a>`));
+  const pGroup = divSelect.appendChild(createElement('p', `<a>${TextResource['ChatTabSvS']}</a><a>:</a>`));
   const selectGroup = pGroup.appendChild(createElement('select', '', 'listGroup'));
   selectGroup.options.add(NullOption());
   for (let GroupId in GroupList) {
@@ -1209,7 +631,7 @@ async function initSelect() {
     }
   }
   //等级选择
-  const pClass = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['Class'][language]}</a><a>:</a>`));
+  const pClass = divSelect.appendChild(createElement('p', `<a>${LanguageTable['Class'][Language]}</a><a>:</a>`));
   const selectClass = pClass.appendChild(createElement('select', '', 'listClass'));
   selectClass.options.add(NullOption());
   for (let ClassId in ClassList) {
@@ -1219,7 +641,7 @@ async function initSelect() {
     selectClass.options.add(option);
   }
   //世界/块选择
-  const pWorld = divSelect.appendChild(createElement('p', `<a>${LanguageTable.static['World'][language]}</a><a>:</a>`));
+  const pWorld = divSelect.appendChild(createElement('p', `<a>${TextResource['TitleWarningListWorld']}</a><a>:</a>`));
   const selectWorld = pWorld.appendChild(createElement('select', '', 'listWorld'));
   selectWorld.options.add(NullOption());
   for (let BlockId in BlockList) {
@@ -1246,9 +668,9 @@ async function initSelect() {
       createElement(
         'style',
         `
-            #listGroup > option.R${selectRegion.value} {
-              display: inline;
-            }`,
+              #listGroup > option.R${selectRegion.value} {
+                display: inline;
+              }`,
         'styleGroup'
       )
     );
@@ -1263,10 +685,10 @@ async function initSelect() {
       createElement(
         'style',
         `
-            #listClass > .static
-            ${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listClass > .dynamic'} {
-              display: inline;
-            }`,
+              #listClass > .static
+              ${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listClass > .dynamic'} {
+                display: inline;
+              }`,
         'styleClass'
       )
     );
@@ -1280,9 +702,9 @@ async function initSelect() {
       createElement(
         'style',
         `
-            #listWorld > ${selectClass.value > 0 ? '.global' : '.G' + selectGroup.value} {
-              display: inline;
-            }`,
+              #listWorld > ${selectClass.value > 0 ? '.global' : '.G' + selectGroup.value} {
+                display: inline;
+              }`,
         'styleWorld'
       )
     );
@@ -1301,7 +723,44 @@ async function initSelect() {
 //初始化翻译功能
 function initTranslator() {
   //替换内置语言表，需人工维护
-  unsafeWindow.m = LanguageTable.dynamic;
+  unsafeWindow.m = {
+    'Rank': TextResource['CommonPlayerRankLabel'],
+    'STR': TextResource['BaseParameterTypeMuscle'],
+    'MAG': TextResource['BaseParameterTypeIntelligence'],
+    'DEX': TextResource['BaseParameterTypeEnergy'],
+    'STA': TextResource['BaseParameterTypeHealth'],
+    'ATK': TextResource['BattleParameterTypeAttackPower'],
+    'DEF': TextResource['BattleParameterTypeDefense'],
+    'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
+    'SPD': TextResource['BattleParameterTypeSpeed'],
+    'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
+    'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
+    'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
+    'ACC': TextResource['BattleParameterTypeHit'],
+    'EVD': TextResource['BattleParameterTypeAvoidance'],
+    'CRIT': TextResource['BattleParameterTypeCritical'],
+    'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
+    'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
+    'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
+    'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
+    'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
+    'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
+    'Counter': TextResource['BattleParameterTypeDamageReflect'],
+    'HP Drain': TextResource['BattleParameterTypeHpDrain'],
+    'Locked': LanguageTable['Locked'][Language],
+    'None': TextResource['CommonNotEquippingLabel'],
+    ' pts, ': ' ' + TextResource['GlovalPvpPoint'],
+    ' streak': ' ' + TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}'),
+    'EXP Orb': TextResource['ItemName10'],
+    'Upgrade Water': TextResource['ItemName12'],
+    'Upgrade Panacea': TextResource['ItemName13'],
+    'Kindling Orb': TextResource['ItemName11'],
+    'Rune Ticket': TextResource['ItemName43'],
+    'Event': TextResource['PlayerEventPolicyLabel'],
+    'All Worlds': LanguageTable['All Worlds'][Language],
+    ' Forces': LanguageTable[' Forces'][Language],
+    ' Wins': ' ' + TextResource['WeeklyTopicsLeagueContinueWinCountFormat'].replace('{0}'),
+  };
   //替换含data-ja的标签，需人工维护
   let jalist = [];
   jalist[0] = document.querySelectorAll('[data-ja]');
@@ -1309,12 +768,24 @@ function initTranslator() {
   for (let i = 0; i < template.length; i++) {
     jalist[i + 1] = template[i].content.querySelectorAll('[data-ja]');
   }
-
   for (let i = 0; i < jalist.length; i++) {
     for (let j = 0; j < jalist[i].length; j++) {
       dataja = jalist[i][j].getAttribute('data-ja');
-      jalist[i][j].setAttribute('translanter', 'true');
-      jalist[i][j].innerHTML = LanguageTable.dataja[dataja]?.[language] ?? jalist[i][j].innerHTML + '|' + dataja;
+      jalist[i][j].innerHTML = LanguageJa[dataja] ?? jalist[i][j].innerHTML + '|' + dataja;
+    }
+  }
+  //替换HP
+  const HPNode = document.querySelector('#HP');
+  if (HPNode) {
+    HPNode.parentElement.childNodes[0].innerHTML = TextResource['BattleParameterTypeHp'];
+  }
+  const gvgNode = document.querySelector('gvg-wrapper');
+  if (gvgNode) {
+    const map = gvgNode.querySelector('gvg-viewer').getAttributeNames()[0];
+    const castleList = gvgNode.querySelectorAll('gvg-castle');
+    for (let i in castleList) {
+      const castleid = castleList[i].getAttribute('castle-id');
+      castleList[i].querySelector('gvg-castle-name').innerHTML = TextResource[`${map.charAt(0).toUpperCase()}${map.slice(1)}GvgCastleName${castleid}`];
     }
   }
 }
@@ -1368,30 +839,30 @@ async function gvgMapper() {
     createElement(
       'text',
       `
-              th,
-              td {
-                height: 24px;
-                border: 1px solid black;
-                text-align: center;
-              }
-              table {
-                width: 300px;
-                border-collapse: collapse;
-                display: inline-table;
-                vertical-align: top;
-              }
-              #guilds1 {
-                margin-left: 20px;
-              }
-              #guilds2 {
-                margin-right: 20px;
-              }
-              tr > * {
-                width: 25px;
-              }
-              tr > :nth-child(2) {
-                width: calc(100% - 25px);
-              }`
+                th,
+                td {
+                  height: 24px;
+                  border: 1px solid black;
+                  text-align: center;
+                }
+                table {
+                  width: 300px;
+                  border-collapse: collapse;
+                  display: inline-table;
+                  vertical-align: top;
+                }
+                #guilds1 {
+                  margin-left: 20px;
+                }
+                #guilds2 {
+                  margin-right: 20px;
+                }
+                tr > * {
+                  width: 25px;
+                }
+                tr > :nth-child(2) {
+                  width: calc(100% - 25px);
+                }`
     )
   );
   const divSelect = document.querySelector('#selectpanel');
@@ -1403,9 +874,15 @@ async function gvgMapper() {
   const buttonSetLocal = pRequest.appendChild(createElement('button', `保存设置`));
   //初始化监听功能组
   const pConnect = divSelect.appendChild(createElement('p'));
+  //
+  const buttonGetServer = pConnect.appendChild(
+    createElement('button', `从服务器获取`, {
+      name: 'Get',
+    })
+  );
   //开始监听按钮
   const buttonConnectServer = pConnect.appendChild(
-    createElement('button', `从服务器获取`, {
+    createElement('button', `开始同步`, {
       name: 'Connect',
     })
   );
@@ -1426,26 +903,26 @@ async function gvgMapper() {
       createElement(
         'style',
         `
-            #listGroup > option.R${RegionId} {
-              display: inline;
-            }`,
+              #listGroup > option.R${RegionId} {
+                display: inline;
+              }`,
         'styleGroup'
       ),
       createElement(
         'style',
         `
-            #listClass > .static
-            ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
-              display: inline;
-            }`,
+              #listClass > .static
+              ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
+                display: inline;
+              }`,
         'styleClass'
       ),
       createElement(
         'style',
         `
-            #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
-              display: inline;
-            }`,
+              #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
+                display: inline;
+              }`,
         'styleWorld'
       )
     );
@@ -1528,6 +1005,24 @@ async function gvgMapper() {
       Match.Castles.push(Castle);
     }
     updateData('Match', Match);
+  };
+  //从服务器获取
+  buttonGetServer.onclick = async () => {
+    const GroupId = getStorage('GroupId');
+    const ClassId = getStorage('ClassId');
+    const WorldId = getStorage('WorldId');
+    const GrandId = getStorage('GrandId');
+    const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+    const _getGuildWar = await getGuildWar(ClassId, WorldId, GroupId);
+    let Matching = _getGuildWar?.data;
+    if (Matching) {
+      for (let i in Matching.guilds) {
+        Matching.guilds[i] = i;
+      }
+      fillMap(Matching.castles, Matching.guilds);
+    } else {
+      alert('无法获取战斗信息');
+    }
   };
   //开始监听
   buttonConnectServer.onclick = () => {
@@ -1655,7 +1150,6 @@ async function gvgMapper() {
   //关闭监听
   buttonDisconnectServer.onclick = () => {
     SocketGvG.close(1000, 'User Stop');
-    setStorage('ortegaaccesstoken', '');
   };
 }
 /*优化功能*/
@@ -1663,21 +1157,21 @@ async function gvgMapper() {
 function characterViewer() {
   let characterPanel = document.querySelector('#character');
   /*document.querySelector('style').appendChild(
-    createElement(
-      'text',
-      `
-      #character {
-        width: 20%;
-        height: 420px;
-        overflow: scroll;
-      }
-      #ranking {
-        width: 80%;
-      }
-      `
-    )
-  );
-  document.querySelector('div.container').appendChild(characterPanel);*/
+      createElement(
+        'text',
+        `
+        #character {
+          width: 20%;
+          height: 420px;
+          overflow: scroll;
+        }
+        #ranking {
+          width: 80%;
+        }
+        `
+      )
+    );
+    document.querySelector('div.container').appendChild(characterPanel);*/
 }
 /*子功能*/
 //登录账号
@@ -1695,15 +1189,15 @@ async function loginAccount() {
       3: 'TW', //台湾省，HK(香港区)/MO(澳门区)
       4: 'US', //美国，CA(加拿大)/PM(圣皮埃尔和密克隆)
       5: 'GB' /*英国，IS(冰岛)/IE(爱尔兰)/AZ(阿塞拜疆)/AL(阿尔巴尼亚)/AM(亚美尼亚)/
-                      AD(安道尔)/IT(意大利)/UA(乌克兰)/EE(爱沙尼亚)/AT(奥地利)/
-                      AX(奥兰)/GG(根西)/MK(北马其顿)/GR(希腊)/GL(格陵兰)/
-                      HR(克罗地亚)/SM(圣马力诺)/GI(直布罗陀)/JE(泽西)/GE(格鲁吉亚)/
-                      CH(瑞士)/SE(瑞典)/SJ(斯瓦尔巴和扬马延)/ES(西班牙)/SK(斯洛伐克)/
-                      SI(斯洛文尼亚)/RS(塞尔维亚)/CZ(捷克)/DK(丹麦)/DE(德国)/
-                      NO(挪威)/VA(梵蒂冈)/HU(匈牙利)/FI(芬兰)/FO(法罗群岛)/
-                      FR(法国)/BG(保加利亚)/BY(白俄罗斯)/PL(波兰)/BA(波黑)/
-                      PT(葡萄牙)/IM(马恩岛)/MC(摩纳哥)/MD(摩尔多瓦)/ME(黑山)/
-                      LV(拉脱维亚)/LT(立陶宛)/LI(列支敦士登)/RO(罗马尼亚)/LU(卢森堡)*/,
+                        AD(安道尔)/IT(意大利)/UA(乌克兰)/EE(爱沙尼亚)/AT(奥地利)/
+                        AX(奥兰)/GG(根西)/MK(北马其顿)/GR(希腊)/GL(格陵兰)/
+                        HR(克罗地亚)/SM(圣马力诺)/GI(直布罗陀)/JE(泽西)/GE(格鲁吉亚)/
+                        CH(瑞士)/SE(瑞典)/SJ(斯瓦尔巴和扬马延)/ES(西班牙)/SK(斯洛伐克)/
+                        SI(斯洛文尼亚)/RS(塞尔维亚)/CZ(捷克)/DK(丹麦)/DE(德国)/
+                        NO(挪威)/VA(梵蒂冈)/HU(匈牙利)/FI(芬兰)/FO(法罗群岛)/
+                        FR(法国)/BG(保加利亚)/BY(白俄罗斯)/PL(波兰)/BA(波黑)/
+                        PT(葡萄牙)/IM(马恩岛)/MC(摩纳哥)/MD(摩尔多瓦)/ME(黑山)/
+                        LV(拉脱维亚)/LT(立陶宛)/LI(列支敦士登)/RO(罗马尼亚)/LU(卢森堡)*/,
       6: 'CN', //所有不在上面的
     };
     const CountryCode = RegionList[RegionId];
@@ -2000,288 +1494,288 @@ function drawMap(ClassId) {
       createElement(
         'style',
         `
-            gvg-list {
-              display: block;
-              position: fixed;
-              top: 5%;
-              width: 200px;
-              height: 95%;
-            }
-            gvg-list#enermyList {
-              left: calc(50% + 650px);
-            }
-            gvg-list#friendList {
-              right: calc(50% + 650px);
-            }
-            gvg-list > h2 {
-              text-align: center;
-              margin: 0px;
-            }
-            gvg-list > div {
-              height: calc(100% - 28px);
-              overflow-y: scroll;
-              scrollbar-width: thin;
-              background: rgb(255,127,127);
-            }
-            gvg-viewer {
-              display: block;
-              position: relative;
-              width: 1280px;
-              height: 1280px;
-              font-family: sans-serif;
-              background-size: cover;
-              background-image: url(assets/${Class}gvg.png);
-            }
-            gvg-castle {
-              display: block;
-              position: absolute;
-              user-select: none;
-            }
-            gvg-status {
-              width: 164px;
-              height: 50px;
-              display: block;
-              position: absolute;
-              'left': -82px;
-              right: -82px;
-              bottom: 43px;
-            }
-            gvg-attacker {
-              display: block;
-              width: 165px;
-              position: absolute;
-              text-align: center;
-              font-size: 16px;
-              opacity: 0.8;
-            }
-            gvg-status-icon-defense,
-            gvg-status-icon-offense {
-              display: block;
-              width: 32px;
-              height: 33px;
-              position: absolute;
-              text-align: center;
-              line-height: 37px;
-              font-size: 12px;
-              color: #fff;
-              background-size: cover;
-            }
-            gvg-status-icon-defense {
-              background-image: url(assets/icon_gvg_party_defense.png);
-            }
-            gvg-status-icon-offense {
-              background-image: url(assets/icon_gvg_party_offense.png);
-            }
-            gvg-status-bar-offense,
-            gvg-status-bar-defense {
-              display: block;
-              width: 90px;
-              height: 20px;
-              padding: 0 10px;
-              position: absolute;
-              font-size: 9px;
-              color: #fff;
-              background-size: cover;
-            }
-            gvg-status[state="common"] > gvg-attacker {
-              display: none;
-            }
-            gvg-status[state="common"] > gvg-status-icon-defense {
-              margin: auto;
-              left: 0;
-              right: 0;
-              top: 0;
-            }
-            gvg-status[state="common"] > gvg-status-icon-offense {
-              display: none;
-            }
-            gvg-status[state="common"] > gvg-status-bar-defense {
-              width: 131px;
-              height: 12px;
-              margin: auto;
-              left: 0;
-              right: 0;
-              top: 35px;
-              text-align: center;
-              line-height: 12px;
-              background-image: url(assets/base_s_08_blue.png);
-            }
-            gvg-status[state="common"] > gvg-status-bar-offense {
-              display: none;
-            }
-            gvg-status[state="active"] > gvg-status-icon-defense {
-              right: 0;
-              bottom: 0;
-            }
-            gvg-status[state="active"] > gvg-status-icon-offense {
-              left: 0;
-              bottom: 0;
-            }
-            gvg-status[state="active"] > gvg-status-bar-defense {
-              right: 25px;
-              bottom: 0;
-              text-align: right;
-              line-height: 24px;
-              background-image: url(assets/base_s_09_blue.png);
-            }
-            gvg-status[state="active"] > gvg-status-bar-offense {
-              left: 25px;
-              bottom: 10px;
-              text-align: left;
-              line-height: 16px;
-              background-image: url(assets/base_s_09_red.png);
-            }
-            gvg-status[state="counter"] > gvg-status-icon-defense {
-              left: 0;
-              bottom: 0;
-              background-image: url(${assetURL}icon_gvg_party_offense_counter.png);
-            }
-            gvg-status[state="counter"] > gvg-status-icon-offense {
-              right: 0;
-              bottom: 0;
-              background-image: url(assets/icon_gvg_party_defense.png);
-            }
-            gvg-status[state="counter"] > gvg-status-bar-defense {
-              left: 25px;
-              bottom: 10px;
-              text-align: left;
-              line-height: 16px;
-              background-image: url(assets/base_s_09_red.png);
-            }
-            gvg-status[state="counter"] > gvg-status-bar-offense {
-              right: 25px;
-              bottom: 0;
-              text-align: right;
-              line-height: 24px;
-              background-image: url(assets/base_s_09_blue.png);
-            }
-            gvg-ko-count-container {
-              position: absolute;
-              width: 76px;
-              left: -38px;
-              top: -19px;
-              display: block;
-              color: #eee;
-              text-shadow: red 0 0 30px red 0 0 5px;
-            }
-            gvg-ko-count {
-              display: block;
-              font-size: 26px;
-              text-align: center;
-              width: 100%;
-            }
-            gvg-ko-count-label:after {
-              content: 'KOs';
-              font-size: 14px;
-              position: absolute;
-              display: block;
-              text-align: center;
-              width: 100%;
-              height: 14px;
-              top: 26px;
-              left: 0;
-            }
-            gvg-castle-icon {
-              display: block;
-              position: absolute;
-              background-size: cover;
-            }
-            gvg-castle[church] > gvg-castle-icon {
-              left: -28px;
-              right: -28px;
-              bottom: -25px;
-              width: 56px;
-              height: 50px;
-              background-image: url(assets/Castle_0_0.png);
-            }
-            gvg-castle[castle] > gvg-castle-icon {
-              left: -31px;
-              right: -31px;
-              bottom: -33px;
-              width: 62px;
-              height: 67px;
-              background-image: url(assets/Castle_0_1.png);
-            }
-            gvg-castle[temple] > gvg-castle-icon {
-              left: -39px;
-              right: -39px;
-              bottom: -40px;
-              width: 78px;
-              height: 80px;
-              background-image: url(assets/Castle_0_2.png);
-            }
-            gvg-castle-name {
-              display: block;
-              position: absolute;
-              background-size: cover;
-              width: 140px;
-              height: 26px;
-              font-size: 9px;
-              text-align: center;
-            }
-            gvg-castle-name {
-              background-image: url(assets/${image}.png);
-              width: 140px;
-              height: 26px;
-              left: -70px;
-              right: -70px;
-              color: ${Class == 'local' ? '#473d3b' : 'white'};
-              line-height: 33px;
-            }
-            gvg-castle[church] > gvg-castle-name {
-              bottom: -45px;
-            }
-            gvg-castle[castle] > gvg-castle-name {
-              bottom: -50px;
-            }
-            gvg-castle[temple] > gvg-castle-name {
-              bottom: -58px;
-            }
-            gvg-castle[temple] > .gvg-castle-symbol {
-              left: -70px;
-              bottom: -58px;
-              width: 33px;
-              height: 29px;
-              position: absolute;
-              display: block;
-            }
-            gvg-castle[castle] > .gvg-castle-symbol {
-              left: -70px;
-              bottom: -50px;
-              width: 33px;
-              height: 29px;
-              position: absolute;
-              display: block;
-            }
-            gvg-castle[church] > .gvg-castle-symbol {
-              left: -70px;
-              bottom: -45px;
-              width: 33px;
-              height: 29px;
-              position: absolute;
-              display: block;
-            }
-            gvg-castle-hint {
-              left: -70px;
-              right: -70px;
-              background: rgba(32, 32, 32, 0.5);
-              width: 140px;
-              color: white;
-              position: absolute;
-              display: block;
-              font-size: 10px;
-              text-align: center;
-              word-break: break-word;
-            }
-            gvg-castle[temple] > gvg-castle-hint {
-              top: 58px;
-            }
-            gvg-castle[castle] > gvg-castle-hint {
-              top: 50px;
-            }
-            gvg-castle[church] > gvg-castle-hint {
-              top: 45px;
-            }`,
+              gvg-list {
+                display: block;
+                position: fixed;
+                top: 5%;
+                width: 200px;
+                height: 95%;
+              }
+              gvg-list#enermyList {
+                left: calc(50% + 650px);
+              }
+              gvg-list#friendList {
+                right: calc(50% + 650px);
+              }
+              gvg-list > h2 {
+                text-align: center;
+                margin: 0px;
+              }
+              gvg-list > div {
+                height: calc(100% - 28px);
+                overflow-y: scroll;
+                scrollbar-width: thin;
+                background: rgb(255,127,127);
+              }
+              gvg-viewer {
+                display: block;
+                position: relative;
+                width: 1280px;
+                height: 1280px;
+                font-family: sans-serif;
+                background-size: cover;
+                background-image: url(assets/${Class}gvg.png);
+              }
+              gvg-castle {
+                display: block;
+                position: absolute;
+                user-select: none;
+              }
+              gvg-status {
+                width: 164px;
+                height: 50px;
+                display: block;
+                position: absolute;
+                'left': -82px;
+                right: -82px;
+                bottom: 43px;
+              }
+              gvg-attacker {
+                display: block;
+                width: 165px;
+                position: absolute;
+                text-align: center;
+                font-size: 16px;
+                opacity: 0.8;
+              }
+              gvg-status-icon-defense,
+              gvg-status-icon-offense {
+                display: block;
+                width: 32px;
+                height: 33px;
+                position: absolute;
+                text-align: center;
+                line-height: 37px;
+                font-size: 12px;
+                color: #fff;
+                background-size: cover;
+              }
+              gvg-status-icon-defense {
+                background-image: url(assets/icon_gvg_party_defense.png);
+              }
+              gvg-status-icon-offense {
+                background-image: url(assets/icon_gvg_party_offense.png);
+              }
+              gvg-status-bar-offense,
+              gvg-status-bar-defense {
+                display: block;
+                width: 90px;
+                height: 20px;
+                padding: 0 10px;
+                position: absolute;
+                font-size: 9px;
+                color: #fff;
+                background-size: cover;
+              }
+              gvg-status[state="common"] > gvg-attacker {
+                display: none;
+              }
+              gvg-status[state="common"] > gvg-status-icon-defense {
+                margin: auto;
+                left: 0;
+                right: 0;
+                top: 0;
+              }
+              gvg-status[state="common"] > gvg-status-icon-offense {
+                display: none;
+              }
+              gvg-status[state="common"] > gvg-status-bar-defense {
+                width: 131px;
+                height: 12px;
+                margin: auto;
+                left: 0;
+                right: 0;
+                top: 35px;
+                text-align: center;
+                line-height: 12px;
+                background-image: url(assets/base_s_08_blue.png);
+              }
+              gvg-status[state="common"] > gvg-status-bar-offense {
+                display: none;
+              }
+              gvg-status[state="active"] > gvg-status-icon-defense {
+                right: 0;
+                bottom: 0;
+              }
+              gvg-status[state="active"] > gvg-status-icon-offense {
+                left: 0;
+                bottom: 0;
+              }
+              gvg-status[state="active"] > gvg-status-bar-defense {
+                right: 25px;
+                bottom: 0;
+                text-align: right;
+                line-height: 24px;
+                background-image: url(assets/base_s_09_blue.png);
+              }
+              gvg-status[state="active"] > gvg-status-bar-offense {
+                left: 25px;
+                bottom: 10px;
+                text-align: left;
+                line-height: 16px;
+                background-image: url(assets/base_s_09_red.png);
+              }
+              gvg-status[state="counter"] > gvg-status-icon-defense {
+                left: 0;
+                bottom: 0;
+                background-image: url(${assetURL}icon_gvg_party_offense_counter.png);
+              }
+              gvg-status[state="counter"] > gvg-status-icon-offense {
+                right: 0;
+                bottom: 0;
+                background-image: url(assets/icon_gvg_party_defense.png);
+              }
+              gvg-status[state="counter"] > gvg-status-bar-defense {
+                left: 25px;
+                bottom: 10px;
+                text-align: left;
+                line-height: 16px;
+                background-image: url(assets/base_s_09_red.png);
+              }
+              gvg-status[state="counter"] > gvg-status-bar-offense {
+                right: 25px;
+                bottom: 0;
+                text-align: right;
+                line-height: 24px;
+                background-image: url(assets/base_s_09_blue.png);
+              }
+              gvg-ko-count-container {
+                position: absolute;
+                width: 76px;
+                left: -38px;
+                top: -19px;
+                display: block;
+                color: #eee;
+                text-shadow: red 0 0 30px red 0 0 5px;
+              }
+              gvg-ko-count {
+                display: block;
+                font-size: 26px;
+                text-align: center;
+                width: 100%;
+              }
+              gvg-ko-count-label:after {
+                content: 'KOs';
+                font-size: 14px;
+                position: absolute;
+                display: block;
+                text-align: center;
+                width: 100%;
+                height: 14px;
+                top: 26px;
+                left: 0;
+              }
+              gvg-castle-icon {
+                display: block;
+                position: absolute;
+                background-size: cover;
+              }
+              gvg-castle[church] > gvg-castle-icon {
+                left: -28px;
+                right: -28px;
+                bottom: -25px;
+                width: 56px;
+                height: 50px;
+                background-image: url(assets/Castle_0_0.png);
+              }
+              gvg-castle[castle] > gvg-castle-icon {
+                left: -31px;
+                right: -31px;
+                bottom: -33px;
+                width: 62px;
+                height: 67px;
+                background-image: url(assets/Castle_0_1.png);
+              }
+              gvg-castle[temple] > gvg-castle-icon {
+                left: -39px;
+                right: -39px;
+                bottom: -40px;
+                width: 78px;
+                height: 80px;
+                background-image: url(assets/Castle_0_2.png);
+              }
+              gvg-castle-name {
+                display: block;
+                position: absolute;
+                background-size: cover;
+                width: 140px;
+                height: 26px;
+                font-size: 9px;
+                text-align: center;
+              }
+              gvg-castle-name {
+                background-image: url(assets/${image}.png);
+                width: 140px;
+                height: 26px;
+                left: -70px;
+                right: -70px;
+                color: ${Class == 'local' ? '#473d3b' : 'white'};
+                line-height: 33px;
+              }
+              gvg-castle[church] > gvg-castle-name {
+                bottom: -45px;
+              }
+              gvg-castle[castle] > gvg-castle-name {
+                bottom: -50px;
+              }
+              gvg-castle[temple] > gvg-castle-name {
+                bottom: -58px;
+              }
+              gvg-castle[temple] > .gvg-castle-symbol {
+                left: -70px;
+                bottom: -58px;
+                width: 33px;
+                height: 29px;
+                position: absolute;
+                display: block;
+              }
+              gvg-castle[castle] > .gvg-castle-symbol {
+                left: -70px;
+                bottom: -50px;
+                width: 33px;
+                height: 29px;
+                position: absolute;
+                display: block;
+              }
+              gvg-castle[church] > .gvg-castle-symbol {
+                left: -70px;
+                bottom: -45px;
+                width: 33px;
+                height: 29px;
+                position: absolute;
+                display: block;
+              }
+              gvg-castle-hint {
+                left: -70px;
+                right: -70px;
+                background: rgba(32, 32, 32, 0.5);
+                width: 140px;
+                color: white;
+                position: absolute;
+                display: block;
+                font-size: 10px;
+                text-align: center;
+                word-break: break-word;
+              }
+              gvg-castle[temple] > gvg-castle-hint {
+                top: 58px;
+              }
+              gvg-castle[castle] > gvg-castle-hint {
+                top: 50px;
+              }
+              gvg-castle[church] > gvg-castle-hint {
+                top: 45px;
+              }`,
         'gvgMapStyle'
       )
     );
@@ -2321,7 +1815,7 @@ function drawMap(ClassId) {
       };
       castleNode.append(createElement('gvg-castle-icon'));
       //增加提示
-      const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', LanguageTable[Class][language][CastleId - 1]));
+      const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', LanguageTable[Class][Language][CastleId - 1]));
       NodeCastleName.onclick = (e) => {
         let exist = e.target.parentNode.querySelector('gvg-castle-hint');
         let image = e.target.parentNode.querySelector('.gvg-castle-symbol');
@@ -2360,10 +1854,10 @@ function drawMap(ClassId) {
         createElement(
           'text',
           `
-            gvg-viewer[${Class}] gvg-castle[castle-id='${CastleId}'] {
-              left: ${castle.left};
-              top: ${castle.top};
-            }`
+              gvg-viewer[${Class}] gvg-castle[castle-id='${CastleId}'] {
+                left: ${castle.left};
+                top: ${castle.top};
+              }`
         )
       );
     }
@@ -2492,17 +1986,17 @@ function changeColor(GuildId, Color) {
     createElement(
       'style',
       `
-            gvg-castle[defense='${GuildId}'] gvg-castle-icon {
-              background-color: rgba(${Color}, 0.5);
-            }
+              gvg-castle[defense='${GuildId}'] gvg-castle-icon {
+                background-color: rgba(${Color}, 0.5);
+              }
 
-            gvg-castle[offense='${GuildId}'] gvg-attacker {
-              background-color: rgba(${Color}, 0.625);
-            }
+              gvg-castle[offense='${GuildId}'] gvg-attacker {
+                background-color: rgba(${Color}, 0.625);
+              }
 
-            tr[id='${GuildId}'] td:nth-child(1) {
-              color: rgba(${Color}, 1);
-            }`,
+              tr[id='${GuildId}'] td:nth-child(1) {
+                color: rgba(${Color}, 1);
+              }`,
       `style${GuildId}`
     )
   );
@@ -2602,12 +2096,12 @@ function updateBattlePanel() {
 }
 /*API函数*/
 //获取option
-function buildOption() {
+function buildOption(appVersion) {
   let option = {
     method: 'POST',
     headers: {
-      'ortegaaccesstoken': ortegaaccesstoken, //获取
-      'ortegaappversion': AppVersion, //跟随版本
+      'ortegaaccesstoken': '', //获取
+      'ortegaappversion': appVersion, //跟随版本
       'ortegadevicetype': 2, //固定为2
       'ortegauuid': getStorage('ortegauuid'), //随机uuid，登录后绑定账号
       //'Host':'*.mememori-boi.com', //自动
@@ -2624,38 +2118,40 @@ function buildOption() {
 }
 //获取AppVersion
 async function getAppVersion() {
-  let option = buildOption();
-  let result = await getDataUri(option);
-  if (result?.ErrorCode) {
-    const varjs = await sendGMRequest('https://mememori-game.com/apps/vars.js', {});
-    if (!varjs) {
+  const MaxTry = 50;
+  for (let i = 0; i < MaxTry; i++) {
+    const VarsJS = await sendGMRequest('https://mememori-game.com/apps/vars.js', {});
+    if (!VarsJS) {
       console.log('获取var.js失败');
-      alert('获取var.js失败，请重试');
-      return;
+      await sleep(50);
+      continue;
     } else {
-      const apkVersion = getVariable(varjs, 'apkVersion').split('.');
-      let max = 20;
-      for (let i = 0; i < max + 1; i++) {
+      let result;
+      const apkVersion = getVariable(VarsJS, 'apkVersion').split('.');
+      const Option = buildOption('');
+      for (let i = 0; i < MaxTry + 1; i++) {
         //版本号递增
-        option.headers.ortegaappversion = `${apkVersion[0]}.${apkVersion[1]}.${apkVersion[2] * 1 + i}`;
+        Option.headers.ortegaappversion = `${apkVersion[0]}.${apkVersion[1]}.${apkVersion[2] * 1 + i}`;
         //最后一次手动请求版本号
-        if (i == max) {
-          option.headers.ortegaappversion = prompt('版本号不在正常范围内，请手动输入版本号', option.headers.ortegaappversion);
+        if (i == MaxTry) {
+          Option.headers.ortegaappversion = prompt('版本号不在正常范围内，请手动输入版本号', Option.headers.ortegaappversion);
         }
         //请求getDataUri
-        result = await getDataUri(option);
-        if (result.AppAssetVersionInfo) {
-          break;
+        result = await getDataUri(Option);
+        if (!result.AppAssetVersionInfo) {
+          await sleep(50);
+          continue;
+        } else {
+          return result.AppAssetVersionInfo.Version;
         }
       }
     }
   }
-  setStorage('AppVersion', result.AppAssetVersionInfo.Version);
-  return result.AppAssetVersionInfo.Version;
+  alert('获取var.js失败，请刷新页面重试');
 }
 //获取本地化文件
 async function getTextResource() {
-  const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResourceZhTwMB`, { type: 'arraybuffer', msgpack: true });
+  const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResource${Language}MB`, { type: 'arraybuffer', msgpack: true });
   const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
   if (!TextResourceMB) return;
   let result = {};
@@ -2665,31 +2161,17 @@ async function getTextResource() {
   }
   return result;
 }
-//获取错误码
-async function getErrorCode() {
-  const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResourceZhTwMB`, { type: 'arraybuffer', msgpack: true });
-  const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
-  if (!TextResourceMB) return;
-  let result = {};
-  for (let i = 0; i < TextResourceMB.length; i++) {
-    const TextResourceZhTw = TextResourceMB[i];
-    if (TextResourceZhTw.StringKey.includes('ErrorMessage')) {
-      result[TextResourceZhTw.StringKey.replace(/\[ErrorMessage(.*?)\]/, '$1') * 1] = TextResourceZhTw.Text;
-    }
-  }
-  return result;
-}
 //获取世界组
 async function getWorldGroup() {
   const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer' });
   const WorldGroupMB = await msgpack.decode(new Uint8Array(buffer));
   const RegionList = {
-    jp: LanguageTable.static.Japan[language], //
-    kr: LanguageTable.static.Korea[language],
-    ap: LanguageTable.static.Asia[language],
-    us: LanguageTable.static.America[language],
-    eu: LanguageTable.static.Europe[language],
-    gl: LanguageTable.static.Global[language],
+    jp: TextResource['TimeServerName1'], //
+    kr: TextResource['TimeServerName2'],
+    ap: TextResource['TimeServerName3'],
+    us: TextResource['TimeServerName4'],
+    eu: TextResource['TimeServerName5'],
+    gl: TextResource['TimeServerName6'],
   };
   const RegionIdList = { jp: 1, kr: 2, ap: 3, us: 4, eu: 5, gl: 6 };
   let WorldGroup = {
@@ -2713,7 +2195,7 @@ async function getWorldGroup() {
         };
         WorldGroup.RegionList[RegionId] = Region;
         WorldGroup.GroupList[`N${RegionId}`] = {
-          'Name': `${LanguageTable.static.Group[language]} NA`,
+          'Name': `${TextResource['ChatTabSvS']} NA`,
           'SName': `GNA`,
           'Region': RegionId,
           'WorldList': [],
@@ -2723,7 +2205,7 @@ async function getWorldGroup() {
       let Group = WorldGroup.GroupList[GroupId];
       if (!Group) {
         Group = {
-          'Name': `${LanguageTable.static.Group[language]} ${GroupId}`,
+          'Name': `${TextResource['ChatTabSvS']} ${GroupId}`,
           'SName': `G${GroupId}`,
           'Region': RegionId,
           'WorldList': [],
@@ -2735,7 +2217,7 @@ async function getWorldGroup() {
         const WorldId = WorldIdList[j];
         Region.WorldList.push(WorldId);
         WorldGroup.WorldList[WorldId] = {
-          'Name': `${LanguageTable.static.World[language]} ${WorldId % 1000}`,
+          'Name': `${TextResource['TitleWarningListWorld']} ${WorldId % 1000}`,
           'SName': `W${WorldId % 1000}`,
           'Region': RegionId,
           'Group': GroupId,
@@ -2792,11 +2274,9 @@ async function getGuildWar(ClassId, WorldId, GroupId) {
 //https://prd1-auth.mememori-boi.com/api/auth/getDataUri
 async function getDataUri(defaultOpting) {
   //生成配置
-  let option = defaultOpting ?? buildOption();
+  let option = defaultOpting ?? buildOption(AppVersion);
   //随机ortegauuid
   option.headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
-  //不设ortegaaccesstoken
-  option.headers.ortegaaccesstoken = '';
   //生成包体
   const data = {
     CountryCode: 'TW',
@@ -2809,7 +2289,7 @@ async function getDataUri(defaultOpting) {
 }
 //https://prd1-auth.mememori-boi.com/api/auth/createUser
 async function createUser(AuthToken, AdverisementId, CountryCode, ortegauuid) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     AdverisementId: AdverisementId,
     AppVersion: AppVersion,
@@ -2828,7 +2308,7 @@ async function createUser(AuthToken, AdverisementId, CountryCode, ortegauuid) {
 }
 //https://prd1-auth.mememori-boi.com/api/auth/setUserSetting
 async function setUserSetting() {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     UserSettingsType: 2,
     Value: 2,
@@ -2840,7 +2320,7 @@ async function setUserSetting() {
 }
 //https://prd1-auth.mememori-boi.com/api/auth/createWorldPlayer
 async function createWorldPlayer(WorldId) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     WorldId: WorldId,
     Comment: `W${WorldId}的偵察姬器人`,
@@ -2854,7 +2334,7 @@ async function createWorldPlayer(WorldId) {
 }
 //https://prd1-auth.mememori-boi.com/api/auth/getComebackUserData
 async function getComebackUserData(FromUserId, UserId, Password, AuthToken) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     AppleIdToken: null,
     FromUserId: new Uint64BE(FromUserId.toString(), 10),
@@ -2872,7 +2352,7 @@ async function getComebackUserData(FromUserId, UserId, Password, AuthToken) {
 }
 //https://prd1-auth.mememori-boi.com/api/auth/comebackUser
 async function comebackUser(FromUserId, OneTimeToken, UserId) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     FromUserId: new Uint64BE(FromUserId.toString(), 10),
     OneTimeToken: OneTimeToken,
@@ -2885,7 +2365,7 @@ async function comebackUser(FromUserId, OneTimeToken, UserId) {
 }
 //https://prd1-auth.mememori-boi.com/api/auth/login
 async function login(ClientKey, AdverisementId, UserId) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     ClientKey: ClientKey,
     DeviceToken: '',
@@ -2902,7 +2382,7 @@ async function login(ClientKey, AdverisementId, UserId) {
 }
 //https://prd1-auth.mememori-boi.com/api/auth/getServerHost
 async function getServerHost(WorldId) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     WorldId: WorldId,
   };
@@ -2912,7 +2392,7 @@ async function getServerHost(WorldId) {
 }
 //user/loginPlayer
 async function loginPlayer(PlayerId, Password) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     Password: Password,
     PlayerId: new Uint64BE(PlayerId.toString(), 10),
@@ -2925,7 +2405,7 @@ async function loginPlayer(PlayerId, Password) {
 }
 //user/getUserData
 async function getUserData() {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {};
   option.body = data;
   let result = await sendRequest(userURL + 'user/getUserData', option);
@@ -2933,7 +2413,7 @@ async function getUserData() {
 }
 //localGvg/getLocalGvgSceneTransitionData
 async function getLocalGvgSceneTransitionData() {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {};
   option.body = data;
   let result = await sendRequest(userURL + 'localGvg/getLocalGvgSceneTransitionData', option);
@@ -2941,7 +2421,7 @@ async function getLocalGvgSceneTransitionData() {
 }
 //localGvg/getLocalGvgCastleInfoDialogData
 async function getLocalGvgCastleInfoDialogData(CastleId) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     CastleId: CastleId,
   };
@@ -2951,7 +2431,7 @@ async function getLocalGvgCastleInfoDialogData(CastleId) {
 }
 //guild/searchGuildId
 async function searchGuildId(GuildId) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     GuildId: new Uint64BE(GuildId.toString(), 10),
   };
@@ -2961,7 +2441,7 @@ async function searchGuildId(GuildId) {
 }
 //character/getDetailsInfo
 async function getDetailsInfo(PlayerId, arrayCharacterId) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     DeckType: 1,
     TargetUserCharacterGuids: arrayCharacterId,
@@ -2973,7 +2453,7 @@ async function getDetailsInfo(PlayerId, arrayCharacterId) {
 }
 //globalGvg/getGlobalGvgCastleInfoDialogData
 async function getGlobalGvgCastleInfoDialogData(CastleId, MatchingNumber) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     'CastleId': CastleId,
     'MatchingNumber': MatchingNumber,
@@ -2984,7 +2464,7 @@ async function getGlobalGvgCastleInfoDialogData(CastleId, MatchingNumber) {
 }
 //globalGvg/getGlobalGvgGroupAll
 async function getGlobalGvgGroupAll() {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {};
   option.body = data;
   let result = await sendRequest(userURL + 'globalGvg/getGlobalGvgGroupAll', option);
@@ -2992,7 +2472,7 @@ async function getGlobalGvgGroupAll() {
 }
 //globalGvg/getGlobalGvgSceneTransitionData
 async function getGlobalGvgSceneTransitionData(GlobalGvgGroupId, MatchingNumber) {
-  let option = buildOption();
+  let option = buildOption(AppVersion);
   const data = {
     'GlobalGvgGroupId': GlobalGvgGroupId,
     'MatchingNumber': MatchingNumber,
@@ -3004,12 +2484,22 @@ async function getGlobalGvgSceneTransitionData(GlobalGvgGroupId, MatchingNumber)
 /*工具函数*/
 //请求函数
 async function sendRequest(url, option) {
-  let request = await sendGMRequest(url, option);
-  if (request.ErrorCode && !url.includes(authURL) && !url.includes('getUserData') && !url.includes('loginPlayer')) {
-    await loginAccount();
-    request = await sendGMRequest(url, option);
+  for (let i = 0; i < 600; i++) {
+    if (ortegaaccesstoken == orteganextaccesstoken && orteganextaccesstoken != '') {
+      await sleep(50);
+    } else {
+      const request = await sendGMRequest(url, option);
+      if (request.ErrorCode && !(url.includes(authURL) || url.includes('getUserData') || url.includes('loginPlayer'))) {
+        console.log('登陆超时');
+        alert('登录超时，请重新登录');
+        return;
+      }
+      return request;
+    }
   }
-  return request;
+  console.log('请求超时');
+  alert('请求超时，请重试');
+  return;
 }
 //跨域请求函数
 async function sendGMRequest(url, option = {}) {
@@ -3024,9 +2514,8 @@ async function sendGMRequest(url, option = {}) {
         if (!headers.ortegauuid) {
           headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
         }
-        if (!headers.ortegaaccesstoken) {
-          headers.ortegaaccesstoken = ortegaaccesstoken;
-        }
+        headers.ortegaaccesstoken = orteganextaccesstoken;
+        ortegaaccesstoken = orteganextaccesstoken;
         data = new Blob([msgpack.encode(option.body)]);
         binary = true;
       } else {
@@ -3047,7 +2536,7 @@ async function sendGMRequest(url, option = {}) {
           if (type == 'application/octet-stream') {
             let token = getHeader(response.responseHeaders, 'orteganextaccesstoken');
             if (token != undefined && token != '' && token != null) {
-              ortegaaccesstoken = token;
+              orteganextaccesstoken = token;
             }
             setStorage('AssetVersion', getHeader(response.responseHeaders, 'ortegamasterversion'));
             setStorage('MasterVersion', getHeader(response.responseHeaders, 'ortegamasterversion'));
@@ -3084,7 +2573,7 @@ async function sendXMLRequest(url, option = {}) {
         if (!headers.ortegauuid) {
           headers.ortegauuid = crypto.randomUUID().replaceAll('-', '');
         }
-        headers.ortegaaccesstoken = ortegaaccesstoken;
+        headers.ortegaaccesstoken = orteganextaccesstoken;
         data = msgpack.encode(option.body);
       } else {
         data = option.body;
@@ -3107,7 +2596,7 @@ async function sendXMLRequest(url, option = {}) {
         const response = request.response;
         console.log(`Done, got ${response.length} bytes`); // response 是服务器响应
         const type = request.getResponseHeader('content-type');
-        ortegaaccesstoken = request.getResponseHeader('orteganextaccesstoken');
+        orteganextaccesstoken = request.getResponseHeader('orteganextaccesstoken');
         setStorage('AssetVersion', request.getResponseHeader('assetversion'));
         setStorage('MasterVersion', request.getResponseHeader('masterversion'));
         setStorage('utcnowtimestamp', request.getResponseHeader('utcnowtimestamp'));
@@ -3202,6 +2691,10 @@ function Today(hour, minute, second) {
   Now.setSeconds(second);
   Now.setMilliseconds(0);
   return Now;
+}
+//延迟
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 /*Websocket流函数*/
 //组合StreamID
