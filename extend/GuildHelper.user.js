@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.61
+// @version      0.62
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -44,7 +44,10 @@ document.querySelector('style').appendChild(
           `
   )
 );
+//固定语言
+setStorage('lang', '["en","en","en","en","en","en","en"]');
 /*全局对象*/
+//静态常量
 const GlobalConstant = {
   //机型信息
   'ModelName': 'Xiaomi 2203121C',
@@ -53,189 +56,189 @@ const GlobalConstant = {
   'assetURL': 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/',
   'authURL': 'https://prd1-auth.mememori-boi.com/api/auth/',
   'LocalURL': 'https://mentemori.icu/',
-  //功能与语言
-  'Language': getLanguage(),
-  'LanguageTable': {
-    'Region': {
-      'JaJp': 'サーバー',
-      'EnUs': 'Server',
-      'KoKr': 'Server',
-      'ZhTw': '區域',
-      'ZhCn': '区域',
-    },
-    'Class': {
-      'JaJp': 'クラス',
-      'EnUs': 'Class',
-      'KoKr': 'Class',
-      'ZhTw': '級別',
-      'ZhCn': '级别',
-    },
-    'Block': {
-      'JaJp': 'ブロック',
-      'EnUs': 'Block',
-      'KoKr': 'Block',
-      'ZhTw': '組別',
-      'ZhCn': '组别',
-    },
-    'Local': {
-      'JaJp': 'Local',
-      'EnUs': 'Local',
-      'KoKr': 'Local',
-      'ZhTw': '本地',
-      'ZhCn': '本地',
-    },
-    'title': {
-      'JaJp': 'メンテもりもり',
-      'EnUs': 'Maintenance Mori',
-      'KoKr': 'Maintenance Mori',
-      'ZhCn': '维护多多',
-      'ZhTw': '维护多多',
-    },
-    'basic': {
-      'JaJp': '通常 ： ',
-      'EnUs': 'Normal&ensp;:&ensp;',
-      'KoKr': 'Normal&ensp;:&ensp;',
-      'ZhTw': '通用功能 ： ',
-      'ZhCn': '通用功能 ： ',
-    },
-    'weekly': {
-      'JaJp': '週間 ： ',
-      'EnUs': 'Weekly&ensp;:&ensp;',
-      'KoKr': 'Weekly&ensp;:&ensp;',
-      'ZhTw': '每周特報 ： ',
-      'ZhCn': '每周特报 ： ',
-    },
-    'extend': {
-      'JaJp': '拡張 ： ',
-      'EnUs': 'Extend&ensp;:&ensp;',
-      'KoKr': 'Extend&ensp;:&ensp;',
-      'ZhTw': '擴展功能 ： ',
-      'ZhCn': '扩展功能 ： ',
-    },
-    'hidden': {
-      'JaJp': 'Hidden ： ',
-      'EnUs': 'Hidden&ensp;:&ensp;',
-      'KoKr': 'Hidden&ensp;:&ensp;',
-      'ZhTw': '隱藏功能 ： ',
-      'ZhCn': '隐藏功能 ： ',
-    },
-    'dataconvert': {
-      'JaJp': 'データ変換',
-      'EnUs': 'Data Convert',
-      'KoKr': 'Data Convert',
-      'ZhTw': '數據轉換',
-      'ZhCn': '数据转换',
-    },
-    'battlehelper': {
-      'JaJp': '戦闘監視',
-      'EnUs': 'Battle Helper',
-      'KoKr': 'Battle Helper',
-      'ZhTw': '戰鬥監控',
-      'ZhCn': '战斗监控',
-    },
-    'account': {
-      'JaJp': 'Account:',
-      'EnUs': 'Account:',
-      'KoKr': 'Account:',
-      'ZhTw': '登錄狀態：',
-      'ZhCn': '登录状态：',
-    },
-    'noaccount': {
-      'JaJp': 'No Account',
-      'EnUs': 'No Account',
-      'KoKr': 'No Account',
-      'ZhTw': '無賬號',
-      'ZhCn': '无账号',
-    },
-    'Locked': {
-      'JaJp': '未加工',
-      'EnUs': 'Locked',
-      'KoKr': 'Locked',
-      'ZhTw': '未加工',
-      'ZhCn': '未加工',
-    },
-    ' Forces': {
-      'JaJp': '軍',
-      'EnUs': ' Forces',
-      'KoKr': ' Forces',
-      'ZhTw': '軍',
-      'ZhCn': '军',
-    },
-    'All Worlds': {
-      'JaJp': 'すべて',
-      'EnUs': 'All Worlds',
-      'KoKr': 'All Worlds',
-      'ZhTw': '所有世界',
-      'ZhCn': '所有世界',
-    },
-    'Updated': {
-      'JaJp': '更新',
-      'EnUs': 'Updated',
-      'KoKr': 'Updated',
-      'ZhTw': '更新時間',
-      'ZhCn': '更新時間',
-    },
-    'Chapter ': {
-      'JaJp': '章',
-      'EnUs': 'Chapter ',
-      'KoKr': 'Chapter ',
-      'ZhTw': '領先章節',
-      'ZhCn': '领先章节',
-    },
-    'Slot 1': {
-      'JaJp': '枠１',
-      'EnUs': 'Slot 1 ',
-      'KoKr': 'Slot 1 ',
-      'ZhTw': '欄１',
-      'ZhCn': '栏１',
-    },
-    'Slot 2': {
-      'JaJp': '枠２',
-      'EnUs': 'Slot 2 ',
-      'KoKr': 'Slot 2 ',
-      'ZhTw': '欄２',
-      'ZhCn': '栏２',
-    },
-    'Slot 3': {
-      'JaJp': '枠３',
-      'EnUs': 'Slot 3 ',
-      'KoKr': 'Slot 3 ',
-      'ZhTw': '欄３',
-      'ZhCn': '栏３',
-    },
-    'Slot 4': {
-      'JaJp': '枠４',
-      'EnUs': 'Slot 4 ',
-      'KoKr': 'Slot 4 ',
-      'ZhTw': '欄４',
-      'ZhCn': '栏４',
-    },
-    'Slot 5': {
-      'JaJp': '枠５',
-      'EnUs': 'Slot 5 ',
-      'KoKr': 'Slot 5 ',
-      'ZhTw': '欄５',
-      'ZhCn': '栏５',
-    },
-    'Search ID': {
-      'JaJp': '検索ID',
-      'EnUs': 'Search ID',
-      'KoKr': 'Search ID',
-      'ZhTw': '查詢ID',
-      'ZhCn': '查询ID',
-    },
-    'Details': {
-      'JaJp': '詳細',
-      'EnUs': 'Details',
-      'KoKr': 'Details',
-      'ZhTw': '查詢條件',
-      'ZhCn': '查询条件',
-    },
-  },
-  'URLFunction': document.URL.replace(/^.*?mentemori\.icu\/(.*?\.html)?(\?function=.*?)?.*?(\?lang=.*?)?$/, '$1$2')
-    .replace('?function=', '')
-    .replace('.html', ''),
+  'AppVersion': '',
 };
+//翻译表
+const LanguageTable = {
+  'Region': {
+    'JaJp': 'サーバー',
+    'EnUs': 'Server',
+    'KoKr': 'Server',
+    'ZhTw': '區域',
+    'ZhCn': '区域',
+  },
+  'Class': {
+    'JaJp': 'クラス',
+    'EnUs': 'Class',
+    'KoKr': 'Class',
+    'ZhTw': '級別',
+    'ZhCn': '级别',
+  },
+  'Block': {
+    'JaJp': 'ブロック',
+    'EnUs': 'Block',
+    'KoKr': 'Block',
+    'ZhTw': '組別',
+    'ZhCn': '组别',
+  },
+  'Local': {
+    'JaJp': 'Local',
+    'EnUs': 'Local',
+    'KoKr': 'Local',
+    'ZhTw': '本地',
+    'ZhCn': '本地',
+  },
+  'title': {
+    'JaJp': 'メンテもりもり',
+    'EnUs': 'Maintenance Mori',
+    'KoKr': 'Maintenance Mori',
+    'ZhCn': '维护多多',
+    'ZhTw': '维护多多',
+  },
+  'basic': {
+    'JaJp': '通常 ： ',
+    'EnUs': 'Normal&ensp;:&ensp;',
+    'KoKr': 'Normal&ensp;:&ensp;',
+    'ZhTw': '通用功能 ： ',
+    'ZhCn': '通用功能 ： ',
+  },
+  'weekly': {
+    'JaJp': '週間 ： ',
+    'EnUs': 'Weekly&ensp;:&ensp;',
+    'KoKr': 'Weekly&ensp;:&ensp;',
+    'ZhTw': '每周特報 ： ',
+    'ZhCn': '每周特报 ： ',
+  },
+  'extend': {
+    'JaJp': '拡張 ： ',
+    'EnUs': 'Extend&ensp;:&ensp;',
+    'KoKr': 'Extend&ensp;:&ensp;',
+    'ZhTw': '擴展功能 ： ',
+    'ZhCn': '扩展功能 ： ',
+  },
+  'hidden': {
+    'JaJp': 'Hidden ： ',
+    'EnUs': 'Hidden&ensp;:&ensp;',
+    'KoKr': 'Hidden&ensp;:&ensp;',
+    'ZhTw': '隱藏功能 ： ',
+    'ZhCn': '隐藏功能 ： ',
+  },
+  'dataconvert': {
+    'JaJp': 'データ変換',
+    'EnUs': 'Data Convert',
+    'KoKr': 'Data Convert',
+    'ZhTw': '數據轉換',
+    'ZhCn': '数据转换',
+  },
+  'battlehelper': {
+    'JaJp': '戦闘監視',
+    'EnUs': 'Battle Helper',
+    'KoKr': 'Battle Helper',
+    'ZhTw': '戰鬥監控',
+    'ZhCn': '战斗监控',
+  },
+  'account': {
+    'JaJp': 'Account:',
+    'EnUs': 'Account:',
+    'KoKr': 'Account:',
+    'ZhTw': '登錄狀態：',
+    'ZhCn': '登录状态：',
+  },
+  'noaccount': {
+    'JaJp': 'No Account',
+    'EnUs': 'No Account',
+    'KoKr': 'No Account',
+    'ZhTw': '無賬號',
+    'ZhCn': '无账号',
+  },
+  'Locked': {
+    'JaJp': '未加工',
+    'EnUs': 'Locked',
+    'KoKr': 'Locked',
+    'ZhTw': '未加工',
+    'ZhCn': '未加工',
+  },
+  ' Forces': {
+    'JaJp': '軍',
+    'EnUs': ' Forces',
+    'KoKr': ' Forces',
+    'ZhTw': '軍',
+    'ZhCn': '军',
+  },
+  'All Worlds': {
+    'JaJp': 'すべて',
+    'EnUs': 'All Worlds',
+    'KoKr': 'All Worlds',
+    'ZhTw': '所有世界',
+    'ZhCn': '所有世界',
+  },
+  'Updated': {
+    'JaJp': '更新',
+    'EnUs': 'Updated',
+    'KoKr': 'Updated',
+    'ZhTw': '更新時間',
+    'ZhCn': '更新時間',
+  },
+  'Chapter ': {
+    'JaJp': '章',
+    'EnUs': 'Chapter ',
+    'KoKr': 'Chapter ',
+    'ZhTw': '領先章節',
+    'ZhCn': '领先章节',
+  },
+  'Slot 1': {
+    'JaJp': '枠１',
+    'EnUs': 'Slot 1 ',
+    'KoKr': 'Slot 1 ',
+    'ZhTw': '欄１',
+    'ZhCn': '栏１',
+  },
+  'Slot 2': {
+    'JaJp': '枠２',
+    'EnUs': 'Slot 2 ',
+    'KoKr': 'Slot 2 ',
+    'ZhTw': '欄２',
+    'ZhCn': '栏２',
+  },
+  'Slot 3': {
+    'JaJp': '枠３',
+    'EnUs': 'Slot 3 ',
+    'KoKr': 'Slot 3 ',
+    'ZhTw': '欄３',
+    'ZhCn': '栏３',
+  },
+  'Slot 4': {
+    'JaJp': '枠４',
+    'EnUs': 'Slot 4 ',
+    'KoKr': 'Slot 4 ',
+    'ZhTw': '欄４',
+    'ZhCn': '栏４',
+  },
+  'Slot 5': {
+    'JaJp': '枠５',
+    'EnUs': 'Slot 5 ',
+    'KoKr': 'Slot 5 ',
+    'ZhTw': '欄５',
+    'ZhCn': '栏５',
+  },
+  'Search ID': {
+    'JaJp': '検索ID',
+    'EnUs': 'Search ID',
+    'KoKr': 'Search ID',
+    'ZhTw': '查詢ID',
+    'ZhCn': '查询ID',
+  },
+  'Details': {
+    'JaJp': '詳細',
+    'EnUs': 'Details',
+    'KoKr': 'Details',
+    'ZhTw': '查詢條件',
+    'ZhCn': '查询条件',
+  },
+};
+//URL信息
+const GlobalURLList = getURLList();
+//变量
 const GlobalVariable = {
   'userURL': '',
   'MagicOnionHost': '',
@@ -245,178 +248,224 @@ const GlobalVariable = {
   'orteganextaccesstoken': '',
   'ortegauuid': '',
 };
+//公共对象
 let SocketGvG;
 let DataBase;
-//固定语言
-setStorage('lang', '["en","en","en","en","en","en","en"]');
-//注入
+//注入翻译
 let needAssign = true;
 const assign = unsafeWindow._m;
 unsafeWindow._m = function (...args) {
   if (needAssign) {
     let TextResource = JSON.parse(getStorage('TextResource'));
-    unsafeWindow.m[GlobalConstant.Language] = {
-      'Rank': TextResource['CommonPlayerRankLabel'],
-      'STR': TextResource['BaseParameterTypeMuscle'],
-      'MAG': TextResource['BaseParameterTypeIntelligence'],
-      'DEX': TextResource['BaseParameterTypeEnergy'],
-      'STA': TextResource['BaseParameterTypeHealth'],
-      'ATK': TextResource['BattleParameterTypeAttackPower'],
-      'DEF': TextResource['BattleParameterTypeDefense'],
-      'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
-      'SPD': TextResource['BattleParameterTypeSpeed'],
-      'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
-      'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
-      'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
-      'ACC': TextResource['BattleParameterTypeHit'],
-      'EVD': TextResource['BattleParameterTypeAvoidance'],
-      'CRIT': TextResource['BattleParameterTypeCritical'],
-      'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
-      'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
-      'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
-      'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
-      'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
-      'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
-      'Counter': TextResource['BattleParameterTypeDamageReflect'],
-      'HP Drain': TextResource['BattleParameterTypeHpDrain'],
-      'Locked': GlobalConstant.LanguageTable['Locked'][GlobalConstant.Language],
-      'None': TextResource['CommonNotEquippingLabel'],
-      ' pts, ': ` ${TextResource['GlovalPvpPoint']}`,
-      ' streak': ` ${TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', '')}`,
-      'EXP Orb': TextResource['ItemName10'],
-      'Upgrade Water': TextResource['ItemName12'],
-      'Upgrade Panacea': TextResource['ItemName13'],
-      'Kindling Orb': TextResource['ItemName11'],
-      'Rune Ticket': TextResource['ItemName43'],
-      'Event': TextResource['PlayerEventPolicyLabel'],
-      'All Worlds': GlobalConstant.LanguageTable['All Worlds'][GlobalConstant.Language],
-      ' Forces': GlobalConstant.LanguageTable[' Forces'][GlobalConstant.Language],
-      ' Wins': ` ${TextResource['WeeklyTopicsLeagueContinueWinCountFormat'].replace('{0}', '')}`,
-    };
+    if (TextResource['CommonPlayerRankLabel']) {
+      //内联翻译表
+      unsafeWindow.m[GlobalURLList.lang] = {
+        'Rank': TextResource['CommonPlayerRankLabel'],
+        'STR': TextResource['BaseParameterTypeMuscle'],
+        'MAG': TextResource['BaseParameterTypeIntelligence'],
+        'DEX': TextResource['BaseParameterTypeEnergy'],
+        'STA': TextResource['BaseParameterTypeHealth'],
+        'ATK': TextResource['BattleParameterTypeAttackPower'],
+        'DEF': TextResource['BattleParameterTypeDefense'],
+        'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
+        'SPD': TextResource['BattleParameterTypeSpeed'],
+        'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
+        'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
+        'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
+        'ACC': TextResource['BattleParameterTypeHit'],
+        'EVD': TextResource['BattleParameterTypeAvoidance'],
+        'CRIT': TextResource['BattleParameterTypeCritical'],
+        'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
+        'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
+        'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
+        'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
+        'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
+        'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
+        'Counter': TextResource['BattleParameterTypeDamageReflect'],
+        'HP Drain': TextResource['BattleParameterTypeHpDrain'],
+        'Locked': LanguageTable['Locked'][GlobalURLList.lang],
+        'None': TextResource['CommonNotEquippingLabel'],
+        ' pts, ': ` ${TextResource['GlovalPvpPoint']}`,
+        ' streak': ` ${TextResource['GlobalPvpConsecutiveVictoryLabel']?.replace('{0}', '')}`,
+        'EXP Orb': TextResource['ItemName10'],
+        'Upgrade Water': TextResource['ItemName12'],
+        'Upgrade Panacea': TextResource['ItemName13'],
+        'Kindling Orb': TextResource['ItemName11'],
+        'Rune Ticket': TextResource['ItemName43'],
+        'Event': TextResource['PlayerEventPolicyLabel'],
+        'All Worlds': LanguageTable['All Worlds'][GlobalURLList.lang],
+        ' Forces': LanguageTable[' Forces'][GlobalURLList.lang],
+        ' Wins': ` ${TextResource['WeeklyTopicsLeagueContinueWinCountFormat']?.replace('{0}', '')}`,
+      };
+    } else {
+      alert('未初始化语言，翻译未加载，请刷新重试');
+    }
     needAssign = false;
   }
   return assign.call(this, ...args);
 };
-/*动态常量*/
+//动态常量
 GlobalConstant.AppVersion = await getAppVersion();
-GlobalConstant.TextResource = await getTextResource();
-GlobalConstant.ErrorCode = getErrorCode();
-GlobalConstant.LanguageJa = {
-  'メンテもりもり': GlobalConstant.LanguageTable['title'][GlobalConstant.Language],
-  'ワールド': GlobalConstant.TextResource['TitleWarningListWorld'],
-  'レベル': GlobalConstant.TextResource['CommonPlayerRankLabel'],
-  '幻影の神殿': GlobalConstant.TextResource['CommonHeaderLocalRaidLabel'],
-  'サーバー': GlobalConstant.LanguageTable['Region'][GlobalConstant.Language],
-  '更新': GlobalConstant.LanguageTable['Updated'][GlobalConstant.Language],
-  'プレイヤーランキング': GlobalConstant.TextResource['RankingGroupTypePlayer'],
-  '戦闘力': GlobalConstant.TextResource['CommonBattlePowerLabel'],
-  'プレイヤーランク': GlobalConstant.TextResource['PlayerRankingTypePlayerRank'],
-  'メインクエスト': GlobalConstant.TextResource['PlayerRankingTypeStage'],
-  '無窮の塔': GlobalConstant.TextResource['PlayerRankingTypeTowerBattle'],
-  '藍の塔': GlobalConstant.TextResource['ElementTowerRankingTypeBlue'],
-  '紅の塔': GlobalConstant.TextResource['ElementTowerRankingTypeRed'],
-  '翠の塔': GlobalConstant.TextResource['ElementTowerRankingTypeGreen'],
-  '黄の塔': GlobalConstant.TextResource['ElementTowerRankingTypeYellow'],
-  'ギルドランキング': GlobalConstant.TextResource['RankingGroupTypeGuild'],
-  'ギルドレベル': GlobalConstant.TextResource['GuildRankingTypeLevel'],
-  'ギルドストック': GlobalConstant.TextResource['GuildRankingTypeStock'],
-  'ギルド総戦闘力': GlobalConstant.TextResource['GuildRankingTypeBattlePower'],
-  'プレイヤー名': GlobalConstant.TextResource['CommonPlayerNameLabel'],
-  '階': GlobalConstant.TextResource['RankingTowerBattleLabel'],
-  'ランク': GlobalConstant.TextResource['CommonPlayerRankLabel'],
-  'クエスト': GlobalConstant.TextResource['RankingStageLabel'],
-  'ギルド名': GlobalConstant.TextResource['GuildName'],
-  '人数': GlobalConstant.TextResource['MemberNumber'],
-  'バトルリーグ': GlobalConstant.TextResource['CommonHeaderLocalPvpLabel'],
-  'プレイヤー': GlobalConstant.TextResource['CommonPlayerNameLabel'],
-  '枠１': GlobalConstant.LanguageTable['Slot 1'][GlobalConstant.Language],
-  '枠２': GlobalConstant.LanguageTable['Slot 2'][GlobalConstant.Language],
-  '枠３': GlobalConstant.LanguageTable['Slot 3'][GlobalConstant.Language],
-  '枠４': GlobalConstant.LanguageTable['Slot 4'][GlobalConstant.Language],
-  '枠５': GlobalConstant.LanguageTable['Slot 5'][GlobalConstant.Language],
-  '武具': GlobalConstant.TextResource['CommonEquipmentLabel'],
-  '腕力': GlobalConstant.TextResource['BaseParameterTypeMuscle'],
-  '技力': GlobalConstant.TextResource['BaseParameterTypeEnergy'],
-  '聖装': GlobalConstant.TextResource['EquipmentAscendSortLegendLv'],
-  '魔装': GlobalConstant.TextResource['EquipmentAscendSortMatchlessLv'],
-  '魔力': GlobalConstant.TextResource['BaseParameterTypeIntelligence'],
-  '耐久力': GlobalConstant.TextResource['BaseParameterTypeHealth'],
-  'キャラ': GlobalConstant.TextResource['CommonHeaderCharacterListLabel'],
-  'Lv.': GlobalConstant.TextResource['CommonLevelWithDot'],
-  '攻撃力': GlobalConstant.TextResource['BattleParameterTypeAttackPower'],
-  '防御力': GlobalConstant.TextResource['BattleParameterTypeDefense'],
-  '防御貫通': GlobalConstant.TextResource['BattleParameterTypeDefensePenetration'],
-  'スピード': GlobalConstant.TextResource['BattleParameterTypeSpeed'],
-  '物魔防御貫通': GlobalConstant.TextResource['BattleParameterTypeDamageEnhance'],
-  '物理防御力': GlobalConstant.TextResource['BattleParameterTypePhysicalDamageRelax'],
-  '魔法防御力': GlobalConstant.TextResource['BattleParameterTypeMagicDamageRelax'],
-  '命中': GlobalConstant.TextResource['BattleParameterTypeHit'],
-  'クリティカル': GlobalConstant.TextResource['BattleParameterTypeCritical'],
-  'クリダメ強化': GlobalConstant.TextResource['BattleParameterTypeCriticalDamageEnhance'],
-  '魔法クリダメ緩和': GlobalConstant.TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
-  '物理クリダメ緩和': GlobalConstant.TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
-  '弱体効果命中': GlobalConstant.TextResource['BattleParameterTypeDebuffHit'],
-  '弱体効果耐性': GlobalConstant.TextResource['BattleParameterTypeDebuffResist'],
-  'カウンタ': GlobalConstant.TextResource['BattleParameterTypeDamageReflect'],
-  'HPドレイン': GlobalConstant.TextResource['BattleParameterTypeHpDrain'],
-  '回避': GlobalConstant.TextResource['BattleParameterTypeAvoidance'],
-  'クリティカル耐性': GlobalConstant.TextResource['BattleParameterTypeCriticalResist'],
-  'グループ': GlobalConstant.TextResource['ChatTabSvS'],
-  'レジェンドリーグ': GlobalConstant.TextResource['CommonHeaderGlobalPvpLabel'],
-  'ギルドバトル': GlobalConstant.TextResource['CommonHeaderGvgLabel'],
-  'クラス': GlobalConstant.LanguageTable['Class'][GlobalConstant.Language],
-  'ブロック': GlobalConstant.LanguageTable['Block'][GlobalConstant.Language],
-  'グランドバトル': GlobalConstant.TextResource['CommonHeaderGlobalGvgLabel'],
-  'バトルレポート再生': GlobalConstant.TextResource['BattleReportTitle'] + GlobalConstant.TextResource['CommonPlayLabel'],
-  '週間トピックス・属性別キャラ育成': `${GlobalConstant.TextResource['WeeklyTopicsDialogTitle']}・${GlobalConstant.TextResource['WeeklyTopicsTopCharacterHeadline']}`,
-  '天属性': GlobalConstant.TextResource['ElementTypeLight'],
-  '冥属性': GlobalConstant.TextResource['ElementTypeDark'],
-  '藍属性': GlobalConstant.TextResource['ElementTypeBlue'],
-  '紅属性': GlobalConstant.TextResource['ElementTypeRed'],
-  '翠属性': GlobalConstant.TextResource['ElementTypeGreen'],
-  '黄属性': GlobalConstant.TextResource['ElementTypeYellow'],
-  '週間トピックス・バトルリーグ': `${GlobalConstant.TextResource['WeeklyTopicsDialogTitle']}・${GlobalConstant.TextResource['WeeklyTopicsTopQuestHeadline']}`,
-  '章': GlobalConstant.LanguageTable['Chapter '][GlobalConstant.Language],
-  '前線': GlobalConstant.TextResource['WeeklyTopicsQuestCharacterUsageRateLabelTop'].replace('{0}', ' '),
-  '全体': GlobalConstant.TextResource['WeeklyTopicsQuestCharacterUsageRateLabelAll'],
-  '到達人数': GlobalConstant.TextResource['WeeklyTopicsQuestFrontLineLabelFormat'].replace('{0}', ' '),
-  '週間トピックス・バトルリーグ': `${GlobalConstant.TextResource['WeeklyTopicsDialogTitle']}・${GlobalConstant.TextResource['CommonHeaderLocalPvpLabel']}`,
-  '30位以内': GlobalConstant.TextResource['WeeklyTopicsLeagueCharacterUsageRateLabelTop'],
-  '全体': GlobalConstant.TextResource['WeeklyTopicsLeagueCharacterUsageRateLabelAll'],
-  '連勝記録': GlobalConstant.TextResource['WeeklyTopicsLeagueContinueWinLabel'].replace('{0}', ''),
-  '週間トピックス・レジェンドリーグ': `${GlobalConstant.TextResource['WeeklyTopicsDialogTitle']}・${GlobalConstant.TextResource['CommonHeaderGlobalPvpLabel']}`,
-  'ステータス': GlobalConstant.TextResource['CommonBaseParameterLabel'],
-  'グランドマスター': GlobalConstant.TextResource['GvgGroupLevelNameGoldenLabel'],
-  'エキスパートクラス': GlobalConstant.TextResource['GvgGroupLevelNameSilverLabel'],
-  'エリートクラス': GlobalConstant.TextResource['GvgGroupLevelNameBronzeLabel'],
-  'ブロックＡ': GlobalConstant.TextResource['GvgGroup1NameLabel'],
-  'ブロックＢ': GlobalConstant.TextResource['GvgGroup2NameLabel'],
-  'ブロックＣ': GlobalConstant.TextResource['GvgGroup3NameLabel'],
-  'ブロックＤ': GlobalConstant.TextResource['GvgGroup4NameLabel'],
-  '検索ID': GlobalConstant.LanguageTable['Search ID'][GlobalConstant.Language],
-  '詳細': GlobalConstant.LanguageTable['Details'][GlobalConstant.Language],
-  'クリアパーティ': GlobalConstant.TextResource['AutoBattleQuestButtonClearParty'],
+const TextResource = await getTextResource();
+const ErrorCode = getErrorCode();
+//data-ja翻译表
+const LanguageJa = {
+  'メンテもりもり': LanguageTable['title'][GlobalURLList.lang],
+  'ワールド': TextResource['TitleWarningListWorld'],
+  'レベル': TextResource['CommonPlayerRankLabel'],
+  '幻影の神殿': TextResource['CommonHeaderLocalRaidLabel'],
+  'サーバー': LanguageTable['Region'][GlobalURLList.lang],
+  '更新': LanguageTable['Updated'][GlobalURLList.lang],
+  'プレイヤーランキング': TextResource['RankingGroupTypePlayer'],
+  '戦闘力': TextResource['CommonBattlePowerLabel'],
+  'プレイヤーランク': TextResource['PlayerRankingTypePlayerRank'],
+  'メインクエスト': TextResource['PlayerRankingTypeStage'],
+  '無窮の塔': TextResource['PlayerRankingTypeTowerBattle'],
+  '藍の塔': TextResource['ElementTowerRankingTypeBlue'],
+  '紅の塔': TextResource['ElementTowerRankingTypeRed'],
+  '翠の塔': TextResource['ElementTowerRankingTypeGreen'],
+  '黄の塔': TextResource['ElementTowerRankingTypeYellow'],
+  'ギルドランキング': TextResource['RankingGroupTypeGuild'],
+  'ギルドレベル': TextResource['GuildRankingTypeLevel'],
+  'ギルドストック': TextResource['GuildRankingTypeStock'],
+  'ギルド総戦闘力': TextResource['GuildRankingTypeBattlePower'],
+  'プレイヤー名': TextResource['CommonPlayerNameLabel'],
+  '階': TextResource['RankingTowerBattleLabel'],
+  'ランク': TextResource['CommonPlayerRankLabel'],
+  'クエスト': TextResource['RankingStageLabel'],
+  'ギルド名': TextResource['GuildName'],
+  '人数': TextResource['MemberNumber'],
+  'バトルリーグ': TextResource['CommonHeaderLocalPvpLabel'],
+  'プレイヤー': TextResource['CommonPlayerNameLabel'],
+  '枠１': LanguageTable['Slot 1'][GlobalURLList.lang],
+  '枠２': LanguageTable['Slot 2'][GlobalURLList.lang],
+  '枠３': LanguageTable['Slot 3'][GlobalURLList.lang],
+  '枠４': LanguageTable['Slot 4'][GlobalURLList.lang],
+  '枠５': LanguageTable['Slot 5'][GlobalURLList.lang],
+  '武具': TextResource['CommonEquipmentLabel'],
+  '腕力': TextResource['BaseParameterTypeMuscle'],
+  '技力': TextResource['BaseParameterTypeEnergy'],
+  '聖装': TextResource['EquipmentAscendSortLegendLv'],
+  '魔装': TextResource['EquipmentAscendSortMatchlessLv'],
+  '魔力': TextResource['BaseParameterTypeIntelligence'],
+  '耐久力': TextResource['BaseParameterTypeHealth'],
+  'キャラ': TextResource['CommonHeaderCharacterListLabel'],
+  'Lv.': TextResource['CommonLevelWithDot'],
+  '攻撃力': TextResource['BattleParameterTypeAttackPower'],
+  '防御力': TextResource['BattleParameterTypeDefense'],
+  '防御貫通': TextResource['BattleParameterTypeDefensePenetration'],
+  'スピード': TextResource['BattleParameterTypeSpeed'],
+  '物魔防御貫通': TextResource['BattleParameterTypeDamageEnhance'],
+  '物理防御力': TextResource['BattleParameterTypePhysicalDamageRelax'],
+  '魔法防御力': TextResource['BattleParameterTypeMagicDamageRelax'],
+  '命中': TextResource['BattleParameterTypeHit'],
+  'クリティカル': TextResource['BattleParameterTypeCritical'],
+  'クリダメ強化': TextResource['BattleParameterTypeCriticalDamageEnhance'],
+  '魔法クリダメ緩和': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
+  '物理クリダメ緩和': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
+  '弱体効果命中': TextResource['BattleParameterTypeDebuffHit'],
+  '弱体効果耐性': TextResource['BattleParameterTypeDebuffResist'],
+  'カウンタ': TextResource['BattleParameterTypeDamageReflect'],
+  'HPドレイン': TextResource['BattleParameterTypeHpDrain'],
+  '回避': TextResource['BattleParameterTypeAvoidance'],
+  'クリティカル耐性': TextResource['BattleParameterTypeCriticalResist'],
+  'グループ': TextResource['ChatTabSvS'],
+  'レジェンドリーグ': TextResource['CommonHeaderGlobalPvpLabel'],
+  'ギルドバトル': TextResource['CommonHeaderGvgLabel'],
+  'クラス': LanguageTable['Class'][GlobalURLList.lang],
+  'ブロック': LanguageTable['Block'][GlobalURLList.lang],
+  'グランドバトル': TextResource['CommonHeaderGlobalGvgLabel'],
+  'バトルレポート再生': TextResource['BattleReportTitle'] + TextResource['CommonPlayLabel'],
+  '週間トピックス・属性別キャラ育成': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['WeeklyTopicsTopCharacterHeadline']}`,
+  '天属性': TextResource['ElementTypeLight'],
+  '冥属性': TextResource['ElementTypeDark'],
+  '藍属性': TextResource['ElementTypeBlue'],
+  '紅属性': TextResource['ElementTypeRed'],
+  '翠属性': TextResource['ElementTypeGreen'],
+  '黄属性': TextResource['ElementTypeYellow'],
+  '週間トピックス・バトルリーグ': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['WeeklyTopicsTopQuestHeadline']}`,
+  '章': LanguageTable['Chapter '][GlobalURLList.lang],
+  '前線': TextResource['WeeklyTopicsQuestCharacterUsageRateLabelTop']?.replace('{0}', ' '),
+  '全体': TextResource['WeeklyTopicsQuestCharacterUsageRateLabelAll'],
+  '到達人数': TextResource['WeeklyTopicsQuestFrontLineLabelFormat']?.replace('{0}', ' '),
+  '週間トピックス・バトルリーグ': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['CommonHeaderLocalPvpLabel']}`,
+  '30位以内': TextResource['WeeklyTopicsLeagueCharacterUsageRateLabelTop'],
+  '全体': TextResource['WeeklyTopicsLeagueCharacterUsageRateLabelAll'],
+  '連勝記録': TextResource['WeeklyTopicsLeagueContinueWinLabel']?.replace('{0}', ''),
+  '週間トピックス・レジェンドリーグ': `${TextResource['WeeklyTopicsDialogTitle']}・${TextResource['CommonHeaderGlobalPvpLabel']}`,
+  'ステータス': TextResource['CommonBaseParameterLabel'],
+  'グランドマスター': TextResource['GvgGroupLevelNameGoldenLabel'],
+  'エキスパートクラス': TextResource['GvgGroupLevelNameSilverLabel'],
+  'エリートクラス': TextResource['GvgGroupLevelNameBronzeLabel'],
+  'ブロックＡ': TextResource['GvgGroup1NameLabel'],
+  'ブロックＢ': TextResource['GvgGroup2NameLabel'],
+  'ブロックＣ': TextResource['GvgGroup3NameLabel'],
+  'ブロックＤ': TextResource['GvgGroup4NameLabel'],
+  '検索ID': LanguageTable['Search ID'][GlobalURLList.lang],
+  '詳細': LanguageTable['Details'][GlobalURLList.lang],
+  'クリアパーティ': TextResource['AutoBattleQuestButtonClearParty'],
 };
 //初始化所有页面
 initPage();
 FreezeNode.remove();
 /*常量函数*/
-//获取当前语言
-function getLanguage() {
-  const LanguageList = ['EnUs', 'JaJp', 'ZhCn', 'ZhTw', 'KoKr'];
-  const URLLanguage = document.URL.replace(/^.*?mentemori\.icu\/(.*?\.html)?(\?function=.*?)?.*?(\?lang=.*?)?$/, '$3').replace('?lang=', '');
-  return URLLanguage && LanguageList.includes(URLLanguage) ? URLLanguage : 'EnUs';
+//分解URL
+function getURLList() {
+  let URLList = {
+    'page': '',
+    'function': '',
+    'lang': 'EnUs',
+  };
+  const URLArray = document.URL.replace(/^.*?mentemori\.icu\//, '')
+    .replaceAll('?', '&')
+    .split('&');
+  for (let i = 0; i < URLArray.length; i++) {
+    let text = URLArray[i];
+    if (!text) continue;
+    if (text.includes('.html')) {
+      URLList.page = text.replace('.html', '');
+    } else {
+      let list = text.split('=');
+      if (list[0] == 'lang') {
+        const LanguageList = ['EnUs', 'JaJp', 'ZhCn', 'ZhTw', 'KoKr'];
+        if (LanguageList.includes(text.replace('lang=', ''))) {
+          URLList.lang = text.replace('lang=', '');
+        }
+      } else {
+        URLList[list[0]] = list[1];
+      }
+    }
+  }
+  return URLList;
 }
 //获取错误码
 function getErrorCode() {
-  if (!GlobalConstant.TextResource) return;
+  if (!TextResource) return;
   let result = {};
-  for (let i in GlobalConstant.TextResource) {
+  for (let i in TextResource) {
     if (i.includes('ErrorMessage')) {
-      result[i.replace(/^ErrorMessage(.*?)$/, '$1') * 1] = GlobalConstant.TextResource[i];
+      result[i.replace(/^ErrorMessage(.*?)$/, '$1') * 1] = TextResource[i];
     }
   }
   return result;
+}
+//组合url
+function getURL(urllist, modifier) {
+  let URLString = GlobalConstant.LocalURL;
+  for (let i in modifier) {
+    urllist[i] = modifier[i];
+  }
+  if (!!urllist.page) {
+    URLString = URLString + urllist.page + '.html';
+  }
+  URLString = URLString + '?';
+  for (let i in urllist) {
+    if (i != 'page' && !!urllist[i]) {
+      URLString = URLString + i + '=' + urllist[i] + '&';
+    }
+  }
+  URLString = URLString.slice(0, -1);
+  return URLString;
 }
 /*初始化功能*/
 //初始化页面
@@ -424,8 +473,8 @@ async function initPage() {
   //原有功能进行翻译
   initTranslator();
   //本地化标题
-  document.querySelector('h1').innerHTML = GlobalConstant.LanguageTable['title'][GlobalConstant.Language];
-  document.querySelector('title').innerHTML = GlobalConstant.LanguageTable['title'][GlobalConstant.Language];
+  document.querySelector('h1').innerHTML = LanguageTable['title'][GlobalURLList.lang];
+  document.querySelector('title').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   //追加导航栏格式
   document.querySelector('style').appendChild(
     createElement(
@@ -446,107 +495,111 @@ async function initPage() {
   const divFunction = navDefault.childNodes[1];
   divFunction.innerHTML = '';
   divFunction.append(
-    createElement('a', GlobalConstant.LanguageTable['basic'][GlobalConstant.Language]),
+    createElement('a', LanguageTable['basic'][GlobalURLList.lang]),
     createElement('a', 'API', {
-      'href': `${GlobalConstant.LocalURL}?lang=${GlobalConstant.Language}`,
+      'href': getURL({ 'lang': GlobalURLList.lang }),
       'id': 'API',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['CommonHeaderLocalRaidLabel'], {
-      'href': `${GlobalConstant.LocalURL}temple.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['CommonHeaderLocalRaidLabel'], {
+      'href': getURL({ 'page': 'temple', 'lang': GlobalURLList.lang }),
       'id': 'temple',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['RankingMenuTitle'], {
-      'href': `${GlobalConstant.LocalURL}rankings.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['RankingMenuTitle'], {
+      'href': getURL({ 'page': 'rankings', 'lang': GlobalURLList.lang }),
       'id': 'rankings',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['CommonHeaderLocalPvpLabel'], {
-      'href': `${GlobalConstant.LocalURL}arena.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
+      'href': getURL({ 'page': 'arena', 'lang': GlobalURLList.lang }),
       'id': 'arena',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['CommonHeaderGlobalPvpLabel'], {
-      'href': `${GlobalConstant.LocalURL}legend.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
+      'href': getURL({ 'page': 'legend', 'lang': GlobalURLList.lang }),
       'id': 'legend',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['CommonHeaderGvgLabel'], {
-      'href': `${GlobalConstant.LocalURL}localgvg.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['CommonHeaderGvgLabel'], {
+      'href': getURL({ 'page': 'localgvg', 'lang': GlobalURLList.lang }),
       'id': 'localgvg',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['CommonHeaderGlobalGvgLabel'], {
-      'href': `${GlobalConstant.LocalURL}globalgvg.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['CommonHeaderGlobalGvgLabel'], {
+      'href': getURL({ 'page': 'globalgvg', 'lang': GlobalURLList.lang }),
       'id': 'globalgvg',
     }),
     createElement('br'),
-    createElement('a', GlobalConstant.LanguageTable['weekly'][GlobalConstant.Language], {}),
-    createElement('a', GlobalConstant.TextResource['WeeklyTopicsTopCharacterHeadline'], {
-      'href': `${GlobalConstant.LocalURL}weekly_chara.html?lang=${GlobalConstant.Language}`,
+    createElement('a', LanguageTable['weekly'][GlobalURLList.lang], {}),
+    createElement('a', TextResource['WeeklyTopicsTopCharacterHeadline'], {
+      'href': getURL({ 'page': 'weekly_chara', 'lang': GlobalURLList.lang }),
       'id': 'weekly_chara',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['WeeklyTopicsTopQuestHeadline'], {
-      'href': `${GlobalConstant.LocalURL}weekly_boss.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['WeeklyTopicsTopQuestHeadline'], {
+      'href': getURL({ 'page': 'weekly_boss', 'lang': GlobalURLList.lang }),
       'id': 'weekly_boss',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['CommonHeaderLocalPvpLabel'], {
-      'href': `${GlobalConstant.LocalURL}weekly_arena.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
+      'href': getURL({ 'page': 'weekly_arena', 'lang': GlobalURLList.lang }),
       'id': 'weekly_arena',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['CommonHeaderGlobalPvpLabel'], {
-      'href': `${GlobalConstant.LocalURL}weekly_legend.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
+      'href': getURL({ 'page': 'weekly_legend', 'lang': GlobalURLList.lang }),
       'id': 'weekly_legend',
     }),
     createElement('br'),
-    createElement('a', GlobalConstant.LanguageTable['hidden'][GlobalConstant.Language], {}),
-    createElement('a', GlobalConstant.TextResource['BattleReportTitle'] + GlobalConstant.TextResource['CommonPlayLabel'], {
-      'href': `${GlobalConstant.LocalURL}battle_log.html?lang=${GlobalConstant.Language}`,
+    createElement('a', LanguageTable['hidden'][GlobalURLList.lang], {}),
+    createElement('a', TextResource['BattleReportTitle'] + TextResource['CommonPlayLabel'], {
+      'href': getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang }),
       'id': 'battle_log',
     }),
     createElement('a', '|'),
-    createElement('a', GlobalConstant.TextResource['BattleClearPartyTitle'], {
-      'href': `${GlobalConstant.LocalURL}clearlist.html?lang=${GlobalConstant.Language}`,
+    createElement('a', TextResource['BattleClearPartyTitle'], {
+      //'href': getURL({ 'page': 'clearlist', 'lang': URLList.lang }),
       'id': 'clearlist',
     })
   );
-  //获取语言模块
+  //获取语言账号模块
   const divLocal = navDefault.childNodes[3];
   const nodeSwitch = [divLocal.querySelector('#switch-light'), divLocal.querySelector('#switch-dark')];
   divLocal.innerHTML = '';
+  let URLList = getURLList();
   divLocal.append(
     nodeSwitch[0],
     createElement('a', '|'),
     nodeSwitch[1],
     createElement('br'),
     createElement('a', '🇬🇧', {
-      href: `${document.URL.replace(/\?lang=.*?$/, '')}?lang=EnUs`,
+      'href': getURL(URLList, { 'lang': 'EnUs' }),
       'id': 'EnUs',
     }),
     createElement('a', '|'),
     createElement('a', '🇯🇵', {
-      href: `${document.URL.replace(/\?lang=.*?$/, '')}?lang=JaJp`,
+      'href': getURL(URLList, { 'lang': 'JaJp' }),
       'id': 'JaJp',
     }),
     createElement('a', '|'),
     createElement('a', '🇨🇳', {
-      href: `${document.URL.replace(/\?lang=.*?$/, '')}?lang=ZhCn`,
+      'href': getURL(URLList, { 'lang': 'ZhCn' }),
       'id': 'ZhCn',
     }),
     createElement('a', '|'),
     createElement('a', '🇭🇰', {
-      href: `${document.URL.replace(/\?lang=.*?$/, '')}?lang=ZhTw`,
+      'href': getURL(URLList, { 'lang': 'ZhTw' }),
       'id': 'ZhTw',
     }),
     createElement('a', '|'),
     createElement('a', '🇰🇷', {
-      href: `${document.URL.replace(/\?lang=.*?$/, '')}?lang=KoKr`,
+      'href': getURL(URLList, { 'lang': 'KoKr' }),
       'id': 'KoKr',
-    })
+    }),
+    createElement('br'),
+    createElement('a', LanguageTable['account'][GlobalURLList.lang]),
+    createElement('a', LanguageTable['noaccount'][GlobalURLList.lang])
   );
   //初始化扩展导航栏
   const navExtend = navDefault.insertAdjacentElement('afterend', createElement('nav'));
@@ -554,30 +607,28 @@ async function initPage() {
   //初始化功能模块
   const divExtend = navExtend.appendChild(createElement('div'));
   divExtend.append(
-    createElement('a', GlobalConstant.LanguageTable['extend'][GlobalConstant.Language]),
+    createElement('a', LanguageTable['extend'][GlobalURLList.lang]),
     //二进制文件转换功能
-    createElement('a', GlobalConstant.LanguageTable['dataconvert'][GlobalConstant.Language], {
-      'href': `${GlobalConstant.LocalURL}?function=fileConverter?lang=${GlobalConstant.Language}`,
+    createElement('a', LanguageTable['dataconvert'][GlobalURLList.lang], {
+      'href': getURL({ 'function': 'fileConverter', 'lang': GlobalURLList.lang }),
       'id': 'fileConverter',
     }),
     createElement('a', '|'),
     //战斗布局功能
-    createElement('a', GlobalConstant.LanguageTable['battlehelper'][GlobalConstant.Language], {
-      'href': `${GlobalConstant.LocalURL}?function=gvgMapper?lang=${GlobalConstant.Language}`,
+    createElement('a', LanguageTable['battlehelper'][GlobalURLList.lang], {
+      'href': getURL({ 'function': 'gvgMapper', 'lang': GlobalURLList.lang }),
       'id': 'gvgMapper',
     })
   );
   //取消超链接
-  document.querySelector(`#${GlobalConstant.URLFunction}`)?.removeAttribute('href');
-  document.querySelector(`#${GlobalConstant.Language}`)?.removeAttribute('href');
+  document.querySelector(`#${!GlobalURLList.function ? 'null' : GlobalURLList.function}`)?.removeAttribute('href');
+  document.querySelector(`#${!GlobalURLList.page ? 'null' : GlobalURLList.page}`)?.removeAttribute('href');
+  document.querySelector(`#${!GlobalURLList.lang ? 'null' : GlobalURLList.lang}`)?.removeAttribute('href');
   //初始化账号管理模块
   const divAccount = navExtend.appendChild(createElement('div', '', 'accountmanager'));
-  divAccount.append(
-    createElement('a', GlobalConstant.LanguageTable['account'][GlobalConstant.Language]), //
-    createElement('a', GlobalConstant.LanguageTable['noaccount'][GlobalConstant.Language])
-  );
+  //divAccount.append(  );
   //重构页面
-  switch (GlobalConstant.URLFunction) {
+  switch (GlobalURLList.function) {
     case 'fileConverter': {
       fileConverter();
       break;
@@ -646,41 +697,41 @@ async function initSelect() {
   const GroupList = WorldGroup.GroupList;
   const ClassList = {
     '0': {
-      'Name': GlobalConstant.LanguageTable['Local'][GlobalConstant.Language],
+      'Name': LanguageTable['Local'][GlobalURLList.lang],
       'Class': 'static',
     },
     '1': {
-      'Name': GlobalConstant.TextResource['GvgGroupLevelNameBronzeLabel'],
+      'Name': TextResource['GvgGroupLevelNameBronzeLabel'],
       'Class': 'dynamic',
     },
     '2': {
-      'Name': GlobalConstant.TextResource['GvgGroupLevelNameSilverLabel'],
+      'Name': TextResource['GvgGroupLevelNameSilverLabel'],
       'Class': 'dynamic',
     },
     '3': {
-      'Name': GlobalConstant.TextResource['GvgGroupLevelNameGoldenLabel'],
+      'Name': TextResource['GvgGroupLevelNameGoldenLabel'],
       'Class': 'dynamic',
     },
   };
   const WorldList = WorldGroup.WorldList;
   const BlockList = {
     '0': {
-      'Name': GlobalConstant.TextResource['GvgGroup1NameLabel'],
+      'Name': TextResource['GvgGroup1NameLabel'],
     },
     '1': {
-      'Name': GlobalConstant.TextResource['GvgGroup2NameLabel'],
+      'Name': TextResource['GvgGroup2NameLabel'],
     },
     '2': {
-      'Name': GlobalConstant.TextResource['GvgGroup3NameLabel'],
+      'Name': TextResource['GvgGroup3NameLabel'],
     },
     '3': {
-      'Name': GlobalConstant.TextResource['GvgGroup4NameLabel'],
+      'Name': TextResource['GvgGroup4NameLabel'],
     },
   };
   //初始化选择区
   const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
   //区域选择
-  const pRegion = divSelect.appendChild(createElement('p', `<a>${GlobalConstant.LanguageTable['Region'][GlobalConstant.Language]}</a><a>:</a>`));
+  const pRegion = divSelect.appendChild(createElement('p', `<a>${LanguageTable['Region'][GlobalURLList.lang]}</a><a>:</a>`));
   const selectRegion = pRegion.appendChild(createElement('select', '', 'listRegion'));
   selectRegion.options.add(NullOption());
   for (let RegionId in RegionList) {
@@ -692,7 +743,7 @@ async function initSelect() {
     }
   }
   //群组选择
-  const pGroup = divSelect.appendChild(createElement('p', `<a>${GlobalConstant.TextResource['ChatTabSvS']}</a><a>:</a>`));
+  const pGroup = divSelect.appendChild(createElement('p', `<a>${TextResource['ChatTabSvS']}</a><a>:</a>`));
   const selectGroup = pGroup.appendChild(createElement('select', '', 'listGroup'));
   selectGroup.options.add(NullOption());
   for (let GroupId in GroupList) {
@@ -707,7 +758,7 @@ async function initSelect() {
     }
   }
   //等级选择
-  const pClass = divSelect.appendChild(createElement('p', `<a>${GlobalConstant.LanguageTable['Class'][GlobalConstant.Language]}</a><a>:</a>`));
+  const pClass = divSelect.appendChild(createElement('p', `<a>${LanguageTable['Class'][GlobalURLList.lang]}</a><a>:</a>`));
   const selectClass = pClass.appendChild(createElement('select', '', 'listClass'));
   selectClass.options.add(NullOption());
   for (let ClassId in ClassList) {
@@ -717,7 +768,7 @@ async function initSelect() {
     selectClass.options.add(option);
   }
   //世界/块选择
-  const pWorld = divSelect.appendChild(createElement('p', `<a>${GlobalConstant.TextResource['TitleWarningListWorld']}</a><a>:</a>`));
+  const pWorld = divSelect.appendChild(createElement('p', `<a>${TextResource['TitleWarningListWorld']}</a><a>:</a>`));
   const selectWorld = pWorld.appendChild(createElement('select', '', 'listWorld'));
   selectWorld.options.add(NullOption());
   for (let BlockId in BlockList) {
@@ -798,7 +849,7 @@ async function initSelect() {
 }
 //初始化内容
 function initContent() {
-  while (document.body.childNodes.length > 4) {
+  while (document.body.childNodes.length > 6) {
     document.body.lastChild.remove();
   }
 }
@@ -806,44 +857,44 @@ function initContent() {
 function initTranslator() {
   //替换内置语言表，需人工维护
   unsafeWindow.m = {};
-  unsafeWindow.m[GlobalConstant.Language] = {
-    'Rank': GlobalConstant.TextResource['CommonPlayerRankLabel'],
-    'STR': GlobalConstant.TextResource['BaseParameterTypeMuscle'],
-    'MAG': GlobalConstant.TextResource['BaseParameterTypeIntelligence'],
-    'DEX': GlobalConstant.TextResource['BaseParameterTypeEnergy'],
-    'STA': GlobalConstant.TextResource['BaseParameterTypeHealth'],
-    'ATK': GlobalConstant.TextResource['BattleParameterTypeAttackPower'],
-    'DEF': GlobalConstant.TextResource['BattleParameterTypeDefense'],
-    'DEF Break': GlobalConstant.TextResource['BattleParameterTypeDefensePenetration'],
-    'SPD': GlobalConstant.TextResource['BattleParameterTypeSpeed'],
-    'HP': GlobalConstant.TextResource['BattleParameterTypeHp'],
-    'PM.DEF Break': GlobalConstant.TextResource['BattleParameterTypeDamageEnhance'],
-    'P.DEF': GlobalConstant.TextResource['BattleParameterTypePhysicalDamageRelax'],
-    'M.DEF': GlobalConstant.TextResource['BattleParameterTypeMagicDamageRelax'],
-    'ACC': GlobalConstant.TextResource['BattleParameterTypeHit'],
-    'EVD': GlobalConstant.TextResource['BattleParameterTypeAvoidance'],
-    'CRIT': GlobalConstant.TextResource['BattleParameterTypeCritical'],
-    'CRIT RES': GlobalConstant.TextResource['BattleParameterTypeCriticalResist'],
-    'CRIT DMG Boost': GlobalConstant.TextResource['BattleParameterTypeCriticalDamageEnhance'],
-    'P.CRIT DMG Cut': GlobalConstant.TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
-    'M.CRIT DMG Cut': GlobalConstant.TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
-    'Debuff ACC': GlobalConstant.TextResource['BattleParameterTypeDebuffHit'],
-    'Debuff RES': GlobalConstant.TextResource['BattleParameterTypeDebuffResist'],
-    'Counter': GlobalConstant.TextResource['BattleParameterTypeDamageReflect'],
-    'HP Drain': GlobalConstant.TextResource['BattleParameterTypeHpDrain'],
-    'Locked': GlobalConstant.LanguageTable['Locked'][GlobalConstant.Language],
-    'None': GlobalConstant.TextResource['CommonNotEquippingLabel'],
-    ' pts, ': ` ${GlobalConstant.TextResource['GlovalPvpPoint']}`,
-    ' streak': ` ${GlobalConstant.TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', '')}`,
-    'EXP Orb': GlobalConstant.TextResource['ItemName10'],
-    'Upgrade Water': GlobalConstant.TextResource['ItemName12'],
-    'Upgrade Panacea': GlobalConstant.TextResource['ItemName13'],
-    'Kindling Orb': GlobalConstant.TextResource['ItemName11'],
-    'Rune Ticket': GlobalConstant.TextResource['ItemName43'],
-    'Event': GlobalConstant.TextResource['PlayerEventPolicyLabel'],
-    'All Worlds': GlobalConstant.LanguageTable['All Worlds'][GlobalConstant.Language],
-    ' Forces': GlobalConstant.LanguageTable[' Forces'][GlobalConstant.Language],
-    ' Wins': ` ${GlobalConstant.TextResource['WeeklyTopicsLeagueContinueWinCountFormat'].replace('{0}', '')}`,
+  unsafeWindow.m[GlobalURLList.lang] = {
+    'Rank': TextResource['CommonPlayerRankLabel'],
+    'STR': TextResource['BaseParameterTypeMuscle'],
+    'MAG': TextResource['BaseParameterTypeIntelligence'],
+    'DEX': TextResource['BaseParameterTypeEnergy'],
+    'STA': TextResource['BaseParameterTypeHealth'],
+    'ATK': TextResource['BattleParameterTypeAttackPower'],
+    'DEF': TextResource['BattleParameterTypeDefense'],
+    'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
+    'SPD': TextResource['BattleParameterTypeSpeed'],
+    'HP': TextResource['BattleParameterTypeHp'],
+    'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
+    'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
+    'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
+    'ACC': TextResource['BattleParameterTypeHit'],
+    'EVD': TextResource['BattleParameterTypeAvoidance'],
+    'CRIT': TextResource['BattleParameterTypeCritical'],
+    'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
+    'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
+    'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
+    'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
+    'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
+    'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
+    'Counter': TextResource['BattleParameterTypeDamageReflect'],
+    'HP Drain': TextResource['BattleParameterTypeHpDrain'],
+    'Locked': LanguageTable['Locked'][GlobalURLList.lang],
+    'None': TextResource['CommonNotEquippingLabel'],
+    ' pts, ': ` ${TextResource['GlovalPvpPoint']}`,
+    ' streak': ` ${TextResource['GlobalPvpConsecutiveVictoryLabel']?.replace('{0}', '')}`,
+    'EXP Orb': TextResource['ItemName10'],
+    'Upgrade Water': TextResource['ItemName12'],
+    'Upgrade Panacea': TextResource['ItemName13'],
+    'Kindling Orb': TextResource['ItemName11'],
+    'Rune Ticket': TextResource['ItemName43'],
+    'Event': TextResource['PlayerEventPolicyLabel'],
+    'All Worlds': LanguageTable['All Worlds'][GlobalURLList.lang],
+    ' Forces': LanguageTable[' Forces'][GlobalURLList.lang],
+    ' Wins': ` ${TextResource['WeeklyTopicsLeagueContinueWinCountFormat']?.replace('{0}', '')}`,
   };
   //替换含data-ja的标签，需人工维护
   let jalist = [];
@@ -855,13 +906,13 @@ function initTranslator() {
   for (let i = 0; i < jalist.length; i++) {
     for (let j = 0; j < jalist[i].length; j++) {
       dataja = jalist[i][j].getAttribute('data-ja');
-      jalist[i][j].innerHTML = GlobalConstant.LanguageJa[dataja] ?? jalist[i][j].innerHTML + '|' + dataja;
+      jalist[i][j].innerHTML = LanguageJa[dataja] ?? jalist[i][j].innerHTML + '|' + dataja;
     }
   }
   //替换HP
   const HPNode = document.querySelector('#HP');
   if (HPNode) {
-    HPNode.parentElement.childNodes[0].innerHTML = GlobalConstant.TextResource['BattleParameterTypeHp'];
+    HPNode.parentElement.childNodes[0].innerHTML = TextResource['BattleParameterTypeHp'];
   }
   const gvgNode = document.querySelector('gvg-wrapper');
   if (gvgNode) {
@@ -869,7 +920,7 @@ function initTranslator() {
     const castleList = gvgNode.querySelectorAll('gvg-castle');
     for (let i = 0; i < castleList.length; i++) {
       const castleid = castleList[i].getAttribute('castle-id');
-      castleList[i].querySelector('gvg-castle-name').innerHTML = GlobalConstant.TextResource[`${map.charAt(0).toUpperCase()}${map.slice(1)}GvgCastleName${castleid}`];
+      castleList[i].querySelector('gvg-castle-name').innerHTML = TextResource[`${map.charAt(0).toUpperCase()}${map.slice(1)}GvgCastleName${castleid}`];
     }
   }
 }
@@ -1355,8 +1406,8 @@ function drawMap(ClassId) {
   document.querySelector('gvg-viewer')?.remove();
   document.querySelector('gvg-list')?.remove();
   document.querySelector('gvg-list')?.remove();
-  document.body.append(createElement('gvg-list', '<h2>我方列表</h2><div></div>', 'friendList'));
-  document.body.append(createElement('gvg-list', '<h2>敌方列表</h2><div></div>', 'enermyList'));
+  //document.body.append(createElement('gvg-list', '<h2>我方列表</h2><div></div>', 'friendList'));
+  //document.body.append(createElement('gvg-list', '<h2>敌方列表</h2><div></div>', 'enermyList'));
   if (ClassId) {
     const castleList = {
       'local': {
@@ -1901,7 +1952,7 @@ function drawMap(ClassId) {
       };
       castleNode.append(createElement('gvg-castle-icon'));
       //增加提示
-      const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', GlobalConstant.LanguageTable[Class][GlobalConstant.Language][CastleId - 1]));
+      const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', LanguageTable[Class][GlobalURLList.lang][CastleId - 1]));
       NodeCastleName.onclick = (e) => {
         let exist = e.target.parentNode.querySelector('gvg-castle-hint');
         let image = e.target.parentNode.querySelector('.gvg-castle-symbol');
@@ -2239,8 +2290,8 @@ async function getAppVersion() {
 }
 //获取本地化文件
 async function getTextResource() {
-  if (GlobalConstant.AppVersion != getStorage('AppVersion') || GlobalConstant.Language != getStorage('Language')) {
-    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResource${GlobalConstant.Language}MB`, { type: 'arraybuffer', msgpack: true });
+  if (GlobalConstant.AppVersion != getStorage('AppVersion') || GlobalURLList.lang != getStorage('Language')) {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResource${GlobalURLList.lang}MB`, { type: 'arraybuffer', msgpack: true });
     const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
     if (!TextResourceMB) return;
     let result = {};
@@ -2249,7 +2300,7 @@ async function getTextResource() {
       result[TextResource.StringKey.replace(/\[(.*?)\]/, '$1')] = TextResource.Text;
     }
     setStorage('AppVersion', GlobalConstant.AppVersion);
-    setStorage('Language', GlobalConstant.Language);
+    setStorage('Language', GlobalURLList.lang);
     setStorage('TextResource', JSON.stringify(result));
   }
   return JSON.parse(getStorage('TextResource'));
@@ -2259,12 +2310,12 @@ async function getWorldGroup() {
   const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer' });
   const WorldGroupMB = await msgpack.decode(new Uint8Array(buffer));
   const RegionList = {
-    jp: GlobalConstant.TextResource['TimeServerName1'], //
-    kr: GlobalConstant.TextResource['TimeServerName2'],
-    ap: GlobalConstant.TextResource['TimeServerName3'],
-    us: GlobalConstant.TextResource['TimeServerName4'],
-    eu: GlobalConstant.TextResource['TimeServerName5'],
-    gl: GlobalConstant.TextResource['TimeServerName6'],
+    jp: TextResource['TimeServerName1'], //
+    kr: TextResource['TimeServerName2'],
+    ap: TextResource['TimeServerName3'],
+    us: TextResource['TimeServerName4'],
+    eu: TextResource['TimeServerName5'],
+    gl: TextResource['TimeServerName6'],
   };
   const RegionIdList = { jp: 1, kr: 2, ap: 3, us: 4, eu: 5, gl: 6 };
   let WorldGroup = {
@@ -2288,7 +2339,7 @@ async function getWorldGroup() {
         };
         WorldGroup.RegionList[RegionId] = Region;
         WorldGroup.GroupList[`N${RegionId}`] = {
-          'Name': `${GlobalConstant.TextResource['ChatTabSvS']} NA`,
+          'Name': `${TextResource['ChatTabSvS']} NA`,
           'SName': `GNA`,
           'Region': RegionId,
           'WorldList': [],
@@ -2298,7 +2349,7 @@ async function getWorldGroup() {
       let Group = WorldGroup.GroupList[GroupId];
       if (!Group) {
         Group = {
-          'Name': `${GlobalConstant.TextResource['ChatTabSvS']} ${GroupId}`,
+          'Name': `${TextResource['ChatTabSvS']} ${GroupId}`,
           'SName': `G${GroupId}`,
           'Region': RegionId,
           'WorldList': [],
@@ -2310,7 +2361,7 @@ async function getWorldGroup() {
         const WorldId = WorldIdList[j];
         Region.WorldList.push(WorldId);
         WorldGroup.WorldList[WorldId] = {
-          'Name': `${GlobalConstant.TextResource['TitleWarningListWorld']} ${WorldId % 1000}`,
+          'Name': `${TextResource['TitleWarningListWorld']} ${WorldId % 1000}`,
           'SName': `W${WorldId % 1000}`,
           'Region': RegionId,
           'Group': GroupId,
