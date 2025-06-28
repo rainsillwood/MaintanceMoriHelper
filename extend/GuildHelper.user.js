@@ -652,9 +652,9 @@ async function initPage() {
     })
   );
   //取消超链接
-  document.querySelector(`[title=${GlobalURLList.function}]`)?.removeAttribute('href');
-  document.querySelector(`[title=${GlobalURLList.page}]`)?.removeAttribute('href');
-  document.querySelector(`[title${GlobalURLList.lang}]=`)?.removeAttribute('href');
+  document.querySelector(`[title="${GlobalURLList.function}"]`)?.removeAttribute('href');
+  document.querySelector(`[title="${GlobalURLList.page}"]`)?.removeAttribute('href');
+  document.querySelector(`[title="${GlobalURLList.lang}"]`)?.removeAttribute('href');
   //初始化账号管理模块
   const divAccount = navExtend.appendChild(createElement('div', '', 'accountmanager'));
   divAccount.append();
