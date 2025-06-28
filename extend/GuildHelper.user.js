@@ -287,55 +287,51 @@ const GlobalVariable = {
 let SocketGvG;
 let DataBase;
 //注入翻译
-let needAssign = true;
 const assign = unsafeWindow._m;
 unsafeWindow._m = function (...args) {
-  if (needAssign) {
-    let TextResource = JSON.parse(getStorage('TextResource'));
-    if (TextResource['CommonPlayerRankLabel']) {
-      //内联翻译表
-      unsafeWindow.m[GlobalURLList.lang] = {
-        'Rank': TextResource['CommonPlayerRankLabel'],
-        'STR': TextResource['BaseParameterTypeMuscle'],
-        'MAG': TextResource['BaseParameterTypeIntelligence'],
-        'DEX': TextResource['BaseParameterTypeEnergy'],
-        'STA': TextResource['BaseParameterTypeHealth'],
-        'ATK': TextResource['BattleParameterTypeAttackPower'],
-        'DEF': TextResource['BattleParameterTypeDefense'],
-        'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
-        'SPD': TextResource['BattleParameterTypeSpeed'],
-        'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
-        'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
-        'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
-        'ACC': TextResource['BattleParameterTypeHit'],
-        'EVD': TextResource['BattleParameterTypeAvoidance'],
-        'CRIT': TextResource['BattleParameterTypeCritical'],
-        'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
-        'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
-        'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
-        'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
-        'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
-        'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
-        'Counter': TextResource['BattleParameterTypeDamageReflect'],
-        'HP Drain': TextResource['BattleParameterTypeHpDrain'],
-        'Locked': LanguageTable['Locked'][GlobalURLList.lang],
-        'None': TextResource['CommonNotEquippingLabel'],
-        ' pts, ': ` ${TextResource['GlovalPvpPoint']}`,
-        ' streak': ` ${TextResource['GlobalPvpConsecutiveVictoryLabel']?.replace('{0}', '')}`,
-        'EXP Orb': TextResource['ItemName10'],
-        'Upgrade Water': TextResource['ItemName12'],
-        'Upgrade Panacea': TextResource['ItemName13'],
-        'Kindling Orb': TextResource['ItemName11'],
-        'Rune Ticket': TextResource['ItemName43'],
-        'Event': TextResource['PlayerEventPolicyLabel'],
-        'All Worlds': LanguageTable['All Worlds'][GlobalURLList.lang],
-        ' Forces': LanguageTable[' Forces'][GlobalURLList.lang],
-        ' Wins': ` ${TextResource['WeeklyTopicsLeagueContinueWinCountFormat']?.replace('{0}', '')}`,
-      };
-    } else {
-      alert('未初始化语言，翻译未加载，请刷新重试');
-    }
-    needAssign = false;
+  let TextResource = JSON.parse(getStorage('TextResource'));
+  if (TextResource['CommonPlayerRankLabel']) {
+    //内联翻译表
+    unsafeWindow.m[GlobalURLList.lang] = {
+      'Rank': TextResource['CommonPlayerRankLabel'],
+      'STR': TextResource['BaseParameterTypeMuscle'],
+      'MAG': TextResource['BaseParameterTypeIntelligence'],
+      'DEX': TextResource['BaseParameterTypeEnergy'],
+      'STA': TextResource['BaseParameterTypeHealth'],
+      'ATK': TextResource['BattleParameterTypeAttackPower'],
+      'DEF': TextResource['BattleParameterTypeDefense'],
+      'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
+      'SPD': TextResource['BattleParameterTypeSpeed'],
+      'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
+      'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
+      'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
+      'ACC': TextResource['BattleParameterTypeHit'],
+      'EVD': TextResource['BattleParameterTypeAvoidance'],
+      'CRIT': TextResource['BattleParameterTypeCritical'],
+      'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
+      'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
+      'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
+      'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
+      'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
+      'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
+      'Counter': TextResource['BattleParameterTypeDamageReflect'],
+      'HP Drain': TextResource['BattleParameterTypeHpDrain'],
+      'Locked': LanguageTable['Locked'][GlobalURLList.lang],
+      'None': TextResource['CommonNotEquippingLabel'],
+      ' pts, ': ` ${TextResource['GlovalPvpPoint']}`,
+      ' streak': ` ${TextResource['GlobalPvpConsecutiveVictoryLabel']?.replace('{0}', '')}`,
+      'EXP Orb': TextResource['ItemName10'],
+      'Upgrade Water': TextResource['ItemName12'],
+      'Upgrade Panacea': TextResource['ItemName13'],
+      'Kindling Orb': TextResource['ItemName11'],
+      'Rune Ticket': TextResource['ItemName43'],
+      'Event': TextResource['PlayerEventPolicyLabel'],
+      'All Worlds': LanguageTable['All Worlds'][GlobalURLList.lang],
+      ' Forces': LanguageTable[' Forces'][GlobalURLList.lang],
+      ' Wins': ` ${TextResource['WeeklyTopicsLeagueContinueWinCountFormat']?.replace('{0}', '')}`,
+    };
+  } else {
+    alert('未初始化语言，翻译未加载，请刷新重试');
   }
   return assign.call(this, ...args);
 };
@@ -533,69 +529,69 @@ async function initPage() {
     createElement('a', LanguageTable['basic'][GlobalURLList.lang]),
     createElement('a', 'API', {
       'href': getURL({ 'lang': GlobalURLList.lang }),
-      'id': 'API',
+      'title': 'API',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderLocalRaidLabel'], {
       'href': getURL({ 'page': 'temple', 'lang': GlobalURLList.lang }),
-      'id': 'temple',
+      'title': 'temple',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['RankingMenuTitle'], {
       'href': getURL({ 'page': 'rankings', 'lang': GlobalURLList.lang }),
-      'id': 'rankings',
+      'title': 'rankings',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
       'href': getURL({ 'page': 'arena', 'lang': GlobalURLList.lang }),
-      'id': 'arena',
+      'title': 'arena',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
       'href': getURL({ 'page': 'legend', 'lang': GlobalURLList.lang }),
-      'id': 'legend',
+      'title': 'legend',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderGvgLabel'], {
       'href': getURL({ 'page': 'localgvg', 'lang': GlobalURLList.lang }),
-      'id': 'localgvg',
+      'title': 'localgvg',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderGlobalGvgLabel'], {
       'href': getURL({ 'page': 'globalgvg', 'lang': GlobalURLList.lang }),
-      'id': 'globalgvg',
+      'title': 'globalgvg',
     }),
     createElement('br'),
     createElement('a', LanguageTable['weekly'][GlobalURLList.lang], {}),
     createElement('a', TextResource['WeeklyTopicsTopCharacterHeadline'], {
       'href': getURL({ 'page': 'weekly_chara', 'lang': GlobalURLList.lang }),
-      'id': 'weekly_chara',
+      'title': 'weekly_chara',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['WeeklyTopicsTopQuestHeadline'], {
       'href': getURL({ 'page': 'weekly_boss', 'lang': GlobalURLList.lang }),
-      'id': 'weekly_boss',
+      'title': 'weekly_boss',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
       'href': getURL({ 'page': 'weekly_arena', 'lang': GlobalURLList.lang }),
-      'id': 'weekly_arena',
+      'title': 'weekly_arena',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
       'href': getURL({ 'page': 'weekly_legend', 'lang': GlobalURLList.lang }),
-      'id': 'weekly_legend',
+      'title': 'weekly_legend',
     }),
     createElement('br'),
     createElement('a', LanguageTable['hidden'][GlobalURLList.lang], {}),
     createElement('a', TextResource['BattleReportTitle'] + TextResource['CommonPlayLabel'], {
       'href': getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang }),
-      'id': 'battle_log',
+      'title': 'battle_log',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['BattleClearPartyTitle'], {
       //'href': getURL({ 'page': 'clearlist', 'lang': URLList.lang }),
-      'id': 'clearlist',
+      'title': 'clearlist',
     })
   );
   //获取语言账号模块
@@ -610,27 +606,27 @@ async function initPage() {
     createElement('br'),
     createElement('a', '🇬🇧', {
       'href': getURL(URLList, { 'lang': 'EnUs' }),
-      'id': 'EnUs',
+      'title': 'EnUs',
     }),
     createElement('a', '|'),
     createElement('a', '🇯🇵', {
       'href': getURL(URLList, { 'lang': 'JaJp' }),
-      'id': 'JaJp',
+      'title': 'JaJp',
     }),
     createElement('a', '|'),
     createElement('a', '🇨🇳', {
       'href': getURL(URLList, { 'lang': 'ZhCn' }),
-      'id': 'ZhCn',
+      'title': 'ZhCn',
     }),
     createElement('a', '|'),
     createElement('a', '🇭🇰', {
       'href': getURL(URLList, { 'lang': 'ZhTw' }),
-      'id': 'ZhTw',
+      'title': 'ZhTw',
     }),
     createElement('a', '|'),
     createElement('a', '🇰🇷', {
       'href': getURL(URLList, { 'lang': 'KoKr' }),
-      'id': 'KoKr',
+      'title': 'KoKr',
     }),
     createElement('br'),
     createElement('a', LanguageTable['account'][GlobalURLList.lang]),
@@ -646,22 +642,22 @@ async function initPage() {
     //二进制文件转换功能
     createElement('a', LanguageTable['dataconvert'][GlobalURLList.lang], {
       'href': getURL({ 'function': 'fileConverter', 'lang': GlobalURLList.lang }),
-      'id': 'fileConverter',
+      'title': 'fileConverter',
     }),
     createElement('a', '|'),
     //战斗布局功能
     createElement('a', LanguageTable['battlehelper'][GlobalURLList.lang], {
       'href': getURL({ 'function': 'gvgMapper', 'lang': GlobalURLList.lang }),
-      'id': 'gvgMapper',
+      'title': 'gvgMapper',
     })
   );
   //取消超链接
-  document.querySelector(`#${!GlobalURLList.function ? 'null' : GlobalURLList.function}`)?.removeAttribute('href');
-  document.querySelector(`#${!GlobalURLList.page ? 'null' : GlobalURLList.page}`)?.removeAttribute('href');
-  document.querySelector(`#${!GlobalURLList.lang ? 'null' : GlobalURLList.lang}`)?.removeAttribute('href');
+  document.querySelector(`[title=${GlobalURLList.function}]`)?.removeAttribute('href');
+  document.querySelector(`[title=${GlobalURLList.page}]`)?.removeAttribute('href');
+  document.querySelector(`[title${GlobalURLList.lang}]=`)?.removeAttribute('href');
   //初始化账号管理模块
   const divAccount = navExtend.appendChild(createElement('div', '', 'accountmanager'));
-  //divAccount.append(  );
+  divAccount.append();
   //重构页面
   switch (GlobalURLList.function) {
     case 'fileConverter': {
@@ -2374,6 +2370,23 @@ async function getAppVersion() {
 async function getTextResource() {
   if (GlobalConstant.AppVersion != getStorage('AppVersion') || GlobalURLList.lang != getStorage('Language')) {
     const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResource${GlobalURLList.lang}MB`, { type: 'arraybuffer', msgpack: true });
+    const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
+    if (!TextResourceMB) return;
+    let result = {};
+    for (let i = 0; i < TextResourceMB.length; i++) {
+      const TextResource = TextResourceMB[i];
+      result[TextResource.StringKey.replace(/\[(.*?)\]/, '$1')] = TextResource.Text;
+    }
+    setStorage('AppVersion', GlobalConstant.AppVersion);
+    setStorage('Language', GlobalURLList.lang);
+    setStorage('TextResource', JSON.stringify(result));
+  }
+  return JSON.parse(getStorage('TextResource'));
+}
+//获取本地化文件
+async function getLocalRaidQuest() {
+  if (GlobalConstant.AppVersion != getStorage('AppVersion') || GlobalURLList.lang != getStorage('Language')) {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/LocalRaidQuestMB`, { type: 'arraybuffer', msgpack: true });
     const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
     if (!TextResourceMB) return;
     let result = {};
