@@ -1052,7 +1052,7 @@ async function gvgMapper() {
       name: 'Get',
     })
   );
-  //开始监听按钮
+  /*/开始监听按钮
   const buttonConnectServer = pConnect.appendChild(
     createElement('button', LanguageTable['StartUpdate'][GlobalURLList.lang], {
       name: 'Connect',
@@ -1065,7 +1065,7 @@ async function gvgMapper() {
       name: 'Disconnect',
       disabled: 'true',
     })
-  );
+  );*/
   //初始化世界选择
   if (CacheWorldId >= 0) {
     divSelect.querySelector('#listRegion').value = CacheRegionId;
@@ -2093,8 +2093,8 @@ async function fillMap(CastleList, GuildList) {
 async function fillGuilds(GuildList) {
   document.querySelector('#guilds1')?.remove();
   document.querySelector('#guilds2')?.remove();
-  table2 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds2'));
-  table1 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>图</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds1'));
+  table2 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds2'));
+  table1 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds1'));
   const RegionId = getStorage('RegionId');
   if (GuildList) {
     const tbody1 = table1.appendChild(createElement('tbody'));
