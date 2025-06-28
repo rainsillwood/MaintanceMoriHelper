@@ -235,6 +235,41 @@ const LanguageTable = {
     'ZhTw': '查詢條件',
     'ZhCn': '查询条件',
   },
+  'FromServer': {
+    'JaJp': 'Get from server',
+    'EnUs': 'Get from server',
+    'KoKr': 'Get from server',
+    'ZhTw': '自伺服器獲取',
+    'ZhCn': '从服务器获取',
+  },
+  'SaveDatabase': {
+    'JaJp': 'Get from database',
+    'EnUs': 'Get from database',
+    'KoKr': 'Get from database',
+    'ZhTw': '保存到數據庫',
+    'ZhCn': '保存到数据库',
+  },
+  'ReadDatabase': {
+    'JaJp': 'Get from database',
+    'EnUs': 'Get from database',
+    'KoKr': 'Get from database',
+    'ZhTw': '自數據庫獲取',
+    'ZhCn': '从数据库获取',
+  },
+  'StartUpdate': {
+    'JaJp': 'Start attaching to server',
+    'EnUs': 'Start attaching to server',
+    'KoKr': 'Start attaching to server',
+    'ZhTw': '開始監聽伺服器',
+    'ZhCn': '开始监听服务器',
+  },
+  'CloseUpdate': {
+    'JaJp': 'Close attaching',
+    'EnUs': 'Close attaching',
+    'KoKr': 'Close attaching',
+    'ZhTw': '關閉監聽',
+    'ZhCn': '关闭监听',
+  },
 };
 //URL信息
 const GlobalURLList = getURLList();
@@ -1006,27 +1041,27 @@ async function gvgMapper() {
   //初始化读写功能组
   const pRequest = divSelect.appendChild(createElement('p'));
   //读取按钮
-  //const buttonGetLocal = pRequest.appendChild(createElement('button', `从上一次恢复`));
+  //const buttonGetLocal = pRequest.appendChild(createElement('button', LanguageTable['ReadDatabase'][GlobalURLList.lang]));
   //保存按钮
-  //const buttonSetLocal = pRequest.appendChild(createElement('button', `保存设置`));
+  //const buttonSetLocal = pRequest.appendChild(createElement('button',LanguageTable['SaveDatabase'][GlobalURLList.lang]));
   //初始化监听功能组
   const pConnect = divSelect.appendChild(createElement('p'));
   //
   const buttonGetServer = pConnect.appendChild(
-    createElement('button', `从服务器获取`, {
+    createElement('button', LanguageTable['FromServer'][GlobalURLList.lang], {
       name: 'Get',
     })
   );
   //开始监听按钮
   const buttonConnectServer = pConnect.appendChild(
-    createElement('button', `开始同步`, {
+    createElement('button', LanguageTable['StartUpdate'][GlobalURLList.lang], {
       name: 'Connect',
       disabled: 'true',
     })
   );
   //关闭监听按钮
   const buttonDisconnectServer = pConnect.appendChild(
-    createElement('button', `暂停同步`, {
+    createElement('button', LanguageTable['CloseUpdate'][GlobalURLList.lang], {
       name: 'Disconnect',
       disabled: 'true',
     })
