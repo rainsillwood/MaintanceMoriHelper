@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.62
+// @version      0.65
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -835,7 +835,7 @@ async function initSelect() {
         'styleWorld'
       )
     );
-    drawMap(selectClass.value);
+    drawMap();
     fillGuilds();
   };
   selectWorld.onchange = () => {
@@ -843,7 +843,7 @@ async function initSelect() {
     setStorage('GroupId', selectGroup.value);
     setStorage('ClassId', selectClass.value);
     setStorage('WorldId', selectWorld.value);
-    drawMap(selectClass.value);
+    drawMap();
     fillGuilds();
   };
 }
@@ -968,10 +968,10 @@ function fileConverter() {
 async function gvgMapper() {
   initContent();
   await initSelect();
-  const RegionId = getStorage('RegionId');
-  const GroupId = getStorage('GroupId');
-  const ClassId = getStorage('ClassId');
-  const WorldId = getStorage('WorldId');
+  let CacheRegionId = getStorage('RegionId');
+  let CacheGroupId = getStorage('GroupId');
+  let CacheClassId = getStorage('ClassId');
+  let CacheWorldId = getStorage('WorldId');
   document.querySelector('style').appendChild(
     createElement(
       'text',
@@ -1006,9 +1006,9 @@ async function gvgMapper() {
   //初始化读写功能组
   const pRequest = divSelect.appendChild(createElement('p'));
   //读取按钮
-  const buttonGetLocal = pRequest.appendChild(createElement('button', `从上一次恢复`));
+  //const buttonGetLocal = pRequest.appendChild(createElement('button', `从上一次恢复`));
   //保存按钮
-  const buttonSetLocal = pRequest.appendChild(createElement('button', `保存设置`));
+  //const buttonSetLocal = pRequest.appendChild(createElement('button', `保存设置`));
   //初始化监听功能组
   const pConnect = divSelect.appendChild(createElement('p'));
   //
@@ -1021,6 +1021,7 @@ async function gvgMapper() {
   const buttonConnectServer = pConnect.appendChild(
     createElement('button', `开始同步`, {
       name: 'Connect',
+      disabled: 'true',
     })
   );
   //关闭监听按钮
@@ -1031,16 +1032,16 @@ async function gvgMapper() {
     })
   );
   //初始化世界选择
-  if (WorldId >= 0) {
-    divSelect.querySelector('#listRegion').value = RegionId;
-    divSelect.querySelector('#listGroup').value = GroupId;
-    divSelect.querySelector('#listClass').value = ClassId;
-    divSelect.querySelector('#listWorld').value = WorldId;
+  if (CacheWorldId >= 0) {
+    divSelect.querySelector('#listRegion').value = CacheRegionId;
+    divSelect.querySelector('#listGroup').value = CacheGroupId;
+    divSelect.querySelector('#listClass').value = CacheClassId;
+    divSelect.querySelector('#listWorld').value = CacheWorldId;
     document.head.append(
       createElement(
         'style',
         `
-              #listGroup > option.R${RegionId} {
+              #listGroup > option.R${CacheRegionId} {
                 display: inline;
               }`,
         'styleGroup'
@@ -1049,7 +1050,7 @@ async function gvgMapper() {
         'style',
         `
               #listClass > .static
-              ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
+              ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
                 display: inline;
               }`,
         'styleClass'
@@ -1057,7 +1058,7 @@ async function gvgMapper() {
       createElement(
         'style',
         `
-              #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
+              #listWorld > ${CacheClassId > 0 ? '.global' : '.G' + CacheGroupId} {
                 display: inline;
               }`,
         'styleWorld'
@@ -1065,11 +1066,11 @@ async function gvgMapper() {
     );
   }
   //初始化地图
-  if (ClassId >= 0) {
-    drawMap(ClassId);
+  if (CacheClassId >= 0) {
+    drawMap();
   }
   /* 功能设定 */
-  //读取数据
+  /*/读取数据
   buttonGetLocal.onclick = async () => {
     const GroupId = getStorage('GroupId');
     const ClassId = getStorage('ClassId');
@@ -1142,26 +1143,68 @@ async function gvgMapper() {
       Match.Castles.push(Castle);
     }
     updateData('Match', Match);
-  };
+  };*/
   //从服务器获取
   buttonGetServer.onclick = async () => {
+    const RegionId = getStorage('RegionId');
     const GroupId = getStorage('GroupId');
     const ClassId = getStorage('ClassId');
     const WorldId = getStorage('WorldId');
-    const GrandId = getStorage('GrandId');
-    const GuildData = JSON.parse(getStorage('GuildData')) ?? {};
+    //从服务器获取战斗信息
     const _getGuildWar = await getGuildWar(ClassId, WorldId, GroupId);
-    let Matching = _getGuildWar?.data;
-    if (Matching) {
-      for (let i in Matching.guilds) {
-        Matching.guilds[i] = i;
+    const MatchInfo = _getGuildWar?.data;
+    if (MatchInfo) {
+      //从数据库获取战斗信息
+      let Match = await getData('Match', `${GroupId}_${ClassId}_${WorldId}`);
+      //若无信息则新建
+      if (!Match) {
+        Match = {
+          'Guid': `${GroupId}_${ClassId}_${WorldId}`,
+          'LastUpdate': new Date(),
+        };
       }
-      fillMap(Matching.castles, Matching.guilds);
+      //清除公会并写入
+      Match.Guilds = [];
+      for (let i in MatchInfo.guilds) {
+        let GuildName = MatchInfo.guilds[i];
+        let GuildId = i;
+        //从数据库获取公会信息
+        let Guild = await getData('Guild', `${CacheRegionId}_${GuildId}`);
+        //若无则新建
+        if (!Guild) {
+          Guild = {
+            'Guid': `${CacheRegionId}_${GuildId}`,
+            'GuildId': GuildId,
+            'Color': '0,0,0',
+            'Relation': 0,
+          };
+        }
+        //更新公会信息
+        Guild.Name = GuildName;
+        Guild.LastUpdate = new Date();
+        //写入公会ID
+        Match.Guilds.push(Guild.Guid);
+        //更新数据库公会信息
+        updateData('Guild', Guild);
+      }
+      //清除城池并写入
+      Match.Castles = [];
+      //序列化城池信息
+      for (let i = 0; i < MatchInfo.castles.length; i++) {
+        let castle = MatchInfo.castles[i];
+        castle.GuildId = `${RegionId}_${castle.GuildId}`;
+        castle.AttackerGuildId = `${RegionId}_${castle.AttackerGuildId}`;
+        Match.Castles.push(castle);
+      }
+      //更新数据库战斗信息
+      updateData('Match', Match);
+      //填充城池信息
+      fillMap(Match.Castles, Match.Guilds);
     } else {
       alert('无法获取战斗信息');
     }
   };
-  //开始监听
+  /*/开始监听
   buttonConnectServer.onclick = () => {
     const GroupId = getStorage('GroupId');
     const ClassId = getStorage('ClassId');
@@ -1287,7 +1330,7 @@ async function gvgMapper() {
   //关闭监听
   buttonDisconnectServer.onclick = () => {
     SocketGvG.close(1000, 'User Stop');
-  };
+  };*/
 }
 /*优化功能*/
 //优化角色显示
@@ -1401,7 +1444,8 @@ async function loginAccount() {
   document.querySelector('#accountmanager>a:nth-child(2)').innerHTML = _getUserData?.UserSyncData.UserStatusDtoInfo.Name;
 }
 //战斗布局-绘制地图
-function drawMap(ClassId) {
+function drawMap() {
+  const ClassId = getStorage('ClassId');
   document.querySelector('#gvgMapStyle')?.remove();
   document.querySelector('gvg-viewer')?.remove();
   document.querySelector('gvg-list')?.remove();
@@ -1662,6 +1706,8 @@ function drawMap(ClassId) {
                 font-family: sans-serif;
                 background-size: cover;
                 background-image: url(assets/${Class}gvg.png);
+                padding: 0px;
+                margin: auto;
               }
               gvg-castle {
                 display: block;
@@ -1952,7 +1998,7 @@ function drawMap(ClassId) {
       };
       castleNode.append(createElement('gvg-castle-icon'));
       //增加提示
-      const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', LanguageTable[Class][GlobalURLList.lang][CastleId - 1]));
+      const NodeCastleName = castleNode.appendChild(createElement('gvg-castle-name', TextResource[`${Class.charAt(0).toUpperCase()}${Class.slice(1)}GvgCastleName${CastleId}`]));
       NodeCastleName.onclick = (e) => {
         let exist = e.target.parentNode.querySelector('gvg-castle-hint');
         let image = e.target.parentNode.querySelector('.gvg-castle-symbol');
@@ -2002,7 +2048,7 @@ function drawMap(ClassId) {
 }
 //战斗布局-填充地图
 async function fillMap(CastleList, GuildList) {
-  await updateServerData(GuildList);
+  //await updateServerData(GuildList);
   await fillGuilds(GuildList);
   for (let i = 0; i < CastleList.length; i++) {
     await changeCastle(CastleList[i]);
@@ -2019,12 +2065,11 @@ async function fillGuilds(GuildList) {
     const tbody1 = table1.appendChild(createElement('tbody'));
     const tbody2 = table2.appendChild(createElement('tbody'));
     let count = 0;
-    for (let i in GuildList) {
-      const GuildId = GuildList[i];
-      const Guid = `${RegionId}_${GuildId}`;
+    for (let i = 0; i < GuildList.length; i++) {
+      const Guid = GuildList[i];
       const Guild = await getData('Guild', Guid);
-      changeColor(GuildId, Guild.Color ?? '0,0,0');
-      const divGuild = createElement('tr', '', GuildId);
+      changeColor(Guid, Guild.Color);
+      const divGuild = createElement('tr', '', Guid);
       const aColor = divGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
       aColor.onclick = (e) => {
         const Color = prompt('请输入设定颜色，形式为R,G,B');
@@ -2032,9 +2077,9 @@ async function fillGuilds(GuildList) {
       };
       divGuild.append(
         createElement('td', Guild.Name), //
-        createElement('td', `<input type="radio" name="${GuildId}" value="friendly">`),
-        createElement('td', `<input type="radio" name="${GuildId}" value="neutral" checked="true">`),
-        createElement('td', `<input type="radio" name="${GuildId}" value="enermy">`)
+        createElement('td', `<input type="radio" name="${Guid}" value="friendly" ${Guild.Relation > 0 ? 'checked="true"' : ''}>`),
+        createElement('td', `<input type="radio" name="${Guid}" value="neutral" ${Guild.Relation == 0 ? 'checked="true"' : ''}>`),
+        createElement('td', `<input type="radio" name="${Guid}" value="enermy" ${Guild.Relation < 0 ? 'checked="true"' : ''}>`)
       );
       if (count < GuildList.length / 2) {
         tbody1.append(divGuild);
@@ -2098,8 +2143,8 @@ async function changeCastle(CastleData) {
   if (CastleData.GvgCastleState % 2 == 0) {
     CastleData.AttackerGuildId = 0;
   }
-  const DefenseGuild = await getData('Guild', `${getStorage('RegionId')}_${CastleData.GuildId}`);
-  const OffenseGuild = await getData('Guild', `${getStorage('RegionId')}_${CastleData.AttackerGuildId}`);
+  const DefenseGuild = await getData('Guild', CastleData.GuildId);
+  const OffenseGuild = await getData('Guild', CastleData.AttackerGuildId);
   const CastleNode = document.querySelector(`gvg-castle[castle-id="${CastleData.CastleId}"]`);
   CastleNode.setAttribute('defense', CastleData.GuildId);
   CastleNode.setAttribute('offense', CastleData.AttackerGuildId);
@@ -2140,8 +2185,10 @@ function changeColor(GuildId, Color) {
 }
 //战斗布局-修改公会
 function changeGuild(target) {
+  const Class = getStorage('ClassId') == 0 ? 'Local' : 'Global';
   const trList = document.querySelectorAll('tbody > tr');
   const dialogGuild = document.body.appendChild(createElement('dialog', `<a>请选择公会：</a>`));
+  const CastleID = target.parentNode.parentNode.getAttribute('castle-id');
   dialogGuild.onclose = (e) => {
     const select = e.target.querySelector('select');
     const castle = document.querySelector(`gvg-castle[castle-id="${select.getAttribute('castle')}"]`);
@@ -2152,12 +2199,12 @@ function changeGuild(target) {
   };
   const selectGuild = dialogGuild.appendChild(
     createElement('select', '', {
-      castle: target.parentNode.parentNode.getAttribute('castle-id'),
+      castle: CastleID,
       target: target.tagName,
     })
   );
   selectGuild.options.add(
-    createElement('option', '', {
+    createElement('option', TextResource[`${Class}GvgNpcGuildName${CastleID}`], {
       value: '0',
     })
   );

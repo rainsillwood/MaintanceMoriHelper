@@ -40,17 +40,11 @@ let WorldGroup = {
 };
 const Match = {
   'Guid': `${GroupId}_${ClassId}_${WorldId}`,
-  'Guilds': {
-    GuildId: {
-      Clolor: Clolor,
-      Name: Name,
-      RelationShip: RelationShip,
-    },
-  },
+  'Guilds': [Guild.Guid],
   'Castles': [
     {
       'CastleId': CastleId,
-      'GuildId': GuildId,
+      'GuildId': Guild.Guid,
       'AttackerGuildId': AttackerGuildId,
       'AttackPartyCount': AttackPartyCount,
       'DefensePartyCount': DefensePartyCount,
@@ -74,21 +68,21 @@ const Player = {
   'Guid': `${RegionId}_${PlayerId}`,
   'PlayerId': PlayerId,
   'Name': Name,
-  'Guild': GuildId,
+  'Guild': Guild.Guid,
   'Level': Level,
   'BattlePower': BattlePower,
 };
 const Deck = {
   'Guid': `${Time}_${Guid}`,
   'DeckId': Guid,
-  'Player': PlayerId,
+  'Player': Player.Guid,
   'Content': [CharacterId1, CharacterId2, CharacterId3, CharacterId4, CharacterId5],
   'LastUpdate': Time,
 };
 const Character = {
   'Guid': Guid,
   'CharacterId': CharacterId,
-  'Player': PlayerId,
+  'Player': Player.Guid,
   'Level': Level,
   'SubLevel': SubLevel,
   'BattlePower': BattlePower,
