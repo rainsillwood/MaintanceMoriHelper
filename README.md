@@ -4,7 +4,9 @@
  一个基于Maintenance Mori的工具，需要安装TamperMonkey来使用，暂时只有中文版
 
  安装地址：
+ 
     稳定版：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
+    
     开发版：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 
 # 功能介绍
