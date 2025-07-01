@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.65
+// @version      0.66
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -338,6 +338,7 @@ unsafeWindow._m = function (...args) {
 //动态常量
 GlobalConstant.AppVersion = await getAppVersion();
 const TextResource = await getTextResource();
+const LocalRaidQuest = await getLocalRaidQuest();
 const ErrorCode = getErrorCode();
 //data-ja翻译表
 const LanguageJa = {
@@ -628,6 +629,7 @@ async function initPage() {
       'href': getURL(URLList, { 'lang': 'KoKr' }),
       'title': 'KoKr',
     }),
+    //ArEg;DeDe;EsMx;FrFr;IdId;PtBr;RuRu;ThTh;ViVn;
     createElement('br'),
     createElement('a', LanguageTable['account'][GlobalURLList.lang]),
     createElement('a', LanguageTable['noaccount'][GlobalURLList.lang])
@@ -2385,20 +2387,15 @@ async function getTextResource() {
 }
 //获取本地化文件
 async function getLocalRaidQuest() {
-  if (GlobalConstant.AppVersion != getStorage('AppVersion') || GlobalURLList.lang != getStorage('Language')) {
-    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/LocalRaidQuestMB`, { type: 'arraybuffer', msgpack: true });
-    const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
-    if (!TextResourceMB) return;
-    let result = {};
-    for (let i = 0; i < TextResourceMB.length; i++) {
-      const TextResource = TextResourceMB[i];
-      result[TextResource.StringKey.replace(/\[(.*?)\]/, '$1')] = TextResource.Text;
+  let LocalRaidQuestMB = JSON.parse(getStorage('TextResource'));
+  if (!LocalRaidQuestMB) {
+    LocalRaidQuestMB = await sendGMRequest(`https://raw.githubusercontent.com/moonheart/mementomori-masterbook/master/Master/LocalRaidQuestMB.json`, {});
+    if (!LocalRaidQuestMB) {
+      return getLocalRaidQuest();
     }
-    setStorage('AppVersion', GlobalConstant.AppVersion);
-    setStorage('Language', GlobalURLList.lang);
-    setStorage('TextResource', JSON.stringify(result));
+    setStorage('LocalRaidQuest', JSON.stringify(LocalRaidQuestMB));
   }
-  return JSON.parse(getStorage('TextResource'));
+  return LocalRaidQuestMB;
 }
 //获取世界组
 async function getWorldGroup() {
