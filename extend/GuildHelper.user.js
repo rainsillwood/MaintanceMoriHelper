@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.70
+// @version      0.71
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -764,7 +764,6 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
       'Name': TextResource['GvgGroup4NameLabel'],
     },
   };
-  let module = GlobalURLList.function;
   //初始化选择区
   const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
   //区域选择
@@ -1387,8 +1386,8 @@ async function temple() {
   initContent();
   await initSelect(true, false, false, false);
   const CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
-  divSelect.querySelector('#listRegion').value = !CacheRegionId ? -1 : CacheRegionId;
-  divSelect.querySelector('#listRegion').addEventListener('selectionchange', fillTemple);
+  document.querySelector('#listRegion').value = !CacheRegionId ? -1 : CacheRegionId;
+  document.querySelector('#listRegion').addEventListener('selectionchange', fillTemple);
   await fillTemple();
 }
 //优化角色显示
