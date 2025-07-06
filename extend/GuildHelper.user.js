@@ -2406,11 +2406,11 @@ async function fillTemple() {
     },
   };
   const raidType = {
-    '1': TextResource['ItemName10'],
-    '2': TextResource['ItemName12'],
-    '3': TextResource['ItemName13'],
-    '4': TextResource['ItemName11'],
-    '5': TextResource['ItemName43'],
+    '1': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>`,
+    '2': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>`,
+    '3': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>`,
+    '4': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>`,
+    '5': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>`,
   };
   document.querySelector('#listClass').value = 0;
   document.querySelector('.container')?.remove();
@@ -2522,16 +2522,16 @@ div[item='coin'] {
   display: ${checkList[0] ? 'block' : 'none'};
 }
 tr[banner='${checkList[1] ? '1' : '0'}'] {
-  background-color: rgb(128, 255, 128);
-}
-tr[banner='${checkList[2] ? '2' : '0'}'] {
   background-color: rgb(128, 255, 255);
 }
+tr[banner='${checkList[2] ? '2' : '0'}'] {
+  background-color: rgb(128, 255, 128);
+}
 tr[banner='${checkList[3] ? '3' : '0'}'] {
-  background-color: rgb(255, 128, 255);
+  background-color: rgb(255, 128, 128);
 }
 tr[banner='${checkList[4] ? '4' : '0'}'] {
-  background-color: rgb(255, 128, 128);
+  background-color: rgb(255, 128, 255);
 }
 tr[banner='${checkList[5] ? '5' : '0'}'] {
   background-color: rgb(255, 255, 128);
