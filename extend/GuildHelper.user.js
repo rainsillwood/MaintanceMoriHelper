@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.71
+// @version      0.73
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -29,19 +29,19 @@ document.querySelector('style').appendChild(
   createElement(
     'text',
     `
-              #loading {
-                width: 100%;
-                height: 100%;
-                font-size: xx-large;
-                position: fixed;
-                left: 0px;
-                top: 0px;
-                background: white;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              }
-          `
+#loading {
+  width: 100%;
+  height: 100%;
+  font-size: xx-large;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+    `
   )
 );
 //固定语言
@@ -269,6 +269,13 @@ const LanguageTable = {
     'KoKr': 'Close attaching',
     'ZhTw': '關閉監聽',
     'ZhCn': '关闭监听',
+  },
+  'Containfixed': {
+    'JaJp': '(Contains fixed)',
+    'EnUs': '(Contains fixed)',
+    'KoKr': '(Contains fixed)',
+    'ZhTw': '（包含固定）',
+    'ZhCn': '（包含固定）',
   },
 };
 //URL信息
@@ -511,13 +518,13 @@ async function initPage() {
     createElement(
       'text',
       `
-              nav a{
-                display: inline-block;
-                min-width: 22px;
-                text-align: center;
-                padding: 5px 0px;
-              }
-          `
+nav a{
+  display: inline-block;
+  min-width: 22px;
+  text-align: center;
+  padding: 5px 0px;
+}
+      `
     )
   );
   //获取原导航栏
@@ -695,36 +702,37 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
     createElement(
       'text',
       `
-              #selectpanel {
-                width: 640px;
-                display: inline-block;
-                vertical-align: top;
-              }
-              #selectpanel > p {
-                text-align: center;
-              }
-              #selectpanel a {
-                display: inline-block;
-              }
-              #selectpanel a:nth-child(1) {
-                width: 75px;
-                text-align: left;
-              }
-              #selectpanel a:nth-child(2) {
-                width: 25px;
-              }
-              #selectpanel select {
-                width: 520px;
-              }
-              #selectpanel button {
-                width: 20%;
-              }
-              #selectpanel option {
-                display: none;
-              }
-              #selectpanel option.default {
-                display: inline;
-              }`
+#selectpanel {
+  width: 640px;
+  display: inline-block;
+  vertical-align: top;
+}
+#selectpanel > p {
+  text-align: center;
+}
+#selectpanel a {
+  display: inline-block;
+}
+#selectpanel a:nth-child(1) {
+  width: 75px;
+  text-align: left;
+}
+#selectpanel a:nth-child(2) {
+  width: 25px;
+}
+#selectpanel select {
+  width: 520px;
+}
+#selectpanel button {
+  width: 20%;
+}
+#selectpanel option {
+  display: none;
+}
+#selectpanel option.default {
+  display: inline;
+}
+      `
     )
   );
   //获取世界分组
@@ -1021,30 +1029,31 @@ async function gvgMapper() {
     createElement(
       'text',
       `
-                th,
-                td {
-                  height: 24px;
-                  border: 1px solid black;
-                  text-align: center;
-                }
-                table {
-                  width: 300px;
-                  border-collapse: collapse;
-                  display: inline-table;
-                  vertical-align: top;
-                }
-                #guilds1 {
-                  margin-left: 20px;
-                }
-                #guilds2 {
-                  margin-right: 20px;
-                }
-                tr > * {
-                  width: 25px;
-                }
-                tr > :nth-child(2) {
-                  width: calc(100% - 25px);
-                }`
+th,
+td {
+  height: 24px;
+  border: 1px solid black;
+  text-align: center;
+}
+table {
+  width: 300px;
+  border-collapse: collapse;
+  display: inline-table;
+  vertical-align: top;
+}
+#guilds1 {
+  margin-left: 20px;
+}
+#guilds2 {
+  margin-right: 20px;
+}
+tr > * {
+  width: 25px;
+}
+tr > :nth-child(2) {
+  width: calc(100% - 25px);
+}
+      `
     )
   );
   const divSelect = document.querySelector('#selectpanel');
@@ -1391,6 +1400,30 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
 async function temple() {
   initContent();
   await initSelect(true, true, false, false);
+  let cacheCheckList = !getStorage('TempleCheckList') ? [true, true, true, true, true, true] : JSON.parse(getStorage('TempleCheckList'));
+  let selectItem = document.querySelector('#selectpanel').appendChild(createElement('div', ''));
+  selectItem.append(
+    createElement('a', ''),
+    createElement('a', ''),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }), //
+    createElement('a', TextResource['ItemName5']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName10']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName12']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName13']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName11']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName43'])
+  );
+  let listCheckBox = document.querySelectorAll('[name="items"]');
+  for (let i = 0; i < listCheckBox.length; i++) {
+    listCheckBox[i].checked = cacheCheckList[i];
+    listCheckBox[i].onchange = changeTempleDisplay;
+  }
+  changeTempleDisplay();
   document.body.appendChild(createElement('h2', TextResource['CommonHeaderLocalRaidLabel']));
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
@@ -1404,23 +1437,8 @@ async function temple() {
 #listGroup > option.R${CacheRegionId} {
   display: inline;
 }
-tr[banner='0'] {
-  background-color: rgb(128, 255, 128);
-}
-tr[banner='0'] {
-  background-color: rgb(128, 255, 255);
-}
-tr[banner='0'] {
-  background-color: rgb(255, 128, 255);
-}
-tr[banner='3'] {
-  background-color: rgb(255, 128, 128);
-}
-tr[banner='5'] {
-  background-color: rgb(255, 255, 128);
-}
         `,
-        'styleTemple'
+        'styleGroup'
       )
     );
   }
@@ -2265,11 +2283,9 @@ function changeColor(GuildId, Color) {
 gvg-castle[defense='${GuildId}'] gvg-castle-icon {
   background-color: rgba(${Color}, 0.5);
 }
-
 gvg-castle[offense='${GuildId}'] gvg-attacker {
   background-color: rgba(${Color}, 0.625);
 }
-
 tr[id='${GuildId}'] td:nth-child(1) {
   color: rgba(${Color}, 1);
 }
@@ -2443,14 +2459,14 @@ tr>th{
           </tr>
           <tr>
             <th>${TextResource['LocalRaidTrainingLevelFormat'].replace('{0}', LocalRaidQuest[listQuest[0].toString()].LocalRaidLevel)}</th>
+            <th>${TextResource['CommonFirstRewardLabel'] + LanguageTable['Containfixed'][GlobalURLList.lang]}</th>
             <th>${TextResource['CommonFixedRewardLabel']}</th>
-            <th>${TextResource['CommonFirstRewardLabel']}</th>
             <th>${TextResource['LocalRaidQuestEventRewardLabel']}</th>
           </tr>
           `
         )
       );
-      for (let j = 0; j < listQuest.length; j++) {
+      for (let j = listQuest.length - 1; j >= 0; j--) {
         const QuestGuid = listQuest[j].toString();
         let Quest = LocalRaidQuest[QuestGuid * 1];
         if (!Quest) {
@@ -2476,20 +2492,57 @@ tr>th{
             { 'banner': Quest.LocalRaidBannerId }
           )
         );
-        let nodeFixedReward = nodeTr.appendChild(createElement('th'));
         let nodeFirstReward = nodeTr.appendChild(createElement('th'));
+        let nodeFixedReward = nodeTr.appendChild(createElement('th'));
         let nodeEventReward = nodeTr.appendChild(createElement('th'));
-        for (let k = 0; k < Quest.FixedBattleReward.length; k++) {
+        for (let k = Quest.FixedBattleReward.length - 1; k >= 0; k--) {
           const FixedBattleReward = Quest.FixedBattleReward[k];
           const FirstBattleReward = Quest.FirstBattleReward[k];
-          nodeFixedReward.appendChild(createElement('div', `${itemList[FixedBattleReward.ItemId][FixedBattleReward.ItemType].name}×${FixedBattleReward.ItemCount}`));
-          nodeFirstReward.appendChild(createElement('div', `${itemList[FirstBattleReward.ItemId][FirstBattleReward.ItemType].name}×${FirstBattleReward.ItemCount}`));
-          nodeEventReward.appendChild(createElement('div', `${itemList[FixedBattleReward.ItemId][FixedBattleReward.ItemType].name}×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`));
+          let item = FixedBattleReward.ItemId == 1 && FixedBattleReward.ItemType == 3 ? 'coin' : '';
+          nodeFirstReward.appendChild(createElement('div', `${itemList[FirstBattleReward.ItemId][FirstBattleReward.ItemType].name}×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': item }));
+          nodeFixedReward.appendChild(createElement('div', `${itemList[FixedBattleReward.ItemId][FixedBattleReward.ItemType].name}×${FixedBattleReward.ItemCount}`, { 'item': item }));
+          nodeEventReward.appendChild(createElement('div', `${itemList[FixedBattleReward.ItemId][FixedBattleReward.ItemType].name}×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': item }));
         }
       }
     }
   }
 }
+function changeTempleDisplay() {
+  document.querySelector('#styleItem')?.remove();
+  let listCheckBox = document.querySelectorAll('[name="items"]');
+  let checkList = [];
+  for (let i = 0; i < listCheckBox.length; i++) {
+    checkList.push(listCheckBox[i].checked);
+  }
+  document.head.appendChild(
+    createElement(
+      'style',
+      `
+div[item='coin'] {
+  display: ${checkList[0] ? 'block' : 'none'};
+}
+tr[banner='${checkList[1] ? '1' : '0'}'] {
+  background-color: rgb(128, 255, 128);
+}
+tr[banner='${checkList[2] ? '2' : '0'}'] {
+  background-color: rgb(128, 255, 255);
+}
+tr[banner='${checkList[3] ? '3' : '0'}'] {
+  background-color: rgb(255, 128, 255);
+}
+tr[banner='${checkList[4] ? '4' : '0'}'] {
+  background-color: rgb(255, 128, 128);
+}
+tr[banner='${checkList[5] ? '5' : '0'}'] {
+  background-color: rgb(255, 255, 128);
+}
+          `,
+      'styleItem'
+    )
+  );
+  setStorage('TempleCheckList', JSON.stringify(checkList));
+}
+
 /*API函数*/
 //获取option
 function buildOption(appVersion) {
