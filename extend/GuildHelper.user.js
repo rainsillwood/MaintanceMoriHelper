@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.73
+// @version      0.74
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -2393,16 +2393,16 @@ function updateBattlePanel() {
 async function fillTemple() {
   const itemList = {
     '1': {
-      '3': { 'name': TextResource['ItemName5'] },
-      '11': { 'name': TextResource['ItemName10'] },
-      '12': { 'name': TextResource['ItemName12'] },
+      '3': { 'name': `<img src="${GlobalConstant.assetURL}Item_0010.png"></img>` },
+      '11': { 'name': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>` },
+      '12': { 'name': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>` },
     },
     '2': {
-      '11': { 'name': TextResource['ItemName11'] },
-      '12': { 'name': TextResource['ItemName13'] },
+      '11': { 'name': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>` },
+      '12': { 'name': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>` },
     },
     '4': {
-      '13': { 'name': TextResource['ItemName43'] },
+      '13': { 'name': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>` },
     },
   };
   const raidType = {
@@ -2431,11 +2431,21 @@ th>div{
   width: 100%;
 }
 tr>:nth-child(1){
-    width: 300px;
-
+  width: 300px;
+  font-size:24px;
 }
 tr>th{
-    width: 150px;
+  width: 150px;
+}
+tr>:nth-child(1) img{
+  width: 64px;
+  height: 64px;
+  vertical-align: middle;
+}
+th img{
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
 }
       `
     )
@@ -2485,8 +2495,7 @@ tr>th{
             'tr',
             `
             <th>
-              <div>${raidType[Quest.LocalRaidBannerId]}</div>
-              <div>${'★'.repeat(Quest.Level)}</div>
+              <div>${raidType[Quest.LocalRaidBannerId]}<a>${'★'.repeat(Quest.Level)}</a></div>
             </th>
             `,
             { 'banner': Quest.LocalRaidBannerId }
