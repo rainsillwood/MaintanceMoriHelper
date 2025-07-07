@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.71
+// @version      0.8
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -24,24 +24,24 @@
 'use strict';
 console.log('脚本运行中');
 //增加冻结层
-const FreezeNode = document.body.appendChild(createElement('div', 'Loading......', 'loading'));
+const FreezeNode = document.body.appendChild(createElement('div', '<h1>Loading......</h1>', 'loading'));
 document.querySelector('style').appendChild(
   createElement(
     'text',
     `
-              #loading {
-                width: 100%;
-                height: 100%;
-                font-size: xx-large;
-                position: fixed;
-                left: 0px;
-                top: 0px;
-                background: white;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              }
-          `
+#loading {
+  width: 100%;
+  height: 100%;
+  font-size: xx-large;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+    `
   )
 );
 //固定语言
@@ -270,6 +270,13 @@ const LanguageTable = {
     'ZhTw': '關閉監聽',
     'ZhCn': '关闭监听',
   },
+  'Containfixed': {
+    'JaJp': '(Contains fixed)',
+    'EnUs': '(Contains fixed)',
+    'KoKr': '(Contains fixed)',
+    'ZhTw': '（包含固定）',
+    'ZhCn': '（包含固定）',
+  },
 };
 //URL信息
 const GlobalURLList = getURLList();
@@ -338,7 +345,6 @@ unsafeWindow._m = function (...args) {
 //动态常量
 GlobalConstant.AppVersion = await getAppVersion();
 const TextResource = await getTextResource();
-const LocalRaidQuest = await getLocalRaidQuest();
 const ErrorCode = getErrorCode();
 //data-ja翻译表
 const LanguageJa = {
@@ -512,13 +518,13 @@ async function initPage() {
     createElement(
       'text',
       `
-              nav a{
-                display: inline-block;
-                min-width: 22px;
-                text-align: center;
-                padding: 5px 0px;
-              }
-          `
+nav a{
+  display: inline-block;
+  min-width: 22px;
+  text-align: center;
+  padding: 5px 0px;
+}
+      `
     )
   );
   //获取原导航栏
@@ -534,7 +540,7 @@ async function initPage() {
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderLocalRaidLabel'], {
-      'href': getURL({ 'page': 'temple', 'lang': GlobalURLList.lang }),
+      'href': getURL({ 'function': 'temple', 'lang': GlobalURLList.lang }),
       'title': 'temple',
     }),
     createElement('a', '|'),
@@ -696,36 +702,37 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
     createElement(
       'text',
       `
-              #selectpanel {
-                width: 640px;
-                display: inline-block;
-                vertical-align: top;
-              }
-              #selectpanel > p {
-                text-align: center;
-              }
-              #selectpanel a {
-                display: inline-block;
-              }
-              #selectpanel a:nth-child(1) {
-                width: 75px;
-                text-align: left;
-              }
-              #selectpanel a:nth-child(2) {
-                width: 25px;
-              }
-              #selectpanel select {
-                width: 520px;
-              }
-              #selectpanel button {
-                width: 20%;
-              }
-              #selectpanel option {
-                display: none;
-              }
-              #selectpanel option.default {
-                display: inline;
-              }`
+#selectpanel {
+  width: 640px;
+  display: inline-block;
+  vertical-align: top;
+}
+#selectpanel > p {
+  text-align: center;
+}
+#selectpanel a {
+  display: inline-block;
+}
+#selectpanel a:nth-child(1) {
+  width: 75px;
+  text-align: left;
+}
+#selectpanel a:nth-child(2) {
+  width: 25px;
+}
+#selectpanel select {
+  width: 520px;
+}
+#selectpanel button {
+  width: 20%;
+}
+#selectpanel option {
+  display: none;
+}
+#selectpanel option.default {
+  display: inline;
+}
+      `
     )
   );
   //获取世界分组
@@ -765,7 +772,6 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
       'Name': TextResource['GvgGroup4NameLabel'],
     },
   };
-  let module = GlobalURLList.function;
   //初始化选择区
   const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
   //区域选择
@@ -845,9 +851,10 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
       createElement(
         'style',
         `
-              #listGroup > option.R${selectRegion.value} {
-                display: inline;
-              }`,
+#listGroup > option.R${selectRegion.value} {
+  display: inline;
+}
+        `,
         'styleGroup'
       )
     );
@@ -861,10 +868,11 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
       createElement(
         'style',
         `
-              #listClass > .static
-              ${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listClass > .dynamic'} {
-                display: inline;
-              }`,
+#listClass > .static
+${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listClass > .dynamic'} {
+  display: inline;
+}
+        `,
         'styleClass'
       )
     );
@@ -878,9 +886,10 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
       createElement(
         'style',
         `
-              #listWorld > ${selectClass.value > 0 ? '.global' : '.G' + selectGroup.value} {
-                display: inline;
-              }`,
+#listWorld > ${selectClass.value > 0 ? '.global' : '.G' + selectGroup.value} {
+  display: inline;
+}
+        `,
         'styleWorld'
       )
     );
@@ -1020,30 +1029,31 @@ async function gvgMapper() {
     createElement(
       'text',
       `
-                th,
-                td {
-                  height: 24px;
-                  border: 1px solid black;
-                  text-align: center;
-                }
-                table {
-                  width: 300px;
-                  border-collapse: collapse;
-                  display: inline-table;
-                  vertical-align: top;
-                }
-                #guilds1 {
-                  margin-left: 20px;
-                }
-                #guilds2 {
-                  margin-right: 20px;
-                }
-                tr > * {
-                  width: 25px;
-                }
-                tr > :nth-child(2) {
-                  width: calc(100% - 25px);
-                }`
+th,
+td {
+  height: 24px;
+  border: 1px solid black;
+  text-align: center;
+}
+table {
+  width: 300px;
+  border-collapse: collapse;
+  display: inline-table;
+  vertical-align: top;
+}
+#guilds1 {
+  margin-left: 20px;
+}
+#guilds2 {
+  margin-right: 20px;
+}
+tr > * {
+  width: 25px;
+}
+tr > :nth-child(2) {
+  width: calc(100% - 25px);
+}
+      `
     )
   );
   const divSelect = document.querySelector('#selectpanel');
@@ -1081,34 +1091,37 @@ async function gvgMapper() {
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
   let CacheClassId = getStorage(GlobalURLList.function + 'ClassId');
   if (CacheWorldId >= 0) {
-    divSelect.querySelector('#listRegion').value = CacheRegionId;
-    divSelect.querySelector('#listGroup').value = CacheGroupId;
-    divSelect.querySelector('#listClass').value = CacheClassId;
-    divSelect.querySelector('#listWorld').value = CacheWorldId;
+    document.querySelector('#listRegion').value = CacheRegionId;
+    document.querySelector('#listGroup').value = CacheGroupId;
+    document.querySelector('#listClass').value = CacheClassId;
+    document.querySelector('#listWorld').value = CacheWorldId;
     document.head.append(
       createElement(
         'style',
         `
-              #listGroup > option.R${CacheRegionId} {
-                display: inline;
-              }`,
+#listGroup > option.R${CacheRegionId} {
+  display: inline;
+}
+        `,
         'styleGroup'
       ),
       createElement(
         'style',
         `
-              #listClass > .static
-              ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
-                display: inline;
-              }`,
+#listClass > .static
+${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
+  display: inline;
+}
+        `,
         'styleClass'
       ),
       createElement(
         'style',
         `
-              #listWorld > ${CacheClassId > 0 ? '.global' : '.G' + CacheGroupId} {
-                display: inline;
-              }`,
+#listWorld > ${CacheClassId > 0 ? '.global' : '.G' + CacheGroupId} {
+  display: inline;
+}
+        `,
         'styleWorld'
       )
     );
@@ -1386,10 +1399,50 @@ async function gvgMapper() {
 //优化神殿
 async function temple() {
   initContent();
-  await initSelect(true, false, false, false);
-  const CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
-  divSelect.querySelector('#listRegion').value = !CacheRegionId ? -1 : CacheRegionId;
-  divSelect.querySelector('#listRegion').addEventListener('selectionchange', fillTemple);
+  await initSelect(true, true, false, false);
+  let cacheCheckList = !getStorage('TempleCheckList') ? [true, true, true, true, true, true] : JSON.parse(getStorage('TempleCheckList'));
+  let selectItem = document.querySelector('#selectpanel').appendChild(createElement('div', ''));
+  selectItem.append(
+    createElement('a', ''),
+    createElement('a', ''),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }), //
+    createElement('a', TextResource['ItemName5']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName10']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName12']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName13']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName11']),
+    createElement('input', '', { 'type': 'checkbox', 'name': 'items' }),
+    createElement('a', TextResource['ItemName43'])
+  );
+  let listCheckBox = document.querySelectorAll('[name="items"]');
+  for (let i = 0; i < listCheckBox.length; i++) {
+    listCheckBox[i].checked = cacheCheckList[i];
+    listCheckBox[i].onchange = changeTempleDisplay;
+  }
+  changeTempleDisplay();
+  document.body.appendChild(createElement('h2', TextResource['CommonHeaderLocalRaidLabel']));
+  let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
+  let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
+  if (CacheGroupId >= 0) {
+    document.querySelector('#listRegion').value = CacheRegionId;
+    document.querySelector('#listGroup').value = CacheGroupId;
+    document.head.append(
+      createElement(
+        'style',
+        `
+#listGroup > option.R${CacheRegionId} {
+  display: inline;
+}
+        `,
+        'styleGroup'
+      )
+    );
+  }
+  document.querySelector('#listGroup').addEventListener('change', fillTemple);
   await fillTemple();
 }
 //优化角色显示
@@ -1734,290 +1787,291 @@ function drawMap() {
       createElement(
         'style',
         `
-              gvg-list {
-                display: block;
-                position: fixed;
-                top: 5%;
-                width: 200px;
-                height: 95%;
-              }
-              gvg-list#enermyList {
-                left: calc(50% + 650px);
-              }
-              gvg-list#friendList {
-                right: calc(50% + 650px);
-              }
-              gvg-list > h2 {
-                text-align: center;
-                margin: 0px;
-              }
-              gvg-list > div {
-                height: calc(100% - 28px);
-                overflow-y: scroll;
-                scrollbar-width: thin;
-                background: rgb(255,127,127);
-              }
-              gvg-viewer {
-                display: block;
-                position: relative;
-                width: 1280px;
-                height: 1280px;
-                font-family: sans-serif;
-                background-size: cover;
-                background-image: url(assets/${Class}gvg.png);
-                padding: 0px;
-                margin: auto;
-              }
-              gvg-castle {
-                display: block;
-                position: absolute;
-                user-select: none;
-              }
-              gvg-status {
-                width: 164px;
-                height: 50px;
-                display: block;
-                position: absolute;
-                'left': -82px;
-                right: -82px;
-                bottom: 43px;
-              }
-              gvg-attacker {
-                display: block;
-                width: 165px;
-                position: absolute;
-                text-align: center;
-                font-size: 16px;
-                opacity: 0.8;
-              }
-              gvg-status-icon-defense,
-              gvg-status-icon-offense {
-                display: block;
-                width: 32px;
-                height: 33px;
-                position: absolute;
-                text-align: center;
-                line-height: 37px;
-                font-size: 12px;
-                color: #fff;
-                background-size: cover;
-              }
-              gvg-status-icon-defense {
-                background-image: url(assets/icon_gvg_party_defense.png);
-              }
-              gvg-status-icon-offense {
-                background-image: url(assets/icon_gvg_party_offense.png);
-              }
-              gvg-status-bar-offense,
-              gvg-status-bar-defense {
-                display: block;
-                width: 90px;
-                height: 20px;
-                padding: 0 10px;
-                position: absolute;
-                font-size: 9px;
-                color: #fff;
-                background-size: cover;
-              }
-              gvg-status[state="common"] > gvg-attacker {
-                display: none;
-              }
-              gvg-status[state="common"] > gvg-status-icon-defense {
-                margin: auto;
-                left: 0;
-                right: 0;
-                top: 0;
-              }
-              gvg-status[state="common"] > gvg-status-icon-offense {
-                display: none;
-              }
-              gvg-status[state="common"] > gvg-status-bar-defense {
-                width: 131px;
-                height: 12px;
-                margin: auto;
-                left: 0;
-                right: 0;
-                top: 35px;
-                text-align: center;
-                line-height: 12px;
-                background-image: url(assets/base_s_08_blue.png);
-              }
-              gvg-status[state="common"] > gvg-status-bar-offense {
-                display: none;
-              }
-              gvg-status[state="active"] > gvg-status-icon-defense {
-                right: 0;
-                bottom: 0;
-              }
-              gvg-status[state="active"] > gvg-status-icon-offense {
-                left: 0;
-                bottom: 0;
-              }
-              gvg-status[state="active"] > gvg-status-bar-defense {
-                right: 25px;
-                bottom: 0;
-                text-align: right;
-                line-height: 24px;
-                background-image: url(assets/base_s_09_blue.png);
-              }
-              gvg-status[state="active"] > gvg-status-bar-offense {
-                left: 25px;
-                bottom: 10px;
-                text-align: left;
-                line-height: 16px;
-                background-image: url(assets/base_s_09_red.png);
-              }
-              gvg-status[state="counter"] > gvg-status-icon-defense {
-                left: 0;
-                bottom: 0;
-                background-image: url(${GlobalConstant.assetURL}icon_gvg_party_offense_counter.png);
-              }
-              gvg-status[state="counter"] > gvg-status-icon-offense {
-                right: 0;
-                bottom: 0;
-                background-image: url(assets/icon_gvg_party_defense.png);
-              }
-              gvg-status[state="counter"] > gvg-status-bar-defense {
-                left: 25px;
-                bottom: 10px;
-                text-align: left;
-                line-height: 16px;
-                background-image: url(assets/base_s_09_red.png);
-              }
-              gvg-status[state="counter"] > gvg-status-bar-offense {
-                right: 25px;
-                bottom: 0;
-                text-align: right;
-                line-height: 24px;
-                background-image: url(assets/base_s_09_blue.png);
-              }
-              gvg-ko-count-container {
-                position: absolute;
-                width: 76px;
-                left: -38px;
-                top: -19px;
-                display: block;
-                color: #eee;
-                text-shadow: red 0 0 30px red 0 0 5px;
-              }
-              gvg-ko-count {
-                display: block;
-                font-size: 26px;
-                text-align: center;
-                width: 100%;
-              }
-              gvg-ko-count-label:after {
-                content: 'KOs';
-                font-size: 14px;
-                position: absolute;
-                display: block;
-                text-align: center;
-                width: 100%;
-                height: 14px;
-                top: 26px;
-                left: 0;
-              }
-              gvg-castle-icon {
-                display: block;
-                position: absolute;
-                background-size: cover;
-              }
-              gvg-castle[church] > gvg-castle-icon {
-                left: -28px;
-                right: -28px;
-                bottom: -25px;
-                width: 56px;
-                height: 50px;
-                background-image: url(assets/Castle_0_0.png);
-              }
-              gvg-castle[castle] > gvg-castle-icon {
-                left: -31px;
-                right: -31px;
-                bottom: -33px;
-                width: 62px;
-                height: 67px;
-                background-image: url(assets/Castle_0_1.png);
-              }
-              gvg-castle[temple] > gvg-castle-icon {
-                left: -39px;
-                right: -39px;
-                bottom: -40px;
-                width: 78px;
-                height: 80px;
-                background-image: url(assets/Castle_0_2.png);
-              }
-              gvg-castle-name {
-                display: block;
-                position: absolute;
-                background-size: cover;
-                width: 140px;
-                height: 26px;
-                font-size: 9px;
-                text-align: center;
-              }
-              gvg-castle-name {
-                background-image: url(assets/${image}.png);
-                width: 140px;
-                height: 26px;
-                left: -70px;
-                right: -70px;
-                color: ${Class == 'local' ? '#473d3b' : 'white'};
-                line-height: 33px;
-              }
-              gvg-castle[church] > gvg-castle-name {
-                bottom: -45px;
-              }
-              gvg-castle[castle] > gvg-castle-name {
-                bottom: -50px;
-              }
-              gvg-castle[temple] > gvg-castle-name {
-                bottom: -58px;
-              }
-              gvg-castle[temple] > .gvg-castle-symbol {
-                left: -70px;
-                bottom: -58px;
-                width: 33px;
-                height: 29px;
-                position: absolute;
-                display: block;
-              }
-              gvg-castle[castle] > .gvg-castle-symbol {
-                left: -70px;
-                bottom: -50px;
-                width: 33px;
-                height: 29px;
-                position: absolute;
-                display: block;
-              }
-              gvg-castle[church] > .gvg-castle-symbol {
-                left: -70px;
-                bottom: -45px;
-                width: 33px;
-                height: 29px;
-                position: absolute;
-                display: block;
-              }
-              gvg-castle-hint {
-                left: -70px;
-                right: -70px;
-                background: rgba(32, 32, 32, 0.5);
-                width: 140px;
-                color: white;
-                position: absolute;
-                display: block;
-                font-size: 10px;
-                text-align: center;
-                word-break: break-word;
-              }
-              gvg-castle[temple] > gvg-castle-hint {
-                top: 58px;
-              }
-              gvg-castle[castle] > gvg-castle-hint {
-                top: 50px;
-              }
-              gvg-castle[church] > gvg-castle-hint {
-                top: 45px;
-              }`,
+gvg-list {
+  display: block;
+  position: fixed;
+  top: 5%;
+  width: 200px;
+  height: 95%;
+}
+gvg-list#enermyList {
+  left: calc(50% + 650px);
+}
+gvg-list#friendList {
+  right: calc(50% + 650px);
+}
+gvg-list > h2 {
+  text-align: center;
+  margin: 0px;
+}
+gvg-list > div {
+  height: calc(100% - 28px);
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  background: rgb(255, 127, 127);
+}
+gvg-viewer {
+  display: block;
+  position: relative;
+  width: 1280px;
+  height: 1280px;
+  font-family: sans-serif;
+  background-size: cover;
+  background-image: url(assets/${Class}gvg.png);
+  padding: 0px;
+  margin: auto;
+}
+gvg-castle {
+  display: block;
+  position: absolute;
+  user-select: none;
+}
+gvg-status {
+  width: 164px;
+  height: 50px;
+  display: block;
+  position: absolute;
+  left: -82px;
+  right: -82px;
+  bottom: 43px;
+}
+gvg-attacker {
+  display: block;
+  width: 165px;
+  position: absolute;
+  text-align: center;
+  font-size: 16px;
+  opacity: 0.8;
+}
+gvg-status-icon-defense,
+gvg-status-icon-offense {
+  display: block;
+  width: 32px;
+  height: 33px;
+  position: absolute;
+  text-align: center;
+  line-height: 37px;
+  font-size: 12px;
+  color: #fff;
+  background-size: cover;
+}
+gvg-status-icon-defense {
+  background-image: url(assets/icon_gvg_party_defense.png);
+}
+gvg-status-icon-offense {
+  background-image: url(assets/icon_gvg_party_offense.png);
+}
+gvg-status-bar-offense,
+gvg-status-bar-defense {
+  display: block;
+  width: 90px;
+  height: 20px;
+  padding: 0 10px;
+  position: absolute;
+  font-size: 9px;
+  color: #fff;
+  background-size: cover;
+}
+gvg-status[state='common'] > gvg-attacker {
+  display: none;
+}
+gvg-status[state='common'] > gvg-status-icon-defense {
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+gvg-status[state='common'] > gvg-status-icon-offense {
+  display: none;
+}
+gvg-status[state='common'] > gvg-status-bar-defense {
+  width: 131px;
+  height: 12px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 35px;
+  text-align: center;
+  line-height: 12px;
+  background-image: url(assets/base_s_08_blue.png);
+}
+gvg-status[state='common'] > gvg-status-bar-offense {
+  display: none;
+}
+gvg-status[state='active'] > gvg-status-icon-defense {
+  right: 0;
+  bottom: 0;
+}
+gvg-status[state='active'] > gvg-status-icon-offense {
+  left: 0;
+  bottom: 0;
+}
+gvg-status[state='active'] > gvg-status-bar-defense {
+  right: 25px;
+  bottom: 0;
+  text-align: right;
+  line-height: 24px;
+  background-image: url(assets/base_s_09_blue.png);
+}
+gvg-status[state='active'] > gvg-status-bar-offense {
+  left: 25px;
+  bottom: 10px;
+  text-align: left;
+  line-height: 16px;
+  background-image: url(assets/base_s_09_red.png);
+}
+gvg-status[state='counter'] > gvg-status-icon-defense {
+  left: 0;
+  bottom: 0;
+  background-image: url(${GlobalConstant.assetURL}icon_gvg_party_offense_counter.png);
+}
+gvg-status[state='counter'] > gvg-status-icon-offense {
+  right: 0;
+  bottom: 0;
+  background-image: url(assets/icon_gvg_party_defense.png);
+}
+gvg-status[state='counter'] > gvg-status-bar-defense {
+  left: 25px;
+  bottom: 10px;
+  text-align: left;
+  line-height: 16px;
+  background-image: url(assets/base_s_09_red.png);
+}
+gvg-status[state='counter'] > gvg-status-bar-offense {
+  right: 25px;
+  bottom: 0;
+  text-align: right;
+  line-height: 24px;
+  background-image: url(assets/base_s_09_blue.png);
+}
+gvg-ko-count-container {
+  position: absolute;
+  width: 76px;
+  left: -38px;
+  top: -19px;
+  display: block;
+  color: #eee;
+  text-shadow: red 0 0 30px red 0 0 5px;
+}
+gvg-ko-count {
+  display: block;
+  font-size: 26px;
+  text-align: center;
+  width: 100%;
+}
+gvg-ko-count-label:after {
+  content: 'KOs';
+  font-size: 14px;
+  position: absolute;
+  display: block;
+  text-align: center;
+  width: 100%;
+  height: 14px;
+  top: 26px;
+  left: 0;
+}
+gvg-castle-icon {
+  display: block;
+  position: absolute;
+  background-size: cover;
+}
+gvg-castle[church] > gvg-castle-icon {
+  left: -28px;
+  right: -28px;
+  bottom: -25px;
+  width: 56px;
+  height: 50px;
+  background-image: url(assets/Castle_0_0.png);
+}
+gvg-castle[castle] > gvg-castle-icon {
+  left: -31px;
+  right: -31px;
+  bottom: -33px;
+  width: 62px;
+  height: 67px;
+  background-image: url(assets/Castle_0_1.png);
+}
+gvg-castle[temple] > gvg-castle-icon {
+  left: -39px;
+  right: -39px;
+  bottom: -40px;
+  width: 78px;
+  height: 80px;
+  background-image: url(assets/Castle_0_2.png);
+}
+gvg-castle-name {
+  display: block;
+  position: absolute;
+  background-size: cover;
+  width: 140px;
+  height: 26px;
+  font-size: 9px;
+  text-align: center;
+}
+gvg-castle-name {
+  background-image: url(assets/${image}.png);
+  width: 140px;
+  height: 26px;
+  left: -70px;
+  right: -70px;
+  color: ${Class == 'local' ? '#473d3b' : 'white'};
+  line-height: 33px;
+}
+gvg-castle[church] > gvg-castle-name {
+  bottom: -45px;
+}
+gvg-castle[castle] > gvg-castle-name {
+  bottom: -50px;
+}
+gvg-castle[temple] > gvg-castle-name {
+  bottom: -58px;
+}
+gvg-castle[temple] > .gvg-castle-symbol {
+  left: -70px;
+  bottom: -58px;
+  width: 33px;
+  height: 29px;
+  position: absolute;
+  display: block;
+}
+gvg-castle[castle] > .gvg-castle-symbol {
+  left: -70px;
+  bottom: -50px;
+  width: 33px;
+  height: 29px;
+  position: absolute;
+  display: block;
+}
+gvg-castle[church] > .gvg-castle-symbol {
+  left: -70px;
+  bottom: -45px;
+  width: 33px;
+  height: 29px;
+  position: absolute;
+  display: block;
+}
+gvg-castle-hint {
+  left: -70px;
+  right: -70px;
+  background: rgba(32, 32, 32, 0.5);
+  width: 140px;
+  color: white;
+  position: absolute;
+  display: block;
+  font-size: 10px;
+  text-align: center;
+  word-break: break-word;
+}
+gvg-castle[temple] > gvg-castle-hint {
+  top: 58px;
+}
+gvg-castle[castle] > gvg-castle-hint {
+  top: 50px;
+}
+gvg-castle[church] > gvg-castle-hint {
+  top: 45px;
+}
+        `,
         'gvgMapStyle'
       )
     );
@@ -2226,17 +2280,16 @@ function changeColor(GuildId, Color) {
     createElement(
       'style',
       `
-              gvg-castle[defense='${GuildId}'] gvg-castle-icon {
-                background-color: rgba(${Color}, 0.5);
-              }
-
-              gvg-castle[offense='${GuildId}'] gvg-attacker {
-                background-color: rgba(${Color}, 0.625);
-              }
-
-              tr[id='${GuildId}'] td:nth-child(1) {
-                color: rgba(${Color}, 1);
-              }`,
+gvg-castle[defense='${GuildId}'] gvg-castle-icon {
+  background-color: rgba(${Color}, 0.5);
+}
+gvg-castle[offense='${GuildId}'] gvg-attacker {
+  background-color: rgba(${Color}, 0.625);
+}
+tr[id='${GuildId}'] td:nth-child(1) {
+  color: rgba(${Color}, 1);
+}
+      `,
       `style${GuildId}`
     )
   );
@@ -2338,13 +2391,167 @@ function updateBattlePanel() {
 }
 //优化神殿-获取信息
 async function fillTemple() {
-  document.querySelector('#content')?.remove();
-  let divContent = document.body.appendChild(createElement('div', '', 'content'));
-  const RegionId = getStorage(GlobalURLList.function + 'RegionId');
-  if (RegionId > 0) {
+  const itemList = {
+    '1': {
+      '3': { 'name': `<img src="${GlobalConstant.assetURL}Item_0010.png"></img>` },
+      '11': { 'name': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>` },
+      '12': { 'name': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>` },
+    },
+    '2': {
+      '11': { 'name': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>` },
+      '12': { 'name': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>` },
+    },
+    '4': {
+      '13': { 'name': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>` },
+    },
+  };
+  const raidType = {
+    '1': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>`,
+    '2': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>`,
+    '3': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>`,
+    '4': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>`,
+    '5': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>`,
+  };
+  document.querySelector('#listClass').value = 0;
+  document.querySelector('.container')?.remove();
+  document.head.querySelector('style')?.appendChild(
+    createElement(
+      'text',
+      `
+table {
+  display: inline-block;
+  vertical-align: top;
+}
+th>div{
+  text-align: left;
+  word-break: keep-all;
+}
+.container {
+  display: block;
+  width: 100%;
+}
+tr>:nth-child(1){
+  width: 300px;
+  font-size:24px;
+}
+tr>th{
+  width: 150px;
+}
+tr>:nth-child(1) img{
+  width: 64px;
+  height: 64px;
+  vertical-align: middle;
+}
+th img{
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
+      `
+    )
+  );
+  let divContent = document.body.appendChild(createElement('div', '', { 'class': ['container'] }));
+  const GroupId = getStorage(GlobalURLList.function + 'GroupId');
+  if (GroupId > 0) {
     const LocalRaidQuest = await getLocalRaidQuest();
+    const nodesWorld = document.querySelectorAll(`.G${GroupId}`);
+    for (let i = 0; i < nodesWorld.length; i++) {
+      let WorldId = nodesWorld[i].value;
+      const QuestInfo = await sendGMRequest(`https://api.mentemori.icu/${WorldId}/temple/latest`, {});
+      let listQuest = JSON.parse(QuestInfo)?.data.quest_ids;
+      let table = divContent.appendChild(createElement('table', '', WorldId));
+      table.appendChild(
+        createElement(
+          'tbody',
+          `
+          <tr>
+            <th colspan="4">${TextResource['TitleWarningListWorld']}:W${WorldId % 100}</th>
+          </tr>
+          <tr>
+            <th>${TextResource['LocalRaidTrainingLevelFormat'].replace('{0}', LocalRaidQuest[listQuest[0].toString()].LocalRaidLevel)}</th>
+            <th>${TextResource['CommonFirstRewardLabel'] + LanguageTable['Containfixed'][GlobalURLList.lang]}</th>
+            <th>${TextResource['CommonFixedRewardLabel']}</th>
+            <th>${TextResource['LocalRaidQuestEventRewardLabel']}</th>
+          </tr>
+          `
+        )
+      );
+      for (let j = listQuest.length - 1; j >= 0; j--) {
+        const QuestGuid = listQuest[j].toString();
+        let Quest = LocalRaidQuest[QuestGuid * 1];
+        if (!Quest) {
+          Quest = {
+            'Guid': QuestGuid,
+            'LocalRaidBannerId': QuestGuid.length > 6 ? QuestGuid.slice(0, 2) + QuestGuid.slice(-1) : QuestGuid[0],
+            'Level': QuestGuid.length > 6 ? QuestGuid.slice(-3, -1) : QuestGuid.slice(-1),
+            'LocalRaidLevel': QuestGuid.length > 6 ? QuestGuid.slice(2, 5) : QuestGuid.slice(1, 4),
+            'Enermy': [],
+            'FixedBattleReward': [],
+            'FirstBattleReward': [],
+          };
+        }
+        let nodeTr = table.appendChild(
+          createElement(
+            'tr',
+            `
+            <th>
+              <div>${raidType[Quest.LocalRaidBannerId]}<a>${'★'.repeat(Quest.Level)}</a></div>
+            </th>
+            `,
+            { 'banner': Quest.LocalRaidBannerId }
+          )
+        );
+        let nodeFirstReward = nodeTr.appendChild(createElement('th'));
+        let nodeFixedReward = nodeTr.appendChild(createElement('th'));
+        let nodeEventReward = nodeTr.appendChild(createElement('th'));
+        for (let k = Quest.FixedBattleReward.length - 1; k >= 0; k--) {
+          const FixedBattleReward = Quest.FixedBattleReward[k];
+          const FirstBattleReward = Quest.FirstBattleReward[k];
+          let item = FixedBattleReward.ItemId == 1 && FixedBattleReward.ItemType == 3 ? 'coin' : '';
+          nodeFirstReward.appendChild(createElement('div', `${itemList[FirstBattleReward.ItemId][FirstBattleReward.ItemType].name}×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': item }));
+          nodeFixedReward.appendChild(createElement('div', `${itemList[FixedBattleReward.ItemId][FixedBattleReward.ItemType].name}×${FixedBattleReward.ItemCount}`, { 'item': item }));
+          nodeEventReward.appendChild(createElement('div', `${itemList[FixedBattleReward.ItemId][FixedBattleReward.ItemType].name}×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': item }));
+        }
+      }
+    }
   }
 }
+function changeTempleDisplay() {
+  document.querySelector('#styleItem')?.remove();
+  let listCheckBox = document.querySelectorAll('[name="items"]');
+  let checkList = [];
+  for (let i = 0; i < listCheckBox.length; i++) {
+    checkList.push(listCheckBox[i].checked);
+  }
+  document.head.appendChild(
+    createElement(
+      'style',
+      `
+div[item='coin'] {
+  display: ${checkList[0] ? 'block' : 'none'};
+}
+tr[banner='${checkList[1] ? '1' : '0'}'] {
+  background-color: rgb(128, 255, 255);
+}
+tr[banner='${checkList[2] ? '2' : '0'}'] {
+  background-color: rgb(128, 255, 128);
+}
+tr[banner='${checkList[3] ? '3' : '0'}'] {
+  background-color: rgb(255, 128, 128);
+}
+tr[banner='${checkList[4] ? '4' : '0'}'] {
+  background-color: rgb(255, 128, 255);
+}
+tr[banner='${checkList[5] ? '5' : '0'}'] {
+  background-color: rgb(255, 255, 128);
+}
+          `,
+      'styleItem'
+    )
+  );
+  setStorage('TempleCheckList', JSON.stringify(checkList));
+}
+
 /*API函数*/
 //获取option
 function buildOption(appVersion) {
@@ -2429,24 +2636,36 @@ async function getTextResource() {
   return JSON.parse(getStorage('TextResource'));
 }
 //获取神殿信息
-async function getLocalRaidQuest() {
-  let LocalRaidQuest = JSON.parse(getStorage('LocalRaidQuest'));
-  if (!LocalRaidQuest) {
-    LocalRaidQuest = {};
-    const buffer = await sendGMRequest(`https://raw.githubusercontent.com/moonheart/mementomori-masterbook/master/Master/LocalRaidQuestMB.json`, {});
-    if (!buffer) {
+async function getLocalRaidQuest(QuestGuid) {
+  let test = await getData('Raid', !QuestGuid ? 100101 : QuestGuid);
+  let LocalRaidQuest = {};
+  if (!test) {
+    const json = await sendGMRequest(`https://raw.githubusercontent.com/moonheart/mementomori-masterbook/master/Master/LocalRaidQuestMB.json`, {});
+    if (!json) {
       alert('获取神殿信息失败，请重试！');
       return;
     }
-    const LocalRaidQuestMB = JSON.parse(buffer);
+    const LocalRaidQuestMB = JSON.parse(json);
     for (let i = 0; i < LocalRaidQuestMB.length; i++) {
-      let Quest = LocalRaidQuestMB[i];
-      LocalRaidQuest[Quest.Id] = {
-        'FirstBattleRewards': Quest.FirstBattleRewards,
-        'FixedBattleRewards': Quest.FirstBattleRewards,
+      const QuestMB = LocalRaidQuestMB[i];
+      let Quest = {
+        'Guid': QuestMB.Id,
+        'LocalRaidBannerId': QuestMB.LocalRaidBannerId,
+        'Level': QuestMB.Level,
+        'LocalRaidLevel': QuestMB.LocalRaidLevel == 0 ? QuestMB.Id.toString().slice(-5, -2) * 1 : QuestMB.LocalRaidLevel,
+        'Enermy': QuestMB.LocalRaidEnemyIds,
+        'FixedBattleReward': QuestMB.FixedBattleRewards,
+        'FirstBattleReward': QuestMB.FirstBattleRewards,
       };
+      updateData('Raid', Quest);
+      LocalRaidQuest[QuestMB.Id] = Quest;
     }
-    setStorage('LocalRaidQuest', JSON.stringify(LocalRaidQuest));
+  } else {
+    const LocalRaidQuestDB = await getArray('Raid', {}, 'Guid');
+    for (let i = 0; i < LocalRaidQuestDB.length; i++) {
+      const Quest = LocalRaidQuestDB[i];
+      LocalRaidQuest[Quest.Guid] = Quest;
+    }
   }
   return LocalRaidQuest;
 }
@@ -3082,13 +3301,13 @@ async function openDB() {
   request.onupgradeneeded = function (upgrade) {
     console.log('数据库构建中');
     DataBase = request.result;
-    //表guilds是否存在,否则创建
+    //表Match是否存在,否则创建
     if (!DataBase.objectStoreNames.contains('Match')) {
       let objectStore = DataBase.createObjectStore('Match', {
         keyPath: 'Guid',
       });
     }
-    //表guilds是否存在,否则创建
+    //表Guild是否存在,否则创建
     if (!DataBase.objectStoreNames.contains('Guild')) {
       let objectStore = DataBase.createObjectStore('Guild', {
         keyPath: 'Guid',
@@ -3100,7 +3319,7 @@ async function openDB() {
         unique: false,
       });
     }
-    //表players是否存在,否则创建
+    //表Player是否存在,否则创建
     if (!DataBase.objectStoreNames.contains('Player')) {
       let objectStore = DataBase.createObjectStore('Player', {
         keyPath: 'Guid',
@@ -3118,7 +3337,7 @@ async function openDB() {
         unique: false,
       });
     }
-    //表decks是否存在,否则创建
+    //表Deck是否存在,否则创建
     if (!DataBase.objectStoreNames.contains('Deck')) {
       let objectStore = DataBase.createObjectStore('Deck', {
         keyPath: 'Guid',
@@ -3133,7 +3352,7 @@ async function openDB() {
         unique: false,
       });
     }
-    //表characters是否存在,否则创建
+    //表Character是否存在,否则创建
     if (!DataBase.objectStoreNames.contains('Character')) {
       let objectStore = DataBase.createObjectStore('Character', {
         keyPath: 'Guid',
@@ -3157,12 +3376,36 @@ async function openDB() {
         unique: false,
       });
     }
-    //表battles是否存在,否则创建
+    //表Battle是否存在,否则创建
     if (!DataBase.objectStoreNames.contains('Battle')) {
       let objectStore = DataBase.createObjectStore('Battle', {
         keyPath: 'Guid',
       });
       objectStore.createIndex('LastUpdate', 'LastUpdate', {
+        unique: false,
+      });
+    }
+    //表Raid是否存在,否则创建
+    if (!DataBase.objectStoreNames.contains('Raid')) {
+      let objectStore = DataBase.createObjectStore('Raid', {
+        keyPath: 'Guid',
+      });
+      objectStore.createIndex('LocalRaidBannerId', 'LocalRaidBannerId', {
+        unique: false,
+      });
+      objectStore.createIndex('Level', 'Level', {
+        unique: false,
+      });
+      objectStore.createIndex('LocalRaidLevel', 'LocalRaidLevel', {
+        unique: false,
+      });
+      objectStore.createIndex('FirstBattleReward', 'FirstBattleReward', {
+        unique: false,
+      });
+      objectStore.createIndex('FixBattleReward', 'FixBattleReward', {
+        unique: false,
+      });
+      objectStore.createIndex('Enermy', 'Enermy', {
         unique: false,
       });
     }
@@ -3232,7 +3475,7 @@ async function getData(table, index, key) {
   });
 }
 //获取数据组,留空获取全部，{'>':,'>=':,'<':,'<=':}获取指定范围，字符串获取固定
-async function getArray(table, index, key, isFuzzy) {
+async function getArray(table, index = {}, key) {
   return new Promise(function (resolve, reject) {
     let oArray = [];
     let transaction = DataBase.transaction([table]);
@@ -3248,15 +3491,15 @@ async function getArray(table, index, key, isFuzzy) {
       request = objectStore.index(key).openCursor(IDBKeyRange.upperBound(index['<='] ?? index['<'], !index['<=']));
     } else if ((index['>'] || index['>=']) && (index['<'] || index['<='])) {
       request = objectStore.index(key).openCursor(IDBKeyRange.bound(index['>='] ?? index['>'], index['<='] ?? index['<'], !index['>='], !index['<=']));
-    } else if (!index) {
-      request = objectStore.index(key).openCursor(IDBKeyRange.only(index));
+    } else if (index['==']) {
+      request = objectStore.index(key).openCursor(IDBKeyRange.only(index['==']));
     } else {
       request = objectStore.openCursor();
     }
     request.onsuccess = function (success) {
       let cursor = this.result;
       if (cursor) {
-        oArray.push(cursor.value.value);
+        oArray.push(cursor.value);
         cursor.continue();
       } else {
         resolve(oArray);
