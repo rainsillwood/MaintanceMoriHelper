@@ -550,12 +550,12 @@ nav a{
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
-      'href': getURL({ 'page': 'arena', 'lang': GlobalURLList.lang }),
+      'href': getURL({ 'function': 'arena', 'lang': GlobalURLList.lang }),
       'title': 'arena',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
-      'href': getURL({ 'page': 'legend', 'lang': GlobalURLList.lang }),
+      'href': getURL({ 'function': 'legend', 'lang': GlobalURLList.lang }),
       'title': 'legend',
     }),
     createElement('a', '|'),
@@ -676,12 +676,16 @@ nav a{
       gvgMapper();
       break;
     }
-    case 'arena': {
-      characterViewer();
-      break;
-    }
     case 'temple': {
       temple();
+      break;
+    }
+    case 'arena': {
+      arena('local');
+      break;
+    }
+    case 'legend': {
+      arena('global');
       break;
     }
     default: {
@@ -843,66 +847,63 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
   document.body.append(createElement('hr'));
   /*按钮功能*/
   selectRegion.onchange = () => {
-    document.querySelector('#styleGroup')?.remove();
     selectGroup.value = '-1';
     selectClass.value = '-1';
     selectWorld.value = '-1';
-    document.head.appendChild(
-      createElement(
-        'style',
-        `
-#listGroup > option.R${selectRegion.value} {
-  display: inline;
-}
-        `,
-        'styleGroup'
-      )
-    );
-    setStorage(GlobalURLList.function + 'RegionId', selectRegion.value);
+    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
   };
   selectGroup.onchange = () => {
-    document.querySelector('#styleClass')?.remove();
     selectClass.value = '-1';
     selectWorld.value = '-1';
-    document.head.appendChild(
-      createElement(
-        'style',
-        `
-#listClass > .static
-${selectGroup.value == 'N' + selectRegion.value ? '' : ',#listClass > .dynamic'} {
-  display: inline;
-}
-        `,
-        'styleClass'
-      )
-    );
-    setStorage(GlobalURLList.function + 'RegionId', selectRegion.value);
-    setStorage(GlobalURLList.function + 'GroupId', selectGroup.value);
+    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
   };
   selectClass.onchange = () => {
-    document.querySelector('#styleWorld')?.remove();
     selectWorld.value = '-1';
-    document.head.appendChild(
-      createElement(
-        'style',
-        `
-#listWorld > ${selectClass.value > 0 ? '.global' : '.G' + selectGroup.value} {
+    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
+  };
+  selectWorld.onchange = () => {
+    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
+  };
+}
+//初始化选择栏内容
+function changeSelect(RegionId, GroupId, ClassId, WorldId) {
+  document.querySelector('#styleGroup')?.remove();
+  document.querySelector('#styleClass')?.remove();
+  document.querySelector('#styleWorld')?.remove();
+  document.head.appendChild(
+    createElement(
+      'style',
+      `
+#listGroup > option.R${RegionId} {
   display: inline;
 }
         `,
-        'styleWorld'
-      )
-    );
-    setStorage(GlobalURLList.function + 'RegionId', selectRegion.value);
-    setStorage('GroupId', selectGroup.value);
-    setStorage('ClassId', selectClass.value);
-  };
-  selectWorld.onchange = () => {
-    setStorage(GlobalURLList.function + 'RegionId', selectRegion.value);
-    setStorage(GlobalURLList.function + 'GroupId', selectGroup.value);
-    setStorage(GlobalURLList.function + 'ClassId', selectClass.value);
-    setStorage(GlobalURLList.function + 'WorldId', selectWorld.value);
-  };
+      'styleGroup'
+    ),
+    createElement(
+      'style',
+      `
+#listClass > .static
+${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
+  display: inline;
+}
+        `,
+      'styleClass'
+    ),
+    createElement(
+      'style',
+      `
+#listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
+  display: inline;
+}
+        `,
+      'styleWorld'
+    )
+  );
+  setStorage(GlobalURLList.function + 'RegionId', RegionId);
+  setStorage(GlobalURLList.function + 'GroupId', GroupId);
+  setStorage(GlobalURLList.function + 'ClassId', ClassId);
+  setStorage(GlobalURLList.function + 'WorldId', WorldId);
 }
 //初始化内容
 function initContent() {
@@ -1398,8 +1399,19 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
 /*优化功能*/
 //优化神殿
 async function temple() {
+  //初始化页面
   initContent();
+  //初始化选择栏
   await initSelect(true, true, false, false);
+  let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
+  let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
+  if (CacheGroupId != '-1') {
+    document.querySelector('#listRegion').value = CacheRegionId;
+    document.querySelector('#listGroup').value = CacheGroupId;
+    changeSelect(CacheRegionId, CacheGroupId, '-1', '-1');
+  }
+  document.querySelector('#listGroup').addEventListener('change', fillTemple);
+  //初始化显示选项
   let cacheCheckList = !getStorage('TempleCheckList') ? [true, true, true, true, true, true] : JSON.parse(getStorage('TempleCheckList'));
   let selectItem = document.querySelector('#selectpanel').appendChild(createElement('div', ''));
   selectItem.append(
@@ -1425,25 +1437,28 @@ async function temple() {
   }
   changeTempleDisplay();
   document.body.appendChild(createElement('h2', TextResource['CommonHeaderLocalRaidLabel']));
+  fillTemple();
+}
+//优化竞技场
+async function arena(type) {
+  //清除内容
+  initContent();
+  //初始化选择栏，
+  await initSelect(true, true, false, type == 'local' ? true : false);
+  //获取缓存
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
-  if (CacheGroupId >= 0) {
+  let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
+  //写入缓存
+  if (CacheGroupId != '-1') {
     document.querySelector('#listRegion').value = CacheRegionId;
     document.querySelector('#listGroup').value = CacheGroupId;
-    document.head.append(
-      createElement(
-        'style',
-        `
-#listGroup > option.R${CacheRegionId} {
-  display: inline;
-}
-        `,
-        'styleGroup'
-      )
-    );
+    document.querySelector('#listWorld').value = CacheWorldId;
+    changeSelect(CacheRegionId, CacheGroupId, '0', CacheWorldId);
+    document.querySelector(`#list${type == 'local' ? 'World' : 'Group'}`).addEventListener('change', fillArena(type));
   }
-  document.querySelector('#listGroup').addEventListener('change', fillTemple);
-  await fillTemple();
+  document.body.appendChild(createElement('h2', type == 'local' ? TextResource['CommonHeaderGvgLabel'] : TextResource['CommonHeaderGlobalGvgLabel']));
+  fillArena(type);
 }
 //优化角色显示
 function characterViewer() {
@@ -2452,7 +2467,7 @@ th img{
   );
   let divContent = document.body.appendChild(createElement('div', '', { 'class': ['container'] }));
   const GroupId = getStorage(GlobalURLList.function + 'GroupId');
-  if (GroupId > 0) {
+  if (GroupId != -1) {
     const LocalRaidQuest = await getLocalRaidQuest();
     const nodesWorld = document.querySelectorAll(`.G${GroupId}`);
     for (let i = 0; i < nodesWorld.length; i++) {
@@ -2516,6 +2531,7 @@ th img{
     }
   }
 }
+//优化神殿-
 function changeTempleDisplay() {
   document.querySelector('#styleItem')?.remove();
   let listCheckBox = document.querySelectorAll('[name="items"]');
@@ -2551,7 +2567,8 @@ tr[banner='${checkList[5] ? '5' : '0'}'] {
   );
   setStorage('TempleCheckList', JSON.stringify(checkList));
 }
-
+//优化竞技场-获取信息
+async function fillArena(type) {}
 /*API函数*/
 //获取option
 function buildOption(appVersion) {
