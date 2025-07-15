@@ -847,19 +847,19 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
   document.body.append(createElement('hr'));
   /*按钮功能*/
   selectRegion.onchange = () => {
-    selectGroup.value = '-1';
-    selectClass.value = '-1';
-    selectWorld.value = '-1';
-    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
+    selectGroup.value = -1;
+    selectClass.value = -1;
+    selectWorld.value = -1;
+    changeSelect(selectRegion.value, -1, -1, -1);
   };
   selectGroup.onchange = () => {
-    selectClass.value = '-1';
-    selectWorld.value = '-1';
-    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
+    selectClass.value = -1;
+    selectWorld.value = -1;
+    changeSelect(selectRegion.value, selectGroup.value, -1, -1);
   };
   selectClass.onchange = () => {
-    selectWorld.value = '-1';
-    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
+    selectWorld.value = -1;
+    changeSelect(selectRegion.value, selectGroup.value, selectClass.value, -1);
   };
   selectWorld.onchange = () => {
     changeSelect(selectRegion.value, selectGroup.value, selectClass.value, selectWorld.value);
@@ -870,7 +870,7 @@ function changeSelect(RegionId, GroupId, ClassId, WorldId) {
   document.querySelector('#styleGroup')?.remove();
   document.querySelector('#styleClass')?.remove();
   document.querySelector('#styleWorld')?.remove();
-  document.head.appendChild(
+  document.head.append(
     createElement(
       'style',
       `
@@ -1405,12 +1405,13 @@ async function temple() {
   await initSelect(true, true, false, false);
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
+  const [selectRegion, selectGroup, selectClass, selectWorld] = [document.querySelector('#listRegion'), document.querySelector('#listGroup'), document.querySelector('#listClass'), document.querySelector('#listWorld')];
   if (CacheGroupId != '-1') {
-    document.querySelector('#listRegion').value = CacheRegionId;
-    document.querySelector('#listGroup').value = CacheGroupId;
+    selectRegion.value = CacheRegionId;
+    selectGroup.value = CacheGroupId;
     changeSelect(CacheRegionId, CacheGroupId, '-1', '-1');
   }
-  document.querySelector('#listGroup').addEventListener('change', fillTemple);
+  selectGroup.addEventListener('change', fillTemple);
   //初始化显示选项
   let cacheCheckList = !getStorage('TempleCheckList') ? [true, true, true, true, true, true] : JSON.parse(getStorage('TempleCheckList'));
   let selectItem = document.querySelector('#selectpanel').appendChild(createElement('div', ''));
@@ -1440,24 +1441,31 @@ async function temple() {
   fillTemple();
 }
 //优化竞技场
-async function arena(type) {
+async function arena() {
+  const type = GlobalURLList.function;
   //清除内容
   initContent();
   //初始化选择栏，
-  await initSelect(true, true, false, type == 'local' ? true : false);
+  await initSelect(true, true, false, type == 'arena' ? true : false);
   //获取缓存
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
   let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
   //写入缓存
+  const [selectRegion, selectGroup, selectClass, selectWorld] = [document.querySelector('#listRegion'), document.querySelector('#listGroup'), document.querySelector('#listClass'), document.querySelector('#listWorld')];
   if (CacheGroupId != '-1') {
-    document.querySelector('#listRegion').value = CacheRegionId;
-    document.querySelector('#listGroup').value = CacheGroupId;
-    document.querySelector('#listWorld').value = CacheWorldId;
-    changeSelect(CacheRegionId, CacheGroupId, '0', CacheWorldId);
-    document.querySelector(`#list${type == 'local' ? 'World' : 'Group'}`).addEventListener('change', fillArena(type));
+    selectRegion.value = CacheRegionId;
+    selectGroup.value = CacheGroupId;
+    selectClass.value = 0;
+    selectWorld.value = CacheWorldId;
+    changeSelect(CacheRegionId, CacheGroupId, 0, CacheWorldId);
+    selectGroup.onchange = () => {
+      selectWorld.value = -1;
+      changeSelect(selectRegion.value, selectGroup.value, 0, -1);
+    };
+    document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillArena(type));
   }
-  document.body.appendChild(createElement('h2', type == 'local' ? TextResource['CommonHeaderGvgLabel'] : TextResource['CommonHeaderGlobalGvgLabel']));
+  document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
   fillArena(type);
 }
 //优化角色显示
@@ -2407,18 +2415,51 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const itemList = {
-    '1': {
-      '3': { 'name': `<img src="${GlobalConstant.assetURL}Item_0010.png"></img>` },
-      '11': { 'name': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>` },
-      '12': { 'name': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>` },
+    '0': '',
+    '1': '',
+    '2': '',
+    '3': {
+      '0': '',
+      '1': { 'name': `<img src="${GlobalConstant.assetURL}Item_0010.png"></img>` },
+      '2': '',
+      '3': '',
+      '4': '',
     },
-    '2': {
-      '11': { 'name': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>` },
-      '12': { 'name': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>` },
+    '4': '',
+    '5': '',
+    '6': '',
+    '7': '',
+    '8': '',
+    '9': '',
+    '10': '',
+    '11': {
+      '0': '',
+      '1': { 'name': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>` },
+      '2': { 'name': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>` },
+      '3': '',
+      '4': '',
     },
-    '4': {
-      '13': { 'name': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>` },
+    '12': {
+      '0': '',
+      '1': { 'name': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>` },
+      '2': { 'name': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>` },
+      '3': '',
+      '4': '',
     },
+    '13': {
+      '0': '',
+      '1': '',
+      '2': '',
+      '3': '',
+      '4': { 'name': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>` },
+    },
+    '14': '',
+    '15': '',
+    '16': '',
+    '17': '',
+    '18': '',
+    '19': '',
+    '20': '',
   };
   const raidType = {
     '1': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>`,
@@ -2531,7 +2572,7 @@ th img{
     }
   }
 }
-//优化神殿-
+//优化神殿-改变高亮
 function changeTempleDisplay() {
   document.querySelector('#styleItem')?.remove();
   let listCheckBox = document.querySelectorAll('[name="items"]');
@@ -2568,7 +2609,9 @@ tr[banner='${checkList[5] ? '5' : '0'}'] {
   setStorage('TempleCheckList', JSON.stringify(checkList));
 }
 //优化竞技场-获取信息
-async function fillArena(type) {}
+async function fillArena(type) {
+  const CharacterList = await getCharacter();
+}
 /*API函数*/
 //获取option
 function buildOption(appVersion) {
@@ -2651,6 +2694,44 @@ async function getTextResource() {
     setStorage('TextResource', JSON.stringify(result));
   }
   return JSON.parse(getStorage('TextResource'));
+}
+//获取人物信息
+async function getCharacter() {
+  let CharacterList = JSON.parse(getStorage('Character'));
+  if (CharacterList?.AppVersion != GlobalConstant.AppVersion) {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/CharacterMB`, { type: 'arraybuffer', msgpack: true });
+    const CharacterMB = await msgpack.decode(new Uint8Array(buffer));
+    if (!CharacterMB) return;
+    CharacterList = {};
+    for (let i = 0; i < CharacterMB.length; i++) {
+      const Character = CharacterMB[i];
+      Character.Name = Character.NameKey ? TextResource[Character.NameKey.slice(1, -1)] : '';
+      Character.Title = Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '';
+      CharacterList[Character.Id] = Character;
+    }
+    CharacterList.AppVersion = GlobalConstant.AppVersion;
+    setStorage('Character', JSON.stringify(CharacterList));
+  }
+  return JSON.parse(CharacterList);
+}
+//获取物品信息
+async function getCharacter() {
+  let ItemList = JSON.parse(getStorage('Item'));
+  if (ItemList?.AppVersion != GlobalConstant.AppVersion) {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/ItemMB`, { type: 'arraybuffer', msgpack: true });
+    const ItemMB = await msgpack.decode(new Uint8Array(buffer));
+    if (!ItemMB) return;
+    ItemList = {};
+    for (let i = 0; i < ItemMB.length; i++) {
+      const Item = ItemMB[i];
+      Item.Name = Item.NameKey ? TextResource[Item.NameKey.slice(1, -1)] : '';
+      Item.Title = Item.Name2Key ? TextResource[Item.Name2Key.slice(1, -1)] : '';
+      ItemList[Item.Id] = Item;
+    }
+    ItemList.AppVersion = GlobalConstant.AppVersion;
+    setStorage('Character', JSON.stringify(ItemList));
+  }
+  return JSON.parse(ItemList);
 }
 //获取神殿信息
 async function getLocalRaidQuest(QuestGuid) {
