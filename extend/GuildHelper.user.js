@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.81
+// @version      0.83
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -2488,7 +2488,7 @@ th img{
       );
       for (let j = QuestArray.length - 1; j >= 0; j--) {
         const QuestGuid = QuestArray[j];
-        let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8010000000 + (QuestGuid % 10000000)] : LocalRaidQuestList[QuestGuid * 1];
+        let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
         if (!Quest) {
           Quest = {
             'Guid': QuestGuid,
@@ -2501,7 +2501,7 @@ th img{
           };
         }
         if (j == 0) {
-          nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
+          nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
         }
         let nodeTr = table.appendChild(
           createElement(
@@ -2517,13 +2517,13 @@ th img{
         let nodeFixedReward = nodeTr.appendChild(createElement('th'));
         let nodeEventReward = nodeTr.appendChild(createElement('th'));
         for (let k = Quest.FixedBattleReward.length - 1; k >= 0; k--) {
-          if (k == 0) {
-            nodeTr.querySelector('div[name="banner"]').innerHTML = nodeTr.querySelector('div[name="banner"]').innerHTML.replace('undefined', `<img src="${ItemList[ItemId].Icon}"></img>`);
-          }
           const FixedBattleReward = Quest.FixedBattleReward[k];
           const FirstBattleReward = Quest.FirstBattleReward[k];
           let isCoin = FixedBattleReward.ItemId == 1 && FixedBattleReward.ItemType == 3 ? 'coin' : '';
           const ItemId = `${FirstBattleReward.ItemId}@${FirstBattleReward.ItemType}`;
+          if (k == 0) {
+            nodeTr.querySelector('div[name="banner"]').innerHTML = nodeTr.querySelector('div[name="banner"]').innerHTML.replace('undefined', `<img src="${ItemList[ItemId].Icon}"></img>`);
+          }
           nodeFirstReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
           nodeFixedReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
           nodeEventReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
