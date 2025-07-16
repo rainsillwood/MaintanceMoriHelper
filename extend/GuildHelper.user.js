@@ -1468,26 +1468,6 @@ async function arena() {
   document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
   fillArena(type);
 }
-//优化角色显示
-function characterViewer() {
-  let characterPanel = document.querySelector('#character');
-  /*document.querySelector('style').appendChild(
-      createElement(
-        'text',
-        `
-        #character {
-          width: 20%;
-          height: 420px;
-          overflow: scroll;
-        }
-        #ranking {
-          width: 80%;
-        }
-        `
-      )
-    );
-    document.querySelector('div.container').appendChild(characterPanel);*/
-}
 /*子功能*/
 //登录账号
 async function loginAccount() {
@@ -2415,13 +2395,6 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const ItemList = await getItem();
-  const RaidType = {
-    '1': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>`,
-    '2': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>`,
-    '3': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>`,
-    '4': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>`,
-    '5': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>`,
-  };
   document.querySelector('#listClass').value = 0;
   document.querySelector('.container')?.remove();
   document.head.querySelector('style')?.appendChild(
@@ -2508,7 +2481,10 @@ th img{
             'tr',
             `
             <th>
-              <div name="banner">${RaidType[Quest.LocalRaidBannerId]}<a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a></div>
+              <div name="banner">
+                <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - Quest.LocalRaidBannerId.toString().length)}${Quest.LocalRaidBannerId}.png"></img>
+                <a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a>
+              </div>
             </th>
             `
           )
