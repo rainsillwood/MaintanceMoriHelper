@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.83
+// @version      0.85
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -2508,7 +2508,7 @@ th img{
             'tr',
             `
             <th>
-              <div name="banner">${RaidType[Quest.LocalRaidBannerId]}<a>${'★'.repeat(Quest.Level)}</a></div>
+              <div name="banner">${RaidType[Quest.LocalRaidBannerId]}<a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a></div>
             </th>
             `
           )
@@ -2571,6 +2571,7 @@ tr[banner='${checkList[5] ? '5' : '0'}'] {
 //优化竞技场-获取信息
 async function fillArena(type) {
   const CharacterList = await getCharacter();
+  console.log(CharacterList);
 }
 /*API函数*/
 //获取option
@@ -2672,7 +2673,7 @@ async function getCharacter() {
     CharacterList.AppVersion = GlobalConstant.AppVersion;
     setStorage('Character', JSON.stringify(CharacterList));
   }
-  return JSON.parse(CharacterList);
+  return CharacterList;
 }
 //获取物品信息
 async function getItem() {

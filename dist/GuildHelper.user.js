@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.83
+// @version      0.85
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -2508,7 +2508,7 @@ th img{
             'tr',
             `
             <th>
-              <div name="banner">${RaidType[Quest.LocalRaidBannerId]}<a>${'★'.repeat(Quest.Level)}</a></div>
+              <div name="banner">${RaidType[Quest.LocalRaidBannerId]}<a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a></div>
             </th>
             `
           )
