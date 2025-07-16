@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.86
+// @version      0.88
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -272,8 +272,8 @@ const LanguageTable = {
     'JaJp': '(Contains fixed)',
     'EnUs': '(Contains fixed)',
     'KoKr': '(Contains fixed)',
-    'ZhTw': '（包含固定）',
-    'ZhCn': '（包含固定）',
+    'ZhTw': '（包含確定）',
+    'ZhCn': '（包含确定）',
   },
 };
 //URL信息
@@ -292,7 +292,7 @@ const GlobalVariable = {
 let SocketGvG;
 let DataBase;
 //清除缓存
-if (getStorage('ScriptVersion') != '0.86') {
+if (getStorage('ScriptVersion') * 1 < 0.86) {
   localStorage.clear();
 }
 setStorage('ScriptVersion', '0.86');
@@ -1419,7 +1419,7 @@ async function temple() {
   selectGroup.addEventListener('change', fillTemple);
   //初始化显示选项
   let cacheCheckList = !getStorage('TempleCheckList') ? [true, true, true, true, true, true] : JSON.parse(getStorage('TempleCheckList'));
-  let selectItem = document.querySelector('#selectpanel').appendChild(createElement('div', ''));
+  let selectItem = document.querySelector('#selectpanel').appendChild(createElement('p', ''));
   selectItem.append(
     createElement('a', ''),
     createElement('a', ''),
@@ -2400,19 +2400,6 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const ItemList = await getItem();
-  const EventReward = {
-    '110': '32@50',
-    '100': '29@50',
-    '90': '26@50',
-    '80': '23@50',
-    '70': '20@50',
-    '60': '17@50',
-    '50': '14@50',
-    '40': '11@50',
-    '30': '8@50',
-    '20': '5@50',
-    '10': '1@50',
-  };
   document.querySelector('#listClass').value = 0;
   document.querySelector('.container')?.remove();
   document.head.querySelector('style')?.appendChild(
@@ -2431,22 +2418,36 @@ th>div{
   display: block;
   width: 100%;
 }
-tr>:nth-child(1){
-  width: 330px;
-  font-size:24px;
+thead th{
+  text-align: center;
 }
-tr>th{
+tbody th{
   width: 140px;
 }
-tr>:nth-child(1) img{
-  width: 110px;
-  height: 68px;
-  vertical-align: middle;
-}
-th img{
+tbody img{
   width: 32px;
   height: 32px;
   vertical-align: middle;
+}
+tbody>tr>th>div>a{
+  font-size: 0px;
+}
+tbody>tr>:nth-child(1){
+  width: 330px;
+  text-align: left;
+}
+tbody>tr>:nth-child(1)>div{
+  display: inline-block;
+  font-size: 24px;
+  vertical-align: middle;
+  width: 215px;
+}
+tbody>tr>:nth-child(1) img{
+  width: 110px;
+  height: 68px;
+}
+div[name="banner"]{
+  width: 110px !important;
 }
       `
     )
@@ -2461,12 +2462,12 @@ th img{
       const QuestArray = JSON.parse(QuestInfoBuffer)?.data.quest_ids;
       const LocalRaidQuestList = await getLocalRaidQuest();
       let table = divContent.appendChild(createElement('table', '', WorldId));
-      let nodeTbody = table.appendChild(
+      let nodeThead = table.appendChild(
         createElement(
-          'tbody',
+          'thead',
           `
           <tr>
-            <th colspan="4">${TextResource['TitleWarningListWorld']}:W${WorldId % 100}</th>
+            <th colspan="4"><h3>${TextResource['TitleWarningListWorld']}:W${WorldId % 100}</h3></th>
           </tr>
           <tr>
             <th name="LocalRaidLevel">${TextResource['LocalRaidTrainingLevelFormat']}</th>
@@ -2477,21 +2478,25 @@ th img{
           `
         )
       );
+      let nodeTbody = table.appendChild(createElement('tbody', ''));
       for (let j = QuestArray.length - 1; j >= 0; j--) {
         const QuestGuid = QuestArray[j];
         let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
         let QuestBannerId = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + Quest.LocalRaidBannerId.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
         if (j == 0) {
-          nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
+          nodeThead.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeThead.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
         }
-        let nodeTr = table.appendChild(
+        let nodeTr = nodeTbody.appendChild(
           createElement(
             'tr',
             `
             <th>
               <div name="banner">
                 <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png"></img>
-                <a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a>
+              </div>
+              <div>
+                <div>${TextResource['LocalRaidName' + (107 + QuestGuid.toString().slice(0, -8) / 10)]}</div>
+                <div>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</div>
               </div>
             </th>
             `
@@ -2508,9 +2513,9 @@ th img{
           const Item = ItemList[ItemId];
           const IconId = Item.IconId.toString();
           const Icon = `${GlobalConstant.assetURL}Icon\\Item\\Item_${'0'.repeat(4 - IconId.length)}${IconId}.png`;
-          nodeFirstReward.appendChild(createElement('div', `<img src="${Icon}">×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeFixedReward.appendChild(createElement('div', `<img src="${Icon}">×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeEventReward.appendChild(createElement('div', `<img src="${Icon}">×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
+          nodeFirstReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
+          nodeFixedReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
+          nodeEventReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
         }
       }
     }
