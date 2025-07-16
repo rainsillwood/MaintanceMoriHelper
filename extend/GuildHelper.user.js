@@ -2462,6 +2462,7 @@ th img{
       for (let j = QuestArray.length - 1; j >= 0; j--) {
         const QuestGuid = QuestArray[j];
         let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
+        let QuestBanner = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + QuestGuid.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
         if (!Quest) {
           Quest = {
             'Guid': QuestGuid,
@@ -2476,13 +2477,14 @@ th img{
         if (j == 0) {
           nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
         }
+        le;
         let nodeTr = table.appendChild(
           createElement(
             'tr',
             `
             <th>
               <div name="banner">
-                <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - Quest.LocalRaidBannerId.toString().length)}${Quest.LocalRaidBannerId}.png"></img>
+                <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(5 - QuestBanner.length)}${QuestBanner}.png"></img>
                 <a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a>
               </div>
             </th>
