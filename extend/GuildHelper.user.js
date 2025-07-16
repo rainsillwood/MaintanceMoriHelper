@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.85
+// @version      0.86
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -2395,6 +2395,19 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const ItemList = await getItem();
+  const EventReward = {
+    '110': '32@50',
+    '100': '29@50',
+    '90': '26@50',
+    '80': '23@50',
+    '70': '20@50',
+    '60': '17@50',
+    '50': '14@50',
+    '40': '11@50',
+    '30': '8@50',
+    '20': '5@50',
+    '10': '1@50',
+  };
   document.querySelector('#listClass').value = 0;
   document.querySelector('.container')?.remove();
   document.head.querySelector('style')?.appendChild(
@@ -2414,15 +2427,15 @@ th>div{
   width: 100%;
 }
 tr>:nth-child(1){
-  width: 300px;
+  width: 330px;
   font-size:24px;
 }
 tr>th{
-  width: 150px;
+  width: 140px;
 }
 tr>:nth-child(1) img{
-  width: 64px;
-  height: 64px;
+  width: 110px;
+  height: 68px;
   vertical-align: middle;
 }
 th img{
@@ -2462,29 +2475,17 @@ th img{
       for (let j = QuestArray.length - 1; j >= 0; j--) {
         const QuestGuid = QuestArray[j];
         let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
-        let QuestBanner = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + QuestGuid.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
-        if (!Quest) {
-          Quest = {
-            'Guid': QuestGuid,
-            'LocalRaidBannerId': QuestGuid.length > 6 ? QuestGuid.slice(0, 2) + QuestGuid.slice(-1) : QuestGuid[0],
-            'Level': QuestGuid.length > 6 ? QuestGuid.slice(-3, -1) : QuestGuid.slice(-1),
-            'LocalRaidLevel': QuestGuid.length > 6 ? QuestGuid.slice(2, 5) : QuestGuid.slice(1, 4),
-            'Enermy': [],
-            'FixedBattleReward': [],
-            'FirstBattleReward': [],
-          };
-        }
+        let QuestBannerId = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + Quest.LocalRaidBannerId.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
         if (j == 0) {
           nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
         }
-        le;
         let nodeTr = table.appendChild(
           createElement(
             'tr',
             `
             <th>
               <div name="banner">
-                <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(5 - QuestBanner.length)}${QuestBanner}.png"></img>
+                <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png"></img>
                 <a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a>
               </div>
             </th>
@@ -2498,13 +2499,13 @@ th img{
           const FixedBattleReward = Quest.FixedBattleReward[k];
           const FirstBattleReward = Quest.FirstBattleReward[k];
           let isCoin = FixedBattleReward.ItemId == 1 && FixedBattleReward.ItemType == 3 ? 'coin' : '';
-          const ItemId = `${FirstBattleReward.ItemId}@${FirstBattleReward.ItemType}`;
-          if (k == 0) {
-            nodeTr.querySelector('div[name="banner"]').innerHTML = nodeTr.querySelector('div[name="banner"]').innerHTML.replace('undefined', `<img src="${ItemList[ItemId].Icon}"></img>`);
-          }
-          nodeFirstReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeFixedReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeEventReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
+          const ItemId = FirstBattleReward.ItemType == 50 ? `${(QuestGuid.toString().slice(0, -8) * 3) / 10 - 1}@50` : `${FirstBattleReward.ItemId}@${FirstBattleReward.ItemType}`;
+          const Item = ItemList[ItemId];
+          const IconId = Item.IconId.toString();
+          const Icon = `${GlobalConstant.assetURL}Icon\\Item\\Item_${'0'.repeat(4 - IconId.length)}${IconId}.png`;
+          nodeFirstReward.appendChild(createElement('div', `<img src="${Icon}">×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
+          nodeFixedReward.appendChild(createElement('div', `<img src="${Icon}">×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
+          nodeEventReward.appendChild(createElement('div', `<img src="${Icon}">×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
         }
       }
     }
@@ -2668,7 +2669,6 @@ async function getItem() {
       Item.Name = Item.NameKey ? TextResource[Item.NameKey.slice(1, -1)] : '';
       Item.Display = Item.DisplayName ? TextResource[Item.DisplayName.slice(1, -1)] : '';
       Item.Description = Item.DescriptionKey ? TextResource[Item.DescriptionKey.slice(1, -1)] : '';
-      Item.Icon = `Icon\\Item\\${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Item.IconId.toString().length)}${Item.IconId}.png`;
       ItemList[`${Item.ItemId}@${Item.ItemType}`] = Item;
     }
     for (let i = 0; i < TreasureChestMB.length; i++) {
@@ -2676,7 +2676,6 @@ async function getItem() {
       Treasure.Name = Treasure.NameKey ? TextResource[Treasure.NameKey.slice(1, -1)] : '';
       Treasure.Display = Treasure.DisplayName ? TextResource[Treasure.DisplayName.slice(1, -1)] : '';
       Treasure.Description = Treasure.DescriptionKey ? TextResource[Treasure.DescriptionKey.slice(1, -1)] : '';
-      Treasure.Icon = `Icon\\Item\\${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Treasure.IconId.toString().length)}${Treasure.IconId}.png`;
       ItemList[`${Treasure.Id}@${17}`] = Treasure;
     }
     ItemList.AppVersion = GlobalConstant.AppVersion;

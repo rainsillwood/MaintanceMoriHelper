@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.85
+// @version      0.86
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -44,8 +44,6 @@ document.querySelector('style').appendChild(
     `
   )
 );
-//固定语言
-setStorage('lang', '["en","en","en","en","en","en","en"]');
 /*全局对象*/
 //静态常量
 const GlobalConstant = {
@@ -293,6 +291,13 @@ const GlobalVariable = {
 //公共对象
 let SocketGvG;
 let DataBase;
+//清除缓存
+if (getStorage('ScriptVersion') != '0.86') {
+  localStorage.clear();
+}
+setStorage('ScriptVersion', '0.86');
+//固定语言
+setStorage('lang', '["en","en","en","en","en","en","en"]');
 //注入翻译
 const functionLanguage = unsafeWindow._m;
 unsafeWindow._m = function (...args) {
@@ -1468,26 +1473,6 @@ async function arena() {
   document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
   fillArena(type);
 }
-//优化角色显示
-function characterViewer() {
-  let characterPanel = document.querySelector('#character');
-  /*document.querySelector('style').appendChild(
-      createElement(
-        'text',
-        `
-        #character {
-          width: 20%;
-          height: 420px;
-          overflow: scroll;
-        }
-        #ranking {
-          width: 80%;
-        }
-        `
-      )
-    );
-    document.querySelector('div.container').appendChild(characterPanel);*/
-}
 /*子功能*/
 //登录账号
 async function loginAccount() {
@@ -2415,12 +2400,18 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const ItemList = await getItem();
-  const RaidType = {
-    '1': `<img src="${GlobalConstant.assetURL}Item_0015.png"></img>`,
-    '2': `<img src="${GlobalConstant.assetURL}Item_0017.png"></img>`,
-    '3': `<img src="${GlobalConstant.assetURL}Item_0018.png"></img>`,
-    '4': `<img src="${GlobalConstant.assetURL}Item_0016.png"></img>`,
-    '5': `<img src="${GlobalConstant.assetURL}Item_0039.png"></img>`,
+  const EventReward = {
+    '110': '32@50',
+    '100': '29@50',
+    '90': '26@50',
+    '80': '23@50',
+    '70': '20@50',
+    '60': '17@50',
+    '50': '14@50',
+    '40': '11@50',
+    '30': '8@50',
+    '20': '5@50',
+    '10': '1@50',
   };
   document.querySelector('#listClass').value = 0;
   document.querySelector('.container')?.remove();
@@ -2441,15 +2432,15 @@ th>div{
   width: 100%;
 }
 tr>:nth-child(1){
-  width: 300px;
+  width: 330px;
   font-size:24px;
 }
 tr>th{
-  width: 150px;
+  width: 140px;
 }
 tr>:nth-child(1) img{
-  width: 64px;
-  height: 64px;
+  width: 110px;
+  height: 68px;
   vertical-align: middle;
 }
 th img{
@@ -2489,17 +2480,7 @@ th img{
       for (let j = QuestArray.length - 1; j >= 0; j--) {
         const QuestGuid = QuestArray[j];
         let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
-        if (!Quest) {
-          Quest = {
-            'Guid': QuestGuid,
-            'LocalRaidBannerId': QuestGuid.length > 6 ? QuestGuid.slice(0, 2) + QuestGuid.slice(-1) : QuestGuid[0],
-            'Level': QuestGuid.length > 6 ? QuestGuid.slice(-3, -1) : QuestGuid.slice(-1),
-            'LocalRaidLevel': QuestGuid.length > 6 ? QuestGuid.slice(2, 5) : QuestGuid.slice(1, 4),
-            'Enermy': [],
-            'FixedBattleReward': [],
-            'FirstBattleReward': [],
-          };
-        }
+        let QuestBannerId = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + Quest.LocalRaidBannerId.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
         if (j == 0) {
           nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeTbody.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
         }
@@ -2508,7 +2489,10 @@ th img{
             'tr',
             `
             <th>
-              <div name="banner">${RaidType[Quest.LocalRaidBannerId]}<a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a></div>
+              <div name="banner">
+                <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png"></img>
+                <a>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</a>
+              </div>
             </th>
             `
           )
@@ -2520,13 +2504,13 @@ th img{
           const FixedBattleReward = Quest.FixedBattleReward[k];
           const FirstBattleReward = Quest.FirstBattleReward[k];
           let isCoin = FixedBattleReward.ItemId == 1 && FixedBattleReward.ItemType == 3 ? 'coin' : '';
-          const ItemId = `${FirstBattleReward.ItemId}@${FirstBattleReward.ItemType}`;
-          if (k == 0) {
-            nodeTr.querySelector('div[name="banner"]').innerHTML = nodeTr.querySelector('div[name="banner"]').innerHTML.replace('undefined', `<img src="${ItemList[ItemId].Icon}"></img>`);
-          }
-          nodeFirstReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeFixedReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeEventReward.appendChild(createElement('div', `<img src="${ItemList[ItemId].Icon}"></img>×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
+          const ItemId = FirstBattleReward.ItemType == 50 ? `${(QuestGuid.toString().slice(0, -8) * 3) / 10 - 1}@50` : `${FirstBattleReward.ItemId}@${FirstBattleReward.ItemType}`;
+          const Item = ItemList[ItemId];
+          const IconId = Item.IconId.toString();
+          const Icon = `${GlobalConstant.assetURL}Icon\\Item\\Item_${'0'.repeat(4 - IconId.length)}${IconId}.png`;
+          nodeFirstReward.appendChild(createElement('div', `<img src="${Icon}">×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
+          nodeFixedReward.appendChild(createElement('div', `<img src="${Icon}">×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
+          nodeEventReward.appendChild(createElement('div', `<img src="${Icon}">×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
         }
       }
     }
@@ -2571,6 +2555,7 @@ tr[banner='${checkList[5] ? '5' : '0'}'] {
 //优化竞技场-获取信息
 async function fillArena(type) {
   const CharacterList = await getCharacter();
+  console.log(CharacterList);
 }
 /*API函数*/
 //获取option
@@ -2672,7 +2657,7 @@ async function getCharacter() {
     CharacterList.AppVersion = GlobalConstant.AppVersion;
     setStorage('Character', JSON.stringify(CharacterList));
   }
-  return JSON.parse(CharacterList);
+  return CharacterList;
 }
 //获取物品信息
 async function getItem() {
@@ -2689,7 +2674,6 @@ async function getItem() {
       Item.Name = Item.NameKey ? TextResource[Item.NameKey.slice(1, -1)] : '';
       Item.Display = Item.DisplayName ? TextResource[Item.DisplayName.slice(1, -1)] : '';
       Item.Description = Item.DescriptionKey ? TextResource[Item.DescriptionKey.slice(1, -1)] : '';
-      Item.Icon = `${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Item.IconId.toString().length)}${Item.IconId}.png`;
       ItemList[`${Item.ItemId}@${Item.ItemType}`] = Item;
     }
     for (let i = 0; i < TreasureChestMB.length; i++) {
@@ -2697,10 +2681,8 @@ async function getItem() {
       Treasure.Name = Treasure.NameKey ? TextResource[Treasure.NameKey.slice(1, -1)] : '';
       Treasure.Display = Treasure.DisplayName ? TextResource[Treasure.DisplayName.slice(1, -1)] : '';
       Treasure.Description = Treasure.DescriptionKey ? TextResource[Treasure.DescriptionKey.slice(1, -1)] : '';
-      Treasure.Icon = `${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Treasure.IconId.toString().length)}${Treasure.IconId}.png`;
       ItemList[`${Treasure.Id}@${17}`] = Treasure;
     }
-
     ItemList.AppVersion = GlobalConstant.AppVersion;
     setStorage('Item', JSON.stringify(ItemList));
   }
