@@ -2666,7 +2666,7 @@ async function getItem() {
       Item.Name = Item.NameKey ? TextResource[Item.NameKey.slice(1, -1)] : '';
       Item.Display = Item.DisplayName ? TextResource[Item.DisplayName.slice(1, -1)] : '';
       Item.Description = Item.DescriptionKey ? TextResource[Item.DescriptionKey.slice(1, -1)] : '';
-      Item.Icon = `${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Item.IconId.toString().length)}${Item.IconId}.png`;
+      Item.Icon = `Icon\\Item\\${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Item.IconId.toString().length)}${Item.IconId}.png`;
       ItemList[`${Item.ItemId}@${Item.ItemType}`] = Item;
     }
     for (let i = 0; i < TreasureChestMB.length; i++) {
@@ -2674,10 +2674,9 @@ async function getItem() {
       Treasure.Name = Treasure.NameKey ? TextResource[Treasure.NameKey.slice(1, -1)] : '';
       Treasure.Display = Treasure.DisplayName ? TextResource[Treasure.DisplayName.slice(1, -1)] : '';
       Treasure.Description = Treasure.DescriptionKey ? TextResource[Treasure.DescriptionKey.slice(1, -1)] : '';
-      Treasure.Icon = `${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Treasure.IconId.toString().length)}${Treasure.IconId}.png`;
+      Treasure.Icon = `Icon\\Item\\${GlobalConstant.assetURL}Item_${'0'.repeat(4 - Treasure.IconId.toString().length)}${Treasure.IconId}.png`;
       ItemList[`${Treasure.Id}@${17}`] = Treasure;
     }
-
     ItemList.AppVersion = GlobalConstant.AppVersion;
     setStorage('Item', JSON.stringify(ItemList));
   }
