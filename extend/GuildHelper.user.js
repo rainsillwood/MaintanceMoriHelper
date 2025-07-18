@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      0.88
+// @version      0.9
 // @description  公会战小助手
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -24,7 +24,6 @@
 'use strict';
 console.log('脚本运行中');
 //增加冻结层
-const FreezeNode = document.body.appendChild(createElement('div', '<h1>Loading......</h1>', 'loading'));
 document.querySelector('style').appendChild(
   createElement(
     'text',
@@ -44,6 +43,8 @@ document.querySelector('style').appendChild(
     `
   )
 );
+const FreezeNode = createElement('div', '<h1>Loading......</h1>', 'loading');
+document.body.append(FreezeNode);
 /*全局对象*/
 //静态常量
 const GlobalConstant = {
@@ -290,12 +291,22 @@ const GlobalVariable = {
 };
 //公共对象
 let SocketGvG;
-let DataBase;
+let DataBase = {
+  'Static': {
+    'version': 1,
+  },
+  'Record': {
+    'version': 1,
+  },
+};
+await openDB('Static');
+await openDB('Record');
 //清除缓存
-if (getStorage('ScriptVersion') * 1 < 0.86) {
+if (getStorage('ScriptVersion') * 1 < 0.9) {
   localStorage.clear();
+  indexedDB.deleteDatabase('database');
 }
-setStorage('ScriptVersion', '0.86');
+setStorage('ScriptVersion', '0.9');
 //固定语言
 setStorage('lang', '["en","en","en","en","en","en","en"]');
 //注入翻译
@@ -705,7 +716,6 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
     option.classList.add('default');
     return option;
   };
-  openDB();
   //选择栏样式
   document.querySelector('style').appendChild(
     createElement(
@@ -1145,7 +1155,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       alert('未选择世界');
       return;
     }
-    const Match = await getData('Match', `${GroupId}_${ClassId}_${WorldId}`);
+    const Match = await getData(DataBase.Record.db, 'Match', `${GroupId}_${ClassId}_${WorldId}`);
     if (Match) {
       document.querySelector('gvg-viewer').setAttribute('guid', Match.guid);
       document.querySelector('gvg-viewer').setAttribute('region', RegionId);
@@ -1169,9 +1179,9 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       const GuildNode = GuildDataList[i];
       const GuildGuid = GuildNode.id;
       Match.Guilds.push(GuildGuid);
-      let Guild = await getData('Guild', GuildGuid);
+      let Guild = await getData(DataBase.Record.db, 'Guild', GuildGuid);
       Guild.Color = document.querySelector(`#style${GuildGuid}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
-      updateData('Guild', Guild);
+      updateData(DataBase.Record.db, 'Guild', Guild);
     }
     const CastleDataList = document.querySelectorAll('gvg-castle');
     for (let i = 0; i < CastleDataList.length; i++) {
@@ -1204,7 +1214,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       }
       Match.Castles.push(Castle);
     }
-    updateData('Match', Match);
+    updateData(DataBase.Record.db, 'Match', Match);
   };
   //从服务器获取
   buttonGetServer.onclick = async () => {
@@ -1220,7 +1230,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       drawMap();
       fillGuilds();
       //从数据库获取战斗信息
-      let Match = await getData('Match', `${GroupId}_${ClassId}_${WorldId}`);
+      let Match = await getData(DataBase.Record.db, 'Match', `${GroupId}_${ClassId}_${WorldId}`);
       //若无信息则新建
       if (!Match) {
         Match = {
@@ -1235,7 +1245,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
         let GuildName = MatchInfo.guilds[i];
         let GuildId = i;
         //从数据库获取公会信息
-        let Guild = await getData('Guild', `${RegionId}_${GuildId}`);
+        let Guild = await getData(DataBase.Record.db, 'Guild', `${RegionId}_${GuildId}`);
         //若无则新建
         if (!Guild) {
           Guild = {
@@ -1251,7 +1261,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
         //写入公会ID
         Match.Guilds.push(Guild.Guid);
         //更新数据库公会信息
-        updateData('Guild', Guild);
+        updateData(DataBase.Record.db, 'Guild', Guild);
       }
       //清除城池并写入
       Match.Castles = [];
@@ -1458,7 +1468,7 @@ async function arena() {
   let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
   //写入缓存
   const [selectRegion, selectGroup, selectClass, selectWorld] = [document.querySelector('#listRegion'), document.querySelector('#listGroup'), document.querySelector('#listClass'), document.querySelector('#listWorld')];
-  if (CacheGroupId != '-1') {
+  if ((type == 'legend' && CacheGroupId != '-1') || (type == 'arena' && CacheWorldId != '-1')) {
     selectRegion.value = CacheRegionId;
     selectGroup.value = CacheGroupId;
     selectClass.value = 0;
@@ -1468,10 +1478,10 @@ async function arena() {
       selectWorld.value = -1;
       changeSelect(selectRegion.value, selectGroup.value, 0, -1);
     };
-    document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillArena(type));
+    document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillTeam);
+    fillTeam();
   }
   document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
-  fillArena(type);
 }
 /*子功能*/
 //登录账号
@@ -2187,7 +2197,7 @@ async function fillGuilds(GuildList) {
     let count = 0;
     for (let i = 0; i < GuildList.length; i++) {
       const Guid = GuildList[i];
-      const Guild = await getData('Guild', Guid);
+      const Guild = await getData(DataBase.Record.db, 'Guild', Guid);
       changeColor(Guid, Guild.Color);
       const divGuild = createElement('tr', '', Guid);
       const aColor = divGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
@@ -2215,7 +2225,7 @@ async function updateServerData(GuildList) {
   let PlayerDataList = [];
   for (let i = 0; i < GuildList.length; i++) {
     const Guid = `${getStorage(GlobalURLList.function + 'RegionId')}_${GuildList[i]}`;
-    let Guild = (await getData('Guild', Guid)) ?? {
+    let Guild = (await getData(DataBase.Record.db, 'Guild', Guid)) ?? {
       'Guid': Guid,
       'GuildId': GuildList[i],
       'Color': '0, 0, 0',
@@ -2228,14 +2238,14 @@ async function updateServerData(GuildList) {
       Guild.Name = GuildData.GuildOverView.GuildName;
       Guild.GuildLevel = GuildData.GuildLevel;
       Guild.LastUpdate = new Date();
-      updateData('Guild', Guild);
+      updateData(DataBase.Record.db, 'Guild', Guild);
       PlayerDataList = PlayerDataList.concat(_searchGuildId?.SearchResult.PlayerInfoList);
     }
   }
   for (let i = 0; i < PlayerDataList.length; i++) {
     const PlayerData = PlayerDataList[i];
     const Guid = `${getStorage(GlobalURLList.function + 'RegionId')}_${PlayerData.PlayerId}`;
-    let Player = (await getData('Player', Guid)) ?? {
+    let Player = (await getData(DataBase.Record.db, 'Player', Guid)) ?? {
       'Guid': Guid,
       'PlayerId': PlayerData.PlayerId,
     };
@@ -2243,16 +2253,16 @@ async function updateServerData(GuildList) {
     Player.Guild = PlayerData.GuildId;
     Player.Level = PlayerData.PlayerLevel;
     Player.BattlePower = PlayerData.BattlePower;
-    updateData('Player', Player);
+    updateData(DataBase.Record.db, 'Player', Player);
   }
   const Day = new Date() - 7 * 24 * 3600 * 1000;
-  const DeckData = await getArray('Deck', { '<': Day }, 'LastUpdate');
-  const CharacterData = await getArray('Character', { '<': Day }, 'LastUpdate');
-  const BattleData = await getArray('Battle', { '<': Day }, 'LastUpdate');
+  const DeckData = await getArray(DataBase.Record.db, 'Deck', { '<': Day }, 'LastUpdate');
+  const CharacterData = await getArray(DataBase.Record.db, 'Character', { '<': Day }, 'LastUpdate');
+  const BattleData = await getArray(DataBase.Record.db, 'Battle', { '<': Day }, 'LastUpdate');
   while (DeckData.length > 0 && CharacterData.length > 0 && BattleData.length > 0) {
-    removeData('Deck', DeckData.shift()?.Guid);
-    removeData('Character', CharacterData.shift()?.Guid);
-    removeData('Battle', BattleData.shift()?.Guid);
+    removeData(DataBase.Record.db, 'Deck', DeckData.shift()?.Guid);
+    removeData(DataBase.Record.db, 'Character', CharacterData.shift()?.Guid);
+    removeData(DataBase.Record.db, 'Battle', BattleData.shift()?.Guid);
   }
 }
 //战斗布局-修改城池
@@ -2263,8 +2273,8 @@ async function changeCastle(CastleData) {
   if (CastleData.GvgCastleState % 2 == 0) {
     CastleData.AttackerGuildId = 0;
   }
-  const DefenseGuild = await getData('Guild', CastleData.GuildId);
-  const OffenseGuild = await getData('Guild', CastleData.AttackerGuildId);
+  const DefenseGuild = await getData(DataBase.Record.db, 'Guild', CastleData.GuildId);
+  const OffenseGuild = await getData(DataBase.Record.db, 'Guild', CastleData.AttackerGuildId);
   const CastleNode = document.querySelector(`gvg-castle[castle-id="${CastleData.CastleId}"]`);
   CastleNode.setAttribute('defense', CastleData.GuildId);
   CastleNode.setAttribute('offense', CastleData.AttackerGuildId);
@@ -2350,9 +2360,9 @@ function LogCastle() {
           for (let i = 0; i < _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos.length; i++) {
             const BattleData = _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos[i];
             const Time = new Date(Today(Math.floor(BattleData[1] / 100), BattleData[1] % 100, 0) - (Now > BattleTime ? 0 : 24 * 60 * 60 * 1000));
-            let Battle = await getData('Battle', BattleData[0]);
+            let Battle = await getData(DataBase.Record.db, 'Battle', BattleData[0]);
             if (!Battle) {
-              updateData('Battle', {
+              updateData(DataBase.Record.db, 'Battle', {
                 'Guid': BattleData[0],
                 'LastUpdate': Time,
               });
@@ -2378,9 +2388,9 @@ function LogCastle() {
                     'LastUpdate': Time,
                   };
                   Deck.Content.push(Character.Guid);
-                  updateData('Character', Character);
+                  updateData(DataBase.Record.db, 'Character', Character);
                 }
-                updateData('Deck', Deck);
+                updateData(DataBase.Record.db, 'Deck', Deck);
               }
             }
           }
@@ -2400,7 +2410,6 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const ItemList = await getItem();
-  document.querySelector('#listClass').value = 0;
   document.querySelector('.container')?.remove();
   document.head.querySelector('style')?.appendChild(
     createElement(
@@ -2558,9 +2567,342 @@ tr[banner='${checkList[5] ? '5' : '0'}'] {
   setStorage('TempleCheckList', JSON.stringify(checkList));
 }
 //优化竞技场-获取信息
-async function fillArena(type) {
+async function fillTeam() {
   const CharacterList = await getCharacter();
-  console.log(CharacterList);
+  const EquipmentList = await getEquipment();
+  document.head.querySelector('#styleTeam')?.remove();
+  document.querySelector('table')?.remove();
+  document.querySelector('info')?.remove();
+  document.head.append(
+    createElement(
+      'style',
+      `
+data {
+  display: block;
+  position: relative;
+  padding: 0px;
+}
+tbody > :nth-child(1) {
+  display: none;
+}
+tbody tr > :nth-child(n + 3) > * {
+  display: block;
+}
+tbody tr > :nth-child(2) {
+  text-align: left;
+}
+tr > :nth-child(2) > * {
+  width: 180px;
+}
+character {
+  position: relative;
+  width: 138px;
+  height: 138px;
+}
+character > img {
+  display: block;
+  position: absolute;
+  left: 4px;
+  top: 4px;
+}
+rarity {
+  display: block;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  width: 138px;
+  height: 138px;
+}
+character[rarity='N'] > rarity {
+  background-image: url('assets/char_frame_n.png');
+}
+character[rarity='R'] > rarity {
+  background-image: url('assets/char_frame_r.png');
+}
+character[rarity='SR'] > rarity {
+  background-image: url('assets/char_frame_sr.png');
+}
+character[rarity='SSR'] > rarity {
+  background-image: url('assets/char_frame_ssr.png');
+}
+character[rarity='UR'] > rarity {
+  background-image: url('assets/char_frame_ur.png');
+}
+character[rarity='LR'] > rarity {
+  background-image: url('assets/char_frame_lr.png');
+}
+decoration {
+  display: none;
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 37px;
+  height: 37px;
+}
+character[plus='true'] > decoration {
+  display: block;
+}
+character[rarity='R'] > decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_rplus.png');
+}
+character[rarity='SR'] > decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
+}
+character[rarity='SSR'] > decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
+}
+character[rarity='UR'] > decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
+}
+level {
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  color: powderblue;
+  font-size: x-large;
+  font-weight: normal;
+  text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
+}
+stars {
+  position: absolute;
+  width: 100px;
+  bottom: 0px;
+  left: 19px;
+}
+stars > * {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background-size: 100%;
+}
+character[star='0'] > stars > * {
+  display: none;
+}
+character[star='1'] > stars > :nth-child(n + 1) {
+  display: none;
+}
+character[star='2'] > stars > :nth-child(n + 2) {
+  display: none;
+}
+character[star='3'] > stars > :nth-child(n + 3) {
+  display: none;
+}
+character[star='4'] > stars > :last-child {
+  display: none;
+}
+star {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_1.png');
+}
+character[star='6'] > stars > :first-child {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+character[star='7'] > stars > :nth-child(-n + 2) {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+character[star='8'] > stars > :nth-child(-n + 3) {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+character[star='9'] > stars > :nth-child(-n + 4) {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+character[star='10'] > stars > * {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+element {
+  display: block;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 32px;
+  height: 32px;
+  background-size: 100%;
+}
+character[element='1'] > element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_1.png');
+}
+character[element='2'] > element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_2.png');
+}
+character[element='3'] > element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_3.png');
+}
+character[element='4'] > element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_4.png');
+}
+character[element='5'] > element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_5.png');
+}
+character[element='6'] > element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_6.png');
+}
+character[element='1'],
+character[element='1'] ~ * {
+  background-color: #8080ff;
+}
+character[element='2'],
+character[element='2'] ~ * {
+  background-color: #ff8080;
+}
+character[element='3'],
+character[element='3'] ~ * {
+  background-color: #80ff80;
+}
+character[element='4'],
+character[element='4'] ~ * {
+  background-color: #ffff80;
+}
+character[element='5'],
+character[element='5'] ~ * {
+  background-color: #ffffff;
+}
+character[element='6'],
+character[element='6'] ~ * {
+  background-color: #000000;
+  color: white;
+}
+info {
+  display: block;
+  position: absolute;
+  width: calc(100% - 956px);
+  height: 600px;
+  right: 0px;
+  top: 0px;
+}
+info > div {
+  position: sticky;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+}
+      `,
+      'styleTeam'
+    )
+  );
+  let lableNumber;
+  let searchURL;
+  switch (GlobalURLList.function) {
+    case 'arena': {
+      lableNumber = TextResource['PvpCurrentRanking'];
+      const WorldId = getStorage('arenaWorldId');
+      if (!WorldId) return;
+      searchURL = `https://api.mentemori.icu/${WorldId}/arena/latest`;
+      break;
+    }
+    case 'legend': {
+      lableNumber = TextResource['PvpCurrentRanking'];
+      const GroupId = getStorage('legendGroupId');
+      if (!GroupId) return;
+      searchURL = `https://api.mentemori.icu/${GroupId}/legend/latest`;
+      break;
+    }
+    default: {
+      lableNumber = '';
+      searchURL = '';
+    }
+  }
+  let nodeData = document.body.appendChild(createElement('data', ''));
+  let nodeTable = nodeData.appendChild(
+    createElement(
+      'table',
+      `
+    <thead>
+      <tr >
+        <th>${lableNumber}</th>
+        <th>${TextResource['CommonPlayerNameLabel']}</th>
+        <th>${LanguageTable['Slot 1'][GlobalURLList.lang]}</th>
+        <th>${LanguageTable['Slot 2'][GlobalURLList.lang]}</th>
+        <th>${LanguageTable['Slot 3'][GlobalURLList.lang]}</th>
+        <th>${LanguageTable['Slot 4'][GlobalURLList.lang]}</th>
+        <th>${LanguageTable['Slot 5'][GlobalURLList.lang]}</th>
+      </tr>
+    </thead>
+    `
+    )
+  );
+  let nodePanel = nodeData.appendChild(createElement('info', ''));
+  const TeamInfoBuffer = await sendGMRequest(searchURL, {});
+  const TeamArray = JSON.parse(TeamInfoBuffer).data;
+  console.log(TeamArray);
+  let nodeTbody = nodeTable.appendChild(createElement('tbody', ''));
+  nodeTbody.append(createElement('tr', '<th></th>'.repeat(7)));
+  for (let i = 0; i < TeamArray.length; i++) {
+    const Player = TeamArray[i];
+    let nodeTr = nodeTbody.appendChild(
+      createElement(
+        'tr',
+        `
+        <th>${i + 1}</th>
+        <th>
+          <p>${Player.PlayerName}</p>
+          <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
+          <p>${TextResource['CommonBattlePowerLabel']}: <a name="BattlePower">{0}</a></p>
+        </th>
+        `
+      )
+    );
+    let totalBattlePower = 0;
+    for (let j = 0; j < 5; j++) {
+      const CharacterInfo = Player.UserCharacterInfoList[j];
+      let nodeCharacter = nodeTr.appendChild(createElement('th', ''));
+      if (!CharacterInfo) {
+        continue;
+      }
+      const CharacterId = CharacterInfo.CharacterId;
+      const CharacterIcon = `${'0'.repeat(6 - CharacterId.toString().length)}${CharacterId}`;
+      const Character = CharacterList[CharacterId];
+      totalBattlePower += CharacterInfo.BattlePower;
+      const Rarity = {
+        '1': { 'rarity': 'N', 'plus': false, 'star': 0 },
+        '2': { 'rarity': 'R', 'plus': false, 'star': 0 },
+        '4': { 'rarity': 'R', 'plus': true, 'star': 0 },
+        '8': { 'rarity': 'SR', 'plus': false, 'star': 0 },
+        '16': { 'rarity': 'SR', 'plus': true, 'star': 0 },
+        '32': { 'rarity': 'SSR', 'plus': false, 'star': 0 },
+        '64': { 'rarity': 'SSR', 'plus': true, 'star': 0 },
+        '128': { 'rarity': 'UR', 'plus': false, 'star': 0 },
+        '256': { 'rarity': 'UR', 'plus': true, 'star': 0 },
+        '512': { 'rarity': 'LR', 'plus': false, 'star': 0 },
+        '1024': { 'rarity': 'LR', 'plus': false, 'star': 1 },
+        '2048': { 'rarity': 'LR', 'plus': false, 'star': 2 },
+        '4096': { 'rarity': 'LR', 'plus': false, 'star': 3 },
+        '8192': { 'rarity': 'LR', 'plus': false, 'star': 4 },
+        '16384': { 'rarity': 'LR', 'plus': false, 'star': 5 },
+        '32768': { 'rarity': 'LR', 'plus': false, 'star': 6 },
+        '65536': { 'rarity': 'LR', 'plus': false, 'star': 7 },
+        '131072': { 'rarity': 'LR', 'plus': false, 'star': 8 },
+        '262144': { 'rarity': 'LR', 'plus': false, 'star': 9 },
+        '524288': { 'rarity': 'LR', 'plus': false, 'star': 10 },
+      };
+      let nodeCharacterInfo = Rarity[CharacterInfo.RarityFlags.toString()];
+      nodeCharacterInfo.element = Character.ElementType;
+      nodeCharacter.append(
+        createElement(
+          'character',
+          `
+          <img src="${GlobalConstant.assetURL}CharacterIcon\\CHR_${CharacterIcon}\\CHR_${CharacterIcon}_00_s.png">
+          <rarity></rarity>
+          <decoration></decoration>
+          <stars>
+            <star></star><star></star><star></star><star></star><star></star>
+          </stars>
+          <element></element>
+          <level>${TextResource['CommonLevelWithDot']}${CharacterInfo.Level}</level>
+          `,
+          nodeCharacterInfo
+        ),
+        createElement(
+          'div',
+          `
+          <div>${Character.Title == '' ? '　' : Character.Title}</div>
+          <div>${Character.Name}</div>
+          `
+        )
+      );
+      nodeCharacter.onclick = () => {};
+    }
+    nodeTr.querySelector('a[name="BattlePower"]').innerHTML = totalBattlePower;
+  }
 }
 /*API函数*/
 //获取option
@@ -2664,6 +3006,30 @@ async function getCharacter() {
   }
   return CharacterList;
 }
+//获取装备信息
+async function getEquipment(id) {
+  let EquipmentList = {};
+  if (getStorage('EquipmentVersion') != GlobalConstant.AppVersion) {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/EquipmentMB`, { type: 'arraybuffer', msgpack: true });
+    const EquipmentMB = await msgpack.decode(new Uint8Array(buffer));
+    if (!EquipmentMB) return;
+    for (let i = 0; i < EquipmentMB.length; i++) {
+      let Equipment = EquipmentMB[i];
+      Equipment.Guid = Equipment.Id;
+      Equipment.Name = Equipment.NameKey ? TextResource[Equipment.NameKey.slice(1, -1)] : '';
+      updateData(DataBase.Static.db, 'Equipment', Equipment);
+      EquipmentList[Equipment.Id] = Equipment;
+    }
+    setStorage('EquipmentVersion', GlobalConstant.AppVersion);
+  } else {
+    const EquipmentDB = await getArray(DataBase.Static.db, 'Equipment', {}, 'Guid');
+    for (let i = 0; i < EquipmentDB.length; i++) {
+      const Equipment = EquipmentDB[i];
+      EquipmentList[Equipment.Guid] = Equipment;
+    }
+  }
+  return EquipmentList;
+}
 //获取物品信息
 async function getItem() {
   let ItemList = JSON.parse(getStorage('Item'));
@@ -2695,8 +3061,8 @@ async function getItem() {
 }
 //获取神殿信息
 async function getLocalRaidQuest(QuestGuid) {
-  let test = await getData('Raid', !QuestGuid ? 100101 : QuestGuid);
-  let LocalRaidQuest = {};
+  let test = await getData(DataBase.Static.db, 'Raid', !QuestGuid ? 100101 : QuestGuid);
+  let LocalRaidQuestList = {};
   if (!test) {
     const json = await sendGMRequest(`https://raw.githubusercontent.com/moonheart/mementomori-masterbook/master/Master/LocalRaidQuestMB.json`, {});
     if (!json) {
@@ -2715,17 +3081,17 @@ async function getLocalRaidQuest(QuestGuid) {
         'FixedBattleReward': QuestMB.FixedBattleRewards,
         'FirstBattleReward': QuestMB.FirstBattleRewards,
       };
-      updateData('Raid', Quest);
-      LocalRaidQuest[QuestMB.Id] = Quest;
+      updateData(DataBase.Static.db, 'Raid', Quest);
+      LocalRaidQuestList[QuestMB.Id] = Quest;
     }
   } else {
-    const LocalRaidQuestDB = await getArray('Raid', {}, 'Guid');
+    const LocalRaidQuestDB = await getArray(DataBase.Static.db, 'Raid', {}, 'Guid');
     for (let i = 0; i < LocalRaidQuestDB.length; i++) {
       const Quest = LocalRaidQuestDB[i];
-      LocalRaidQuest[Quest.Guid] = Quest;
+      LocalRaidQuestList[Quest.Guid] = Quest;
     }
   }
-  return LocalRaidQuest;
+  return LocalRaidQuestList;
 }
 //获取世界组
 async function getWorldGroup() {
@@ -3343,136 +3709,155 @@ function sendData(socket, MatchInfo) {
 }
 /*数据库函数*/
 //打开数据库
-async function openDB() {
+async function openDB(dbName) {
   //创建打开请求,若存在则打开,否则创建
-  let request = indexedDB.open('database', 1);
+  let version = DataBase[dbName].version;
+  let request = await indexedDB.open(dbName, version);
   //请求失败
   request.onerror = function (error) {
-    console.error('数据库打开失败:' + error.target.errorCode);
+    console.error(`数据库${dbName}:${version}打开失败:` + error.target.errorCode);
   };
   //请求成功
   request.onsuccess = function (success) {
-    console.log('数据库打开成功');
-    DataBase = request.result;
+    console.log(`数据库${dbName}:${version}打开成功`);
+    DataBase[dbName].db = request.result;
   };
   //更新数据库版本
   request.onupgradeneeded = function (upgrade) {
-    console.log('数据库构建中');
-    DataBase = request.result;
-    //表Match是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Match')) {
-      let objectStore = DataBase.createObjectStore('Match', {
-        keyPath: 'Guid',
-      });
+    console.log(`数据库${dbName}:${version}构建中`);
+    DataBase[dbName].db = request.result;
+    let db = DataBase[dbName].db;
+    switch (dbName) {
+      case 'Record': {
+        //表Match是否存在,否则创建
+        if (!db.objectStoreNames.contains('Match')) {
+          let objectStore = db.createObjectStore('Match', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Guild是否存在,否则创建
+        if (!db.objectStoreNames.contains('Guild')) {
+          let objectStore = db.createObjectStore('Guild', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('GuildId', 'GuildId', {
+            unique: false,
+          });
+          objectStore.createIndex('Name', 'Name', {
+            unique: false,
+          });
+        }
+        //表Player是否存在,否则创建
+        if (!db.objectStoreNames.contains('Player')) {
+          let objectStore = db.createObjectStore('Player', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('PlayerId', 'PlayerId', {
+            unique: false,
+          });
+          objectStore.createIndex('Name', 'Name', {
+            unique: false,
+          });
+          objectStore.createIndex('Guild', 'Guild', {
+            unique: false,
+          });
+          objectStore.createIndex('Level', 'Level', {
+            unique: false,
+          });
+        }
+        //表Deck是否存在,否则创建
+        if (!db.objectStoreNames.contains('Deck')) {
+          let objectStore = db.createObjectStore('Deck', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('DeckId', 'DeckId', {
+            unique: false,
+          });
+          objectStore.createIndex('Player', 'Player', {
+            unique: false,
+          });
+          objectStore.createIndex('LastUpdate', 'LastUpdate', {
+            unique: false,
+          });
+        }
+        //表Character是否存在,否则创建
+        if (!db.objectStoreNames.contains('Character')) {
+          let objectStore = db.createObjectStore('Character', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('CharacterId', 'CharacterId', {
+            unique: false,
+          });
+          objectStore.createIndex('Player', 'Player', {
+            unique: false,
+          });
+          objectStore.createIndex('Level', 'Level', {
+            unique: false,
+          });
+          objectStore.createIndex('SubLevel', 'SubLevel', {
+            unique: false,
+          });
+          objectStore.createIndex('BattlePower', 'BattlePower', {
+            unique: false,
+          });
+          objectStore.createIndex('LastUpdate', 'LastUpdate', {
+            unique: false,
+          });
+        }
+        //表Battle是否存在,否则创建
+        if (!db.objectStoreNames.contains('Battle')) {
+          let objectStore = db.createObjectStore('Battle', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('LastUpdate', 'LastUpdate', {
+            unique: false,
+          });
+        }
+        break;
+      }
+      case 'Static': {
+        //表Raid是否存在,否则创建
+        if (!db.objectStoreNames.contains('Raid')) {
+          let objectStore = db.createObjectStore('Raid', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Equipment是否存在,否则创建
+        if (!db.objectStoreNames.contains('Equipment')) {
+          let objectStore = db.createObjectStore('Equipment', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Equipment是否存在,否则创建
+        if (!db.objectStoreNames.contains('Character')) {
+          let objectStore = db.createObjectStore('Character', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Equipment是否存在,否则创建
+        if (!db.objectStoreNames.contains('Item')) {
+          let objectStore = db.createObjectStore('Item', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Equipment是否存在,否则创建
+        if (!db.objectStoreNames.contains('TextResource')) {
+          let objectStore = db.createObjectStore('TextResource', {
+            keyPath: 'Guid',
+          });
+        }
+        break;
+      }
+      default: {
+        break;
+      }
     }
-    //表Guild是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Guild')) {
-      let objectStore = DataBase.createObjectStore('Guild', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('GuildId', 'GuildId', {
-        unique: false,
-      });
-      objectStore.createIndex('Name', 'Name', {
-        unique: false,
-      });
-    }
-    //表Player是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Player')) {
-      let objectStore = DataBase.createObjectStore('Player', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('PlayerId', 'PlayerId', {
-        unique: false,
-      });
-      objectStore.createIndex('Name', 'Name', {
-        unique: false,
-      });
-      objectStore.createIndex('Guild', 'Guild', {
-        unique: false,
-      });
-      objectStore.createIndex('Level', 'Level', {
-        unique: false,
-      });
-    }
-    //表Deck是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Deck')) {
-      let objectStore = DataBase.createObjectStore('Deck', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('DeckId', 'DeckId', {
-        unique: false,
-      });
-      objectStore.createIndex('Player', 'Player', {
-        unique: false,
-      });
-      objectStore.createIndex('LastUpdate', 'LastUpdate', {
-        unique: false,
-      });
-    }
-    //表Character是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Character')) {
-      let objectStore = DataBase.createObjectStore('Character', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('CharacterId', 'CharacterId', {
-        unique: false,
-      });
-      objectStore.createIndex('Player', 'Player', {
-        unique: false,
-      });
-      objectStore.createIndex('Level', 'Level', {
-        unique: false,
-      });
-      objectStore.createIndex('SubLevel', 'SubLevel', {
-        unique: false,
-      });
-      objectStore.createIndex('BattlePower', 'BattlePower', {
-        unique: false,
-      });
-      objectStore.createIndex('LastUpdate', 'LastUpdate', {
-        unique: false,
-      });
-    }
-    //表Battle是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Battle')) {
-      let objectStore = DataBase.createObjectStore('Battle', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('LastUpdate', 'LastUpdate', {
-        unique: false,
-      });
-    }
-    //表Raid是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Raid')) {
-      let objectStore = DataBase.createObjectStore('Raid', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('LocalRaidBannerId', 'LocalRaidBannerId', {
-        unique: false,
-      });
-      objectStore.createIndex('Level', 'Level', {
-        unique: false,
-      });
-      objectStore.createIndex('LocalRaidLevel', 'LocalRaidLevel', {
-        unique: false,
-      });
-      objectStore.createIndex('FirstBattleReward', 'FirstBattleReward', {
-        unique: false,
-      });
-      objectStore.createIndex('FixBattleReward', 'FixBattleReward', {
-        unique: false,
-      });
-      objectStore.createIndex('Enermy', 'Enermy', {
-        unique: false,
-      });
-    }
-    console.log('数据库构建成功');
+    console.log(`数据库${dbName}:${version}构建成功`);
   };
 }
 //插入数据
-async function insertData(table, data) {
-  let transaction = DataBase.transaction([table], 'readwrite');
+async function insertData(db, table, data) {
+  let transaction = db.transaction([table], 'readwrite');
   let objectStore = transaction.objectStore(table);
   let request = objectStore.add(data);
   request.onsuccess = function (success) {
@@ -3483,8 +3868,8 @@ async function insertData(table, data) {
   };
 }
 //更新数据
-async function updateData(table, data) {
-  let transaction = DataBase.transaction([table], 'readwrite');
+async function updateData(db, table, data) {
+  let transaction = db.transaction([table], 'readwrite');
   let objectStore = transaction.objectStore(table);
   let request = objectStore.put(data);
   request.onsuccess = function (sucess) {
@@ -3495,18 +3880,18 @@ async function updateData(table, data) {
   };
 }
 //删除数据
-async function removeData(table, key) {
+async function removeData(db, table, key) {
   if (!key) return;
-  let transaction = DataBase.transaction([table], 'readwrite');
+  let transaction = db.transaction([table], 'readwrite');
   let objectStore = transaction.objectStore(table);
   let request = objectStore.delete(key);
   request.onerror = function (error) {};
   request.onsuccess = function (success) {};
 }
 //获取数据
-async function getData(table, index, key) {
+async function getData(db, table, index, key) {
   return new Promise(function (resolve, reject) {
-    let transaction = DataBase.transaction([table]);
+    let transaction = db.transaction([table]);
     transaction.oncomplete = function (complete) {};
     transaction.onerror = function (error) {
       console.log(`${table} 获取失败:${index}`);
@@ -3533,10 +3918,10 @@ async function getData(table, index, key) {
   });
 }
 //获取数据组,留空获取全部，{'>':,'>=':,'<':,'<=':}获取指定范围，字符串获取固定
-async function getArray(table, index = {}, key) {
+async function getArray(db, table, index = {}, key) {
   return new Promise(function (resolve, reject) {
     let oArray = [];
-    let transaction = DataBase.transaction([table]);
+    let transaction = db.transaction([table]);
     transaction.oncomplete = function (complete) {};
     transaction.onerror = function (error) {
       console.error(`${table} 获取失败:${index}`);
