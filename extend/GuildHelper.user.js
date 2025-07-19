@@ -24,10 +24,7 @@
 'use strict';
 console.log('脚本运行中');
 //增加冻结层
-document.querySelector('style').appendChild(
-  createElement(
-    'text',
-    `
+document.querySelector('style').append(`
 #loading {
   width: 100%;
   height: 100%;
@@ -40,9 +37,7 @@ document.querySelector('style').appendChild(
   justify-content: center;
   align-items: center;
 }
-    `
-  )
-);
+    `);
 const FreezeNode = createElement('div', '<h1>Loading......</h1>', 'loading');
 document.body.append(FreezeNode);
 /*全局对象*/
@@ -530,19 +525,14 @@ async function initPage() {
   document.querySelector('h1').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   document.querySelector('title').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   //追加导航栏格式
-  document.querySelector('style').appendChild(
-    createElement(
-      'text',
-      `
+  document.querySelector('style').append(`
 nav a{
   display: inline-block;
   min-width: 22px;
   text-align: center;
   padding: 5px 0px;
 }
-      `
-    )
-  );
+      `);
   //获取原导航栏
   const navDefault = document.querySelector('nav');
   //获取功能模块并本地化
@@ -716,44 +706,6 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
     option.classList.add('default');
     return option;
   };
-  //选择栏样式
-  document.querySelector('style').appendChild(
-    createElement(
-      'text',
-      `
-#selectpanel {
-  width: 640px;
-  display: inline-block;
-  vertical-align: top;
-}
-#selectpanel > p {
-  text-align: center;
-}
-#selectpanel a {
-  display: inline-block;
-}
-#selectpanel a:nth-child(1) {
-  width: 75px;
-  text-align: left;
-}
-#selectpanel a:nth-child(2) {
-  width: 25px;
-}
-#selectpanel select {
-  width: 520px;
-}
-#selectpanel button {
-  width: 20%;
-}
-#selectpanel option {
-  display: none;
-}
-#selectpanel option.default {
-  display: inline;
-}
-      `
-    )
-  );
   //获取世界分组
   const WorldGroup = await getWorldGroup();
   const RegionList = WorldGroup.RegionList;
@@ -793,6 +745,39 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
   };
   //初始化选择区
   const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
+  //选择栏样式
+  document.querySelector('style').append(`
+#selectpanel {
+  width: 700px;
+  display: inline-block;
+  vertical-align: top;
+}
+#selectpanel > p {
+  text-align: center;
+}
+#selectpanel a {
+  display: inline-block;
+}
+#selectpanel a:nth-child(1) {
+  width: 75px;
+  text-align: left;
+}
+#selectpanel a:nth-child(2) {
+  width: 25px;
+}
+#selectpanel select {
+  width: calc(100% - 120px);
+}
+#selectpanel button {
+  width: 20%;
+}
+#selectpanel option {
+  display: none;
+}
+#selectpanel option.default {
+  display: inline;
+}
+    `);
   //区域选择
   const pRegion = divSelect.appendChild(createElement('p', `<a>${LanguageTable['Region'][GlobalURLList.lang]}</a><a>:</a>`));
   if (!addRegion) {
@@ -882,37 +867,23 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
 }
 //初始化选择栏内容
 function changeSelect(RegionId, GroupId, ClassId, WorldId) {
-  document.querySelector('#styleGroup')?.remove();
-  document.querySelector('#styleClass')?.remove();
-  document.querySelector('#styleWorld')?.remove();
-  document.head.append(
+  let divSelect = document.querySelector('#selectpanel');
+  divSelect.querySelector('style')?.remove();
+  divSelect.append(
     createElement(
       'style',
       `
 #listGroup > option.R${RegionId} {
   display: inline;
 }
-        `,
-      'styleGroup'
-    ),
-    createElement(
-      'style',
-      `
 #listClass > .static
 ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
   display: inline;
 }
-        `,
-      'styleClass'
-    ),
-    createElement(
-      'style',
-      `
 #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
   display: inline;
 }
-        `,
-      'styleWorld'
+        `
     )
   );
   setStorage(GlobalURLList.function + 'RegionId', RegionId);
@@ -1001,12 +972,12 @@ function initTranslator() {
 //文件转换
 function fileConverter() {
   initContent();
-  let divData = document.body.appendChild(
+  let nodeData = document.body.appendChild(
     createElement('div', '', {
       style: 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;',
     })
   );
-  let uploadButton = divData.appendChild(
+  let uploadButton = nodeData.appendChild(
     createElement('input', '', {
       type: 'file',
       multiple: 'multiple',
@@ -1027,61 +998,66 @@ function fileConverter() {
         let url = window.URL.createObjectURL(file);
         link.href = url;
         link.download = filename + '.json';
-        divData.appendChild(link);
-        divData.appendChild(createElement('br'));
+        nodeData.appendChild(link);
+        nodeData.appendChild(createElement('br'));
       };
       reader.onerror = function () {
         console.log(reader.error);
       };
     }
   };
-  divData.append(createElement('br'));
+  nodeData.append(createElement('br'));
 }
 //战斗布局
 async function gvgMapper() {
   initContent();
   await initSelect();
-  document.querySelector('style').appendChild(
-    createElement(
-      'text',
-      `
-th,
-td {
-  height: 24px;
-  border: 1px solid black;
+  document.querySelector('style').append(`
+#guilds {
+  display: inline-block;
+  width: calc(100% - 820px);
   text-align: center;
 }
-table {
-  width: 300px;
-  border-collapse: collapse;
-  display: inline-table;
-  vertical-align: top;
+gvg-list {
+  display: block;
+  position: fixed;
+  top: 5%;
+  width: 200px;
+  height: 95%;
 }
-#guilds1 {
-  margin-left: 20px;
+gvg-list#enermyList {
+  left: calc(50% + 650px);
 }
-#guilds2 {
-  margin-right: 20px;
+gvg-list#friendList {
+  right: calc(50% + 650px);
 }
-tr > * {
-  width: 25px;
+gvg-list > h2 {
+  text-align: center;
+  margin: 0px;
 }
-tr > :nth-child(2) {
-  width: calc(100% - 25px);
+gvg-list > div {
+  height: calc(100% - 28px);
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  background: rgb(255, 127, 127);
 }
-      `
-    )
-  );
+data {
+  display: block;
+  width: 100%;
+}
+    `);
   const divSelect = document.querySelector('#selectpanel');
-  //初始化读写功能组
+  //插入公会列表面板
+  divSelect.insertAdjacentElement('afterend', createElement('div', '', 'guilds'));
+  /*初始化读写功能组*/
   const pRequest = divSelect.appendChild(createElement('p'));
   //读取按钮
   const buttonGetLocal = pRequest.appendChild(createElement('button', LanguageTable['ReadDatabase'][GlobalURLList.lang]));
   //保存按钮
   const buttonSetLocal = pRequest.appendChild(createElement('button', LanguageTable['SaveDatabase'][GlobalURLList.lang]));
-  //初始化监听功能组
+  /*初始化监听功能组*/
   const pConnect = divSelect.appendChild(createElement('p'));
-  //
+  //从服务器获取按钮
   const buttonGetServer = pConnect.appendChild(
     createElement('button', LanguageTable['FromServer'][GlobalURLList.lang], {
       name: 'Get',
@@ -1101,46 +1077,19 @@ tr > :nth-child(2) {
       disabled: 'true',
     })
   );*/
-  //初始化世界选择
-  let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
+  /*初始化数据栏*/
+  document.body.append(createElement('data', ''));
+  /*初始化世界选择*/
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
   let CacheClassId = getStorage(GlobalURLList.function + 'ClassId');
+  let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
   if (CacheWorldId >= 0) {
     document.querySelector('#listRegion').value = CacheRegionId;
     document.querySelector('#listGroup').value = CacheGroupId;
     document.querySelector('#listClass').value = CacheClassId;
     document.querySelector('#listWorld').value = CacheWorldId;
-    document.head.append(
-      createElement(
-        'style',
-        `
-#listGroup > option.R${CacheRegionId} {
-  display: inline;
-}
-        `,
-        'styleGroup'
-      ),
-      createElement(
-        'style',
-        `
-#listClass > .static
-${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
-  display: inline;
-}
-        `,
-        'styleClass'
-      ),
-      createElement(
-        'style',
-        `
-#listWorld > ${CacheClassId > 0 ? '.global' : '.G' + CacheGroupId} {
-  display: inline;
-}
-        `,
-        'styleWorld'
-      )
-    );
+    changeSelect(CacheRegionId, CacheGroupId, CacheClassId, CacheWorldId);
   }
   /* 功能设定 */
   //读取数据
@@ -1451,9 +1400,19 @@ async function temple() {
     listCheckBox[i].checked = cacheCheckList[i];
     listCheckBox[i].onchange = changeTempleDisplay;
   }
-  changeTempleDisplay();
+  //插入标题
   document.body.appendChild(createElement('h2', TextResource['CommonHeaderLocalRaidLabel']));
+  //插入数据节点
+  document.head.querySelector('style').append(`
+data {
+  display: block;
+  width: 100%;
+}
+    `);
+  document.body.appendChild(createElement('data', ''));
+  //插入数据
   fillTemple();
+  changeTempleDisplay();
 }
 //优化竞技场
 async function arena() {
@@ -1462,6 +1421,23 @@ async function arena() {
   initContent();
   //初始化选择栏，
   await initSelect(true, true, false, type == 'arena' ? true : false);
+  //插入标题
+  document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
+  //插入数据栏
+  document.body.appendChild(createElement('data', ''));
+  document.querySelector('style').append(
+    createElement(
+      'style',
+      `
+data {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 0px;
+}
+      `
+    )
+  );
   //获取缓存
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
@@ -1481,7 +1457,6 @@ async function arena() {
     document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillTeam);
     fillTeam();
   }
-  document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
 }
 /*子功能*/
 //登录账号
@@ -1576,8 +1551,8 @@ async function loginAccount() {
 //战斗布局-绘制地图
 function drawMap() {
   const ClassId = getStorage(GlobalURLList.function + 'ClassId');
-  document.querySelector('#gvgMapStyle')?.remove();
-  document.querySelector('gvg-viewer')?.remove();
+  let nodeData = document.querySelector('data');
+  nodeData.innerHTML = '';
   document.querySelector('gvg-list')?.remove();
   document.querySelector('gvg-list')?.remove();
   //document.body.append(createElement('gvg-list', '<h2>我方列表</h2><div></div>', 'friendList'));
@@ -1801,33 +1776,10 @@ function drawMap() {
     };
     const Class = ClassId == 0 ? 'local' : 'global';
     const image = Class == 'local' ? 'base_ribbon_01' : 'base_metal';
-    let style = document.head.appendChild(
+    let style = nodeData.appendChild(
       createElement(
         'style',
         `
-gvg-list {
-  display: block;
-  position: fixed;
-  top: 5%;
-  width: 200px;
-  height: 95%;
-}
-gvg-list#enermyList {
-  left: calc(50% + 650px);
-}
-gvg-list#friendList {
-  right: calc(50% + 650px);
-}
-gvg-list > h2 {
-  text-align: center;
-  margin: 0px;
-}
-gvg-list > div {
-  height: calc(100% - 28px);
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  background: rgb(255, 127, 127);
-}
 gvg-viewer {
   display: block;
   position: relative;
@@ -2089,11 +2041,10 @@ gvg-castle[castle] > gvg-castle-hint {
 gvg-castle[church] > gvg-castle-hint {
   top: 45px;
 }
-        `,
-        'gvgMapStyle'
+        `
       )
     );
-    let viewer = document.body.appendChild(createElement('gvg-viewer'));
+    let viewer = nodeData.appendChild(createElement('gvg-viewer'));
     viewer.setAttribute(Class, '');
     for (let CastleId in castleList[Class]) {
       let castle = castleList[Class][CastleId];
@@ -2187,10 +2138,41 @@ async function fillMap(CastleList, GuildList) {
 }
 //战斗布局-重置表格
 async function fillGuilds(GuildList) {
-  document.querySelector('#guilds1')?.remove();
-  document.querySelector('#guilds2')?.remove();
-  let table2 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds2'));
-  let table1 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds1'));
+  let divGuildList = document.querySelector('#guilds');
+  divGuildList.innerHTML = '';
+  divGuildList.appendChild(
+    createElement(
+      'style',
+      `
+th,
+td {
+  height: 24px;
+  border: 1px solid black;
+  text-align: center;
+}
+table {
+  width: 300px;
+  border-collapse: collapse;
+  display: inline-table;
+  vertical-align: top;
+}
+#guilds1 {
+  margin-left: 20px;
+}
+#guilds2 {
+  margin-right: 20px;
+}
+tr > * {
+  width: 25px;
+}
+tr > :nth-child(2) {
+  width: calc(100% - 25px);
+}
+      `
+    )
+  );
+  let table2 = divGuildList.appendChild(createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'table1'));
+  let table1 = divGuildList.appendChild(createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'table2'));
   if (GuildList) {
     const tbody1 = table1.appendChild(createElement('tbody'));
     const tbody2 = table2.appendChild(createElement('tbody'));
@@ -2410,58 +2392,55 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const ItemList = await getItem();
-  document.querySelector('.container')?.remove();
-  document.head.querySelector('style')?.appendChild(
+  //初始化数据节点
+  let nodeData = document.querySelector('data');
+  nodeData.innerHTML = '';
+  nodeData.append(
     createElement(
-      'text',
+      'style',
       `
 table {
   display: inline-block;
   vertical-align: top;
 }
-th>div{
+th > div {
   text-align: left;
   word-break: keep-all;
 }
-.container {
-  display: block;
-  width: 100%;
-}
-thead th{
+thead th {
   text-align: center;
 }
-tbody th{
+tbody th {
   width: 140px;
 }
-tbody img{
+tbody img {
   width: 32px;
   height: 32px;
   vertical-align: middle;
 }
-tbody>tr>th>div>a{
+tbody > tr > th > div > a {
   font-size: 0px;
 }
-tbody>tr>:nth-child(1){
+tbody > tr > :nth-child(1) {
   width: 330px;
   text-align: left;
 }
-tbody>tr>:nth-child(1)>div{
+tbody > tr > :nth-child(1) > div {
   display: inline-block;
   font-size: 24px;
   vertical-align: middle;
   width: 215px;
 }
-tbody>tr>:nth-child(1) img{
+tbody > tr > :nth-child(1) img {
   width: 110px;
   height: 68px;
 }
-div[name="banner"]{
+div[name='banner'] {
   width: 110px !important;
 }
       `
     )
   );
-  let divContent = document.body.appendChild(createElement('div', '', { 'class': ['container'] }));
   const GroupId = getStorage(GlobalURLList.function + 'GroupId');
   if (GroupId != -1) {
     const nodesWorld = document.querySelectorAll(`.G${GroupId}`);
@@ -2470,7 +2449,7 @@ div[name="banner"]{
       const QuestInfoBuffer = await sendGMRequest(`https://api.mentemori.icu/${WorldId}/temple/latest`, {});
       const QuestArray = JSON.parse(QuestInfoBuffer)?.data.quest_ids;
       const LocalRaidQuestList = await getLocalRaidQuest();
-      let table = divContent.appendChild(createElement('table', '', WorldId));
+      let table = nodeData.appendChild(createElement('table', '', WorldId));
       let nodeThead = table.appendChild(
         createElement(
           'thead',
@@ -2570,17 +2549,16 @@ tr[banner='${checkList[5] ? '5' : '0'}'] {
 async function fillTeam() {
   const CharacterList = await getCharacter();
   const EquipmentList = await getEquipment();
-  document.head.querySelector('#styleTeam')?.remove();
-  document.querySelector('table')?.remove();
-  document.querySelector('info')?.remove();
-  document.head.append(
+  //初始化数据栏
+  let nodeData = document.querySelector('data');
+  nodeData.innerHTML = '';
+  nodeData.append(
     createElement(
       'style',
       `
-data {
-  display: block;
-  position: relative;
-  padding: 0px;
+table {
+  display: inline-table;
+  vertical-align: top;
 }
 tbody > :nth-child(1) {
   display: none;
@@ -2591,19 +2569,42 @@ tbody tr > :nth-child(n + 3) > * {
 tbody tr > :nth-child(2) {
   text-align: left;
 }
+tbody tr > :nth-child(2) > :nth-child(1) {
+  display: inline-block;
+  width: 90px;
+  text-align: left;
+}
+tbody tr > :nth-child(2) > :nth-child(2) {
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+}
+tbody tr > :nth-child(2) > :nth-child(5) {
+  display: inline-block;
+  width: 90px;
+  text-align: left;
+}
+tbody tr > :nth-child(2) > :nth-child(6) {
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+}
 tr > :nth-child(2) > * {
   width: 180px;
 }
-character {
+icon {
+  display: inline-block;
   position: relative;
   width: 138px;
   height: 138px;
 }
-character > img {
+icon > img {
   display: block;
   position: absolute;
   left: 4px;
   top: 4px;
+  background-color: grey;
+  vertical-align: top;
 }
 rarity {
   display: block;
@@ -2613,22 +2614,37 @@ rarity {
   width: 138px;
   height: 138px;
 }
-character[rarity='N'] > rarity {
+[rarity='N'] rarity {
   background-image: url('assets/char_frame_n.png');
 }
-character[rarity='R'] > rarity {
+[rarity='R'] rarity {
   background-image: url('assets/char_frame_r.png');
 }
-character[rarity='SR'] > rarity {
+[rarity='SR'] rarity {
   background-image: url('assets/char_frame_sr.png');
 }
-character[rarity='SSR'] > rarity {
+[rarity='SSR'] rarity {
   background-image: url('assets/char_frame_ssr.png');
 }
-character[rarity='UR'] > rarity {
+[rarity='UR'] rarity {
   background-image: url('assets/char_frame_ur.png');
 }
-character[rarity='LR'] > rarity {
+[rarity='LR'] rarity {
+  background-image: url('assets/char_frame_lr.png');
+}
+[rarity='S'] rarity {
+  background-image: url('assets/char_frame_lr.png');
+}
+[rarity='A'] rarity {
+  background-image: url('assets/char_frame_lr.png');
+}
+[rarity='B'] rarity {
+  background-image: url('assets/char_frame_lr.png');
+}
+[rarity='C'] rarity {
+  background-image: url('assets/char_frame_lr.png');
+}
+[rarity='D'] rarity {
   background-image: url('assets/char_frame_lr.png');
 }
 decoration {
@@ -2639,30 +2655,32 @@ decoration {
   width: 37px;
   height: 37px;
 }
-character[plus='true'] > decoration {
+[plus='true'] decoration {
   display: block;
 }
-character[rarity='R'] > decoration {
+[rarity='R'] decoration {
   background-image: url('${GlobalConstant.assetURL}/frame_decoration_rplus.png');
 }
-character[rarity='SR'] > decoration {
+[rarity='SR'] decoration {
   background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
 }
-character[rarity='SSR'] > decoration {
+[rarity='SSR'] decoration {
   background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
 }
-character[rarity='UR'] > decoration {
+[rarity='UR'] decoration {
   background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
 }
 level {
   display: block;
   position: absolute;
-  right: 10px;
-  top: 5px;
-  color: powderblue;
   font-size: x-large;
   font-weight: normal;
   text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
+}
+character > icon > level {
+  right: 10px;
+  top: 5px;
+  color: powderblue;
 }
 stars {
   position: absolute;
@@ -2676,37 +2694,37 @@ stars > * {
   width: 20px;
   background-size: 100%;
 }
-character[star='0'] > stars > * {
+[star='0'] stars > * {
   display: none;
 }
-character[star='1'] > stars > :nth-child(n + 1) {
+[star='1'] stars > :nth-child(n + 1) {
   display: none;
 }
-character[star='2'] > stars > :nth-child(n + 2) {
+[star='2'] stars > :nth-child(n + 2) {
   display: none;
 }
-character[star='3'] > stars > :nth-child(n + 3) {
+[star='3'] stars > :nth-child(n + 3) {
   display: none;
 }
-character[star='4'] > stars > :last-child {
+[star='4'] stars > :last-child {
   display: none;
 }
 star {
   background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_1.png');
 }
-character[star='6'] > stars > :first-child {
+[star='6'] stars > :first-child {
   background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
 }
-character[star='7'] > stars > :nth-child(-n + 2) {
+[star='7'] stars > :nth-child(-n + 2) {
   background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
 }
-character[star='8'] > stars > :nth-child(-n + 3) {
+[star='8'] stars > :nth-child(-n + 3) {
   background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
 }
-character[star='9'] > stars > :nth-child(-n + 4) {
+[star='9'] stars > :nth-child(-n + 4) {
   background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
 }
-character[star='10'] > stars > * {
+[star='10'] stars > * {
   background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
 }
 element {
@@ -2718,65 +2736,121 @@ element {
   height: 32px;
   background-size: 100%;
 }
-character[element='1'] > element {
+[element='1'] > element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_1.png');
 }
-character[element='2'] > element {
+[element='2'] > element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_2.png');
 }
-character[element='3'] > element {
+[element='3'] > element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_3.png');
 }
-character[element='4'] > element {
+[element='4'] > element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_4.png');
 }
-character[element='5'] > element {
+[element='5'] > element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_5.png');
 }
-character[element='6'] > element {
+[element='6'] > element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_6.png');
 }
-character[element='1'],
-character[element='1'] ~ * {
+[element='1']{
   background-color: #8080ff;
 }
-character[element='2'],
-character[element='2'] ~ * {
+[element='2']{
   background-color: #ff8080;
 }
-character[element='3'],
-character[element='3'] ~ * {
+[element='3']{
   background-color: #80ff80;
 }
-character[element='4'],
-character[element='4'] ~ * {
+[element='4']{
   background-color: #ffff80;
 }
-character[element='5'],
-character[element='5'] ~ * {
+[element='5']{
   background-color: #ffffff;
 }
-character[element='6'],
-character[element='6'] ~ * {
+[element='6']{
   background-color: #000000;
   color: white;
 }
 info {
+  display: inline-block;
+  position: sticky;
+  width: calc(100% - 956px);
+  height: 96vh;
+  right: 0px;
+  top: 2vh;
+  background-color: antiquewhite;
+}
+equipment {
+  display: inline-block;
+  width: 50%;
+  background-color: aliceblue;
+  vertical-align: top;
+}
+equipment > icon {
+  zoom: 50%;
+}
+equipment > icon > level {
+  left: 10px;
+  top: 5px;
+  color: white;
+}
+reinforcement {
   display: block;
   position: absolute;
-  width: calc(100% - 956px);
-  height: 600px;
-  right: 0px;
-  top: 0px;
+  right: 10px;
+  bottom: 5px;
+  color: palegoldenrod;
+  font-size: x-large;
+  font-weight: normal;
+  text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
 }
-info > div {
-  position: sticky;
-  width: 100%;
-  height: 100vh;
-  top: 0px;
+desc {
+  display: inline-block;
+  vertical-align: top;
 }
-      `,
-      'styleTeam'
+madel {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-size: 100%;
+}
+[quality='1'] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_1.png');
+}
+[quality='2'] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_2.png');
+}
+[quality='3'] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_3.png');
+}
+[quality='4'] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_4.png');
+}
+raritydesc {
+  color: rgb(128, 128, 96);
+}
+[rarity='R'] raritydesc,
+[rarity='C'] raritydesc {
+  color: rgb(128, 128, 128);
+}
+[rarity='SR'] raritydesc,
+[rarity='B'] raritydesc {
+  color: rgb(192, 192, 0);
+}
+[rarity='SSR'] raritydesc,
+[rarity='A'] raritydesc {
+  color: rgb(96, 32, 192);
+}
+[rarity='UR'] raritydesc,
+[rarity='S'] raritydesc {
+  color: rgb(192, 0, 0);
+}
+[rarity='LR'] raritydesc {
+  color: rgb(32, 32, 32);
+}
+      `
     )
   );
   let lableNumber;
@@ -2793,7 +2867,7 @@ info > div {
       lableNumber = TextResource['PvpCurrentRanking'];
       const GroupId = getStorage('legendGroupId');
       if (!GroupId) return;
-      searchURL = `https://api.mentemori.icu/${GroupId}/legend/latest`;
+      searchURL = `https://api.mentemori.icu/wg/${GroupId}/legend/latest`;
       break;
     }
     default: {
@@ -2801,13 +2875,12 @@ info > div {
       searchURL = '';
     }
   }
-  let nodeData = document.body.appendChild(createElement('data', ''));
   let nodeTable = nodeData.appendChild(
     createElement(
       'table',
       `
     <thead>
-      <tr >
+      <tr>
         <th>${lableNumber}</th>
         <th>${TextResource['CommonPlayerNameLabel']}</th>
         <th>${LanguageTable['Slot 1'][GlobalURLList.lang]}</th>
@@ -2828,19 +2901,32 @@ info > div {
   nodeTbody.append(createElement('tr', '<th></th>'.repeat(7)));
   for (let i = 0; i < TeamArray.length; i++) {
     const Player = TeamArray[i];
-    let nodeTr = nodeTbody.appendChild(
-      createElement(
-        'tr',
-        `
-        <th>${i + 1}</th>
-        <th>
-          <p>${Player.PlayerName}</p>
-          <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
-          <p>${TextResource['CommonBattlePowerLabel']}: <a name="BattlePower">{0}</a></p>
-        </th>
-        `
-      )
-    );
+    let nodeTr = nodeTbody.appendChild(createElement('tr', ''));
+    nodeTr.append(createElement('th', `<th>${i + 1}</th>`));
+    let nodePlayer = nodeTr.appendChild(createElement('th'));
+    switch (GlobalURLList.function) {
+      case 'arena': {
+        nodePlayer.innerHTML = `
+        <div>${Player.PlayerName}</div><div></div>
+        <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
+        <p>${TextResource['CommonBattlePowerLabel']}: <a name="BattlePower">{0}</a></p>
+        <div></div><div></div>
+        `;
+        break;
+      }
+      case 'legend': {
+        nodePlayer.innerHTML = `
+        <div>${Player.PlayerName}</div><div>W${Player.PlayerId.toString().slice(-2)}</div>
+        <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
+        <p>${TextResource['CommonBattlePowerLabel']}: <a name="BattlePower">{0}</a></p>
+        <div>${TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint)}</div><div>${TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount)}</div>
+        `;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
     let totalBattlePower = 0;
     for (let j = 0; j < 5; j++) {
       const CharacterInfo = Player.UserCharacterInfoList[j];
@@ -2852,7 +2938,7 @@ info > div {
       const CharacterIcon = `${'0'.repeat(6 - CharacterId.toString().length)}${CharacterId}`;
       const Character = CharacterList[CharacterId];
       totalBattlePower += CharacterInfo.BattlePower;
-      const Rarity = {
+      const CharacterRarity = {
         '1': { 'rarity': 'N', 'plus': false, 'star': 0 },
         '2': { 'rarity': 'R', 'plus': false, 'star': 0 },
         '4': { 'rarity': 'R', 'plus': true, 'star': 0 },
@@ -2874,34 +2960,83 @@ info > div {
         '262144': { 'rarity': 'LR', 'plus': false, 'star': 9 },
         '524288': { 'rarity': 'LR', 'plus': false, 'star': 10 },
       };
-      let nodeCharacterInfo = Rarity[CharacterInfo.RarityFlags.toString()];
+      const EquipmenRarity = {
+        '1': { 'rarity': 'D' },
+        '2': { 'rarity': 'C' },
+        '4': { 'rarity': 'B' },
+        '8': { 'rarity': 'A' },
+        '16': { 'rarity': 'S' },
+        '32': { 'rarity': 'R' },
+        '64': { 'rarity': 'SR' },
+        '128': { 'rarity': 'SSR' },
+        '256': { 'rarity': 'UR' },
+        '512': { 'rarity': 'LR' },
+      };
+      let nodeCharacterInfo = CharacterRarity[CharacterInfo.RarityFlags.toString()];
       nodeCharacterInfo.element = Character.ElementType;
       nodeCharacter.append(
         createElement(
           'character',
           `
-          <img src="${GlobalConstant.assetURL}CharacterIcon\\CHR_${CharacterIcon}\\CHR_${CharacterIcon}_00_s.png">
-          <rarity></rarity>
-          <decoration></decoration>
-          <stars>
-            <star></star><star></star><star></star><star></star><star></star>
-          </stars>
-          <element></element>
-          <level>${TextResource['CommonLevelWithDot']}${CharacterInfo.Level}</level>
+          <icon>
+            <img src="${GlobalConstant.assetURL}CharacterIcon\\CHR_${CharacterIcon}\\CHR_${CharacterIcon}_00_s.png">
+            <rarity></rarity>
+            <decoration></decoration>
+            <stars>
+              <star></star><star></star><star></star><star></star><star></star>
+            </stars>
+            <element></element>
+            <level>${TextResource['CommonLevelWithDot']}${CharacterInfo.Level}</level>
+          </icon>
+          <div>
+            <div>${Character.Title == '' ? '　' : Character.Title}</div>
+            <div>${Character.Name}</div>
+          </div>
           `,
           nodeCharacterInfo
-        ),
-        createElement(
-          'div',
-          `
-          <div>${Character.Title == '' ? '　' : Character.Title}</div>
-          <div>${Character.Name}</div>
-          `
         )
       );
-      nodeCharacter.onclick = () => {};
+      nodeCharacter.onclick = () => {
+        nodePanel.innerHTML = '';
+        for (let i = 0; i < 6; i++) {
+          nodePanel.append(
+            createElement(
+              'equipment',
+              `
+              <icon>
+                <img>
+                <rarity></rarity>
+                <level>{0}</level>
+                <reinforcement>{0}</reinforcement>
+              </icon>
+              <desc>
+                <raritydesc>{0}</raritydesc>
+                <madel></madel>
+                <name>{0}</name>
+              </desc>
+              `,
+              {
+                'slot': i + 1,
+              }
+            )
+          );
+        }
+        for (let i = 0; i < CharacterInfo.UserEquipmentDtoInfos.length; i++) {
+          const EquipmentInfo = CharacterInfo.UserEquipmentDtoInfos[i];
+          const EquipmentId = EquipmentInfo.EquipmentId;
+          const Equipment = EquipmentList[EquipmentId];
+          let nodeEquipment = nodePanel.querySelector(`equipment[slot="${Equipment.SlotType}"]`);
+          nodeEquipment.setAttribute('rarity', EquipmenRarity[Equipment.RarityFlags].rarity);
+          nodeEquipment.querySelector('img').setAttribute('src', `${GlobalConstant.assetURL}Icon\\Equipment\\EQP_${'0'.repeat(6 - Equipment.IconId.toString().length)}${Equipment.IconId}.png`);
+          nodeEquipment.querySelector('level').innerHTML = TextResource['CommonLevelLabel'] + Equipment.EquipmentLv;
+          nodeEquipment.querySelector('reinforcement').innerHTML = EquipmentInfo.ReinforcementLv == 0 ? '' : TextResource['CommonPlusLabel'] + EquipmentInfo.ReinforcementLv;
+          nodeEquipment.querySelector('raritydesc').innerHTML = EquipmenRarity[Equipment.RarityFlags].rarity;
+          nodeEquipment.setAttribute('quality', Equipment.QualityLv);
+          nodeEquipment.querySelector('name').innerHTML = Equipment.Name;
+        }
+      };
     }
-    nodeTr.querySelector('a[name="BattlePower"]').innerHTML = totalBattlePower;
+    nodeTr.querySelector('a[name="BattlePower"]').innerHTML = new Intl.NumberFormat('en-US').format(totalBattlePower);
   }
 }
 /*API函数*/
