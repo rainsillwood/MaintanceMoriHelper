@@ -2781,7 +2781,7 @@ desc {
   display: inline-block;
   vertical-align: top;
   width: calc(100% - 74px);
-  height: 75px;
+  height: 29px;
 }
 madel {
   display: inline-block;
@@ -2835,21 +2835,23 @@ equipment name {
   font-size: 18px;
   word-break: break-all;
 }
+setname {
+  display: block;
+}
 equipment setname {
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
+  margin-left: 5px;
 }
-equipment > desc > :nth-child(2) {
-  display: inline-block;
-  vertical-align: bottom;
+equipment > desc > :nth-child(1) {
+  height: 46px;
 }
 category {
   display: inline-block;
-  width: 29px;
-  height: 29px;
+  width: 21px;
+  height: 21px;
   background-size: 100%;
   vertical-align: bottom;
-  zoom: 80%;
 }
 category[category='1_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_sniper_01.png');
@@ -2874,6 +2876,24 @@ category[category='5_0']  {
 }
 category[category='6_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_shoes_01.png');
+}
+parameter_type {
+  width: 100%;
+  display: block;
+}
+parameter_set {
+  width: 100%;
+  display: block;
+}
+parameter {
+  display: inline-block;
+  width: 50%;
+}
+parameter > * {
+  display: inline-block;
+}
+parameter_set[type="sphere"] icon {
+  zoom: 25%;
 }`
     )
   );
@@ -2945,6 +2965,7 @@ category[category='6_0']  {
     let totalBattlePower = 0;
     for (let j = 0; j < 5; j++) {
       const CharacterInfo = Player.UserCharacterInfoList[j];
+      let countEquipmenSet = {};
       let nodeCharacter = nodeTr.appendChild(createElement('th', ''));
       if (!CharacterInfo) {
         continue;
@@ -3064,6 +3085,38 @@ category[category='6_0']  {
                 <div><raritydesc></raritydesc><madel></madel><name>${order[i].name}</name></div>
                 <div><category category="${order[i].slot}_${i == 0 ? Character.JobFlags : '0'}"></category><setname></setname></div>
               </desc>
+              <parameters>
+                <parameter_type>${TextResource['CharacterEquipmentBasicEffect']}</parameter_type>
+                <parameter_set type="base">
+                  <parameter><parameter_name></parameter_name><parameter_value></parameter_value></parameter>
+                </parameter_set>
+                <parameter_type>${TextResource['CharacterEquipmentAdditionalEffect']}</parameter_type>
+                <parameter_set type="addition">
+                  <parameter order="1"><parameter_name>${TextResource['BaseParameterTypeMuscle']}</parameter_name><parameter_value></parameter_value></parameter>
+                  <parameter order="2"><parameter_name>${TextResource['BaseParameterTypeIntelligence']}</parameter_name><parameter_value></parameter_value></parameter>
+                  <parameter order="3"><parameter_name>${TextResource['BaseParameterTypeEnergy']}</parameter_name><parameter_value></parameter_value></parameter>
+                  <parameter order="4"><parameter_name>${TextResource['BaseParameterTypeHealth']}</parameter_name><parameter_value></parameter_value></parameter>
+                </parameter_set>
+                <parameter_type>${TextResource['EquipmentSacredTreasureBonusLabel']}</parameter_type>
+                <parameter_set type="treasure">
+                  <a>${TextResource['EquipmentAscendSortLegendLv']}</a><level></level><parameter order="1"><parameter_name></parameter_name><parameter_value></parameter_value></parameter>
+                  <a>${TextResource['EquipmentAscendSortMatchlessLv']}</a><level></level><parameter order="2"><parameter_name></parameter_name><parameter_value></parameter_value></parameter>
+                </parameter_set>
+                <parameter_type>${TextResource['CharacterEquipmentSeriesEffect']}</parameter_type>
+                <parameter_set type="set">
+                  <setname></setname>
+                </parameter_set>
+                <parameter_type>${TextResource['CharacterEquipmentExclusiveEffect']}</parameter_type>
+                <parameter_set>
+                </parameter_set>
+                <parameter_type>${TextResource['CommonSphereLabel']}</parameter_type>
+                <parameter_set type="sphere">
+                  <icon order="1"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
+                  <icon order="2"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
+                  <icon order="3"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
+                  <icon order="4"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
+                </parameter_set>
+              </parameters>
               `,
               {
                 'slot': order[i].slot,
@@ -3075,7 +3128,8 @@ category[category='6_0']  {
           const EquipmentInfo = CharacterInfo.UserEquipmentDtoInfos[i];
           const EquipmentId = EquipmentInfo.EquipmentId;
           const Equipment = EquipmentList[EquipmentId];
-          const EquipmentSet = EquipmentSetList[Equipment.EquipmentSetId];
+          const EquipmentSetId = Equipment.EquipmentSetId;
+          const EquipmentSet = EquipmentSetList[EquipmentSetId];
           let nodeEquipment = nodePanel.querySelector(`equipment[slot="${Equipment.SlotType}"]`);
           nodeEquipment.setAttribute('rarity', EquipmenRarity[Equipment.RarityFlags].rarity);
           nodeEquipment.querySelector('img').setAttribute('src', `${GlobalConstant.assetURL}Icon\\Equipment\\EQP_${'0'.repeat(6 - Equipment.IconId.toString().length)}${Equipment.IconId}.png`);
@@ -3084,7 +3138,11 @@ category[category='6_0']  {
           nodeEquipment.querySelector('raritydesc').innerHTML = EquipmenRarity[Equipment.RarityFlags].rarity;
           nodeEquipment.setAttribute('quality', Equipment.QualityLv);
           nodeEquipment.querySelector('name').innerHTML = Equipment.Name;
-          nodeEquipment.querySelector('setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
+          if (EquipmentSet) {
+            nodeEquipment.querySelector('desc setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
+            nodeEquipment.querySelector('parameters setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
+            countEquipmenSet[EquipmentSetId] = !countEquipmenSet[EquipmentSetId] ? 0 : countEquipmenSet[EquipmentSetId] + 1;
+          }
         }
       };
     }
