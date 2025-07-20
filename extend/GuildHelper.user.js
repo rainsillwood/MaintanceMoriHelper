@@ -2641,7 +2641,7 @@ decoration {
 [rarity='UR'] decoration {
   background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
 }
-level {
+icon > level {
   display: block;
   position: absolute;
   font-size: x-large;
@@ -2838,7 +2838,7 @@ equipment name {
 setname {
   display: block;
 }
-equipment setname {
+equipment desc setname {
   display: inline-block;
   font-size: 16px;
   margin-left: 5px;
@@ -2884,6 +2884,10 @@ parameter_type {
 parameter_set {
   width: 100%;
   display: block;
+}
+treasure{
+  display: inline-block;
+  width: 25%;
 }
 parameter {
   display: inline-block;
@@ -2942,20 +2946,28 @@ parameter_set[type="sphere"] icon {
     switch (GlobalURLList.function) {
       case 'arena': {
         nodePlayer.innerHTML = `
-        <div>${Player.PlayerName}</div><div></div>
+        <div>${Player.PlayerName}</div>
+        <div></div>
         <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
-        <p>${TextResource['CommonBattlePowerLabel']}: <a name="BattlePower"></a></p>
-        <div></div><div></div>
-        `;
+        <p>${TextResource['CommonBattlePowerLabel']}: 
+          <a name="BattlePower"></a>
+        </p>
+        <div></div>
+        <div></div>
+        `.replaceAll(/\n */g, '');
         break;
       }
       case 'legend': {
         nodePlayer.innerHTML = `
-        <div>${Player.PlayerName}</div><div>W${Player.PlayerId.toString().slice(-2)}</div>
+        <div>${Player.PlayerName}</div>
+        <div>W${Player.PlayerId.toString().slice(-2)}</div>
         <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
-        <p>${TextResource['CommonBattlePowerLabel']}: <a name="BattlePower"></a></p>
-        <div>${TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint)}</div><div>${TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount)}</div>
-        `;
+        <p>${TextResource['CommonBattlePowerLabel']}: 
+          <a name="BattlePower"></a>
+        </p>
+        <div>${TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint)}</div>
+        <div>${TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount)}</div>
+        `.replaceAll(/\n */g, '');
         break;
       }
       default: {
@@ -3019,7 +3031,11 @@ parameter_set[type="sphere"] icon {
             <rarity></rarity>
             <decoration></decoration>
             <stars>
-              <star></star><star></star><star></star><star></star><star></star>
+              <star></star>
+              <star></star>
+              <star></star>
+              <star></star>
+              <star></star>
             </stars>
             <element></element>
             <level>${TextResource['CommonLevelWithDot']}${CharacterInfo.Level}</level>
@@ -3028,101 +3044,202 @@ parameter_set[type="sphere"] icon {
             <div>${Character.Title == '' ? '　' : Character.Title}</div>
             <div>${Character.Name}</div>
           </div>
-          `,
+          `.replaceAll(/\n */g, ''),
           nodeCharacterInfo
         )
       );
       nodeCharacter.onclick = () => {
         nodePanel.innerHTML = '';
+        const order = [
+          {
+            'slot': 1,
+            'type': {
+              '0': 'sniper',
+              '1': 'warrior',
+              '2': 'sorcerer',
+            },
+            'name': TextResource['EquipmentSlotTypeWeapon'],
+          },
+          {
+            'slot': 4,
+            'type': 'helmet',
+            'name': TextResource['EquipmentSlotTypeHelmet'],
+          },
+          {
+            'slot': 2,
+            'type': 'sub',
+            'name': TextResource['EquipmentSlotTypeSub'],
+          },
+          {
+            'slot': 5,
+            'type': 'armor',
+            'name': TextResource['EquipmentSlotTypeArmor'],
+          },
+          {
+            'slot': 3,
+            'type': 'gauntlet',
+            'name': TextResource['EquipmentSlotTypeGauntlet'],
+          },
+          {
+            'slot': 6,
+            'type': 'shoes',
+            'name': TextResource['EquipmentSlotTypeShoes'],
+          },
+        ];
         for (let i = 0; i < 6; i++) {
-          let order = [
-            {
-              'slot': 1,
-              'type': {
-                '0': 'sniper',
-                '1': 'warrior',
-                '2': 'sorcerer',
-              },
-              'name': TextResource['EquipmentSlotTypeWeapon'],
-            },
-            {
-              'slot': 4,
-              'type': 'helmet',
-              'name': TextResource['EquipmentSlotTypeHelmet'],
-            },
-            {
-              'slot': 2,
-              'type': 'sub',
-              'name': TextResource['EquipmentSlotTypeSub'],
-            },
-            {
-              'slot': 5,
-              'type': 'armor',
-              'name': TextResource['EquipmentSlotTypeArmor'],
-            },
-            {
-              'slot': 3,
-              'type': 'gauntlet',
-              'name': TextResource['EquipmentSlotTypeGauntlet'],
-            },
-            {
-              'slot': 6,
-              'type': 'shoes',
-              'name': TextResource['EquipmentSlotTypeShoes'],
-            },
-          ];
+          let [slot, type] = [order[i].slot, order[i].type];
           nodePanel.append(
             createElement(
               'equipment',
               `
               <icon>
-                <img src="${GlobalConstant.assetURL}Icon\\Equipment\\icon_equipment_${i == 0 ? 'weapon' : order[i].type}${i == 0 ? '_' + order[i].type[Character.JobFlags] : ''}_02.png">
+                <img src="${GlobalConstant.assetURL}Icon\\Equipment\\icon_equipment_${i == 0 ? 'weapon' : type}${i == 0 ? '_' + type[Character.JobFlags] : ''}_02.png">
                 <rarity></rarity>
                 <level></level>
                 <reinforcement></reinforcement>
               </icon>
               <desc>
-                <div><raritydesc></raritydesc><madel></madel><name>${order[i].name}</name></div>
-                <div><category category="${order[i].slot}_${i == 0 ? Character.JobFlags : '0'}"></category><setname></setname></div>
+                <div>
+                  <raritydesc></raritydesc>
+                  <madel></madel>
+                  <name>${order[i].name}</name>
+                </div>
+                <div>
+                  <category category="${slot}_${i == 0 ? Character.JobFlags : '0'}"></category>
+                  <setname></setname>
+                </div>
               </desc>
               <parameters>
-                <parameter_type>${TextResource['CharacterEquipmentBasicEffect']}</parameter_type>
                 <parameter_set type="base">
-                  <parameter><parameter_name></parameter_name><parameter_value></parameter_value></parameter>
+                  <parameter_type>${TextResource['CharacterEquipmentBasicEffect']}</parameter_type>
+                  <parameter>
+                    <parameter_name></parameter_name>
+                    <parameter_value></parameter_value>
+                  </parameter>
                 </parameter_set>
-                <parameter_type>${TextResource['CharacterEquipmentAdditionalEffect']}</parameter_type>
                 <parameter_set type="addition">
-                  <parameter order="1"><parameter_name>${TextResource['BaseParameterTypeMuscle']}</parameter_name><parameter_value></parameter_value></parameter>
-                  <parameter order="2"><parameter_name>${TextResource['BaseParameterTypeIntelligence']}</parameter_name><parameter_value></parameter_value></parameter>
-                  <parameter order="3"><parameter_name>${TextResource['BaseParameterTypeEnergy']}</parameter_name><parameter_value></parameter_value></parameter>
-                  <parameter order="4"><parameter_name>${TextResource['BaseParameterTypeHealth']}</parameter_name><parameter_value></parameter_value></parameter>
+                  <parameter_type>${TextResource['CharacterEquipmentAdditionalEffect']}</parameter_type>
+                  <div>
+                    <parameter order="1">
+                      <parameter_name>${TextResource['BaseParameterTypeMuscle']}</parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                    <parameter order="2">
+                     <parameter_name>${TextResource['BaseParameterTypeIntelligence']}</parameter_name>
+                     <parameter_value></parameter_value>
+                    </parameter>
+                  </div>
+                  <div>
+                    <parameter order="3">
+                     <parameter_name>${TextResource['BaseParameterTypeEnergy']}</parameter_name>
+                     <parameter_value></parameter_value>
+                    </parameter>
+                    <parameter order="4">
+                    <parameter_name>${TextResource['BaseParameterTypeHealth']}</parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                  </div>
                 </parameter_set>
-                <parameter_type>${TextResource['EquipmentSacredTreasureBonusLabel']}</parameter_type>
                 <parameter_set type="treasure">
-                  <a>${TextResource['EquipmentAscendSortLegendLv']}</a><level></level><parameter order="1"><parameter_name></parameter_name><parameter_value></parameter_value></parameter>
-                  <a>${TextResource['EquipmentAscendSortMatchlessLv']}</a><level></level><parameter order="2"><parameter_name></parameter_name><parameter_value></parameter_value></parameter>
+                  <parameter_type>${TextResource['EquipmentSacredTreasureBonusLabel']}</parameter_type>
+                  <div>
+                    <treasure>${TextResource['CommonLegendaryLevelLabel']}
+                      <level></level>
+                    </treasure>
+                    <parameter order="1">
+                      <parameter_name></parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                  </div>
+                  <div>
+                    <treasure>${TextResource['CommonMatchlessLevelLabel']}
+                      <level></level>
+                    </treasure>
+                    <parameter order="2">
+                      <parameter_name></parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                  </div>
                 </parameter_set>
-                <parameter_type>${TextResource['CharacterEquipmentSeriesEffect']}</parameter_type>
                 <parameter_set type="set">
+                  <parameter_type>${TextResource['CharacterEquipmentSeriesEffect']}</parameter_type>
                   <setname></setname>
+                  <div>
+                    <treasure>${TextResource['EquipmentSet'].replace('{0}', '2')}</treasure>
+                    <parameter order="1">
+                      <parameter_name></parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                  </div>
+                  <div>
+                    <treasure>${TextResource['EquipmentSet'].replace('{0}', '4')}</treasure>
+                    <parameter order="2">
+                      <parameter_name></parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                  </div>
+                  <div>
+                    <treasure>${TextResource['EquipmentSet'].replace('{0}', '6')}</treasure>
+                    <parameter order="3">
+                      <parameter_name></parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                  </div>
                 </parameter_set>
-                <parameter_type>${TextResource['CharacterEquipmentExclusiveEffect']}</parameter_type>
-                <parameter_set>
+                <parameter_set type="exclusive" style="display: none">
+                  <parameter_type>${TextResource['CharacterEquipmentExclusiveEffect']}</parameter_type>
+                  <parameter_subtype>${TextResource['CharacterEquipmentExclusiveSkillEffect']}</parameter_subtype>
+                  <div order="1">${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '1')}</div>
+                  <div order="2">${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '2')}</div>
+                  <div order="3">${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '3')}</div>
+                  <parameter_subtype>${TextResource['CharacterEquipmentExclusivePassiveEffect']}</parameter_subtype>
+                  <div>
+                    <effect order="1">
+                      <effect_name></effect_name>
+                      <effect_value></effect_value>
+                    </effect>
+                  </div>
+                  <div>
+                    <effect order="2">
+                      <effect_name></effect_name>
+                      <effect_value></effect_value>
+                    </effect>
+                  </div>
+                  <div>
+                    <effect order="3">
+                      <effect_name></effect_name>
+                      <effect_value></effect_value>
+                    </effect>
+                  </div>
                 </parameter_set>
-                <parameter_type>${TextResource['CommonSphereLabel']}</parameter_type>
                 <parameter_set type="sphere">
-                  <icon order="1"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
-                  <icon order="2"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
-                  <icon order="3"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
-                  <icon order="4"><img src="${GlobalConstant.assetURL}icon_lock.png"><level></level></icon>
+                  <parameter_type>${TextResource['CommonSphereLabel']}</parameter_type>
+                  <icon order="1">
+                      <img src="${GlobalConstant.assetURL}icon_lock.png">
+                      <level></level>
+                  </icon>
+                  <icon order="2">
+                    <img src="${GlobalConstant.assetURL}icon_lock.png">
+                    <level></level>
+                  </icon>
+                  <icon order="3">
+                    <img src="${GlobalConstant.assetURL}icon_lock.png">
+                    <level></level>
+                  </icon>
+                  <icon order="4">
+                    <img src="${GlobalConstant.assetURL}icon_lock.png">
+                    <level></level>
+                  </icon>
                 </parameter_set>
               </parameters>
-              `,
+              `.replaceAll(/\n */g, ''),
               {
-                'slot': order[i].slot,
+                'slot': slot,
               }
             )
           );
+          if (slot != 1) {
+          }
         }
         for (let i = 0; i < CharacterInfo.UserEquipmentDtoInfos.length; i++) {
           const EquipmentInfo = CharacterInfo.UserEquipmentDtoInfos[i];
@@ -3142,6 +3259,9 @@ parameter_set[type="sphere"] icon {
             nodeEquipment.querySelector('desc setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
             nodeEquipment.querySelector('parameters setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
             countEquipmenSet[EquipmentSetId] = !countEquipmenSet[EquipmentSetId] ? 0 : countEquipmenSet[EquipmentSetId] + 1;
+          }
+          if (Equipment.EquipmentExclusiveSkillDescriptionId != 0) {
+            nodePanel.querySelector('parameter_set[type="exclusive"]').setAttribute('style', 'display: block');
           }
         }
       };
