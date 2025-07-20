@@ -2521,7 +2521,7 @@ tr[banner='${checkList[5] ? '5' : '0'}'] {
 async function fillTeam() {
   const CharacterList = await getCharacter();
   const EquipmentList = await getEquipment();
-  //const EquipmentList = await getEquipment();
+  const EquipmentSetList = await getEquipmentSet();
   //初始化数据栏
   let nodeData = document.querySelector('data');
   nodeData.innerHTML = '';
@@ -2574,7 +2574,8 @@ icon > img {
   left: 4px;
   top: 4px;
   background-color: grey;
-  vertical-align: top;
+  width: 128px;
+  height: 128px;
 }
 rarity {
   display: block;
@@ -2784,11 +2785,10 @@ desc {
 }
 madel {
   display: inline-block;
-  width: 30px;
-  height: 31px;
+  width: 24px;
+  height: 24px;
   background-size: 100%;
   vertical-align: top;
-  zoom: 80%;
 }
 [quality='1'] madel {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_1.png');
@@ -2808,6 +2808,7 @@ raritydesc {
   font-size: 18px;
   width: 35px;
   vertical-align: top;
+  text-align: center;
 }
 [rarity='R'] raritydesc,
 [rarity='C'] raritydesc {
@@ -3074,6 +3075,7 @@ category[category='6_0']  {
           const EquipmentInfo = CharacterInfo.UserEquipmentDtoInfos[i];
           const EquipmentId = EquipmentInfo.EquipmentId;
           const Equipment = EquipmentList[EquipmentId];
+          const EquipmentSet = EquipmentSetList[Equipment.EquipmentSetId];
           let nodeEquipment = nodePanel.querySelector(`equipment[slot="${Equipment.SlotType}"]`);
           nodeEquipment.setAttribute('rarity', EquipmenRarity[Equipment.RarityFlags].rarity);
           nodeEquipment.querySelector('img').setAttribute('src', `${GlobalConstant.assetURL}Icon\\Equipment\\EQP_${'0'.repeat(6 - Equipment.IconId.toString().length)}${Equipment.IconId}.png`);
@@ -3082,7 +3084,7 @@ category[category='6_0']  {
           nodeEquipment.querySelector('raritydesc').innerHTML = EquipmenRarity[Equipment.RarityFlags].rarity;
           nodeEquipment.setAttribute('quality', Equipment.QualityLv);
           nodeEquipment.querySelector('name').innerHTML = Equipment.Name;
-          nodeEquipment.querySelector('setname').innerHTML = Equipment.Name;
+          nodeEquipment.querySelector('setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
         }
       };
     }
@@ -3192,7 +3194,7 @@ async function getCharacter() {
   return CharacterList;
 }
 //获取装备信息
-async function getEquipment(id) {
+async function getEquipment() {
   let EquipmentList = {};
   if (getStorage('EquipmentVersion') != GlobalConstant.AppVersion) {
     const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/EquipmentMB`, { type: 'arraybuffer', msgpack: true });
@@ -3214,6 +3216,24 @@ async function getEquipment(id) {
     }
   }
   return EquipmentList;
+}
+//获取套装信息
+async function getEquipmentSet() {
+  let EquipmentSetList = JSON.parse(getStorage('EquipmentSet'));
+  if (EquipmentSetList?.AppVersion != GlobalConstant.AppVersion) {
+    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/EquipmentSetMB`, { type: 'arraybuffer', msgpack: true });
+    const EquipmentSetMB = await msgpack.decode(new Uint8Array(buffer));
+    if (!EquipmentSetMB) return;
+    EquipmentSetList = {};
+    for (let i = 0; i < EquipmentSetMB.length; i++) {
+      const EquipmentSet = EquipmentSetMB[i];
+      EquipmentSet.Name = EquipmentSet.NameKey ? TextResource[EquipmentSet.NameKey.slice(1, -1)] : '';
+      EquipmentSetList[EquipmentSet.Id] = EquipmentSet;
+    }
+    EquipmentSetList.AppVersion = GlobalConstant.AppVersion;
+    setStorage('EquipmentSet', JSON.stringify(EquipmentSetList));
+  }
+  return EquipmentSetList;
 }
 //获取物品信息
 async function getItem() {
