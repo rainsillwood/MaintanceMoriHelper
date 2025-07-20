@@ -2780,13 +2780,14 @@ desc {
   display: inline-block;
   vertical-align: top;
   width: calc(100% - 74px);
+  height: 75px;
 }
 madel {
   display: inline-block;
   width: 30px;
   height: 31px;
   background-size: 100%;
-  vertical-align: bottom;
+  vertical-align: top;
   zoom: 80%;
 }
 [quality='1'] madel {
@@ -2806,6 +2807,7 @@ raritydesc {
   color: rgb(128, 128, 96);
   font-size: 18px;
   width: 35px;
+  vertical-align: top;
 }
 [rarity='R'] raritydesc,
 [rarity='C'] raritydesc {
@@ -2828,11 +2830,17 @@ raritydesc {
 }
 equipment name {
   display: inline-block;
+  width: calc(100% - 59px);
   font-size: 18px;
+  word-break: break-all;
 }
 equipment setname {
   display: inline-block;
   font-size: 18px;
+}
+equipment > desc > :nth-child(2) {
+  display: inline-block;
+  vertical-align: bottom;
 }
 category {
   display: inline-block;
@@ -2842,28 +2850,28 @@ category {
   vertical-align: bottom;
   zoom: 80%;
 }
-category[category='1-0']  {
+category[category='1_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_sniper_01.png');
 }
-category[category='1-1']  {
+category[category='1_1']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_warrior_01.png');
 }
-category[category='1-2']  {
+category[category='1_2']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_sorcerer_01.png');
 }
-category[category='2-0']  {
+category[category='2_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_sub_01.png');
 }
-category[category='3-0']  {
+category[category='3_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_gauntlet_01.png');
 }
-category[category='4-0']  {
+category[category='4_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_helmet_01.png');
 }
-category[category='5-0']  {
+category[category='5_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_armor_01.png');
 }
-category[category='6-0']  {
+category[category='6_0']  {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_shoes_01.png');
 }`
     )
@@ -3032,8 +3040,8 @@ category[category='6-0']  {
             },
             {
               'slot': 3,
-              'type': TextResource['EquipmentSlotTypeGauntlet'],
-              'name': '武器',
+              'type': 'gauntlet',
+              'name': TextResource['EquipmentSlotTypeGauntlet'],
             },
             {
               'slot': 6,
@@ -3046,7 +3054,7 @@ category[category='6-0']  {
               'equipment',
               `
               <icon>
-                <img src="${GlobalConstant.assetURL}Icon\\Equipment\\icon_equipment_${i == 0 ? 'weapon' : order[i].type}${i == 0 ? '' : '_' + order[i].type[Character.JobFlags]}_02">
+                <img src="${GlobalConstant.assetURL}Icon\\Equipment\\icon_equipment_${i == 0 ? 'weapon' : order[i].type}${i == 0 ? '_' + order[i].type[Character.JobFlags] : ''}_02.png">
                 <rarity></rarity>
                 <level></level>
                 <reinforcement></reinforcement>
