@@ -2584,7 +2584,7 @@ tr[banner='${checkList[3] ? '3' : '0'}'] {
 tr[banner='${checkList[4] ? '4' : '0'}'] {
   background-color: rgb(255, 128, 255);
 }
-tr[banner='${checkList[5] ? '5' : '0'}'] {
+tr[banner='${select[5] ? '5' : '0'}'] {
   background-color: rgb(255, 255, 128);
 }
       `,
@@ -2690,19 +2690,19 @@ rarity {
   background-image: url('assets/char_frame_lr.png');
 }
 [rarity='S'] rarity {
-  background-image: url('${GlobalConstant.assetURL}/frame_common__s.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common_s.png');
 }
 [rarity='A'] rarity {
-  background-image: url('${GlobalConstant.assetURL}/frame_common__a.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common_a.png');
 }
 [rarity='B'] rarity {
-  background-image: url('${GlobalConstant.assetURL}/frame_common__b.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common_b.png');
 }
 [rarity='C'] rarity {
-  background-image: url('${GlobalConstant.assetURL}/frame_common__c.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common_c.png');
 }
 [rarity='D'] rarity {
-  background-image: url('${GlobalConstant.assetURL}/frame_common__d.png);
+  background-image: url('${GlobalConstant.assetURL}/frame_common_d.png');
 }
 decoration {
   display: none;
@@ -2793,22 +2793,22 @@ element {
   height: 32px;
   background-size: 100%;
 }
-[element='1'] > element {
+[element='1'] element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_1.png');
 }
-[element='2'] > element {
+[element='2'] element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_2.png');
 }
-[element='3'] > element {
+[element='3'] element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_3.png');
 }
-[element='4'] > element {
+[element='4'] element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_4.png');
 }
-[element='5'] > element {
+[element='5'] element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_5.png');
 }
-[element='6'] > element {
+[element='6'] element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_6.png');
 }
 [element='1'] {
@@ -2833,37 +2833,34 @@ element {
 th[selected] character {
   background-color: #80ffff !important;
   color: black !important;
+  outline: 4px black solid;
 }
 tr[selected] {
   position: sticky;
-  top: 1vh;
+  top: 0vh;
   z-index: 100;
 }
 info {
   display: inline-block;
   position: sticky;
   width: calc(100% - 600px);
-  height: 98vh;
-  top: 1vh;
+  height: 100vh;
+  top: 0vh;
   background-color: antiquewhite;
   margin-left: 10px;
+  overflow-y: overlay;
+  scrollbar-width: thin;
 }
 info > div[name='equipment'] {
   display: inline-block;
   vertical-align: top;
-  background-color: aliceblue;
   width: 60%;
-}
-info > div[name='character'] {
-  display: inline-block;
-  vertical-align: top;
-  background-color: black;
-  width: 40%;
 }
 equipment {
   display: inline-block;
-  width: 50%;
+  width: calc(50% - 8px);
   vertical-align: top;
+  border: 2px black solid;
 }
 equipment > icon > level {
   left: 10px;
@@ -2932,7 +2929,7 @@ raritydesc {
 [rarity='LR'] raritydesc {
   color: rgb(32, 32, 32);
 }
-equipment name {
+equipment desc name {
   display: inline-block;
   width: calc(100% - 59px);
   font-size: 18px;
@@ -2982,10 +2979,12 @@ category[category='6_0'] {
 parameter_type {
   width: 100%;
   display: block;
+  font-size: medium;
 }
 parameter_set {
   width: 100%;
   display: block;
+  font-size: smaller;
 }
 treasure {
   display: inline-block;
@@ -3000,6 +2999,25 @@ parameter > * {
 }
 parameter_set[type='sphere'] icon {
   zoom: 25%;
+}
+sphere {
+  display: inline-block;
+  width: 25%;
+  vertical-align: top;
+  text-align: center;
+  font-size: xx-small;
+}
+sphere name {
+  display: block;
+}
+info > div[name='character'] {
+  display: inline-block;
+  vertical-align: top;
+  width: 40%;
+  background-color: white;
+}
+div[name='character'] icon {
+  zoom: 100%;
 }
       `
     )
@@ -3130,8 +3148,8 @@ parameter_set[type='sphere'] icon {
         '256': { 'rarity': 'UR' },
         '512': { 'rarity': 'LR' },
       };
-      let nodeCharacterInfo = CharacterRarity[CharacterInfo.RarityFlags.toString()];
-      nodeCharacterInfo.element = Character.ElementType;
+      let attributeCharacterInfo = CharacterRarity[CharacterInfo.RarityFlags.toString()];
+      attributeCharacterInfo.element = Character.ElementType;
       nodeCharacter.append(
         createElement(
           'character',
@@ -3155,7 +3173,7 @@ parameter_set[type='sphere'] icon {
             <div>${TextResource[Character.NameKey.slice(1, -1)]}</div>
           </div>
           `,
-          nodeCharacterInfo
+          attributeCharacterInfo
         )
       );
       nodeCharacter.onclick = (e) => {
@@ -3260,20 +3278,20 @@ parameter_set[type='sphere'] icon {
                 </parameter_set>
                 <parameter_set type="treasure">
                   <parameter_type>${TextResource['EquipmentSacredTreasureBonusLabel']}</parameter_type>
-                  <div>
+                  <div order="1">
                     <treasure>${TextResource['CommonLegendaryLevelLabel']}
                       <level></level>
                     </treasure>
-                    <parameter order="1">
+                    <parameter>
                       <parameter_name></parameter_name>
                       <parameter_value></parameter_value>
                     </parameter>
                   </div>
-                  <div>
+                  <div order="2">
                     <treasure>${TextResource['CommonMatchlessLevelLabel']}
                       <level></level>
                     </treasure>
-                    <parameter order="2">
+                    <parameter>
                       <parameter_name></parameter_name>
                       <parameter_value></parameter_value>
                     </parameter>
@@ -3281,22 +3299,42 @@ parameter_set[type='sphere'] icon {
                 </parameter_set>
                 <parameter_set type="sphere">
                   <parameter_type>${TextResource['CommonSphereLabel']}</parameter_type>
-                  <icon order="1">
+                  <sphere order="1">
+                    <icon>
                       <img src="${GlobalConstant.assetURL}icon_lock.png">
                       <level></level>
-                  </icon>
-                  <icon order="2">
-                    <img src="${GlobalConstant.assetURL}icon_lock.png">
-                    <level></level>
-                  </icon>
-                  <icon order="3">
-                    <img src="${GlobalConstant.assetURL}icon_lock.png">
-                    <level></level>
-                  </icon>
-                  <icon order="4">
-                    <img src="${GlobalConstant.assetURL}icon_lock.png">
-                    <level></level>
-                  </icon>
+                    </icon>
+                    <name></name>
+                    <parameter_name></parameter_name>
+                    <parameter_value></parameter_value>
+                  </sphere>
+                  <sphere order="2">
+                    <icon>
+                      <img src="${GlobalConstant.assetURL}icon_lock.png">
+                      <level></level>
+                    </icon>
+                    <name></name>
+                    <parameter_name></parameter_name>
+                    <parameter_value></parameter_value>
+                  </sphere>
+                  <sphere order="3">
+                    <icon>
+                      <img src="${GlobalConstant.assetURL}icon_lock.png">
+                      <level></level>
+                    </icon>
+                    <name></name>
+                    <parameter_name></parameter_name>
+                    <parameter_value></parameter_value>
+                  </sphere>
+                  <sphere order="4">
+                    <icon>
+                      <img src="${GlobalConstant.assetURL}icon_lock.png">
+                      <level></level>
+                    </icon>
+                    <name></name>
+                    <parameter_name></parameter_name>
+                    <parameter_value></parameter_value>
+                  </sphere>
                 </parameter_set>
               </parameters>
               `,
@@ -3313,11 +3351,24 @@ parameter_set[type='sphere'] icon {
           createElement(
             'div',
             `
-
+            <icon>
+              <img src="${GlobalConstant.assetURL}CharacterIcon\\CHR_${CharacterIcon}\\CHR_${CharacterIcon}_00_s.png">
+              <rarity></rarity>
+              <decoration></decoration>
+              <stars>
+                <star></star>
+                <star></star>
+                <star></star>
+                <star></star>
+                <star></star>
+              </stars>
+              <element></element>
+            </icon>
             `,
-            { 'name': 'character' }
+            attributeCharacterInfo
           )
         );
+        nodeCharacterInfo.setAttribute('name', 'character');
         for (let i = 0; i < CharacterInfo.UserEquipmentDtoInfos.length; i++) {
           const EquipmentInfo = CharacterInfo.UserEquipmentDtoInfos[i];
           const EquipmentId = EquipmentInfo.EquipmentId;
@@ -3332,6 +3383,18 @@ parameter_set[type='sphere'] icon {
           nodeEquipment.querySelector('raritydesc').innerHTML = EquipmenRarity[Equipment.RarityFlags].rarity;
           nodeEquipment.setAttribute('quality', Equipment.QualityLv);
           nodeEquipment.querySelector('name').innerHTML = TextResource[Equipment.NameKey.slice(1, -1)];
+          nodeEquipment.querySelector('parameter_set[type="base"] parameter_name').innerHTML = '';
+          nodeEquipment.querySelector('parameter_set[type="base"] parameter_value').innerHTML = '';
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="1"] parameter_value').innerHTML = EquipmentInfo.AdditionalParameterMuscle;
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="2"] parameter_value').innerHTML = EquipmentInfo.AdditionalParameterIntelligence;
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="3"] parameter_value').innerHTML = EquipmentInfo.AdditionalParameterEnergy;
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="4"] parameter_value').innerHTML = EquipmentInfo.AdditionalParameterHealth;
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="1"] level').innerHTML = EquipmentInfo.LegendSacredTreasureLv;
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="1"] parameter_name').innerHTML = '';
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="1"] parameter_value').innerHTML = '';
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="2"] level').innerHTML = EquipmentInfo.MatchlessSacredTreasureLv;
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="2"] parameter_name').innerHTML = '';
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="2"] parameter_value').innerHTML = '';
           if (EquipmentSet) {
             const EquipmentSetName = TextResource[EquipmentSet.NameKey.slice(1, -1)];
             nodeEquipment.querySelector('desc setname').innerHTML = EquipmentSet ? EquipmentSetName : '';
