@@ -36,7 +36,8 @@ document.querySelector('style').append(`
   display: flex;
   justify-content: center;
   align-items: center;
-}`);
+}
+`);
 const FreezeNode = createElement('div', '<h1>Loading......</h1>', 'loading');
 document.body.append(FreezeNode);
 /*全局对象*/
@@ -157,6 +158,27 @@ const LanguageTable = {
     'KoKr': ' Forces',
     'ZhTw': '軍',
     'ZhCn': '军',
+  },
+  'Enermy': {
+    'JaJp': '敵',
+    'EnUs': 'EN',
+    'KoKr': 'EN',
+    'ZhTw': '敵',
+    'ZhCn': '敌',
+  },
+  'Neutral': {
+    'JaJp': '中',
+    'EnUs': 'NT',
+    'KoKr': 'NT',
+    'ZhTw': '中',
+    'ZhCn': '中',
+  },
+  'Friendly': {
+    'JaJp': '友',
+    'EnUs': 'FR',
+    'KoKr': 'FR',
+    'ZhTw': '友',
+    'ZhCn': '友',
   },
   'All Worlds': {
     'JaJp': 'すべて',
@@ -530,7 +552,8 @@ nav a{
   min-width: 22px;
   text-align: center;
   padding: 5px 0px;
-}`);
+}
+  `);
   //获取原导航栏
   const navDefault = document.querySelector('nav');
   //获取功能模块并本地化
@@ -880,7 +903,8 @@ ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
 }
 #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
   display: inline;
-}`
+}
+      `
     )
   );
   setStorage(GlobalURLList.function + 'RegionId', RegionId);
@@ -896,7 +920,15 @@ thead > tr {
 }
 tbody > tr {
   background: #e8e8e8 !important;
-}`);
+}
+tbody * {
+  font-size: small;
+  font-weight: normal;
+}
+.hidden {
+  display: none;
+}
+  `);
   while (document.body.childNodes.length > 6) {
     document.body.lastChild.remove();
   }
@@ -1048,7 +1080,8 @@ gvg-list > div {
 data {
   display: block;
   width: 100%;
-}`);
+}
+  `);
   const divSelect = document.querySelector('#selectpanel');
   //插入公会列表面板
   divSelect.insertAdjacentElement('afterend', createElement('div', '', 'guilds'));
@@ -1410,7 +1443,8 @@ async function temple() {
 data {
   display: block;
   width: 100%;
-}`);
+}
+  `);
   document.body.appendChild(createElement('data', ''));
   //插入数据
   fillTemple();
@@ -1433,7 +1467,8 @@ data {
   position: relative;
   width: 100%;
   padding: 0px;
-}`);
+}
+  `);
   //获取缓存
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
@@ -2036,7 +2071,8 @@ gvg-castle[castle] > gvg-castle-hint {
 }
 gvg-castle[church] > gvg-castle-hint {
   top: 45px;
-}`
+}
+        `
       )
     );
     let viewer = nodeData.appendChild(createElement('gvg-viewer'));
@@ -2114,7 +2150,8 @@ gvg-castle[church] > gvg-castle-hint {
 gvg-viewer[${Class}] gvg-castle[castle-id='${CastleId}'] {
   left: ${castle.left};
   top: ${castle.top};
-}`);
+}
+      `);
     }
   }
 }
@@ -2157,36 +2194,44 @@ tr > * {
 }
 tr > :nth-child(2) {
   width: calc(100% - 25px);
-}`
+}
+      `
     )
   );
-  let table2 = divGuildList.appendChild(createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'table1'));
-  let table1 = divGuildList.appendChild(createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'table2'));
+  let textTable = `
+    <thead>
+      <tr>
+        <th>■</th>
+        <th>${TextResource['GuildName']}</th>
+        <th>${LanguageTable['Friendly'][GlobalURLList.lang]}</th>
+        <th>${LanguageTable['Neutral'][GlobalURLList.lang]}</th>
+        <th>${LanguageTable['Enermy'][GlobalURLList.lang]}</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+  divGuildList.appendChild(createElement('table', textTable));
+  divGuildList.appendChild(createElement('table', textTable));
   if (GuildList) {
-    const tbody1 = table1.appendChild(createElement('tbody'));
-    const tbody2 = table2.appendChild(createElement('tbody'));
+    let listTable = divGuildList.querySelectorAll('table');
     let count = 0;
     for (let i = 0; i < GuildList.length; i++) {
       const Guid = GuildList[i];
       const Guild = await getData(DataBase.Record.db, 'Guild', Guid);
       changeColor(Guid, Guild.Color);
-      const divGuild = createElement('tr', '', Guid);
-      const aColor = divGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
-      aColor.onclick = (e) => {
+      let nodeGuild = createElement('tr', '', Guid);
+      let nodeColor = nodeGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
+      nodeColor.onclick = (e) => {
         const Color = prompt('请输入设定颜色，形式为R,G,B');
         changeColor(e.target.parentNode.id, Color);
       };
-      divGuild.append(
+      nodeGuild.append(
         createElement('td', Guild.Name), //
-        createElement('td', `<input type="radio" name="${Guid}" value="friendly" ${Guild.Relation > 0 ? 'checked="true"' : ''}>`),
-        createElement('td', `<input type="radio" name="${Guid}" value="neutral" ${Guild.Relation == 0 ? 'checked="true"' : ''}>`),
-        createElement('td', `<input type="radio" name="${Guid}" value="enermy" ${Guild.Relation < 0 ? 'checked="true"' : ''}>`)
+        createElement('td', `<input type="radio" name="${Guid}" value="friendly"${Guild.Relation > 0 ? ' checked="true"' : ''}>`),
+        createElement('td', `<input type="radio" name="${Guid}" value="neutral"${Guild.Relation == 0 ? ' checked="true"' : ''}>`),
+        createElement('td', `<input type="radio" name="${Guid}" value="enermy"${Guild.Relation < 0 ? ' checked="true"' : ''}>`)
       );
-      if (count < GuildList.length / 2) {
-        tbody1.append(divGuild);
-      } else {
-        tbody2.append(divGuild);
-      }
+      listTable[count < GuildList.length / 2 ? 0 : 1].append(nodeGuild);
       count++;
     }
   }
@@ -2277,7 +2322,8 @@ gvg-castle[offense='${GuildId}'] gvg-attacker {
 }
 tr[id='${GuildId}'] td:nth-child(1) {
   color: rgba(${Color}, 1);
-}`,
+}
+      `,
       `style${GuildId}`
     )
   );
@@ -2406,9 +2452,6 @@ tbody img {
   height: 32px;
   vertical-align: middle;
 }
-tbody > tr > th > div > a {
-  font-size: 0px;
-}
 tbody > tr > :nth-child(1) {
   width: 330px;
   text-align: left;
@@ -2425,7 +2468,8 @@ tbody > tr > :nth-child(1) img {
 }
 div[name='banner'] {
   width: 110px !important;
-}`
+}
+      `
     )
   );
   const GroupId = getStorage(GlobalURLList.function + 'GroupId');
@@ -2436,16 +2480,26 @@ div[name='banner'] {
       const QuestInfoBuffer = await sendGMRequest(`https://api.mentemori.icu/${WorldId}/temple/latest`, {});
       const QuestArray = JSON.parse(QuestInfoBuffer)?.data.quest_ids;
       const LocalRaidQuestList = await getLocalRaidQuest();
-      let table = nodeData.appendChild(createElement('table', '', WorldId));
-      let nodeThead = table.appendChild(createElement('thead', ''));
-      let nodeTitle = nodeThead.appendChild(createElement('tr', ''));
-      nodeTitle.append(createElement('th', `<h3>${TextResource['TitleWarningListWorld']}:W${WorldId % 100}</h3>`, { 'colspan': '4' }));
-      let nodeTitleTr = nodeThead.appendChild(createElement('tr', ''));
-      nodeTitleTr.append(
-        createElement('th', TextResource['LocalRaidTrainingLevelFormat'], { 'name': 'LocalRaidLevel' }), //
-        createElement('th', `${TextResource['CommonFirstRewardLabel']}${LanguageTable['Containfixed'][GlobalURLList.lang]}`),
-        createElement('th', TextResource['CommonFixedRewardLabel']),
-        createElement('th', TextResource['LocalRaidQuestEventRewardLabel'])
+      let table = nodeData.appendChild(
+        createElement(
+          'table',
+          `
+            <thead>
+              <tr>
+                <th colspan="4">
+                  <h3>${TextResource['TitleWarningListWorld']}:W${WorldId % 100}</h3>
+                </th>
+              </tr>
+              <tr>
+                <th name="LocalRaidLevel"></th>
+                <th>${TextResource['CommonFirstRewardLabel']}${LanguageTable['Containfixed'][GlobalURLList.lang]}</th>
+                <th>${TextResource['CommonFixedRewardLabel']}</th>
+                <th>${TextResource['LocalRaidQuestEventRewardLabel']}</th>
+              </tr>
+            </thead>
+          `,
+          WorldId
+        )
       );
       let nodeTbody = table.appendChild(createElement('tbody', ''));
       for (let j = QuestArray.length - 1; j >= 0; j--) {
@@ -2453,19 +2507,27 @@ div[name='banner'] {
         let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
         let QuestBannerId = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + Quest.LocalRaidBannerId.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
         if (j == 0) {
-          nodeThead.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeThead.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
+          table.querySelector('th[name="LocalRaidLevel"]').innerHTML = TextResource['LocalRaidTrainingLevelFormat'].replace('{0}', Quest.LocalRaidLevel);
         }
-        let nodeTr = nodeTbody.appendChild(createElement('tr', ''));
-        let nodeThTemple = nodeTr.appendChild(createElement('th', ''));
-        nodeThTemple.append(createElement('div', `<img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png">`, { 'name': 'banner' }));
-        let nodeTempleDesc = nodeThTemple.appendChild(createElement('div', ''));
-        nodeTempleDesc.append(
-          createElement('div', TextResource['LocalRaidName' + (107 + QuestGuid.toString().slice(0, -8) / 10)]), //
-          createElement('div', `${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}`)
+        let nodeTr = nodeTbody.appendChild(
+          createElement(
+            'tr',
+            `
+              <th>
+                <div name="banner">
+                  <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png">
+                </div>
+                <div name="desc">
+                  <div>${TextResource['LocalRaidName' + (107 + QuestGuid.toString().slice(0, -8) / 10)]}</div>
+                  <div>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</div>
+                </div>
+              </th>
+              <th name="first"></th>
+              <th name="fixed"></th>
+              <th name="event"></th>
+            `
+          )
         );
-        let nodeFirstReward = nodeTr.appendChild(createElement('th'));
-        let nodeFixedReward = nodeTr.appendChild(createElement('th'));
-        let nodeEventReward = nodeTr.appendChild(createElement('th'));
         for (let k = Quest.FixedBattleReward.length - 1; k >= 0; k--) {
           const FixedBattleReward = Quest.FixedBattleReward[k];
           const FirstBattleReward = Quest.FirstBattleReward[k];
@@ -2474,9 +2536,22 @@ div[name='banner'] {
           const Item = ItemList[ItemId];
           const IconId = Item.IconId.toString();
           const Icon = `${GlobalConstant.assetURL}Icon\\Item\\Item_${'0'.repeat(4 - IconId.length)}${IconId}.png`;
-          nodeFirstReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeFixedReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeEventReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
+          for (const l of ['first', 'fixed', 'event']) {
+            nodeTr.querySelector(`th[name="${l}"]`)?.appendChild(
+              createElement(
+                'div',
+                `
+                <img src="${Icon}" alt="${TextResource[Item.NameKey.slice(1, -1)]}">
+                <a>×${
+                  (l == 'first' ? FirstBattleReward.ItemCount : 0) + //仅初次
+                  (l != 'event' ? FixedBattleReward.ItemCount : 0) + //初次与固定
+                  (l == 'event' ? Math.ceil(FixedBattleReward.ItemCount * 0.1) : 0) //仅增
+                }</a>
+                `,
+                { 'item': isCoin }
+              )
+            );
+          }
         }
       }
     }
@@ -2511,7 +2586,8 @@ tr[banner='${checkList[4] ? '4' : '0'}'] {
 }
 tr[banner='${checkList[5] ? '5' : '0'}'] {
   background-color: rgb(255, 255, 128);
-}`,
+}
+      `,
       'styleItem'
     )
   );
@@ -2532,6 +2608,12 @@ async function fillTeam() {
 table {
   display: inline-table;
   vertical-align: top;
+}
+tbody {
+  font-size: medium;
+}
+tbody tr > :nth-child(1) {
+  width: 70px;
 }
 tbody tr > :nth-child(n + 3) > * {
   display: block;
@@ -2560,13 +2642,17 @@ tbody tr > :nth-child(2) > :nth-child(6) {
   text-align: right;
 }
 tr > :nth-child(2) > * {
-  width: 180px;
+  width: 100px;
+}
+character {
+  width: 79px;
 }
 icon {
   display: inline-block;
   position: relative;
   width: 138px;
   height: 138px;
+  zoom: 50%;
 }
 icon > img {
   display: block;
@@ -2604,19 +2690,19 @@ rarity {
   background-image: url('assets/char_frame_lr.png');
 }
 [rarity='S'] rarity {
-  background-image: url('assets/char_frame_lr.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common__s.png');
 }
 [rarity='A'] rarity {
-  background-image: url('assets/char_frame_lr.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common__a.png');
 }
 [rarity='B'] rarity {
-  background-image: url('assets/char_frame_lr.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common__b.png');
 }
 [rarity='C'] rarity {
-  background-image: url('assets/char_frame_lr.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common__c.png');
 }
 [rarity='D'] rarity {
-  background-image: url('assets/char_frame_lr.png');
+  background-image: url('${GlobalConstant.assetURL}/frame_common__d.png);
 }
 decoration {
   display: none;
@@ -2725,42 +2811,59 @@ element {
 [element='6'] > element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_6.png');
 }
-[element='1']{
+[element='1'] {
   background-color: #8080ff;
 }
-[element='2']{
+[element='2'] {
   background-color: #ff8080;
 }
-[element='3']{
+[element='3'] {
   background-color: #80ff80;
 }
-[element='4']{
+[element='4'] {
   background-color: #ffff80;
 }
-[element='5']{
+[element='5'] {
   background-color: #ffffff;
 }
-[element='6']{
+[element='6'] {
   background-color: #000000;
   color: white;
+}
+th[selected] character {
+  background-color: #80ffff !important;
+  color: black !important;
+}
+tr[selected] {
+  position: sticky;
+  top: 1vh;
+  z-index: 100;
 }
 info {
   display: inline-block;
   position: sticky;
-  width: calc(100% - 956px);
-  height: 96vh;
-  right: 0px;
-  top: 2vh;
+  width: calc(100% - 600px);
+  height: 98vh;
+  top: 1vh;
   background-color: antiquewhite;
+  margin-left: 10px;
+}
+info > div[name='equipment'] {
+  display: inline-block;
+  vertical-align: top;
+  background-color: aliceblue;
+  width: 60%;
+}
+info > div[name='character'] {
+  display: inline-block;
+  vertical-align: top;
+  background-color: black;
+  width: 40%;
 }
 equipment {
   display: inline-block;
   width: 50%;
-  background-color: aliceblue;
   vertical-align: top;
-}
-equipment > icon {
-  zoom: 50%;
 }
 equipment > icon > level {
   left: 10px;
@@ -2833,7 +2936,6 @@ equipment name {
   display: inline-block;
   width: calc(100% - 59px);
   font-size: 18px;
-  word-break: break-all;
 }
 setname {
   display: block;
@@ -2853,28 +2955,28 @@ category {
   background-size: 100%;
   vertical-align: bottom;
 }
-category[category='1_0']  {
+category[category='1_0'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_sniper_01.png');
 }
-category[category='1_1']  {
+category[category='1_1'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_warrior_01.png');
 }
-category[category='1_2']  {
+category[category='1_2'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_sorcerer_01.png');
 }
-category[category='2_0']  {
+category[category='2_0'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_sub_01.png');
 }
-category[category='3_0']  {
+category[category='3_0'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_gauntlet_01.png');
 }
-category[category='4_0']  {
+category[category='4_0'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_helmet_01.png');
 }
-category[category='5_0']  {
+category[category='5_0'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_armor_01.png');
 }
-category[category='6_0']  {
+category[category='6_0'] {
   background-image: url('${GlobalConstant.assetURL}/icon_equipment_shoes_01.png');
 }
 parameter_type {
@@ -2885,7 +2987,7 @@ parameter_set {
   width: 100%;
   display: block;
 }
-treasure{
+treasure {
   display: inline-block;
   width: 25%;
 }
@@ -2896,9 +2998,10 @@ parameter {
 parameter > * {
   display: inline-block;
 }
-parameter_set[type="sphere"] icon {
+parameter_set[type='sphere'] icon {
   zoom: 25%;
-}`
+}
+      `
     )
   );
   let lableNumber;
@@ -2923,51 +3026,58 @@ parameter_set[type="sphere"] icon {
       searchURL = '';
     }
   }
-  let nodeTable = nodeData.appendChild(createElement('table', '<thead><tr></tr></thead>'));
-  nodeTable.querySelector('thead>tr').append(
-    createElement('th', lableNumber), //
-    createElement('th', TextResource['CommonPlayerNameLabel']),
-    createElement('th', LanguageTable['Slot 1'][GlobalURLList.lang]),
-    createElement('th', LanguageTable['Slot 2'][GlobalURLList.lang]),
-    createElement('th', LanguageTable['Slot 3'][GlobalURLList.lang]),
-    createElement('th', LanguageTable['Slot 4'][GlobalURLList.lang]),
-    createElement('th', LanguageTable['Slot 5'][GlobalURLList.lang])
+  let nodeTable = nodeData.appendChild(
+    createElement(
+      'table',
+      `
+      <thead>
+        <tr>
+          <th>${lableNumber}</th>
+          <th>${TextResource['CommonPlayerNameLabel']}</th>
+          <th>${LanguageTable['Slot 1'][GlobalURLList.lang]}</th>
+          <th>${LanguageTable['Slot 2'][GlobalURLList.lang]}</th>
+          <th>${LanguageTable['Slot 3'][GlobalURLList.lang]}</th>
+          <th>${LanguageTable['Slot 4'][GlobalURLList.lang]}</th>
+          <th>${LanguageTable['Slot 5'][GlobalURLList.lang]}</th>
+        </tr>
+      </thead>
+      `
+    )
   );
   let nodePanel = nodeData.appendChild(createElement('info', ''));
   const TeamInfoBuffer = await sendGMRequest(searchURL, {});
-  const TeamArray = JSON.parse(TeamInfoBuffer).data;
-  console.log(TeamArray);
+  const TeamInfo = JSON.parse(TeamInfoBuffer).data;
+  console.log(TeamInfo);
   let nodeTbody = nodeTable.appendChild(createElement('tbody', ''));
-  for (let i = 0; i < TeamArray.length; i++) {
-    const Player = TeamArray[i];
-    let nodeTr = nodeTbody.appendChild(createElement('tr', ''));
-    nodeTr.append(createElement('th', `<th>${i + 1}</th>`));
-    let nodePlayer = nodeTr.appendChild(createElement('th'));
+  for (let i = 0; i < TeamInfo.length; i++) {
+    const Player = TeamInfo[i];
+    let nodeTr = nodeTbody.appendChild(
+      createElement(
+        'tr',
+        `
+        <th>${i + 1}</th>
+        <th name="player">
+          <div>${Player.PlayerName}</div>
+          <div name="world">W${Player.PlayerId?.toString().slice(-2)}</div>
+          <div>${TextResource['CommonPlayerRankLabel'] + '' + Player.PlayerLevel}</div>
+          <div name="BattlePower"></div>
+          <div name="point"></div>
+          <div name="wins"></div>
+        </th>
+        `
+      )
+    );
+    let nodePlayer = nodeTr.querySelector('th[name="player"]');
     switch (GlobalURLList.function) {
       case 'arena': {
-        nodePlayer.innerHTML = `
-        <div>${Player.PlayerName}</div>
-        <div></div>
-        <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
-        <p>${TextResource['CommonBattlePowerLabel']}: 
-          <a name="BattlePower"></a>
-        </p>
-        <div></div>
-        <div></div>
-        `.replaceAll(/\n */g, '');
+        nodePlayer.querySelector('div[name="world"]').setAttribute('class', 'hidden');
+        nodePlayer.querySelector('div[name="point"]').setAttribute('class', 'hidden');
+        nodePlayer.querySelector('div[name="wins"]').setAttribute('class', 'hidden');
         break;
       }
       case 'legend': {
-        nodePlayer.innerHTML = `
-        <div>${Player.PlayerName}</div>
-        <div>W${Player.PlayerId.toString().slice(-2)}</div>
-        <p>${TextResource['CommonPlayerRankLabel']}: ${Player.PlayerLevel}</p>
-        <p>${TextResource['CommonBattlePowerLabel']}: 
-          <a name="BattlePower"></a>
-        </p>
-        <div>${TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint)}</div>
-        <div>${TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount)}</div>
-        `.replaceAll(/\n */g, '');
+        nodePlayer.querySelector('div[name="point"]').innerHTML = TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint);
+        nodePlayer.querySelector('div[name="wins"]').innerHTML = TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount);
         break;
       }
       default: {
@@ -3041,15 +3151,23 @@ parameter_set[type="sphere"] icon {
             <level>${TextResource['CommonLevelWithDot']}${CharacterInfo.Level}</level>
           </icon>
           <div>
-            <div>${Character.Title == '' ? '　' : Character.Title}</div>
-            <div>${Character.Name}</div>
+            <div class="hidden">${Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '　'}</div>
+            <div>${TextResource[Character.NameKey.slice(1, -1)]}</div>
           </div>
-          `.replaceAll(/\n */g, ''),
+          `,
           nodeCharacterInfo
         )
       );
-      nodeCharacter.onclick = () => {
-        nodePanel.innerHTML = '';
+      nodeCharacter.onclick = (e) => {
+        let listClean = document.querySelectorAll('[selected]');
+        for (let i of listClean) {
+          i.removeAttribute('selected');
+        }
+        let nodeTh = getFather(e.target, 'TH');
+        let nodeTr = getFather(e.target, 'TR');
+        nodeTh.setAttribute('selected', '');
+        nodeTr.setAttribute('selected', '');
+        nodePanel.innerHTML = '<div name="equipment"></div>';
         const order = [
           {
             'slot': 1,
@@ -3088,7 +3206,7 @@ parameter_set[type="sphere"] icon {
         ];
         for (let i = 0; i < 6; i++) {
           let [slot, type] = [order[i].slot, order[i].type];
-          nodePanel.append(
+          nodePanel.querySelector('div[name="equipment"]').append(
             createElement(
               'equipment',
               `
@@ -3161,57 +3279,6 @@ parameter_set[type="sphere"] icon {
                     </parameter>
                   </div>
                 </parameter_set>
-                <parameter_set type="set">
-                  <parameter_type>${TextResource['CharacterEquipmentSeriesEffect']}</parameter_type>
-                  <setname></setname>
-                  <div>
-                    <treasure>${TextResource['EquipmentSet'].replace('{0}', '2')}</treasure>
-                    <parameter order="1">
-                      <parameter_name></parameter_name>
-                      <parameter_value></parameter_value>
-                    </parameter>
-                  </div>
-                  <div>
-                    <treasure>${TextResource['EquipmentSet'].replace('{0}', '4')}</treasure>
-                    <parameter order="2">
-                      <parameter_name></parameter_name>
-                      <parameter_value></parameter_value>
-                    </parameter>
-                  </div>
-                  <div>
-                    <treasure>${TextResource['EquipmentSet'].replace('{0}', '6')}</treasure>
-                    <parameter order="3">
-                      <parameter_name></parameter_name>
-                      <parameter_value></parameter_value>
-                    </parameter>
-                  </div>
-                </parameter_set>
-                <parameter_set type="exclusive" style="display: none">
-                  <parameter_type>${TextResource['CharacterEquipmentExclusiveEffect']}</parameter_type>
-                  <parameter_subtype>${TextResource['CharacterEquipmentExclusiveSkillEffect']}</parameter_subtype>
-                  <div order="1">${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '1')}</div>
-                  <div order="2">${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '2')}</div>
-                  <div order="3">${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '3')}</div>
-                  <parameter_subtype>${TextResource['CharacterEquipmentExclusivePassiveEffect']}</parameter_subtype>
-                  <div>
-                    <effect order="1">
-                      <effect_name></effect_name>
-                      <effect_value></effect_value>
-                    </effect>
-                  </div>
-                  <div>
-                    <effect order="2">
-                      <effect_name></effect_name>
-                      <effect_value></effect_value>
-                    </effect>
-                  </div>
-                  <div>
-                    <effect order="3">
-                      <effect_name></effect_name>
-                      <effect_value></effect_value>
-                    </effect>
-                  </div>
-                </parameter_set>
                 <parameter_set type="sphere">
                   <parameter_type>${TextResource['CommonSphereLabel']}</parameter_type>
                   <icon order="1">
@@ -3232,7 +3299,7 @@ parameter_set[type="sphere"] icon {
                   </icon>
                 </parameter_set>
               </parameters>
-              `.replaceAll(/\n */g, ''),
+              `,
               {
                 'slot': slot,
               }
@@ -3241,6 +3308,16 @@ parameter_set[type="sphere"] icon {
           if (slot != 1) {
           }
         }
+
+        let nodeCharacterInfo = nodePanel.appendChild(
+          createElement(
+            'div',
+            `
+
+            `,
+            { 'name': 'character' }
+          )
+        );
         for (let i = 0; i < CharacterInfo.UserEquipmentDtoInfos.length; i++) {
           const EquipmentInfo = CharacterInfo.UserEquipmentDtoInfos[i];
           const EquipmentId = EquipmentInfo.EquipmentId;
@@ -3254,19 +3331,20 @@ parameter_set[type="sphere"] icon {
           nodeEquipment.querySelector('reinforcement').innerHTML = EquipmentInfo.ReinforcementLv == 0 ? '' : TextResource['CommonPlusLabel'] + EquipmentInfo.ReinforcementLv;
           nodeEquipment.querySelector('raritydesc').innerHTML = EquipmenRarity[Equipment.RarityFlags].rarity;
           nodeEquipment.setAttribute('quality', Equipment.QualityLv);
-          nodeEquipment.querySelector('name').innerHTML = Equipment.Name;
+          nodeEquipment.querySelector('name').innerHTML = TextResource[Equipment.NameKey.slice(1, -1)];
           if (EquipmentSet) {
-            nodeEquipment.querySelector('desc setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
-            nodeEquipment.querySelector('parameters setname').innerHTML = EquipmentSet ? EquipmentSet.Name : '';
+            const EquipmentSetName = TextResource[EquipmentSet.NameKey.slice(1, -1)];
+            nodeEquipment.querySelector('desc setname').innerHTML = EquipmentSet ? EquipmentSetName : '';
+            //nodeEquipment.querySelector('parameters setname').innerHTML = EquipmentSet ? EquipmentSetName : '';
             countEquipmenSet[EquipmentSetId] = !countEquipmenSet[EquipmentSetId] ? 0 : countEquipmenSet[EquipmentSetId] + 1;
           }
           if (Equipment.EquipmentExclusiveSkillDescriptionId != 0) {
-            nodePanel.querySelector('parameter_set[type="exclusive"]').setAttribute('style', 'display: block');
+            //nodePanel.querySelector('parameter_set[type="exclusive"]').setAttribute('style', 'display: block');
           }
         }
       };
     }
-    nodeTr.querySelector('a[name="BattlePower"]').innerHTML = new Intl.NumberFormat('en-US').format(totalBattlePower);
+    nodeTr.querySelector('div[name="BattlePower"]').innerHTML = `${TextResource['CommonBattlePowerLabel']}: ${new Intl.NumberFormat('en-US').format(totalBattlePower)}`;
   }
 }
 /*API函数*/
@@ -3362,8 +3440,6 @@ async function getCharacter() {
     CharacterList = {};
     for (let i = 0; i < CharacterMB.length; i++) {
       const Character = CharacterMB[i];
-      Character.Name = Character.NameKey ? TextResource[Character.NameKey.slice(1, -1)] : '';
-      Character.Title = Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '';
       CharacterList[Character.Id] = Character;
     }
     CharacterList.AppVersion = GlobalConstant.AppVersion;
@@ -3381,7 +3457,6 @@ async function getEquipment() {
     for (let i = 0; i < EquipmentMB.length; i++) {
       let Equipment = EquipmentMB[i];
       Equipment.Guid = Equipment.Id;
-      Equipment.Name = Equipment.NameKey ? TextResource[Equipment.NameKey.slice(1, -1)] : '';
       updateData(DataBase.Static.db, 'Equipment', Equipment);
       EquipmentList[Equipment.Id] = Equipment;
     }
@@ -3405,7 +3480,6 @@ async function getEquipmentSet() {
     EquipmentSetList = {};
     for (let i = 0; i < EquipmentSetMB.length; i++) {
       const EquipmentSet = EquipmentSetMB[i];
-      EquipmentSet.Name = EquipmentSet.NameKey ? TextResource[EquipmentSet.NameKey.slice(1, -1)] : '';
       EquipmentSetList[EquipmentSet.Id] = EquipmentSet;
     }
     EquipmentSetList.AppVersion = GlobalConstant.AppVersion;
@@ -3425,14 +3499,12 @@ async function getItem() {
     ItemList = {};
     for (let i = 0; i < ItemMB.length; i++) {
       const Item = ItemMB[i];
-      Item.Name = Item.NameKey ? TextResource[Item.NameKey.slice(1, -1)] : '';
       Item.Display = Item.DisplayName ? TextResource[Item.DisplayName.slice(1, -1)] : '';
       Item.Description = Item.DescriptionKey ? TextResource[Item.DescriptionKey.slice(1, -1)] : '';
       ItemList[`${Item.ItemId}@${Item.ItemType}`] = Item;
     }
     for (let i = 0; i < TreasureChestMB.length; i++) {
       const Treasure = TreasureChestMB[i];
-      Treasure.Name = Treasure.NameKey ? TextResource[Treasure.NameKey.slice(1, -1)] : '';
       Treasure.Display = Treasure.DisplayName ? TextResource[Treasure.DisplayName.slice(1, -1)] : '';
       Treasure.Description = Treasure.DescriptionKey ? TextResource[Treasure.DescriptionKey.slice(1, -1)] : '';
       ItemList[`${Treasure.Id}@${17}`] = Treasure;
@@ -3939,7 +4011,7 @@ function createElement(type, text = '', option) {
     node = document.createTextNode(text);
   } else {
     node = document.createElement(type);
-    node.innerHTML = text;
+    node.innerHTML = text.toString().replaceAll(/\n */g, '');
   }
   if (option?.constructor === String) {
     node.id = option;
@@ -3958,6 +4030,15 @@ function createElement(type, text = '', option) {
     }
   }
   return node;
+}
+//获取父元素
+function getFather(target, lable) {
+  let father = target.parentNode;
+  if (!father) return;
+  if (father.tagName != lable) {
+    father = getFather(target.parentNode, lable);
+  }
+  return father;
 }
 //获取消息头
 function getHeader(headers, key) {
