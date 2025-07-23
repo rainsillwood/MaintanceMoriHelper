@@ -322,7 +322,7 @@ let DataBase = {
 };
 await openDB('Static');
 await openDB('Record');
-setStorage('ScriptVersion', '0.9');
+setStorage('ScriptVersion', 0.95);
 //固定语言
 setStorage('lang', '["en","en","en","en","en","en","en"]');
 //注入翻译
