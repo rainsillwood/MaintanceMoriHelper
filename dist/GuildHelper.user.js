@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      1.0
+// @version      1.01
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -295,6 +295,17 @@ const LanguageTable = {
 };
 //URL信息
 const GlobalURLList = getURLList();
+//跳转功能
+if (!GlobalURLList.lang) {
+  let url = JSON.parse(JSON.stringify(GlobalURLList));
+  url.lang = getStorage('Language') ?? 'EnUs';
+  if (['arena', 'temple', 'legend', 'clearlist'].includes(GlobalURLList.page)) {
+    url.function = GlobalURLList.page;
+    delete url.page;
+  }
+  window.location.href = getURL(url);
+  return;
+}
 //变量
 const GlobalVariable = {
   'userURL': '',
@@ -366,21 +377,10 @@ const LanguageTableM = {
 const LanguageTableJ = ['Locked', 'All Worlds', ' Forces'];
 const functionLanguage = unsafeWindow._m;
 unsafeWindow._m = function (...args) {
-  //跳转功能
-  if (!GlobalURLList.lang) {
-    let url = JSON.parse(JSON.stringify(GlobalURLList));
-    url.lang = getStorage('Language') ?? 'EnUs';
-    if (['arena', 'temple', 'legend', 'clearlist'].includes(GlobalURLList.page)) {
-      url.function = GlobalURLList.page;
-      delete url.page;
-    }
-    window.location.href = getURL(url);
-    return;
-  } else {
-    //内联翻译表
-    unsafeWindow.m[GlobalURLList.lang] = getStorage('LanguageTable');
-    return functionLanguage.call(this, ...args);
-  }
+  //内联翻译表
+  let langList = JSON.parse(getStorage('LanguageTable'));
+  unsafeWindow.m[GlobalURLList.lang] = langList || {};
+  return functionLanguage.call(this, ...args);
 };
 //动态常量
 GlobalConstant.AppVersion = await getAppVersion();
@@ -3914,14 +3914,13 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
               }
               nodeSkillInfo.append(createElement('hr'));
             }
-            if (SkillInfo.CharacterLevel <= CharacterInfo.Level) {
+            if (SkillInfo.EquipmentRarityFlags > 0) {
+              nodeSkillEffect.setAttribute('class', 'hidden');
+            } else if (SkillInfo.CharacterLevel <= CharacterInfo.Level) {
               nodeSkillIcon.querySelector('level').innerHTML = TextResource['CommonLevelFormat'].replaceAll('{0}', j + 1);
               nodeSkillIcon.setAttribute('level', j + 1);
               nodeSkillInfo.setAttribute('level', j + 1);
               nodeSkillEffect.setAttribute('unlock', '');
-            }
-            if (SkillInfo.EquipmentRarityFlags > 0) {
-              nodeSkillEffect.setAttribute('class', 'hidden');
             }
           }
         }
@@ -4180,7 +4179,7 @@ async function getTextResource() {
     for (let j of LanguageTableJ) {
       cacheLanguageTable[j] = LanguageTable[j][GlobalURLList.lang];
     }
-    setStorage(`LanguageTable`, cacheLanguageTable);
+    setStorage(`LanguageTable`, JSON.stringify(cacheLanguageTable));
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
     setStorage('Language', GlobalURLList.lang);
   } else {

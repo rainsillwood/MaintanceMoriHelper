@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      1.0
+// @version      1.01
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -295,6 +295,17 @@ const LanguageTable = {
 };
 //URL信息
 const GlobalURLList = getURLList();
+//跳转功能
+if (!GlobalURLList.lang) {
+  let url = JSON.parse(JSON.stringify(GlobalURLList));
+  url.lang = getStorage('Language') ?? 'EnUs';
+  if (['arena', 'temple', 'legend', 'clearlist'].includes(GlobalURLList.page)) {
+    url.function = GlobalURLList.page;
+    delete url.page;
+  }
+  window.location.href = getURL(url);
+  return;
+}
 //变量
 const GlobalVariable = {
   'userURL': '',
@@ -306,7 +317,7 @@ const GlobalVariable = {
   'ortegauuid': '',
 };
 //清除缓存
-if (getStorage('ScriptVersion') * 1 < 0.95) {
+if (getStorage('ScriptVersion') * 1 < 1.01) {
   localStorage.clear();
   indexedDB.deleteDatabase('database');
 }
@@ -322,7 +333,7 @@ let DataBase = {
 };
 await openDB('Static');
 await openDB('Record');
-setStorage('ScriptVersion', 0.95);
+setStorage('ScriptVersion', 1.01);
 //固定语言
 setStorage('lang', '["en","en","en","en","en","en","en"]');
 //注入翻译
@@ -366,21 +377,10 @@ const LanguageTableM = {
 const LanguageTableJ = ['Locked', 'All Worlds', ' Forces'];
 const functionLanguage = unsafeWindow._m;
 unsafeWindow._m = function (...args) {
-  //跳转功能
-  if (!GlobalURLList.lang) {
-    let url = JSON.parse(JSON.stringify(GlobalURLList));
-    url.lang = getStorage('Language') ?? 'EnUs';
-    if (['arena', 'temple', 'legend', 'clearlist'].includes(GlobalURLList.page)) {
-      url.function = GlobalURLList.page;
-      delete url.page;
-    }
-    window.location.href = getURL(url);
-    return;
-  } else {
-    //内联翻译表
-    unsafeWindow.m[GlobalURLList.lang] = getStorage('LanguageTable');
-    return functionLanguage.call(this, ...args);
-  }
+  //内联翻译表
+  let langList = JSON.parse(getStorage('LanguageTable'));
+  unsafeWindow.m[GlobalURLList.lang] = langList || {};
+  return functionLanguage.call(this, ...args);
 };
 //动态常量
 GlobalConstant.AppVersion = await getAppVersion();
@@ -485,7 +485,6 @@ const LanguageJa = {
 };
 //初始化所有页面
 initPage();
-FreezeNode.remove();
 /*常量函数*/
 //分解URL
 function getURLList() {
@@ -708,28 +707,29 @@ async function initPage() {
       break;
     }
     case 'gvgMapper': {
-      gvgMapper();
+      await gvgMapper();
       break;
     }
     case 'temple': {
-      temple();
+      await temple();
       break;
     }
     case 'arena': {
-      arena();
+      await arena();
       break;
     }
     case 'legend': {
-      arena();
+      await arena();
       break;
     }
     case 'clearlist': {
-      clearlist();
+      await clearlist();
       break;
     }
     default: {
     }
   }
+  FreezeNode.remove();
 }
 //初始化选择栏
 async function initSelect(addRegion = true, addGroup = true, addClass = true, addWorld = true) {
@@ -3914,14 +3914,13 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
               }
               nodeSkillInfo.append(createElement('hr'));
             }
-            if (SkillInfo.CharacterLevel <= CharacterInfo.Level) {
+            if (SkillInfo.EquipmentRarityFlags > 0) {
+              nodeSkillEffect.setAttribute('class', 'hidden');
+            } else if (SkillInfo.CharacterLevel <= CharacterInfo.Level) {
               nodeSkillIcon.querySelector('level').innerHTML = TextResource['CommonLevelFormat'].replaceAll('{0}', j + 1);
               nodeSkillIcon.setAttribute('level', j + 1);
               nodeSkillInfo.setAttribute('level', j + 1);
               nodeSkillEffect.setAttribute('unlock', '');
-            }
-            if (SkillInfo.EquipmentRarityFlags > 0) {
-              nodeSkillEffect.setAttribute('class', 'hidden');
             }
           }
         }
@@ -4170,7 +4169,7 @@ async function getTextResource() {
         'Guid': CacheData.StringKey.replace(/\[(.*?)\]/, '$1'),
         'Value': CacheData.Text,
       };
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data.Value;
     }
     let cacheLanguageTable = {};
@@ -4180,7 +4179,7 @@ async function getTextResource() {
     for (let j of LanguageTableJ) {
       cacheLanguageTable[j] = LanguageTable[j][GlobalURLList.lang];
     }
-    setStorage(`LanguageTable`, cacheLanguageTable);
+    setStorage(`LanguageTable`, JSON.stringify(cacheLanguageTable));
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
     setStorage('Language', GlobalURLList.lang);
   } else {
@@ -4202,7 +4201,7 @@ async function getCharacter() {
     for (let i = 0; i < DataMB.length; i++) {
       let Data = DataMB[i];
       Data.Guid = Data.Id;
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4225,7 +4224,7 @@ async function getEquipment() {
     for (let i = 0; i < DataMB.length; i++) {
       let Data = DataMB[i];
       Data.Guid = Data.Id;
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4248,7 +4247,7 @@ async function getEquipmentSet() {
     for (let i = 0; i < DataMB.length; i++) {
       let Data = DataMB[i];
       Data.Guid = Data.Id;
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4274,7 +4273,7 @@ async function getReinforcement() {
         'Guid': CacheData.Id,
         'Value': CacheData.ReinforcementCoefficient,
       };
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data.Value;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4330,7 +4329,7 @@ async function getMatchless() {
         },
         'RequiredTotalExp': CacheData.RequiredTotalExp,
       };
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4386,7 +4385,7 @@ async function getLegend() {
         },
         'RequiredTotalExp': CacheData.RequiredTotalExp,
       };
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4409,7 +4408,7 @@ async function getSphere() {
     for (let i = 0; i < DataMB.length; i++) {
       let Data = DataMB[i];
       Data.Guid = Data.Id;
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4432,7 +4431,7 @@ async function getEquipmentSkill() {
     for (let i = 0; i < DataMB.length; i++) {
       let Data = DataMB[i];
       Data.Guid = Data.Id;
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4455,7 +4454,7 @@ async function getEquipmentExclusive() {
     for (let i = 0; i < DataMB.length; i++) {
       let Data = DataMB[i];
       Data.Guid = Data.Id;
-      updateData(DataBase.Static.db, Type, Data);
+      await updateData(DataBase.Static.db, Type, Data);
       DataList[Data.Guid] = Data;
     }
     setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4479,7 +4478,7 @@ async function getSkill() {
       for (let j = 0; j < DataMB.length; j++) {
         let Data = DataMB[j];
         Data.Guid = Data.Id;
-        updateData(DataBase.Static.db, Type, Data);
+        await updateData(DataBase.Static.db, Type, Data);
         DataList[Data.Guid] = Data;
       }
       setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4520,7 +4519,7 @@ async function getItem() {
           }
         }
         Data.Guid = `${ItemId}@${ItemType}`;
-        updateData(DataBase.Static.db, Type, Data);
+        await updateData(DataBase.Static.db, Type, Data);
         DataList[Data.Guid] = Data;
       }
       setStorage(`version${Type}`, GlobalConstant.AppVersion);
@@ -4555,7 +4554,7 @@ async function getLocalRaidQuest(QuestGuid) {
         'FixedBattleReward': QuestMB.FixedBattleRewards,
         'FirstBattleReward': QuestMB.FirstBattleRewards,
       };
-      updateData(DataBase.Static.db, 'Raid', Quest);
+      await updateData(DataBase.Static.db, 'Raid', Quest);
       LocalRaidQuestList[QuestMB.Id] = Quest;
     }
   } else {
