@@ -1,15 +1,15 @@
 # MaintenanceMoriHelper
- A tool based on Maintenance Mori(https://mentemori.icu)
+ A tool based on Maintenance Mori(https://mentemori.icu),You need a Browser plugin like Tamper Monkey to use it.Support EnUs/JaJp/KoKr/ZhCn/ZhTw
  
- 一个基于Maintenance Mori的工具，需要安装TamperMonkey来使用，大部分已支持五种文字，小部分只有中文和英文
+ 一个基于Maintenance Mori(https://mentemori.icu)的工具，需要安装TamperMonkey来使用，大部分已支持五种文字，小部分只有中文和英文，大陆地区使用需要开梯子来加载资源
 
- 安装地址：
+ 安装地址/URL：
  
-    稳定版：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
+    稳定版/Stable：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
     
-    开发版：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
+    开发版/Nightly(Unrecommend)：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 
-# 功能介绍
+# 功能介绍/Tips
  优化幻影神殿：显示具体获得报酬，更改显示模式
 
  数据转换：选择MessagePack格式的二进制文件（如游戏的MB文件，抓包发包的数据），自动转化为可读的JSON格式，可一次性多选
