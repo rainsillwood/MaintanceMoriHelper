@@ -1,4 +1,4 @@
-# MementoMoriGuildHelper
+# MaintenanceMoriHelper
  A tool based on Maintenance Mori(https://mentemori.icu)
  
  一个基于Maintenance Mori的工具，需要安装TamperMonkey来使用，大部分已支持五种文字，小部分只有中文和英文
