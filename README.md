@@ -1,7 +1,7 @@
 # MaintenanceMoriHelper
- A tool based on Maintenance Mori(https://mentemori.icu),You need a Browser plugin like Tamper Monkey to use it.Support EnUs/JaJp/KoKr/ZhCn/ZhTw
+ A tool based on Maintenance Mori( https://mentemori.icu ),You need a Browser plugin like Tamper Monkey to use it.Support EnUs/JaJp/KoKr/ZhCn/ZhTw
  
- 一个基于Maintenance Mori(https://mentemori.icu)的工具，需要安装TamperMonkey来使用，大部分已支持五种文字，小部分只有中文和英文，大陆地区使用需要开梯子来加载资源
+ 一个基于Maintenance Mori( https://mentemori.icu )的工具，需要安装TamperMonkey来使用，大部分已支持五种文字，小部分只有中文和英文，大陆地区使用需要开梯子来加载资源
 
  安装地址/URL：
  
