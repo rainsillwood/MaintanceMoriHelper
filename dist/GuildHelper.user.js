@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         MementoMori Guild Helper
+// @name         Maintenance Mori Helper
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @version      0.88
-// @description  公会战小助手
+// @version      1.0
+// @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
 // @match        http*://mentemori.icu/*
@@ -24,26 +24,22 @@
 'use strict';
 console.log('脚本运行中');
 //增加冻结层
-const FreezeNode = document.body.appendChild(createElement('div', '<h1>Loading......</h1>', 'loading'));
-document.querySelector('style').appendChild(
-  createElement(
-    'text',
-    `
-#loading {
-  width: 100%;
-  height: 100%;
-  font-size: xx-large;
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-    `
-  )
-);
+document.querySelector('style').append(`
+  #loading {
+    width: 100%;
+    height: 100%;
+    font-size: xx-large;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  `);
+const FreezeNode = createElement('div', '<h1>Loading......</h1>', 'loading');
+document.body.append(FreezeNode);
 /*全局对象*/
 //静态常量
 const GlobalConstant = {
@@ -162,6 +158,27 @@ const LanguageTable = {
     'KoKr': ' Forces',
     'ZhTw': '軍',
     'ZhCn': '军',
+  },
+  'Enermy': {
+    'JaJp': '敵',
+    'EnUs': 'EN',
+    'KoKr': 'EN',
+    'ZhTw': '敵',
+    'ZhCn': '敌',
+  },
+  'Neutral': {
+    'JaJp': '中',
+    'EnUs': 'NT',
+    'KoKr': 'NT',
+    'ZhTw': '中',
+    'ZhCn': '中',
+  },
+  'Friendly': {
+    'JaJp': '友',
+    'EnUs': 'FR',
+    'KoKr': 'FR',
+    'ZhTw': '友',
+    'ZhCn': '友',
   },
   'All Worlds': {
     'JaJp': 'すべて',
@@ -288,64 +305,82 @@ const GlobalVariable = {
   'orteganextaccesstoken': '',
   'ortegauuid': '',
 };
+//清除缓存
+if (getStorage('ScriptVersion') * 1 < 0.95) {
+  localStorage.clear();
+  indexedDB.deleteDatabase('database');
+}
 //公共对象
 let SocketGvG;
-let DataBase;
-//清除缓存
-if (getStorage('ScriptVersion') * 1 < 0.86) {
-  localStorage.clear();
-}
-setStorage('ScriptVersion', '0.86');
+let DataBase = {
+  'Static': {
+    'version': 1,
+  },
+  'Record': {
+    'version': 1,
+  },
+};
+await openDB('Static');
+await openDB('Record');
+setStorage('ScriptVersion', 0.95);
 //固定语言
 setStorage('lang', '["en","en","en","en","en","en","en"]');
 //注入翻译
+//从游戏资源获取翻译
+const LanguageTableM = {
+  'Rank': 'CommonPlayerRankLabel',
+  'STR': 'BaseParameterTypeMuscle',
+  'MAG': 'BaseParameterTypeIntelligence',
+  'DEX': 'BaseParameterTypeEnergy',
+  'STA': 'BaseParameterTypeHealth',
+  'ATK': 'BattleParameterTypeAttackPower',
+  'DEF': 'BattleParameterTypeDefense',
+  'DEF Break': 'BattleParameterTypeDefensePenetration',
+  'SPD': 'BattleParameterTypeSpeed',
+  'PM.DEF Break': 'BattleParameterTypeDamageEnhance',
+  'P.DEF': 'BattleParameterTypePhysicalDamageRelax',
+  'M.DEF': 'BattleParameterTypeMagicDamageRelax',
+  'ACC': 'BattleParameterTypeHit',
+  'EVD': 'BattleParameterTypeAvoidance',
+  'CRIT': 'BattleParameterTypeCritical',
+  'CRIT RES': 'BattleParameterTypeCriticalResist',
+  'CRIT DMG Boost': 'BattleParameterTypeCriticalDamageEnhance',
+  'P.CRIT DMG Cut': 'BattleParameterTypePhysicalCriticalDamageRelax',
+  'M.CRIT DMG Cut': 'BattleParameterTypeMagicCriticalDamageRelax',
+  'Debuff ACC': 'BattleParameterTypeDebuffHit',
+  'Debuff RES': 'BattleParameterTypeDebuffResist',
+  'Counter': 'BattleParameterTypeDamageReflect',
+  'HP Drain': 'BattleParameterTypeHpDrain',
+  'None': 'CommonNotEquippingLabel',
+  ' pts, ': 'GlovalPvpPoint',
+  ' streak': 'GlobalPvpConsecutiveVictoryLabel',
+  'EXP Orb': 'ItemName10',
+  'Upgrade Water': 'ItemName12',
+  'Upgrade Panacea': 'ItemName13',
+  'Kindling Orb': 'ItemName11',
+  'Rune Ticket': 'ItemName43',
+  'Event': 'PlayerEventPolicyLabel',
+  ' Wins': 'WeeklyTopicsLeagueContinueWinCountFormat',
+};
+//从翻译表获取翻译
+const LanguageTableJ = ['Locked', 'All Worlds', ' Forces'];
 const functionLanguage = unsafeWindow._m;
 unsafeWindow._m = function (...args) {
-  let TextResource = JSON.parse(getStorage('TextResource'));
-  if (TextResource['CommonPlayerRankLabel']) {
-    //内联翻译表
-    unsafeWindow.m[GlobalURLList.lang] = {
-      'Rank': TextResource['CommonPlayerRankLabel'],
-      'STR': TextResource['BaseParameterTypeMuscle'],
-      'MAG': TextResource['BaseParameterTypeIntelligence'],
-      'DEX': TextResource['BaseParameterTypeEnergy'],
-      'STA': TextResource['BaseParameterTypeHealth'],
-      'ATK': TextResource['BattleParameterTypeAttackPower'],
-      'DEF': TextResource['BattleParameterTypeDefense'],
-      'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
-      'SPD': TextResource['BattleParameterTypeSpeed'],
-      'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
-      'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
-      'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
-      'ACC': TextResource['BattleParameterTypeHit'],
-      'EVD': TextResource['BattleParameterTypeAvoidance'],
-      'CRIT': TextResource['BattleParameterTypeCritical'],
-      'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
-      'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
-      'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
-      'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
-      'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
-      'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
-      'Counter': TextResource['BattleParameterTypeDamageReflect'],
-      'HP Drain': TextResource['BattleParameterTypeHpDrain'],
-      'Locked': LanguageTable['Locked'][GlobalURLList.lang],
-      'None': TextResource['CommonNotEquippingLabel'],
-      ' pts, ': ` ${TextResource['GlovalPvpPoint']}`,
-      ' streak': ` ${TextResource['GlobalPvpConsecutiveVictoryLabel']?.replace('{0}', '')}`,
-      'EXP Orb': TextResource['ItemName10'],
-      'Upgrade Water': TextResource['ItemName12'],
-      'Upgrade Panacea': TextResource['ItemName13'],
-      'Kindling Orb': TextResource['ItemName11'],
-      'Rune Ticket': TextResource['ItemName43'],
-      'Event': TextResource['PlayerEventPolicyLabel'],
-      'All Worlds': LanguageTable['All Worlds'][GlobalURLList.lang],
-      ' Forces': LanguageTable[' Forces'][GlobalURLList.lang],
-      ' Wins': ` ${TextResource['WeeklyTopicsLeagueContinueWinCountFormat']?.replace('{0}', '')}`,
-    };
+  //跳转功能
+  if (!GlobalURLList.lang) {
+    let url = JSON.parse(JSON.stringify(GlobalURLList));
+    url.lang = getStorage('Language') ?? 'EnUs';
+    if (['arena', 'temple', 'legend', 'clearlist'].includes(GlobalURLList.page)) {
+      url.function = GlobalURLList.page;
+      delete url.page;
+    }
+    window.location.href = getURL(url);
+    return;
   } else {
-    alert('未初始化语言，翻译未加载，请刷新重试');
+    //内联翻译表
+    unsafeWindow.m[GlobalURLList.lang] = getStorage('LanguageTable');
+    return functionLanguage.call(this, ...args);
   }
-  return functionLanguage.call(this, ...args);
 };
 //动态常量
 GlobalConstant.AppVersion = await getAppVersion();
@@ -457,7 +492,7 @@ function getURLList() {
   let URLList = {
     'page': '',
     'function': '',
-    'lang': 'EnUs',
+    'lang': '',
   };
   const URLArray = document.URL.replace(/^.*?mentemori\.icu\//, '')
     .replaceAll('?', '&')
@@ -519,19 +554,14 @@ async function initPage() {
   document.querySelector('h1').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   document.querySelector('title').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   //追加导航栏格式
-  document.querySelector('style').appendChild(
-    createElement(
-      'text',
-      `
-nav a{
-  display: inline-block;
-  min-width: 22px;
-  text-align: center;
-  padding: 5px 0px;
-}
-      `
-    )
-  );
+  document.querySelector('style').append(`
+  nav a{
+    display: inline-block;
+    min-width: 22px;
+    text-align: center;
+    padding: 5px 0px;
+  }
+    `);
   //获取原导航栏
   const navDefault = document.querySelector('nav');
   //获取功能模块并本地化
@@ -555,12 +585,12 @@ nav a{
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderLocalPvpLabel'], {
-      'href': getURL({ 'page': 'arena', 'lang': GlobalURLList.lang }),
+      'href': getURL({ 'function': 'arena', 'lang': GlobalURLList.lang }),
       'title': 'arena',
     }),
     createElement('a', '|'),
     createElement('a', TextResource['CommonHeaderGlobalPvpLabel'], {
-      'href': getURL({ 'page': 'legend', 'lang': GlobalURLList.lang }),
+      'href': getURL({ 'function': 'legend', 'lang': GlobalURLList.lang }),
       'title': 'legend',
     }),
     createElement('a', '|'),
@@ -602,7 +632,7 @@ nav a{
     }),
     createElement('a', '|'),
     createElement('a', TextResource['BattleClearPartyTitle'], {
-      //'href': getURL({ 'page': 'clearlist', 'lang': URLList.lang }),
+      'href': getURL({ 'function': 'clearlist', 'lang': GlobalURLList.lang }),
       'title': 'clearlist',
     })
   );
@@ -686,11 +716,15 @@ nav a{
       break;
     }
     case 'arena': {
-      arena('local');
+      arena();
       break;
     }
     case 'legend': {
-      arena('global');
+      arena();
+      break;
+    }
+    case 'clearlist': {
+      clearlist();
       break;
     }
     default: {
@@ -705,45 +739,6 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
     option.classList.add('default');
     return option;
   };
-  openDB();
-  //选择栏样式
-  document.querySelector('style').appendChild(
-    createElement(
-      'text',
-      `
-#selectpanel {
-  width: 640px;
-  display: inline-block;
-  vertical-align: top;
-}
-#selectpanel > p {
-  text-align: center;
-}
-#selectpanel a {
-  display: inline-block;
-}
-#selectpanel a:nth-child(1) {
-  width: 75px;
-  text-align: left;
-}
-#selectpanel a:nth-child(2) {
-  width: 25px;
-}
-#selectpanel select {
-  width: 520px;
-}
-#selectpanel button {
-  width: 20%;
-}
-#selectpanel option {
-  display: none;
-}
-#selectpanel option.default {
-  display: inline;
-}
-      `
-    )
-  );
   //获取世界分组
   const WorldGroup = await getWorldGroup();
   const RegionList = WorldGroup.RegionList;
@@ -783,6 +778,39 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
   };
   //初始化选择区
   const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
+  //选择栏样式
+  document.querySelector('style').append(`
+  #selectpanel {
+    width: 700px;
+    display: inline-block;
+    vertical-align: top;
+  }
+  #selectpanel > p {
+    text-align: center;
+  }
+  #selectpanel a {
+    display: inline-block;
+  }
+  #selectpanel a:nth-child(1) {
+    width: 75px;
+    text-align: left;
+  }
+  #selectpanel a:nth-child(2) {
+    width: 25px;
+  }
+  #selectpanel select {
+    width: calc(100% - 120px);
+  }
+  #selectpanel button {
+    width: 20%;
+  }
+  #selectpanel option {
+    display: none;
+  }
+  #selectpanel option.default {
+    display: inline;
+  }
+    `);
   //区域选择
   const pRegion = divSelect.appendChild(createElement('p', `<a>${LanguageTable['Region'][GlobalURLList.lang]}</a><a>:</a>`));
   if (!addRegion) {
@@ -872,37 +900,23 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
 }
 //初始化选择栏内容
 function changeSelect(RegionId, GroupId, ClassId, WorldId) {
-  document.querySelector('#styleGroup')?.remove();
-  document.querySelector('#styleClass')?.remove();
-  document.querySelector('#styleWorld')?.remove();
-  document.head.append(
+  let divSelect = document.querySelector('#selectpanel');
+  divSelect.querySelector('style')?.remove();
+  divSelect.append(
     createElement(
       'style',
       `
-#listGroup > option.R${RegionId} {
-  display: inline;
-}
-        `,
-      'styleGroup'
-    ),
-    createElement(
-      'style',
-      `
-#listClass > .static
-${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
-  display: inline;
-}
-        `,
-      'styleClass'
-    ),
-    createElement(
-      'style',
-      `
-#listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
-  display: inline;
-}
-        `,
-      'styleWorld'
+  #listGroup > option.R${RegionId} {
+    display: inline;
+  }
+  #listClass > .static
+  ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
+    display: inline;
+  }
+  #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
+    display: inline;
+  }
+        `
     )
   );
   setStorage(GlobalURLList.function + 'RegionId', RegionId);
@@ -912,6 +926,21 @@ ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
 }
 //初始化内容
 function initContent() {
+  document.querySelector('style').append(`
+  thead > tr {
+    background: #aaf !important;
+  }
+  tbody > tr {
+    background: #e8e8e8 !important;
+  }
+  tbody * {
+    font-size: small;
+    font-weight: normal;
+  }
+  .hidden {
+    display: none;
+  }
+    `);
   while (document.body.childNodes.length > 6) {
     document.body.lastChild.remove();
   }
@@ -991,12 +1020,12 @@ function initTranslator() {
 //文件转换
 function fileConverter() {
   initContent();
-  let divData = document.body.appendChild(
+  let nodeData = document.body.appendChild(
     createElement('div', '', {
       style: 'width: 100%;display: flex;flex-direction: column;flex-wrap: nowrap;',
     })
   );
-  let uploadButton = divData.appendChild(
+  let uploadButton = nodeData.appendChild(
     createElement('input', '', {
       type: 'file',
       multiple: 'multiple',
@@ -1017,120 +1046,98 @@ function fileConverter() {
         let url = window.URL.createObjectURL(file);
         link.href = url;
         link.download = filename + '.json';
-        divData.appendChild(link);
-        divData.appendChild(createElement('br'));
+        nodeData.appendChild(link);
+        nodeData.appendChild(createElement('br'));
       };
       reader.onerror = function () {
         console.log(reader.error);
       };
     }
   };
-  divData.append(createElement('br'));
+  nodeData.append(createElement('br'));
 }
 //战斗布局
 async function gvgMapper() {
   initContent();
   await initSelect();
-  document.querySelector('style').appendChild(
-    createElement(
-      'text',
-      `
-th,
-td {
-  height: 24px;
-  border: 1px solid black;
-  text-align: center;
-}
-table {
-  width: 300px;
-  border-collapse: collapse;
-  display: inline-table;
-  vertical-align: top;
-}
-#guilds1 {
-  margin-left: 20px;
-}
-#guilds2 {
-  margin-right: 20px;
-}
-tr > * {
-  width: 25px;
-}
-tr > :nth-child(2) {
-  width: calc(100% - 25px);
-}
-      `
-    )
-  );
+  document.querySelector('style').append(`
+  #guilds {
+    display: inline-block;
+    width: calc(100% - 820px);
+    text-align: center;
+  }
+  gvg-list {
+    display: block;
+    position: fixed;
+    top: 5%;
+    width: 200px;
+    height: 95%;
+  }
+  gvg-list#enermyList {
+    left: calc(50% + 650px);
+  }
+  gvg-list#friendList {
+    right: calc(50% + 650px);
+  }
+  gvg-list > h2 {
+    text-align: center;
+    margin: 0px;
+  }
+  gvg-list > div {
+    height: calc(100% - 28px);
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    background: rgb(255, 127, 127);
+  }
+  data {
+    display: block;
+    width: 100%;
+  }
+    `);
   const divSelect = document.querySelector('#selectpanel');
-  //初始化读写功能组
+  //插入公会列表面板
+  divSelect.insertAdjacentElement('afterend', createElement('div', '', 'guilds'));
+  /*初始化读写功能组*/
   const pRequest = divSelect.appendChild(createElement('p'));
   //读取按钮
   const buttonGetLocal = pRequest.appendChild(createElement('button', LanguageTable['ReadDatabase'][GlobalURLList.lang]));
   //保存按钮
   const buttonSetLocal = pRequest.appendChild(createElement('button', LanguageTable['SaveDatabase'][GlobalURLList.lang]));
-  //初始化监听功能组
+  /*初始化监听功能组*/
   const pConnect = divSelect.appendChild(createElement('p'));
-  //
+  //从服务器获取按钮
   const buttonGetServer = pConnect.appendChild(
     createElement('button', LanguageTable['FromServer'][GlobalURLList.lang], {
       name: 'Get',
     })
   );
   /*/开始监听按钮
-  const buttonConnectServer = pConnect.appendChild(
-    createElement('button', LanguageTable['StartUpdate'][GlobalURLList.lang], {
-      name: 'Connect',
-      disabled: 'true',
-    })
-  );
-  //关闭监听按钮
-  const buttonDisconnectServer = pConnect.appendChild(
-    createElement('button', LanguageTable['CloseUpdate'][GlobalURLList.lang], {
-      name: 'Disconnect',
-      disabled: 'true',
-    })
-  );*/
-  //初始化世界选择
-  let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
+    const buttonConnectServer = pConnect.appendChild(
+      createElement('button', LanguageTable['StartUpdate'][GlobalURLList.lang], {
+        name: 'Connect',
+        disabled: 'true',
+      })
+    );
+    //关闭监听按钮
+    const buttonDisconnectServer = pConnect.appendChild(
+      createElement('button', LanguageTable['CloseUpdate'][GlobalURLList.lang], {
+        name: 'Disconnect',
+        disabled: 'true',
+      })
+    );*/
+  /*初始化数据栏*/
+  document.body.append(createElement('data', ''));
+  /*初始化世界选择*/
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
   let CacheClassId = getStorage(GlobalURLList.function + 'ClassId');
+  let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
   if (CacheWorldId >= 0) {
     document.querySelector('#listRegion').value = CacheRegionId;
     document.querySelector('#listGroup').value = CacheGroupId;
     document.querySelector('#listClass').value = CacheClassId;
     document.querySelector('#listWorld').value = CacheWorldId;
-    document.head.append(
-      createElement(
-        'style',
-        `
-#listGroup > option.R${CacheRegionId} {
-  display: inline;
-}
-        `,
-        'styleGroup'
-      ),
-      createElement(
-        'style',
-        `
-#listClass > .static
-${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
-  display: inline;
-}
-        `,
-        'styleClass'
-      ),
-      createElement(
-        'style',
-        `
-#listWorld > ${CacheClassId > 0 ? '.global' : '.G' + CacheGroupId} {
-  display: inline;
-}
-        `,
-        'styleWorld'
-      )
-    );
+    changeSelect(CacheRegionId, CacheGroupId, CacheClassId, CacheWorldId);
   }
   /* 功能设定 */
   //读取数据
@@ -1145,7 +1152,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       alert('未选择世界');
       return;
     }
-    const Match = await getData('Match', `${GroupId}_${ClassId}_${WorldId}`);
+    const Match = await getData(DataBase.Record.db, 'Match', `${GroupId}_${ClassId}_${WorldId}`);
     if (Match) {
       document.querySelector('gvg-viewer').setAttribute('guid', Match.guid);
       document.querySelector('gvg-viewer').setAttribute('region', RegionId);
@@ -1169,9 +1176,9 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       const GuildNode = GuildDataList[i];
       const GuildGuid = GuildNode.id;
       Match.Guilds.push(GuildGuid);
-      let Guild = await getData('Guild', GuildGuid);
+      let Guild = await getData(DataBase.Record.db, 'Guild', GuildGuid);
       Guild.Color = document.querySelector(`#style${GuildGuid}`).sheet.rules[0].style.backgroundColor.replace(/rgba\((.*?), 0.5\)/, '$1');
-      updateData('Guild', Guild);
+      updateData(DataBase.Record.db, 'Guild', Guild);
     }
     const CastleDataList = document.querySelectorAll('gvg-castle');
     for (let i = 0; i < CastleDataList.length; i++) {
@@ -1204,7 +1211,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       }
       Match.Castles.push(Castle);
     }
-    updateData('Match', Match);
+    updateData(DataBase.Record.db, 'Match', Match);
   };
   //从服务器获取
   buttonGetServer.onclick = async () => {
@@ -1220,7 +1227,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
       drawMap();
       fillGuilds();
       //从数据库获取战斗信息
-      let Match = await getData('Match', `${GroupId}_${ClassId}_${WorldId}`);
+      let Match = await getData(DataBase.Record.db, 'Match', `${GroupId}_${ClassId}_${WorldId}`);
       //若无信息则新建
       if (!Match) {
         Match = {
@@ -1235,7 +1242,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
         let GuildName = MatchInfo.guilds[i];
         let GuildId = i;
         //从数据库获取公会信息
-        let Guild = await getData('Guild', `${RegionId}_${GuildId}`);
+        let Guild = await getData(DataBase.Record.db, 'Guild', `${RegionId}_${GuildId}`);
         //若无则新建
         if (!Guild) {
           Guild = {
@@ -1251,7 +1258,7 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
         //写入公会ID
         Match.Guilds.push(Guild.Guid);
         //更新数据库公会信息
-        updateData('Guild', Guild);
+        updateData(DataBase.Record.db, 'Guild', Guild);
       }
       //清除城池并写入
       Match.Castles = [];
@@ -1273,133 +1280,133 @@ ${CacheGroupId == 'N' + CacheRegionId ? '' : ',#listClass > .dynamic'} {
     }
   };
   /*/开始监听
-  buttonConnectServer.onclick = () => {
-    const RegionId = getStorage(GlobalURLList.function + 'RegionId');
-    const GroupId = getStorage(GlobalURLList.function + 'GroupId');
-    const ClassId = getStorage(GlobalURLList.function + 'ClassId');
-    const WorldId = getStorage(GlobalURLList.function + 'WorldId');
-    if (WorldId == -1) {
-      alert('未选择世界');
-      return;
-    }
-    SocketGvG = new WebSocket('wss://api.mentemori.icu/gvg');
-    SocketGvG.binaryType = 'arraybuffer';
-    SocketGvG.onopen = async () => {
-      buttonConnectServer.setAttribute('disabled', 'true');
-      buttonDisconnectServer.removeAttribute('disabled');
-      await loginAccount();
-      const StreamID = {
-        WorldId: (ClassId == 0) * WorldId, //
-        ClassId: ClassId * 1,
-        GroupId: (ClassId != 0) * GroupId,
-        BlockId: (ClassId != 0) * WorldId,
-        CastleId: 0,
+    buttonConnectServer.onclick = () => {
+      const RegionId = getStorage(GlobalURLList.function + 'RegionId');
+      const GroupId = getStorage(GlobalURLList.function + 'GroupId');
+      const ClassId = getStorage(GlobalURLList.function + 'ClassId');
+      const WorldId = getStorage(GlobalURLList.function + 'WorldId');
+      if (WorldId == -1) {
+        alert('未选择世界');
+        return;
+      }
+      SocketGvG = new WebSocket('wss://api.mentemori.icu/gvg');
+      SocketGvG.binaryType = 'arraybuffer';
+      SocketGvG.onopen = async () => {
+        buttonConnectServer.setAttribute('disabled', 'true');
+        buttonDisconnectServer.removeAttribute('disabled');
+        await loginAccount();
+        const StreamID = {
+          WorldId: (ClassId == 0) * WorldId, //
+          ClassId: ClassId * 1,
+          GroupId: (ClassId != 0) * GroupId,
+          BlockId: (ClassId != 0) * WorldId,
+          CastleId: 0,
+        };
+        const _getGuildWar = await getGuildWar(StreamID.ClassId, StreamID.WorldId, StreamID.GroupId);
+        let Match = _getGuildWar?.data;
+        if (Match) {
+          let GuildList = [];
+          for (let i in Match.guilds) {
+            GuildList.push(i);
+          }
+          await fillMap(Match.castles, GuildList);
+          sendData(SocketGvG, StreamID);
+          LogCastleList = { 1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50, 9: 50, 10: 50, 11: 50, 12: 50, 13: 50, 14: 50, 15: 50, 16: 50, 17: 50, 18: 50, 19: 50, 20: 50, 21: 50 };
+          LogCastle();
+        } else {
+          alert('无法获取战斗信息');
+          SocketGvG.close(1000, 'User Stop');
+        }
       };
-      const _getGuildWar = await getGuildWar(StreamID.ClassId, StreamID.WorldId, StreamID.GroupId);
-      let Match = _getGuildWar?.data;
-      if (Match) {
-        let GuildList = [];
-        for (let i in Match.guilds) {
-          GuildList.push(i);
-        }
-        await fillMap(Match.castles, GuildList);
-        sendData(SocketGvG, StreamID);
-        LogCastleList = { 1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50, 9: 50, 10: 50, 11: 50, 12: 50, 13: 50, 14: 50, 15: 50, 16: 50, 17: 50, 18: 50, 19: 50, 20: 50, 21: 50 };
-        LogCastle();
-      } else {
-        alert('无法获取战斗信息');
-        SocketGvG.close(1000, 'User Stop');
-      }
-    };
-    SocketGvG.onmessage = async (e) => {
-      const view = new DataView(e.data);
-      let index = 0;
-      while (index < view.byteLength) {
-        let data = getStreamId(view, index);
-        const StreamId = data.value;
-        index = data.offset;
-        switch (StreamId.CastleId) {
-          case 0: {
-            data = getGuild(view, index, StreamId.WorldId);
-            const Guild = data.value;
-            break;
-          }
-          case 31: {
-            data = getPlayer(view, index, StreamId.WorldId);
-            let Player = data.value;
-            console.log(Player);
-            break;
-          }
-          case 30: {
-            data = getAttacker(view, index, StreamId.WorldId);
-            let Attacker = data.value;
-            console.log(Attacker);
-            break;
-          }
-          case 29: {
-            break;
-          }
-          case 28: {
-            data = getLastLoginTime(view, index, StreamId.WorldId);
-            let LastLoginTime = data.value;
-            console.log(LastLoginTime);
-            break;
-          }
-          case 27: {
-            break;
-          }
-          case 26: {
-            break;
-          }
-          case 25: {
-            break;
-          }
-          case 24: {
-            break;
-          }
-          case 23: {
-            break;
-          }
-          case 22: {
-            break;
-          }
-          default: {
-            data = getCastle(view, index, StreamId.WorldId);
-            let Castle = data.value;
-            Castle.CastleId = StreamId.CastleId;
-            changeCastle(Castle);
-            const Now = new Date();
-            const Time = (Now.getHours() * 60 + Now.getMinutes()) * 60 + Now.getSeconds();
-            if (Time >= 74700 && Time <= 78300) {
-              LogCastleList[StreamId.CastleId]++;
+      SocketGvG.onmessage = async (e) => {
+        const view = new DataView(e.data);
+        let index = 0;
+        while (index < view.byteLength) {
+          let data = getStreamId(view, index);
+          const StreamId = data.value;
+          index = data.offset;
+          switch (StreamId.CastleId) {
+            case 0: {
+              data = getGuild(view, index, StreamId.WorldId);
+              const Guild = data.value;
+              break;
             }
-            break;
+            case 31: {
+              data = getPlayer(view, index, StreamId.WorldId);
+              let Player = data.value;
+              console.log(Player);
+              break;
+            }
+            case 30: {
+              data = getAttacker(view, index, StreamId.WorldId);
+              let Attacker = data.value;
+              console.log(Attacker);
+              break;
+            }
+            case 29: {
+              break;
+            }
+            case 28: {
+              data = getLastLoginTime(view, index, StreamId.WorldId);
+              let LastLoginTime = data.value;
+              console.log(LastLoginTime);
+              break;
+            }
+            case 27: {
+              break;
+            }
+            case 26: {
+              break;
+            }
+            case 25: {
+              break;
+            }
+            case 24: {
+              break;
+            }
+            case 23: {
+              break;
+            }
+            case 22: {
+              break;
+            }
+            default: {
+              data = getCastle(view, index, StreamId.WorldId);
+              let Castle = data.value;
+              Castle.CastleId = StreamId.CastleId;
+              changeCastle(Castle);
+              const Now = new Date();
+              const Time = (Now.getHours() * 60 + Now.getMinutes()) * 60 + Now.getSeconds();
+              if (Time >= 74700 && Time <= 78300) {
+                LogCastleList[StreamId.CastleId]++;
+              }
+              break;
+            }
           }
+          index = data.offset;
         }
-        index = data.offset;
-      }
-    };
-    SocketGvG.error = (e) => {
-      console.log('WebSocket error');
-    };
-    SocketGvG.onclose = (e) => {
-      if (e.code == 1000) {
-        console.log('Connection closed, User Stop');
-        buttonDisconnectServer.setAttribute('disabled', 'true');
-        buttonConnectServer.removeAttribute('disabled');
-      } else {
-        console.log('Connection closed, retrying in 5s');
-        setTimeout(() => {
+      };
+      SocketGvG.error = (e) => {
+        console.log('WebSocket error');
+      };
+      SocketGvG.onclose = (e) => {
+        if (e.code == 1000) {
+          console.log('Connection closed, User Stop');
+          buttonDisconnectServer.setAttribute('disabled', 'true');
           buttonConnectServer.removeAttribute('disabled');
-          buttonConnectServer.click();
-        }, 5000);
-      }
+        } else {
+          console.log('Connection closed, retrying in 5s');
+          setTimeout(() => {
+            buttonConnectServer.removeAttribute('disabled');
+            buttonConnectServer.click();
+          }, 5000);
+        }
+      };
     };
-  };
-  //关闭监听
-  buttonDisconnectServer.onclick = () => {
-    SocketGvG.close(1000, 'User Stop');
-  };*/
+    //关闭监听
+    buttonDisconnectServer.onclick = () => {
+      SocketGvG.close(1000, 'User Stop');
+    };*/
 }
 /*优化功能*/
 //优化神殿
@@ -1441,9 +1448,19 @@ async function temple() {
     listCheckBox[i].checked = cacheCheckList[i];
     listCheckBox[i].onchange = changeTempleDisplay;
   }
-  changeTempleDisplay();
+  //插入标题
   document.body.appendChild(createElement('h2', TextResource['CommonHeaderLocalRaidLabel']));
+  //插入数据节点
+  document.head.querySelector('style').append(`
+  data {
+    display: block;
+    width: 100%;
+  }
+    `);
+  document.body.appendChild(createElement('data', ''));
+  //插入数据
   fillTemple();
+  changeTempleDisplay();
 }
 //优化竞技场
 async function arena() {
@@ -1452,13 +1469,26 @@ async function arena() {
   initContent();
   //初始化选择栏，
   await initSelect(true, true, false, type == 'arena' ? true : false);
+  //插入标题
+  document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
+  //插入数据栏
+  document.body.appendChild(createElement('data', ''));
+  document.querySelector('style').append(`
+  data {
+    display: flex;
+    position: relative;
+    width: 100%;
+    padding: 0px;
+    justify-content: space-between;
+  }
+    `);
   //获取缓存
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
   let CacheWorldId = getStorage(GlobalURLList.function + 'WorldId');
   //写入缓存
   const [selectRegion, selectGroup, selectClass, selectWorld] = [document.querySelector('#listRegion'), document.querySelector('#listGroup'), document.querySelector('#listClass'), document.querySelector('#listWorld')];
-  if (CacheGroupId != '-1') {
+  if ((type == 'legend' && CacheGroupId != '-1') || (type == 'arena' && CacheWorldId != '-1')) {
     selectRegion.value = CacheRegionId;
     selectGroup.value = CacheGroupId;
     selectClass.value = 0;
@@ -1468,10 +1498,51 @@ async function arena() {
       selectWorld.value = -1;
       changeSelect(selectRegion.value, selectGroup.value, 0, -1);
     };
-    document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillArena(type));
+    document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillTeam);
+    fillTeam();
   }
-  document.body.appendChild(createElement('h2', type == 'arena' ? TextResource['CommonHeaderLocalPvpLabel'] : TextResource['CommonHeaderGlobalPvpLabel']));
-  fillArena(type);
+}
+//优化通关阵容
+async function clearlist() {
+  const Id = GlobalURLList.id;
+  //清除内容
+  initContent();
+  //初始化Token栏
+  document.body.append(
+    createElement(
+      'p',
+      `
+      <a>${TextResource['GuildMemberRecruitSearchTab']}GUID</a>
+      <input type="text" size="36" name="guid">
+      <input type="button" value="${TextResource['GuildMemberRecruitSearchTab']}" name="clearparty">
+      `
+    ),
+    createElement(
+      'p',
+      `
+      <a>${TextResource['GuildMemberRecruitSearchOption']}</a>
+      <a name="payload"></a>
+      `
+    ),
+    createElement('hr', ''),
+    createElement('h2', TextResource['BattleClearPartyTitle']),
+    createElement('data', '')
+  );
+  document.querySelector('style').append(`
+  data {
+    display: flex;
+    position: relative;
+    width: 100%;
+    padding: 0px;
+    justify-content: space-between;
+  }
+    `);
+  //插入功能
+  document.querySelector('input[type="button"][name="clearparty"]').onclick = fillTeam;
+  if (Id) {
+    document.querySelector('input[type="text"][name="guid"]').value = Id;
+    fillTeam();
+  }
 }
 /*子功能*/
 //登录账号
@@ -1489,15 +1560,15 @@ async function loginAccount() {
       3: 'TW', //台湾省，HK(香港区)/MO(澳门区)
       4: 'US', //美国，CA(加拿大)/PM(圣皮埃尔和密克隆)
       5: 'GB' /*英国，IS(冰岛)/IE(爱尔兰)/AZ(阿塞拜疆)/AL(阿尔巴尼亚)/AM(亚美尼亚)/
-                        AD(安道尔)/IT(意大利)/UA(乌克兰)/EE(爱沙尼亚)/AT(奥地利)/
-                        AX(奥兰)/GG(根西)/MK(北马其顿)/GR(希腊)/GL(格陵兰)/
-                        HR(克罗地亚)/SM(圣马力诺)/GI(直布罗陀)/JE(泽西)/GE(格鲁吉亚)/
-                        CH(瑞士)/SE(瑞典)/SJ(斯瓦尔巴和扬马延)/ES(西班牙)/SK(斯洛伐克)/
-                        SI(斯洛文尼亚)/RS(塞尔维亚)/CZ(捷克)/DK(丹麦)/DE(德国)/
-                        NO(挪威)/VA(梵蒂冈)/HU(匈牙利)/FI(芬兰)/FO(法罗群岛)/
-                        FR(法国)/BG(保加利亚)/BY(白俄罗斯)/PL(波兰)/BA(波黑)/
-                        PT(葡萄牙)/IM(马恩岛)/MC(摩纳哥)/MD(摩尔多瓦)/ME(黑山)/
-                        LV(拉脱维亚)/LT(立陶宛)/LI(列支敦士登)/RO(罗马尼亚)/LU(卢森堡)*/,
+                          AD(安道尔)/IT(意大利)/UA(乌克兰)/EE(爱沙尼亚)/AT(奥地利)/
+                          AX(奥兰)/GG(根西)/MK(北马其顿)/GR(希腊)/GL(格陵兰)/
+                          HR(克罗地亚)/SM(圣马力诺)/GI(直布罗陀)/JE(泽西)/GE(格鲁吉亚)/
+                          CH(瑞士)/SE(瑞典)/SJ(斯瓦尔巴和扬马延)/ES(西班牙)/SK(斯洛伐克)/
+                          SI(斯洛文尼亚)/RS(塞尔维亚)/CZ(捷克)/DK(丹麦)/DE(德国)/
+                          NO(挪威)/VA(梵蒂冈)/HU(匈牙利)/FI(芬兰)/FO(法罗群岛)/
+                          FR(法国)/BG(保加利亚)/BY(白俄罗斯)/PL(波兰)/BA(波黑)/
+                          PT(葡萄牙)/IM(马恩岛)/MC(摩纳哥)/MD(摩尔多瓦)/ME(黑山)/
+                          LV(拉脱维亚)/LT(立陶宛)/LI(列支敦士登)/RO(罗马尼亚)/LU(卢森堡)*/,
       6: 'CN', //所有不在上面的
     };
     const CountryCode = RegionList[RegionId];
@@ -1566,8 +1637,8 @@ async function loginAccount() {
 //战斗布局-绘制地图
 function drawMap() {
   const ClassId = getStorage(GlobalURLList.function + 'ClassId');
-  document.querySelector('#gvgMapStyle')?.remove();
-  document.querySelector('gvg-viewer')?.remove();
+  let nodeData = document.querySelector('data');
+  nodeData.innerHTML = '';
   document.querySelector('gvg-list')?.remove();
   document.querySelector('gvg-list')?.remove();
   //document.body.append(createElement('gvg-list', '<h2>我方列表</h2><div></div>', 'friendList'));
@@ -1791,299 +1862,275 @@ function drawMap() {
     };
     const Class = ClassId == 0 ? 'local' : 'global';
     const image = Class == 'local' ? 'base_ribbon_01' : 'base_metal';
-    let style = document.head.appendChild(
+    let style = nodeData.appendChild(
       createElement(
         'style',
         `
-gvg-list {
-  display: block;
-  position: fixed;
-  top: 5%;
-  width: 200px;
-  height: 95%;
-}
-gvg-list#enermyList {
-  left: calc(50% + 650px);
-}
-gvg-list#friendList {
-  right: calc(50% + 650px);
-}
-gvg-list > h2 {
-  text-align: center;
-  margin: 0px;
-}
-gvg-list > div {
-  height: calc(100% - 28px);
-  overflow-y: scroll;
-  scrollbar-width: thin;
-  background: rgb(255, 127, 127);
-}
-gvg-viewer {
-  display: block;
-  position: relative;
-  width: 1280px;
-  height: 1280px;
-  font-family: sans-serif;
-  background-size: cover;
-  background-image: url(assets/${Class}gvg.png);
-  padding: 0px;
-  margin: auto;
-}
-gvg-castle {
-  display: block;
-  position: absolute;
-  user-select: none;
-}
-gvg-status {
-  width: 164px;
-  height: 50px;
-  display: block;
-  position: absolute;
-  left: -82px;
-  right: -82px;
-  bottom: 43px;
-}
-gvg-attacker {
-  display: block;
-  width: 165px;
-  position: absolute;
-  text-align: center;
-  font-size: 16px;
-  opacity: 0.8;
-}
-gvg-status-icon-defense,
-gvg-status-icon-offense {
-  display: block;
-  width: 32px;
-  height: 33px;
-  position: absolute;
-  text-align: center;
-  line-height: 37px;
-  font-size: 12px;
-  color: #fff;
-  background-size: cover;
-}
-gvg-status-icon-defense {
-  background-image: url(assets/icon_gvg_party_defense.png);
-}
-gvg-status-icon-offense {
-  background-image: url(assets/icon_gvg_party_offense.png);
-}
-gvg-status-bar-offense,
-gvg-status-bar-defense {
-  display: block;
-  width: 90px;
-  height: 20px;
-  padding: 0 10px;
-  position: absolute;
-  font-size: 9px;
-  color: #fff;
-  background-size: cover;
-}
-gvg-status[state='common'] > gvg-attacker {
-  display: none;
-}
-gvg-status[state='common'] > gvg-status-icon-defense {
-  margin: auto;
-  left: 0;
-  right: 0;
-  top: 0;
-}
-gvg-status[state='common'] > gvg-status-icon-offense {
-  display: none;
-}
-gvg-status[state='common'] > gvg-status-bar-defense {
-  width: 131px;
-  height: 12px;
-  margin: auto;
-  left: 0;
-  right: 0;
-  top: 35px;
-  text-align: center;
-  line-height: 12px;
-  background-image: url(assets/base_s_08_blue.png);
-}
-gvg-status[state='common'] > gvg-status-bar-offense {
-  display: none;
-}
-gvg-status[state='active'] > gvg-status-icon-defense {
-  right: 0;
-  bottom: 0;
-}
-gvg-status[state='active'] > gvg-status-icon-offense {
-  left: 0;
-  bottom: 0;
-}
-gvg-status[state='active'] > gvg-status-bar-defense {
-  right: 25px;
-  bottom: 0;
-  text-align: right;
-  line-height: 24px;
-  background-image: url(assets/base_s_09_blue.png);
-}
-gvg-status[state='active'] > gvg-status-bar-offense {
-  left: 25px;
-  bottom: 10px;
-  text-align: left;
-  line-height: 16px;
-  background-image: url(assets/base_s_09_red.png);
-}
-gvg-status[state='counter'] > gvg-status-icon-defense {
-  left: 0;
-  bottom: 0;
-  background-image: url(${GlobalConstant.assetURL}icon_gvg_party_offense_counter.png);
-}
-gvg-status[state='counter'] > gvg-status-icon-offense {
-  right: 0;
-  bottom: 0;
-  background-image: url(assets/icon_gvg_party_defense.png);
-}
-gvg-status[state='counter'] > gvg-status-bar-defense {
-  left: 25px;
-  bottom: 10px;
-  text-align: left;
-  line-height: 16px;
-  background-image: url(assets/base_s_09_red.png);
-}
-gvg-status[state='counter'] > gvg-status-bar-offense {
-  right: 25px;
-  bottom: 0;
-  text-align: right;
-  line-height: 24px;
-  background-image: url(assets/base_s_09_blue.png);
-}
-gvg-ko-count-container {
-  position: absolute;
-  width: 76px;
-  left: -38px;
-  top: -19px;
-  display: block;
-  color: #eee;
-  text-shadow: red 0 0 30px red 0 0 5px;
-}
-gvg-ko-count {
-  display: block;
-  font-size: 26px;
-  text-align: center;
-  width: 100%;
-}
-gvg-ko-count-label:after {
-  content: 'KOs';
-  font-size: 14px;
-  position: absolute;
-  display: block;
-  text-align: center;
-  width: 100%;
-  height: 14px;
-  top: 26px;
-  left: 0;
-}
-gvg-castle-icon {
-  display: block;
-  position: absolute;
-  background-size: cover;
-}
-gvg-castle[church] > gvg-castle-icon {
-  left: -28px;
-  right: -28px;
-  bottom: -25px;
-  width: 56px;
-  height: 50px;
-  background-image: url(assets/Castle_0_0.png);
-}
-gvg-castle[castle] > gvg-castle-icon {
-  left: -31px;
-  right: -31px;
-  bottom: -33px;
-  width: 62px;
-  height: 67px;
-  background-image: url(assets/Castle_0_1.png);
-}
-gvg-castle[temple] > gvg-castle-icon {
-  left: -39px;
-  right: -39px;
-  bottom: -40px;
-  width: 78px;
-  height: 80px;
-  background-image: url(assets/Castle_0_2.png);
-}
-gvg-castle-name {
-  display: block;
-  position: absolute;
-  background-size: cover;
-  width: 140px;
-  height: 26px;
-  font-size: 9px;
-  text-align: center;
-}
-gvg-castle-name {
-  background-image: url(assets/${image}.png);
-  width: 140px;
-  height: 26px;
-  left: -70px;
-  right: -70px;
-  color: ${Class == 'local' ? '#473d3b' : 'white'};
-  line-height: 33px;
-}
-gvg-castle[church] > gvg-castle-name {
-  bottom: -45px;
-}
-gvg-castle[castle] > gvg-castle-name {
-  bottom: -50px;
-}
-gvg-castle[temple] > gvg-castle-name {
-  bottom: -58px;
-}
-gvg-castle[temple] > .gvg-castle-symbol {
-  left: -70px;
-  bottom: -58px;
-  width: 33px;
-  height: 29px;
-  position: absolute;
-  display: block;
-}
-gvg-castle[castle] > .gvg-castle-symbol {
-  left: -70px;
-  bottom: -50px;
-  width: 33px;
-  height: 29px;
-  position: absolute;
-  display: block;
-}
-gvg-castle[church] > .gvg-castle-symbol {
-  left: -70px;
-  bottom: -45px;
-  width: 33px;
-  height: 29px;
-  position: absolute;
-  display: block;
-}
-gvg-castle-hint {
-  left: -70px;
-  right: -70px;
-  background: rgba(32, 32, 32, 0.5);
-  width: 140px;
-  color: white;
-  position: absolute;
-  display: block;
-  font-size: 10px;
-  text-align: center;
-  word-break: break-word;
-}
-gvg-castle[temple] > gvg-castle-hint {
-  top: 58px;
-}
-gvg-castle[castle] > gvg-castle-hint {
-  top: 50px;
-}
-gvg-castle[church] > gvg-castle-hint {
-  top: 45px;
-}
-        `,
-        'gvgMapStyle'
+  gvg-viewer {
+    display: block;
+    position: relative;
+    width: 1280px;
+    height: 1280px;
+    font-family: sans-serif;
+    background-size: cover;
+    background-image: url(assets/${Class}gvg.png);
+    padding: 0px;
+    margin: auto;
+  }
+  gvg-castle {
+    display: block;
+    position: absolute;
+    user-select: none;
+  }
+  gvg-status {
+    width: 164px;
+    height: 50px;
+    display: block;
+    position: absolute;
+    left: -82px;
+    right: -82px;
+    bottom: 43px;
+  }
+  gvg-attacker {
+    display: block;
+    width: 165px;
+    position: absolute;
+    text-align: center;
+    font-size: 16px;
+    opacity: 0.8;
+  }
+  gvg-status-icon-defense,
+  gvg-status-icon-offense {
+    display: block;
+    width: 32px;
+    height: 33px;
+    position: absolute;
+    text-align: center;
+    line-height: 37px;
+    font-size: 12px;
+    color: #fff;
+    background-size: cover;
+  }
+  gvg-status-icon-defense {
+    background-image: url(assets/icon_gvg_party_defense.png);
+  }
+  gvg-status-icon-offense {
+    background-image: url(assets/icon_gvg_party_offense.png);
+  }
+  gvg-status-bar-offense,
+  gvg-status-bar-defense {
+    display: block;
+    width: 90px;
+    height: 20px;
+    padding: 0 10px;
+    position: absolute;
+    font-size: 9px;
+    color: #fff;
+    background-size: cover;
+  }
+  gvg-status[state="common"] > gvg-attacker {
+    display: none;
+  }
+  gvg-status[state="common"] > gvg-status-icon-defense {
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+  gvg-status[state="common"] > gvg-status-icon-offense {
+    display: none;
+  }
+  gvg-status[state="common"] > gvg-status-bar-defense {
+    width: 131px;
+    height: 12px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 35px;
+    text-align: center;
+    line-height: 12px;
+    background-image: url(assets/base_s_08_blue.png);
+  }
+  gvg-status[state="common"] > gvg-status-bar-offense {
+    display: none;
+  }
+  gvg-status[state="active"] > gvg-status-icon-defense {
+    right: 0;
+    bottom: 0;
+  }
+  gvg-status[state="active"] > gvg-status-icon-offense {
+    left: 0;
+    bottom: 0;
+  }
+  gvg-status[state="active"] > gvg-status-bar-defense {
+    right: 25px;
+    bottom: 0;
+    text-align: right;
+    line-height: 24px;
+    background-image: url(assets/base_s_09_blue.png);
+  }
+  gvg-status[state="active"] > gvg-status-bar-offense {
+    left: 25px;
+    bottom: 10px;
+    text-align: left;
+    line-height: 16px;
+    background-image: url(assets/base_s_09_red.png);
+  }
+  gvg-status[state="counter"] > gvg-status-icon-defense {
+    left: 0;
+    bottom: 0;
+    background-image: url(${GlobalConstant.assetURL}icon_gvg_party_offense_counter.png);
+  }
+  gvg-status[state="counter"] > gvg-status-icon-offense {
+    right: 0;
+    bottom: 0;
+    background-image: url(assets/icon_gvg_party_defense.png);
+  }
+  gvg-status[state="counter"] > gvg-status-bar-defense {
+    left: 25px;
+    bottom: 10px;
+    text-align: left;
+    line-height: 16px;
+    background-image: url(assets/base_s_09_red.png);
+  }
+  gvg-status[state="counter"] > gvg-status-bar-offense {
+    right: 25px;
+    bottom: 0;
+    text-align: right;
+    line-height: 24px;
+    background-image: url(assets/base_s_09_blue.png);
+  }
+  gvg-ko-count-container {
+    position: absolute;
+    width: 76px;
+    left: -38px;
+    top: -19px;
+    display: block;
+    color: #eee;
+    text-shadow: red 0 0 30px red 0 0 5px;
+  }
+  gvg-ko-count {
+    display: block;
+    font-size: 26px;
+    text-align: center;
+    width: 100%;
+  }
+  gvg-ko-count-label:after {
+    content: 'KOs';
+    font-size: 14px;
+    position: absolute;
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 14px;
+    top: 26px;
+    left: 0;
+  }
+  gvg-castle-icon {
+    display: block;
+    position: absolute;
+    background-size: cover;
+  }
+  gvg-castle[church] > gvg-castle-icon {
+    left: -28px;
+    right: -28px;
+    bottom: -25px;
+    width: 56px;
+    height: 50px;
+    background-image: url(assets/Castle_0_0.png);
+  }
+  gvg-castle[castle] > gvg-castle-icon {
+    left: -31px;
+    right: -31px;
+    bottom: -33px;
+    width: 62px;
+    height: 67px;
+    background-image: url(assets/Castle_0_1.png);
+  }
+  gvg-castle[temple] > gvg-castle-icon {
+    left: -39px;
+    right: -39px;
+    bottom: -40px;
+    width: 78px;
+    height: 80px;
+    background-image: url(assets/Castle_0_2.png);
+  }
+  gvg-castle-name {
+    display: block;
+    position: absolute;
+    background-size: cover;
+    width: 140px;
+    height: 26px;
+    font-size: 9px;
+    text-align: center;
+  }
+  gvg-castle-name {
+    background-image: url(assets/${image}.png);
+    width: 140px;
+    height: 26px;
+    left: -70px;
+    right: -70px;
+    color: ${Class == 'local' ? '#473d3b' : 'white'};
+    line-height: 33px;
+  }
+  gvg-castle[church] > gvg-castle-name {
+    bottom: -45px;
+  }
+  gvg-castle[castle] > gvg-castle-name {
+    bottom: -50px;
+  }
+  gvg-castle[temple] > gvg-castle-name {
+    bottom: -58px;
+  }
+  gvg-castle[temple] > .gvg-castle-symbol {
+    left: -70px;
+    bottom: -58px;
+    width: 33px;
+    height: 29px;
+    position: absolute;
+    display: block;
+  }
+  gvg-castle[castle] > .gvg-castle-symbol {
+    left: -70px;
+    bottom: -50px;
+    width: 33px;
+    height: 29px;
+    position: absolute;
+    display: block;
+  }
+  gvg-castle[church] > .gvg-castle-symbol {
+    left: -70px;
+    bottom: -45px;
+    width: 33px;
+    height: 29px;
+    position: absolute;
+    display: block;
+  }
+  gvg-castle-hint {
+    left: -70px;
+    right: -70px;
+    background: rgba(32, 32, 32, 0.5);
+    width: 140px;
+    color: white;
+    position: absolute;
+    display: block;
+    font-size: 10px;
+    text-align: center;
+    word-break: break-word;
+  }
+  gvg-castle[temple] > gvg-castle-hint {
+    top: 58px;
+  }
+  gvg-castle[castle] > gvg-castle-hint {
+    top: 50px;
+  }
+  gvg-castle[church] > gvg-castle-hint {
+    top: 45px;
+  }
+          `
       )
     );
-    let viewer = document.body.appendChild(createElement('gvg-viewer'));
+    let viewer = nodeData.appendChild(createElement('gvg-viewer'));
     viewer.setAttribute(Class, '');
     for (let CastleId in castleList[Class]) {
       let castle = castleList[Class][CastleId];
@@ -2154,16 +2201,12 @@ gvg-castle[church] > gvg-castle-hint {
       let kos = castleNode.appendChild(createElement('gvg-ko-count-container'));
       kos.classList.add('hidden');
       kos.append(createElement('gvg-ko-count', 0), createElement('gvg-ko-count-label'));
-      style.append(
-        createElement(
-          'text',
-          `
-              gvg-viewer[${Class}] gvg-castle[castle-id='${CastleId}'] {
-                left: ${castle.left};
-                top: ${castle.top};
-              }`
-        )
-      );
+      style.append(`
+  gvg-viewer[${Class}] gvg-castle[castle-id="${CastleId}"] {
+    left: ${castle.left};
+    top: ${castle.top};
+  }
+        `);
     }
   }
 }
@@ -2177,35 +2220,73 @@ async function fillMap(CastleList, GuildList) {
 }
 //战斗布局-重置表格
 async function fillGuilds(GuildList) {
-  document.querySelector('#guilds1')?.remove();
-  document.querySelector('#guilds2')?.remove();
-  let table2 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds2'));
-  let table1 = document.querySelector('#selectpanel').insertAdjacentElement('afterend', createElement('table', `<thead><tr><th>■</th><th>公会名称</th><th>友</th><th>中</th><th>敌</th></tr></thead>`, 'guilds1'));
+  let divGuildList = document.querySelector('#guilds');
+  divGuildList.innerHTML = '';
+  divGuildList.appendChild(
+    createElement(
+      'style',
+      `
+  th,
+  td {
+    height: 24px;
+    border: 1px solid black;
+    text-align: center;
+  }
+  table {
+    width: 300px;
+    border-collapse: collapse;
+    display: inline-table;
+    vertical-align: top;
+  }
+  #guilds1 {
+    margin-left: 20px;
+  }
+  #guilds2 {
+    margin-right: 20px;
+  }
+  tr > * {
+    width: 25px;
+  }
+  tr > :nth-child(2) {
+    width: calc(100% - 25px);
+  }
+        `
+    )
+  );
+  let textTable = `
+      <thead>
+        <tr>
+          <th>■</th>
+          <th>${TextResource['GuildName']}</th>
+          <th>${LanguageTable['Friendly'][GlobalURLList.lang]}</th>
+          <th>${LanguageTable['Neutral'][GlobalURLList.lang]}</th>
+          <th>${LanguageTable['Enermy'][GlobalURLList.lang]}</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+  divGuildList.appendChild(createElement('table', textTable));
+  divGuildList.appendChild(createElement('table', textTable));
   if (GuildList) {
-    const tbody1 = table1.appendChild(createElement('tbody'));
-    const tbody2 = table2.appendChild(createElement('tbody'));
+    let listTable = divGuildList.querySelectorAll('table');
     let count = 0;
     for (let i = 0; i < GuildList.length; i++) {
       const Guid = GuildList[i];
-      const Guild = await getData('Guild', Guid);
+      const Guild = await getData(DataBase.Record.db, 'Guild', Guid);
       changeColor(Guid, Guild.Color);
-      const divGuild = createElement('tr', '', Guid);
-      const aColor = divGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
-      aColor.onclick = (e) => {
+      let nodeGuild = createElement('tr', '', Guid);
+      let nodeColor = nodeGuild.appendChild(createElement('td', '■', { class: ['GuildColor'] }));
+      nodeColor.onclick = (e) => {
         const Color = prompt('请输入设定颜色，形式为R,G,B');
         changeColor(e.target.parentNode.id, Color);
       };
-      divGuild.append(
+      nodeGuild.append(
         createElement('td', Guild.Name), //
-        createElement('td', `<input type="radio" name="${Guid}" value="friendly" ${Guild.Relation > 0 ? 'checked="true"' : ''}>`),
-        createElement('td', `<input type="radio" name="${Guid}" value="neutral" ${Guild.Relation == 0 ? 'checked="true"' : ''}>`),
-        createElement('td', `<input type="radio" name="${Guid}" value="enermy" ${Guild.Relation < 0 ? 'checked="true"' : ''}>`)
+        createElement('td', `<input type="radio" name="${Guid}" value="friendly"${Guild.Relation > 0 ? ' checked="true"' : ''}>`),
+        createElement('td', `<input type="radio" name="${Guid}" value="neutral"${Guild.Relation == 0 ? ' checked="true"' : ''}>`),
+        createElement('td', `<input type="radio" name="${Guid}" value="enermy"${Guild.Relation < 0 ? ' checked="true"' : ''}>`)
       );
-      if (count < GuildList.length / 2) {
-        tbody1.append(divGuild);
-      } else {
-        tbody2.append(divGuild);
-      }
+      listTable[count < GuildList.length / 2 ? 0 : 1].append(nodeGuild);
       count++;
     }
   }
@@ -2215,7 +2296,7 @@ async function updateServerData(GuildList) {
   let PlayerDataList = [];
   for (let i = 0; i < GuildList.length; i++) {
     const Guid = `${getStorage(GlobalURLList.function + 'RegionId')}_${GuildList[i]}`;
-    let Guild = (await getData('Guild', Guid)) ?? {
+    let Guild = (await getData(DataBase.Record.db, 'Guild', Guid)) ?? {
       'Guid': Guid,
       'GuildId': GuildList[i],
       'Color': '0, 0, 0',
@@ -2228,14 +2309,14 @@ async function updateServerData(GuildList) {
       Guild.Name = GuildData.GuildOverView.GuildName;
       Guild.GuildLevel = GuildData.GuildLevel;
       Guild.LastUpdate = new Date();
-      updateData('Guild', Guild);
+      updateData(DataBase.Record.db, 'Guild', Guild);
       PlayerDataList = PlayerDataList.concat(_searchGuildId?.SearchResult.PlayerInfoList);
     }
   }
   for (let i = 0; i < PlayerDataList.length; i++) {
     const PlayerData = PlayerDataList[i];
     const Guid = `${getStorage(GlobalURLList.function + 'RegionId')}_${PlayerData.PlayerId}`;
-    let Player = (await getData('Player', Guid)) ?? {
+    let Player = (await getData(DataBase.Record.db, 'Player', Guid)) ?? {
       'Guid': Guid,
       'PlayerId': PlayerData.PlayerId,
     };
@@ -2243,16 +2324,16 @@ async function updateServerData(GuildList) {
     Player.Guild = PlayerData.GuildId;
     Player.Level = PlayerData.PlayerLevel;
     Player.BattlePower = PlayerData.BattlePower;
-    updateData('Player', Player);
+    updateData(DataBase.Record.db, 'Player', Player);
   }
   const Day = new Date() - 7 * 24 * 3600 * 1000;
-  const DeckData = await getArray('Deck', { '<': Day }, 'LastUpdate');
-  const CharacterData = await getArray('Character', { '<': Day }, 'LastUpdate');
-  const BattleData = await getArray('Battle', { '<': Day }, 'LastUpdate');
+  const DeckData = await getArray(DataBase.Record.db, 'Deck', { '<': Day }, 'LastUpdate');
+  const CharacterData = await getArray(DataBase.Record.db, 'Character', { '<': Day }, 'LastUpdate');
+  const BattleData = await getArray(DataBase.Record.db, 'Battle', { '<': Day }, 'LastUpdate');
   while (DeckData.length > 0 && CharacterData.length > 0 && BattleData.length > 0) {
-    removeData('Deck', DeckData.shift()?.Guid);
-    removeData('Character', CharacterData.shift()?.Guid);
-    removeData('Battle', BattleData.shift()?.Guid);
+    removeData(DataBase.Record.db, 'Deck', DeckData.shift()?.Guid);
+    removeData(DataBase.Record.db, 'Character', CharacterData.shift()?.Guid);
+    removeData(DataBase.Record.db, 'Battle', BattleData.shift()?.Guid);
   }
 }
 //战斗布局-修改城池
@@ -2263,8 +2344,8 @@ async function changeCastle(CastleData) {
   if (CastleData.GvgCastleState % 2 == 0) {
     CastleData.AttackerGuildId = 0;
   }
-  const DefenseGuild = await getData('Guild', CastleData.GuildId);
-  const OffenseGuild = await getData('Guild', CastleData.AttackerGuildId);
+  const DefenseGuild = await getData(DataBase.Record.db, 'Guild', CastleData.GuildId);
+  const OffenseGuild = await getData(DataBase.Record.db, 'Guild', CastleData.AttackerGuildId);
   const CastleNode = document.querySelector(`gvg-castle[castle-id="${CastleData.CastleId}"]`);
   CastleNode.setAttribute('defense', CastleData.GuildId);
   CastleNode.setAttribute('offense', CastleData.AttackerGuildId);
@@ -2288,16 +2369,16 @@ function changeColor(GuildId, Color) {
     createElement(
       'style',
       `
-gvg-castle[defense='${GuildId}'] gvg-castle-icon {
-  background-color: rgba(${Color}, 0.5);
-}
-gvg-castle[offense='${GuildId}'] gvg-attacker {
-  background-color: rgba(${Color}, 0.625);
-}
-tr[id='${GuildId}'] td:nth-child(1) {
-  color: rgba(${Color}, 1);
-}
-      `,
+  gvg-castle[defense="${GuildId}"] gvg-castle-icon {
+    background-color: rgba(${Color}, 0.5);
+  }
+  gvg-castle[offense="${GuildId}"] gvg-attacker {
+    background-color: rgba(${Color}, 0.625);
+  }
+  tr[id="${GuildId}"] td:nth-child(1) {
+    color: rgba(${Color}, 1);
+  }
+        `,
       `style${GuildId}`
     )
   );
@@ -2350,9 +2431,9 @@ function LogCastle() {
           for (let i = 0; i < _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos.length; i++) {
             const BattleData = _getLocalGvgCastleInfoDialogData.CastleBattleHistoryInfos[i];
             const Time = new Date(Today(Math.floor(BattleData[1] / 100), BattleData[1] % 100, 0) - (Now > BattleTime ? 0 : 24 * 60 * 60 * 1000));
-            let Battle = await getData('Battle', BattleData[0]);
+            let Battle = await getData(DataBase.Record.db, 'Battle', BattleData[0]);
             if (!Battle) {
-              updateData('Battle', {
+              updateData(DataBase.Record.db, 'Battle', {
                 'Guid': BattleData[0],
                 'LastUpdate': Time,
               });
@@ -2378,9 +2459,9 @@ function LogCastle() {
                     'LastUpdate': Time,
                   };
                   Deck.Content.push(Character.Guid);
-                  updateData('Character', Character);
+                  updateData(DataBase.Record.db, 'Character', Character);
                 }
-                updateData('Deck', Deck);
+                updateData(DataBase.Record.db, 'Deck', Deck);
               }
             }
           }
@@ -2400,59 +2481,54 @@ function updateBattlePanel() {
 //优化神殿-获取信息
 async function fillTemple() {
   const ItemList = await getItem();
-  document.querySelector('#listClass').value = 0;
-  document.querySelector('.container')?.remove();
-  document.head.querySelector('style')?.appendChild(
+  //初始化数据节点
+  let nodeData = document.querySelector('data');
+  nodeData.innerHTML = '';
+  nodeData.append(
     createElement(
-      'text',
+      'style',
       `
-table {
-  display: inline-block;
-  vertical-align: top;
-}
-th>div{
-  text-align: left;
-  word-break: keep-all;
-}
-.container {
-  display: block;
-  width: 100%;
-}
-thead th{
-  text-align: center;
-}
-tbody th{
-  width: 140px;
-}
-tbody img{
-  width: 32px;
-  height: 32px;
-  vertical-align: middle;
-}
-tbody>tr>th>div>a{
-  font-size: 0px;
-}
-tbody>tr>:nth-child(1){
-  width: 330px;
-  text-align: left;
-}
-tbody>tr>:nth-child(1)>div{
-  display: inline-block;
-  font-size: 24px;
-  vertical-align: middle;
-  width: 215px;
-}
-tbody>tr>:nth-child(1) img{
-  width: 110px;
-  height: 68px;
-}
-div[name="banner"]{
-  width: 110px !important;
-}
-      `
+  table {
+    display: inline-block;
+    vertical-align: top;
+  }
+  th > div {
+    text-align: left;
+    word-break: keep-all;
+  }
+  thead th {
+    text-align: center;
+  }
+  tbody th {
+    width: 140px;
+  }
+  tbody img {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+  }
+  tbody > tr > :nth-child(1) {
+    width: 330px;
+    text-align: left;
+  }
+  tbody > tr > :nth-child(1) > div {
+    display: inline-block;
+    vertical-align: middle;
+    width: 215px;
+  }
+  tbody > tr > :nth-child(1) img {
+    width: 110px;
+    height: 68px;
+  }
+  div[name="banner"] {
+    width: 110px !important;
+  }
+  div[name="desc"] {
+    font-size: x-large;
+  }
+        `
     )
   );
-  let divContent = document.body.appendChild(createElement('div', '', { 'class': ['container'] }));
   const GroupId = getStorage(GlobalURLList.function + 'GroupId');
   if (GroupId != -1) {
     const nodesWorld = document.querySelectorAll(`.G${GroupId}`);
@@ -2461,21 +2537,25 @@ div[name="banner"]{
       const QuestInfoBuffer = await sendGMRequest(`https://api.mentemori.icu/${WorldId}/temple/latest`, {});
       const QuestArray = JSON.parse(QuestInfoBuffer)?.data.quest_ids;
       const LocalRaidQuestList = await getLocalRaidQuest();
-      let table = divContent.appendChild(createElement('table', '', WorldId));
-      let nodeThead = table.appendChild(
+      let table = nodeData.appendChild(
         createElement(
-          'thead',
+          'table',
           `
-          <tr>
-            <th colspan="4"><h3>${TextResource['TitleWarningListWorld']}:W${WorldId % 100}</h3></th>
-          </tr>
-          <tr>
-            <th name="LocalRaidLevel">${TextResource['LocalRaidTrainingLevelFormat']}</th>
-            <th>${TextResource['CommonFirstRewardLabel'] + LanguageTable['Containfixed'][GlobalURLList.lang]}</th>
-            <th>${TextResource['CommonFixedRewardLabel']}</th>
-            <th>${TextResource['LocalRaidQuestEventRewardLabel']}</th>
-          </tr>
-          `
+              <thead>
+                <tr>
+                  <th colspan="4">
+                    <h3>${TextResource['TitleWarningListWorld']}:W${WorldId % 100}</h3>
+                  </th>
+                </tr>
+                <tr>
+                  <th name="LocalRaidLevel"></th>
+                  <th>${TextResource['CommonFirstRewardLabel']}${LanguageTable['Containfixed'][GlobalURLList.lang]}</th>
+                  <th>${TextResource['CommonFixedRewardLabel']}</th>
+                  <th>${TextResource['LocalRaidQuestEventRewardLabel']}</th>
+                </tr>
+              </thead>
+            `,
+          WorldId
         )
       );
       let nodeTbody = table.appendChild(createElement('tbody', ''));
@@ -2484,27 +2564,27 @@ div[name="banner"]{
         let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
         let QuestBannerId = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + Quest.LocalRaidBannerId.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
         if (j == 0) {
-          nodeThead.querySelector('th[name="LocalRaidLevel"]').innerHTML = nodeThead.querySelector('th[name="LocalRaidLevel"]').innerHTML.replace('{0}', Quest.LocalRaidLevel);
+          table.querySelector('th[name="LocalRaidLevel"]').innerHTML = TextResource['LocalRaidTrainingLevelFormat'].replace('{0}', Quest.LocalRaidLevel);
         }
         let nodeTr = nodeTbody.appendChild(
           createElement(
             'tr',
             `
-            <th>
-              <div name="banner">
-                <img src="${GlobalConstant.assetURL}Banner\\LocalRaid\\RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png"></img>
-              </div>
-              <div>
-                <div>${TextResource['LocalRaidName' + (107 + QuestGuid.toString().slice(0, -8) / 10)]}</div>
-                <div>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</div>
-              </div>
-            </th>
-            `
+                <th>
+                  <div name="banner">
+                    <img src="${GlobalConstant.assetURL}Banner/LocalRaid/RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png">
+                  </div>
+                  <div name="desc">
+                    <div>${TextResource['LocalRaidName' + (107 + QuestGuid.toString().slice(0, -8) / 10)]}</div>
+                    <div>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</div>
+                  </div>
+                </th>
+                <th name="first"></th>
+                <th name="fixed"></th>
+                <th name="event"></th>
+              `
           )
         );
-        let nodeFirstReward = nodeTr.appendChild(createElement('th'));
-        let nodeFixedReward = nodeTr.appendChild(createElement('th'));
-        let nodeEventReward = nodeTr.appendChild(createElement('th'));
         for (let k = Quest.FixedBattleReward.length - 1; k >= 0; k--) {
           const FixedBattleReward = Quest.FixedBattleReward[k];
           const FirstBattleReward = Quest.FirstBattleReward[k];
@@ -2512,10 +2592,23 @@ div[name="banner"]{
           const ItemId = FirstBattleReward.ItemType == 50 ? `${(QuestGuid.toString().slice(0, -8) * 3) / 10 - 1}@50` : `${FirstBattleReward.ItemId}@${FirstBattleReward.ItemType}`;
           const Item = ItemList[ItemId];
           const IconId = Item.IconId.toString();
-          const Icon = `${GlobalConstant.assetURL}Icon\\Item\\Item_${'0'.repeat(4 - IconId.length)}${IconId}.png`;
-          nodeFirstReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${FirstBattleReward.ItemCount + FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeFixedReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${FixedBattleReward.ItemCount}`, { 'item': isCoin }));
-          nodeEventReward.appendChild(createElement('div', `<img src="${Icon}"><a>${Item.Name}</a>×${Math.ceil(FixedBattleReward.ItemCount * 0.1)}`, { 'item': isCoin }));
+          const Icon = `${GlobalConstant.assetURL}Icon/Item/Item_${'0'.repeat(4 - IconId.length)}${IconId}.png`;
+          for (const l of ['first', 'fixed', 'event']) {
+            nodeTr.querySelector(`th[name="${l}"]`)?.appendChild(
+              createElement(
+                'div',
+                `
+                  <img src="${Icon}" alt="${TextResource[Item.NameKey.slice(1, -1)]}">
+                  <a>×${
+                    (l == 'first' ? FirstBattleReward.ItemCount : 0) + //仅初次
+                    (l != 'event' ? FixedBattleReward.ItemCount : 0) + //初次与固定
+                    (l == 'event' ? Math.ceil(FixedBattleReward.ItemCount * 0.1) : 0) //仅增
+                  }</a>
+                  `,
+                { 'item': isCoin }
+              )
+            );
+          }
         }
       }
     }
@@ -2533,34 +2626,1469 @@ function changeTempleDisplay() {
     createElement(
       'style',
       `
-div[item='coin'] {
-  display: ${checkList[0] ? 'block' : 'none'};
-}
-tr[banner='${checkList[1] ? '1' : '0'}'] {
-  background-color: rgb(128, 255, 255);
-}
-tr[banner='${checkList[2] ? '2' : '0'}'] {
-  background-color: rgb(128, 255, 128);
-}
-tr[banner='${checkList[3] ? '3' : '0'}'] {
-  background-color: rgb(255, 128, 128);
-}
-tr[banner='${checkList[4] ? '4' : '0'}'] {
-  background-color: rgb(255, 128, 255);
-}
-tr[banner='${checkList[5] ? '5' : '0'}'] {
-  background-color: rgb(255, 255, 128);
-}
-          `,
+  div[item="coin"] {
+    display: ${checkList[0] ? 'block' : 'none'};
+  }
+  tr[banner="${checkList[1] ? '1' : '0'}"] {
+    background-color: rgb(128, 255, 255);
+  }
+  tr[banner="${checkList[2] ? '2' : '0'}"] {
+    background-color: rgb(128, 255, 128);
+  }
+  tr[banner="${checkList[3] ? '3' : '0'}"] {
+    background-color: rgb(255, 128, 128);
+  }
+  tr[banner="${checkList[4] ? '4' : '0'}"] {
+    background-color: rgb(255, 128, 255);
+  }
+  tr[banner="${checkList[5] ? '5' : '0'}"] {
+    background-color: rgb(255, 255, 128);
+  }
+        `,
       'styleItem'
     )
   );
   setStorage('TempleCheckList', JSON.stringify(checkList));
 }
 //优化竞技场-获取信息
-async function fillArena(type) {
+async function fillTeam() {
   const CharacterList = await getCharacter();
-  console.log(CharacterList);
+  const EquipmentList = await getEquipment();
+  const EquipmentSetList = await getEquipmentSet();
+  const Reinforcement = await getReinforcement();
+  const MatchlessList = await getMatchless();
+  const LegendList = await getLegend();
+  const SphereList = await getSphere();
+  const EquipmenSkillList = await getEquipmentSkill();
+  const EquipmentExclusiveList = await getEquipmentExclusive();
+  const SkillList = await getSkill();
+  const CharacterRarity = {
+    '1': { 'rarity': 'N', 'plus': false, 'star': 0 },
+    '2': { 'rarity': 'R', 'plus': false, 'star': 0 },
+    '4': { 'rarity': 'R', 'plus': true, 'star': 0 },
+    '8': { 'rarity': 'SR', 'plus': false, 'star': 0 },
+    '16': { 'rarity': 'SR', 'plus': true, 'star': 0 },
+    '32': { 'rarity': 'SSR', 'plus': false, 'star': 0 },
+    '64': { 'rarity': 'SSR', 'plus': true, 'star': 0 },
+    '128': { 'rarity': 'UR', 'plus': false, 'star': 0 },
+    '256': { 'rarity': 'UR', 'plus': true, 'star': 0 },
+    '512': { 'rarity': 'LR', 'plus': false, 'star': 0 },
+    '1024': { 'rarity': 'LR', 'plus': false, 'star': 1 },
+    '2048': { 'rarity': 'LR', 'plus': false, 'star': 2 },
+    '4096': { 'rarity': 'LR', 'plus': false, 'star': 3 },
+    '8192': { 'rarity': 'LR', 'plus': false, 'star': 4 },
+    '16384': { 'rarity': 'LR', 'plus': false, 'star': 5 },
+    '32768': { 'rarity': 'LR', 'plus': false, 'star': 6 },
+    '65536': { 'rarity': 'LR', 'plus': false, 'star': 7 },
+    '131072': { 'rarity': 'LR', 'plus': false, 'star': 8 },
+    '262144': { 'rarity': 'LR', 'plus': false, 'star': 9 },
+    '524288': { 'rarity': 'LR', 'plus': false, 'star': 10 },
+  };
+  const EquipmenRarity = {
+    '1': { 'rarity': 'D' },
+    '2': { 'rarity': 'C' },
+    '4': { 'rarity': 'B' },
+    '8': { 'rarity': 'A' },
+    '16': { 'rarity': 'S' },
+    '32': { 'rarity': 'R' },
+    '64': { 'rarity': 'SR' },
+    '128': { 'rarity': 'SSR' },
+    '256': { 'rarity': 'UR' },
+    '512': { 'rarity': 'LR' },
+  };
+  //初始化数据栏
+  let nodeData = document.querySelector('data');
+  nodeData.innerHTML = '';
+  nodeData.append(
+    createElement(
+      'style',
+      `
+table {
+  display: inline-table;
+  vertical-align: top;
+}
+tbody {
+  font-size: medium;
+}
+tbody tr > :nth-child(1) {
+  width: 20px;
+}
+tbody tr > th[name="player"] > div {
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  text-align: left;
+}
+tbody tr > th[name="player"] > div > :nth-child(2) {
+  right: 0px;
+}
+tbody tr > th[name="player"] > div > :nth-child(1) {
+  left: 0px;
+}
+tbody tr > :nth-child(2) > :nth-child(5) {
+  display: inline-block;
+  width: 50%;
+  text-align: left;
+}
+tbody tr > :nth-child(2) > :nth-child(6) {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+tr > :nth-child(2) > * {
+  width: 100px;
+}
+th character {
+  display: block;
+  width: 79px;
+}
+icon {
+  display: inline-block;
+  position: relative;
+  width: 138px;
+  height: 138px;
+}
+character icon {
+  zoom: 50%;
+}
+icon > img {
+  display: block;
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  background-color: grey;
+  width: 128px;
+  height: 128px;
+}
+rarity {
+  display: block;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  width: 138px;
+  height: 138px;
+}
+[rarity="N"] > icon > rarity {
+  background-image: url('assets/char_frame_n.png');
+}
+[rarity="R"] > icon > rarity {
+  background-image: url('assets/char_frame_r.png');
+}
+[rarity="SR"] > icon > rarity {
+  background-image: url('assets/char_frame_sr.png');
+}
+[rarity="SSR"] > icon > rarity {
+  background-image: url('assets/char_frame_ssr.png');
+}
+[rarity="UR"] > icon > rarity {
+  background-image: url('assets/char_frame_ur.png');
+}
+[rarity="LR"] > icon > rarity {
+  background-image: url('assets/char_frame_lr.png');
+}
+[rarity="S"] > icon > rarity {
+  background-image: url('${GlobalConstant.assetURL}/frame_common_s.png');
+}
+[rarity="A"] > icon > rarity {
+  background-image: url('${GlobalConstant.assetURL}/frame_common_a.png');
+}
+[rarity="B"] > icon > rarity {
+  background-image: url('${GlobalConstant.assetURL}/frame_common_b.png');
+}
+[rarity="C"] > icon > rarity {
+  background-image: url('${GlobalConstant.assetURL}/frame_common_c.png');
+}
+[rarity="D"] > icon > rarity {
+  background-image: url('${GlobalConstant.assetURL}/frame_common_d.png');
+}
+decoration {
+  display: none;
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 37px;
+  height: 37px;
+}
+[plus="true"] decoration {
+  display: block;
+}
+[rarity="R"] decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_rplus.png');
+}
+[rarity="SR"] decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
+}
+[rarity="SSR"] decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
+}
+[rarity="UR"] decoration {
+  background-image: url('${GlobalConstant.assetURL}/frame_decoration_srplus.png');
+}
+icon > level {
+  display: block;
+  position: absolute;
+  font-size: x-large;
+  font-weight: normal;
+  text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
+}
+character > icon > level {
+  right: 10px;
+  top: 5px;
+  color: powderblue;
+}
+stars {
+  position: absolute;
+  width: 100px;
+  bottom: 0px;
+  left: 19px;
+}
+stars > * {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background-size: 100%;
+}
+[star="0"] stars > * {
+  display: none;
+}
+[star="1"] stars > :nth-child(n + 1) {
+  display: none;
+}
+[star="2"] stars > :nth-child(n + 2) {
+  display: none;
+}
+[star="3"] stars > :nth-child(n + 3) {
+  display: none;
+}
+[star="4"] stars > :last-child {
+  display: none;
+}
+star {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_1.png');
+}
+[star="6"] stars > :first-child {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+[star="7"] stars > :nth-child(-n + 2) {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+[star="8"] stars > :nth-child(-n + 3) {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+[star="9"] stars > :nth-child(-n + 4) {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+[star="10"] stars > * {
+  background-image: url('${GlobalConstant.assetURL}/icon_rarity_plus_star_2.png');
+}
+element {
+  display: block;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 32px;
+  height: 32px;
+  background-size: 100%;
+}
+[element="1"] element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_1.png');
+}
+[element="2"] element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_2.png');
+}
+[element="3"] element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_3.png');
+}
+[element="4"] element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_4.png');
+}
+[element="5"] element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_5.png');
+}
+[element="6"] element {
+  background-image: url('${GlobalConstant.assetURL}/icon_element_6.png');
+}
+[element="1"] {
+  background-color: #8080ff;
+}
+[element="2"] {
+  background-color: #ff8080;
+}
+[element="3"] {
+  background-color: #80ff80;
+}
+[element="4"] {
+  background-color: #ffff80;
+}
+[element="5"] {
+  background-color: #ffffff;
+}
+[element="6"] {
+  background-color: #000000;
+  color: white;
+}
+th[selected] character {
+  background-color: #80ffff !important;
+  color: black !important;
+  outline: 4px #ff80ff solid;
+}
+tr[selected] {
+  position: sticky;
+  top: 1vh;
+  bottom: 0vh;
+  z-index: 100;
+  outline: 4px #ff80ff solid;
+}
+info {
+  display: inline-flex;
+  justify-content: space-between;
+  position: sticky;
+  width: calc(100% - 600px);
+  height: 100vh;
+  top: 0vh;
+  margin-left: 10px;
+}
+info > div[name="equipment"] {
+  display: inline-grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: auto auto;
+  grid-auto-flow: column;
+  width: 66%;
+  height: 100%;
+}
+equipment {
+  display: block;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  border-width: 2px;
+  border-style: solid;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+[rarity="D"] {
+  border-color: rgb(128, 128, 64);
+}
+[rarity="R"],
+[rarity="C"] {
+  border-color: rgba(128, 128, 128, 1);
+}
+[rarity="SR"],
+[rarity="B"] {
+  border-color: rgb(192, 192, 0);
+}
+[rarity="SSR"],
+[rarity="A"] {
+  border-color: rgb(96, 32, 192);
+}
+[rarity="UR"],
+[rarity="S"] {
+  border-color: rgb(192, 0, 0);
+}
+[rarity="LR"] {
+  border-color: rgb(32, 32, 32);
+}
+equipment > icon {
+  zoom: 50%;
+}
+equipment > icon > level {
+  left: 10px;
+  top: 5px;
+  color: white;
+}
+reinforcement {
+  display: block;
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  color: palegoldenrod;
+  font-size: x-large;
+  font-weight: normal;
+  text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black;
+}
+desc {
+  display: inline-block;
+  vertical-align: top;
+}
+equipment desc {
+  width: calc(100% - 74px);
+}
+character desc {
+  width: calc(100% - 143px);
+  margin-left: 5px;
+}
+madel {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-size: 100%;
+  vertical-align: top;
+}
+[quality="1"] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_1.png');
+}
+[quality="2"] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_2.png');
+}
+[quality="3"] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_3.png');
+}
+[quality="4"] madel {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_medal_4.png');
+}
+raritydesc {
+  display: inline-block;
+  color: rgb(128, 128, 96);
+  font-size: 18px;
+  width: 56px;
+  vertical-align: top;
+  text-align: center;
+}
+[rarity="R"] raritydesc,
+[rarity="C"] raritydesc {
+  color: rgb(128, 128, 128);
+}
+[rarity="SR"] raritydesc,
+[rarity="B"] raritydesc {
+  color: rgb(192, 192, 0);
+}
+[rarity="SSR"] raritydesc,
+[rarity="A"] raritydesc {
+  color: rgb(96, 32, 192);
+}
+[rarity="UR"] raritydesc,
+[rarity="S"] raritydesc {
+  color: rgb(192, 0, 0);
+}
+[rarity="LR"] raritydesc {
+  color: rgb(32, 32, 32);
+}
+equipment desc name {
+  display: inline-block;
+  width: calc(100% - 80px);
+  font-size: 18px;
+}
+setname {
+  display: block;
+}
+equipment desc setname {
+  display: inline-block;
+  font-size: 16px;
+}
+equipment > desc > :nth-child(1) {
+  height: 46px;
+}
+category {
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  background-size: 100%;
+  vertical-align: bottom;
+  margin: 0px 5px;
+}
+category[category="1_0"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_sniper_01.png');
+}
+category[category="1_1"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_warrior_01.png');
+}
+category[category="1_2"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_weapon_sorcerer_01.png');
+}
+category[category="2_0"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_sub_01.png');
+}
+category[category="3_0"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_gauntlet_01.png');
+}
+category[category="4_0"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_helmet_01.png');
+}
+category[category="5_0"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_armor_01.png');
+}
+category[category="6_0"] {
+  background-image: url('${GlobalConstant.assetURL}/icon_equipment_shoes_01.png');
+}
+parameter_type {
+  width: 100%;
+  display: block;
+  font-size: medium;
+}
+parameter_subtype {
+  width: 100%;
+  display: block;
+  font-size: small;
+}
+parameter_set {
+  width: 100%;
+  display: block;
+  font-size: x-small;
+}
+treasure {
+  display: inline-block;
+  width: 25%;
+  margin-left: 5px;
+}
+parameter {
+  display: inline-flex;
+  width: calc(50% - 10px);
+  margin: 0px 5px;
+  justify-content: space-between;
+}
+parameter > * {
+  display: inline-block;
+}
+parameter_set[type="sphere"] icon {
+  zoom: 25%;
+}
+sphere {
+  display: inline-block;
+  width: 25%;
+  vertical-align: top;
+  text-align: center;
+  font-size: xx-small;
+}
+sphere level {
+  font-size: xx-large;
+  color: white;
+}
+sphere name {
+  display: block;
+}
+info > div[name='character'] {
+  display: inline-block;
+  width: 34%;
+  height: calc(100% - 4px);
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  border-width: 2px;
+  border-style: solid;
+}
+div[name="character"] character {
+  display: block;
+  width: 100%;
+  background: none;
+  color: black;
+}
+div[name="character"] icon {
+  zoom: 75%;
+}
+job {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: bottom;
+  background-size: 100%;
+  margin-right: 5px;
+}
+[job="1"] job {
+  background-image: url('${GlobalConstant.assetURL}/icon_job_warrior.png');
+}
+[job="2"] job {
+  background-image: url('${GlobalConstant.assetURL}/icon_job_sniper.png');
+}
+[job="4"] job {
+  background-image: url('${GlobalConstant.assetURL}/icon_job_sorcerer.png');
+}
+lore {
+  display: block;
+  width: 100%;
+  font-size: small;
+  height: 34px;
+}
+bp {
+  display: block;
+  width: 100%;
+}
+parameter_set[type="exclusive"] p {
+  margin-left: 5px;
+}
+parameter_set[type="exclusive"] effect {
+  color: grey;
+}
+skilllevel {
+  display: inline-block;
+  color: grey;
+}
+skill {
+  display: inline;
+  color: grey;
+}
+unlocked {
+  display: inline;
+  color: red !important;
+}
+parameter_set[type="exclusive"] > div {
+  margin-bottom: 2px;
+}
+parameter_set[type="exclusive"][unlock] effect,
+parameter_set[type="exclusive"][unlock][rarity="SSR"] [order="SSR"] *,
+parameter_set[type="exclusive"][unlock][rarity="UR"] [order="SSR"] *,
+parameter_set[type="exclusive"][unlock][rarity="UR"] [order="UR"] *,
+parameter_set[type="exclusive"][unlock][rarity="LR"] [order="SSR"] *,
+parameter_set[type="exclusive"][unlock][rarity="LR"] [order="UR"] *,
+parameter_set[type="exclusive"][unlock][rarity="LR"] [order="LR"] * {
+  color: black;
+}
+parameter_set[type="exclusive"][rarity="SSR"] [order="SSR"] unlocked,
+parameter_set[type="exclusive"][rarity="UR"] [order="SSR"] unlocked,
+parameter_set[type="exclusive"][rarity="UR"] [order="UR"] unlocked,
+parameter_set[type="exclusive"][rarity="LR"] [order="SSR"] unlocked,
+parameter_set[type="exclusive"][rarity="LR"] [order="UR"] unlocked,
+parameter_set[type="exclusive"][rarity="LR"] [order="LR"] unlocked {
+  display: none;
+}
+effect {
+  display: inline-flex;
+  width: 75%;
+  margin: 0px 5px;
+  justify-content: space-between;
+}
+effect > * {
+  display: inline-block;
+}
+parameter_set[type="set"] div {
+  color: grey;
+}
+parameter_set[type="set"] > div {
+  margin-bottom: 2px;
+}
+parameter_set[type="set"] > [count="2"] > div[require="2"],
+parameter_set[type="set"] > [count="3"] > div[require="2"],
+parameter_set[type="set"] > [count="4"] > div[require="2"],
+parameter_set[type="set"] > [count="5"] > div[require="2"],
+parameter_set[type="set"] > [count="6"] > div[require="2"],
+parameter_set[type="set"] > [count="4"] > div[require="4"],
+parameter_set[type="set"] > [count="5"] > div[require="4"],
+parameter_set[type="set"] > [count="6"] > div[require="4"],
+parameter_set[type="set"] > [count="6"] > div[require="6"] {
+  color: black;
+}
+parameter_set[type="potential"] > div {
+  margin-bottom: 2px;
+}
+parameter[main] {
+  visibility: hidden;
+}
+parameter_set[type="potential"][job="1"] [order="1"] parameter[main],
+parameter_set[type="potential"][job="2"] [order="2"] parameter[main],
+parameter_set[type="potential"][job="4"] [order="3"] parameter[main] {
+  visibility: visible;
+}
+parameter_set[type="skill"] {
+  margin-bottom: 5px;
+}
+parameter_set[type="skill"] skills {
+  display: flex;
+  justify-content: space-between;
+}
+parameter_set[type="skill"] icon {
+  width: 100px;
+  height: 100px;
+  zoom: 60%;
+}
+parameter_set[type="skill"] icon img {
+  left: calc(50% - 50px);
+  top: calc(50% - 50px);
+  height: 100px;
+  width: 100px;
+}
+parameter_set[type="skill"] icon level {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  height: 100%;
+  width: 100%;
+  font-size: xx-large;
+  color: white;
+}
+parameter_set[type="skill"] icon[level="0"] level {
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+}
+parameter_set[type="skill"] > div[type="icon"] {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 5px 0px;
+}
+parameter_set[type="skill"] icon[selected] {
+  outline: aqua 8px solid;
+}
+parameter_set[type="skill"] [order] a {
+  display: inline-block;
+}
+parameter_set[type="skill"] div[order] {
+  display: none;
+}
+parameter_set[type="skill"] div[order][selected] {
+  display: block;
+}
+parameter_set[type="skill"] div[order] > :nth-child(1) {
+  font-size: small;
+}
+parameter_set[type="skill"] div[order] > :nth-child(2) > :nth-child(1) {
+  width: 40%;
+}
+parameter_set[type="skill"] div[order] > div[unlock] > * {
+  color: black;
+}
+parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
+  display: none;
+}
+      `
+    )
+  );
+  let searchURL;
+  switch (GlobalURLList.function) {
+    case 'arena': {
+      const WorldId = getStorage('arenaWorldId');
+      if (!WorldId) return;
+      searchURL = `https://api.mentemori.icu/${WorldId}/arena/latest`;
+      break;
+    }
+    case 'legend': {
+      const GroupId = getStorage('legendGroupId');
+      if (!GroupId) return;
+      searchURL = `https://api.mentemori.icu/wg/${GroupId}/legend/latest`;
+      break;
+    }
+    case 'clearlist': {
+      let guid = document.querySelector('input[type="text"][name="guid"]').value;
+      searchURL = `https://static.mentemori.icu/clear-info/${guid}.json`;
+      break;
+    }
+    default: {
+      searchURL = '';
+    }
+  }
+  let nodeTable = nodeData.appendChild(
+    createElement(
+      'table',
+      `
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>${TextResource['CommonPlayerNameLabel']}</th>
+            <th>${LanguageTable['Slot 1'][GlobalURLList.lang]}</th>
+            <th>${LanguageTable['Slot 2'][GlobalURLList.lang]}</th>
+            <th>${LanguageTable['Slot 3'][GlobalURLList.lang]}</th>
+            <th>${LanguageTable['Slot 4'][GlobalURLList.lang]}</th>
+            <th>${LanguageTable['Slot 5'][GlobalURLList.lang]}</th>
+          </tr>
+        </thead>
+        `
+    )
+  );
+  let nodePanel = nodeData.appendChild(createElement('info', ''));
+  const TeamInfoBuffer = await sendGMRequest(searchURL, {});
+  const TeamInfo = JSON.parse(TeamInfoBuffer);
+  const TeamList = TeamInfo.result || TeamInfo.data;
+  if (!TeamList) return;
+  if (TeamInfo.payload) {
+    document.querySelector('a[name="payload"]').innerHTML = JSON.stringify(TeamInfo.payload);
+  }
+  let nodeTbody = nodeTable.appendChild(createElement('tbody', ''));
+  for (let i = 0; i < TeamList.length; i++) {
+    const Player = TeamList[i];
+    let nodeTr = nodeTbody.appendChild(
+      createElement(
+        'tr',
+        `
+          <th>${i + 1}</th>
+          <th name="player">
+            <div>
+              <a>${Player.PlayerName}</a>
+              <a name="world"></a>
+            </div>
+            <div name="level">
+            </div>
+            <div name="BattlePower"></div>
+            <div>
+              <a name="point"></a>
+              <a name="wins"></a>
+            </a></div>
+          </th>
+          `
+      )
+    );
+    let nodePlayer = nodeTr.querySelector('th[name="player"]');
+    const RegionList = { '1': '🇯🇵', '2': '🇰🇷', '3': '🇨🇳', '4': '🇺🇸', '5': '🇪🇺', '6': '🇺🇳' };
+    switch (GlobalURLList.function) {
+      case 'arena': {
+        nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.PlayerLevel);
+        break;
+      }
+      case 'legend': {
+        nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.PlayerLevel);
+        nodePlayer.querySelector('[name="world"]').innerHTML = `W${Player.PlayerId?.toString().slice(-2)}`;
+        nodePlayer.querySelector('[name="point"]').innerHTML = TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint);
+        nodePlayer.querySelector('[name="wins"]').innerHTML = TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount);
+        break;
+      }
+      case 'clearlist': {
+        nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.Rank);
+        nodePlayer.querySelector('[name="world"]').innerHTML = `${RegionList[Player.WorldId.toString().slice(0, 1)]}W${Player.PlayerId?.toString().slice(-2)}`;
+        nodePlayer.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonPlayerRankLabel']}:${Player.DeckBattlePower}`;
+        nodePlayer.querySelector('[name="point"]').innerHTML = new Date(Player.ClearTimestamp).toLocaleString().split(' ');
+        nodePlayer.querySelector('[name="wins"]').innerHTML = Player.BattleToken ? `<a href="${getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang, 'token': Player.BattleToken })}">${TextResource['CommonPlayLabel']}</a>` : '';
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    let totalBattlePower = 0;
+    for (let j = 0; j < 5; j++) {
+      const CharacterInfo = Player.UserCharacterInfoList?.[j] || Player.ClearPartyCharacterInfos?.[j];
+      let nodeCharacter = nodeTr.appendChild(createElement('th', ''));
+      if (!CharacterInfo) {
+        continue;
+      }
+      const CharacterId = CharacterInfo.CharacterId;
+      const CharacterIcon = `${'0'.repeat(6 - CharacterId.toString().length)}${CharacterId}`;
+      const Character = CharacterList[CharacterId];
+      totalBattlePower += CharacterInfo.BattlePower;
+      let attributeCharacterInfo = CharacterRarity[CharacterInfo.RarityFlags.toString()];
+      attributeCharacterInfo.element = Character.ElementType;
+      attributeCharacterInfo.job = Character.JobFlags;
+      nodeCharacter.append(
+        createElement(
+          'character',
+          `
+            <icon>
+              <img src="${GlobalConstant.assetURL}CharacterIcon/CHR_${CharacterIcon}/CHR_${CharacterIcon}_00_s.png">
+              <rarity></rarity>
+              <decoration></decoration>
+              <stars>
+                <star></star>
+                <star></star>
+                <star></star>
+                <star></star>
+                <star></star>
+              </stars>
+              <element></element>
+              <level>${TextResource['CommonLevelWithDot']}${CharacterInfo.Level}</level>
+            </icon>
+            <div>
+              <div class="hidden">${Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '　'}</div>
+              <div>${TextResource[Character.NameKey.slice(1, -1)]}</div>
+            </div>
+            `,
+          attributeCharacterInfo
+        )
+      );
+      nodeCharacter.onclick = (e) => {
+        let listClean = document.querySelectorAll('[selected]');
+        let countEquipmenSet = {};
+        for (let i of listClean) {
+          i.removeAttribute('selected');
+        }
+        let nodeTh = getFather(e.target, 'TH');
+        let nodeTr = nodeTh.parentNode;
+        nodeTh.setAttribute('selected', '');
+        nodeTr.setAttribute('selected', '');
+        nodePanel.innerHTML = '<div name="equipment"></div>';
+        const EquipmenOrder = [
+          {
+            'type': {
+              '0': 'sniper',
+              '1': 'warrior',
+              '2': 'sorcerer',
+            },
+            'name': TextResource['EquipmentSlotTypeWeapon'],
+          },
+          {
+            'type': 'sub',
+            'name': TextResource['EquipmentSlotTypeSub'],
+          },
+          {
+            'type': 'gauntlet',
+            'name': TextResource['EquipmentSlotTypeGauntlet'],
+          },
+          {
+            'type': 'helmet',
+            'name': TextResource['EquipmentSlotTypeHelmet'],
+          },
+          {
+            'type': 'armor',
+            'name': TextResource['EquipmentSlotTypeArmor'],
+          },
+          {
+            'type': 'shoes',
+            'name': TextResource['EquipmentSlotTypeShoes'],
+          },
+        ];
+        for (let i = 0; i < 6; i++) {
+          const Type = EquipmenOrder[i].type;
+          const Slot = i + 1;
+          nodePanel.querySelector('div[name="equipment"]').append(
+            createElement(
+              'equipment',
+              `
+                <icon>
+                  <img src="${GlobalConstant.assetURL}Icon/Equipment/icon_equipment_${Slot == 1 ? 'weapon' : Type}${Slot == 1 ? '_' + Type[Character.JobFlags] : ''}_02.png">
+                  <rarity></rarity>
+                  <level></level>
+                  <reinforcement></reinforcement>
+                </icon>
+                <desc>
+                  <div>
+                    <raritydesc></raritydesc>
+                    <madel></madel>
+                    <name>${EquipmenOrder[i].name}</name>
+                  </div>
+                  <div>
+                    <category category="${Slot}_${Slot == 1 ? Character.JobFlags : '0'}"></category>
+                    <setname></setname>
+                  </div>
+                </desc>
+                <parameters>
+                  <parameter_set type="base">
+                    <parameter_type>${TextResource['CharacterEquipmentBasicEffect']}</parameter_type>
+                    <parameter>
+                      <parameter_name></parameter_name>
+                      <parameter_value></parameter_value>
+                    </parameter>
+                  </parameter_set>
+                  <parameter_set type="addition">
+                    <parameter_type>${TextResource['CharacterEquipmentAdditionalEffect']}</parameter_type>
+                    <div>
+                      <parameter order="1">
+                        <parameter_name>${TextResource['BaseParameterTypeMuscle']}</parameter_name>
+                        <parameter_value></parameter_value>
+                      </parameter>
+                      <parameter order="2">
+                      <parameter_name>${TextResource['BaseParameterTypeIntelligence']}</parameter_name>
+                      <parameter_value></parameter_value>
+                      </parameter>
+                    </div>
+                    <div>
+                      <parameter order="3">
+                      <parameter_name>${TextResource['BaseParameterTypeEnergy']}</parameter_name>
+                      <parameter_value></parameter_value>
+                      </parameter>
+                      <parameter order="4">
+                      <parameter_name>${TextResource['BaseParameterTypeHealth']}</parameter_name>
+                        <parameter_value></parameter_value>
+                      </parameter>
+                    </div>
+                  </parameter_set>
+                  <parameter_set type="treasure">
+                    <parameter_type>${TextResource['EquipmentSacredTreasureBonusLabel']}</parameter_type>
+                    <div order="1">
+                      <treasure>${TextResource['CommonLegendaryLevelLabel']}
+                        <level></level>
+                      </treasure>
+                      <parameter>
+                        <parameter_name></parameter_name>
+                        <parameter_value></parameter_value>
+                      </parameter>
+                    </div>
+                    <div order="2">
+                      <treasure>${TextResource['CommonMatchlessLevelLabel']}
+                        <level></level>
+                      </treasure>
+                      <parameter>
+                        <parameter_name></parameter_name>
+                        <parameter_value></parameter_value>
+                      </parameter>
+                    </div>
+                  </parameter_set>
+                  <parameter_set type="sphere">
+                    <parameter_type>${TextResource['CommonSphereLabel']}</parameter_type>
+                    <sphere order="1">
+                      <icon>
+                        <img src="${GlobalConstant.assetURL}icon_lock.png">
+                        <rarity></rarity>
+                        <level></level>
+                      </icon>
+                      <name>${TextResource['MissionLockedButton']}</name>
+                      <div><parameter_value>　</parameter_value></div>
+                    </sphere>
+                    <sphere order="2">
+                      <icon>
+                        <img src="${GlobalConstant.assetURL}icon_lock.png">
+                        <rarity></rarity>
+                        <level></level>
+                      </icon>
+                      <name></name>
+                      <div><parameter_value>　</parameter_value></div>
+                    </sphere>
+                    <sphere order="3">
+                      <icon>
+                        <img src="${GlobalConstant.assetURL}icon_lock.png">
+                        <rarity></rarity>
+                        <level></level>
+                      </icon>
+                      <name>${TextResource['MissionLockedButton']}</name>
+                      <div><parameter_value>　</parameter_value></div>
+                    </sphere>
+                    <sphere order="4">
+                      <icon>
+                        <img src="${GlobalConstant.assetURL}icon_lock.png">
+                        <rarity></rarity>
+                        <level></level>
+                      </icon>
+                      <name>${TextResource['MissionLockedButton']}</name>
+                      <div><parameter_value>　</parameter_value></div>
+                    </sphere>
+                  </parameter_set>
+                </parameters>
+                `,
+              {
+                'slot': Slot,
+              }
+            )
+          );
+        }
+        let nodeCharacterInfo = nodePanel.appendChild(createElement('div', '', { 'name': 'character' }));
+        let nodecharacter = nodeCharacterInfo.appendChild(nodeTh.querySelector('character').cloneNode(true));
+        nodeCharacterInfo.setAttribute('rarity', nodecharacter.getAttribute('rarity'));
+        nodecharacter.querySelector('div').remove();
+        nodecharacter.querySelector('level').remove();
+        nodecharacter.appendChild(
+          createElement(
+            'desc',
+            `
+              <div>
+                <raritydesc>${CharacterRarity[CharacterInfo.RarityFlags].rarity}${CharacterRarity[CharacterInfo.RarityFlags].star > 0 ? '+' + CharacterRarity[CharacterInfo.RarityFlags].star : ''}</raritydesc>
+                <job></job>
+                <level>${TextResource['CommonLevelWithDot']}${CharacterInfo.Level}</level>
+              </div>
+              <lore>${Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '　'}</lore>
+              <div>
+                <name>${TextResource[Character.NameKey.slice(1, -1)]}</name>
+              </div>
+              <bp>🗡️${getNumber(CharacterInfo.BattlePower)}</bp>
+              `
+          )
+        );
+        nodeCharacterInfo.appendChild(
+          createElement(
+            'parameters',
+            `
+              <parameter_set type="skill">
+              </parameter_set>
+              <parameter_set type="exclusive">
+                <parameter_type>${TextResource['CharacterEquipmentExclusiveEffect']}</parameter_type>
+                <parameter_subtype>${TextResource['CharacterEquipmentExclusiveSkillEffect']}</parameter_subtype>
+                <div order="SSR">
+                  <skilllevel>${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '1')}</skilllevel>
+                  <skill></skill>
+                  <unlocked>${TextResource['EquipmentExclusiveSkillReleaseConditionFormat'].replace('{0}', 'SSR')}</unlocked>
+                </div>
+                <div order="UR">
+                  <skilllevel>${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '2')}</skilllevel>
+                  <skill></skill>
+                  <unlocked>${TextResource['EquipmentExclusiveSkillReleaseConditionFormat'].replace('{0}', 'UR')}</unlocked>
+                </div>
+                <div order="LR">
+                  <skilllevel>${TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', '3')}</skilllevel>
+                  <skill></skill>
+                  <unlocked>${TextResource['EquipmentExclusiveSkillReleaseConditionFormat'].replace('{0}', 'LR')}</unlocked>
+                </div>
+                <parameter_subtype>${TextResource['CharacterEquipmentExclusivePassiveEffect']}</parameter_subtype>
+                <div type="parameter"></div>
+              </parameter_set>
+              <parameter_set type="set">
+                <parameter_type>${TextResource['CharacterEquipmentSeriesEffect']}</parameter_type>
+              </parameter_set>
+              <parameter_set type="potential" job="${nodecharacter.getAttribute('job')}">
+                <parameter_type>${TextResource['CommonPotentialParameterLabel']}</parameter_type>
+                <div order="1">
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeMuscle']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
+                  </parameter>
+                  <parameter main="">
+                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypePhysicalDamageRelax']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeHit']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Muscle / 2))}</parameter_value>
+                  </parameter>
+                </div>
+                <div order="2">
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeEnergy']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Energy)}</parameter_value>
+                  </parameter>
+                  <parameter main="">
+                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Energy)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeAvoidance']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Energy / 2))}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeCritical']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Energy / 2))}</parameter_value>
+                  </parameter>
+                </div>
+                <div order="3">
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeIntelligence']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
+                  </parameter>
+                  <parameter main="">
+                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeMagicDamageRelax']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeDebuffHit']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Intelligence / 2))}</parameter_value>
+                  </parameter>
+                </div>
+                <div>
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeHealth']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Health)}</parameter_value>
+                  </parameter>
+                  <parameter main=""></parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeHp']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Health)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeCriticalResist']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Health / 2))}</parameter_value>
+                  </parameter>
+                </div>
+              </parameter_set type="">
+              <parameter_set >
+                <parameter_type>${TextResource['CommonStatusLabel']}</parameter_type>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.AttackPower)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeHp']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.HP)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeSpeed']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.Speed)}</parameter_value>
+                </parameter>
+                <parameter></parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeDefensePenetration']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.DefensePenetration)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeDefense']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.Defense)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeDamageEnhance']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.DamageEnhance)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypePhysicalDamageRelax']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.PhysicalDamageRelax)}</parameter_value>
+                </parameter>
+                <parameter></parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeMagicDamageRelax']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.MagicDamageRelax)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeHit']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.Hit)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeAvoidance']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.Avoidance)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeCritical']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.Critical)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeCriticalResist']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.CriticalResist)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeCriticalDamageEnhance']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.CriticalDamageEnhance)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypePhysicalCriticalDamageRelax']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.PhysicalCriticalDamageRelax)}</parameter_value>
+                </parameter>
+                <parameter></parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeMagicCriticalDamageRelax']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.MagicCriticalDamageRelax)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeDebuffHit']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.DebuffHit)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeDebuffResist']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.DebuffResist)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeHpDrain']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.HpDrain)}</parameter_value>
+                </parameter>
+                <parameter>
+                  <parameter_name>${TextResource['BattleParameterTypeDamageReflect']}</parameter_name>
+                  <parameter_value>${getNumber(CharacterInfo.BattleParameter.DamageReflect)}</parameter_value>
+                </parameter>
+              </parameter_set>
+            `
+          )
+        );
+        let SkillArray = (!Character.ActiveSkillIds ? [] : Character.ActiveSkillIds).concat(!Character.PassiveSkillIds ? [] : Character.PassiveSkillIds);
+        let nodeSkill = nodeCharacterInfo.querySelector('parameter_set[type="skill"]');
+        let nodeSkillIcons = nodeSkill.appendChild(createElement('div', '', { 'type': 'icon' }));
+        let nodeSkillInfos = nodeSkill.appendChild(createElement('div'));
+        for (let i = 0; i < SkillArray.length; i++) {
+          const Skill = SkillList[SkillArray[i]];
+          let skillType = Skill.ActiveSkillInfos ? 'Active' : 'Passive';
+          let nodeSkillIcon = nodeSkillIcons.appendChild(
+            createElement(
+              'icon',
+              `
+              <img src="${GlobalConstant.assetURL}Icon/Skill/CSK_${'0'.repeat(9 - Skill.Id.toString().length)}${Skill.Id}.png">
+              <level></level>
+              `,
+              { 'order': i + 1 }
+            )
+          );
+          let nodeSkillInfo = nodeSkillInfos.appendChild(
+            createElement(
+              'div',
+              `
+              <div>${TextResource[Skill.NameKey.slice(1, -1)]}</div>
+              <div>
+                <a>${TextResource['SkillCategory' + skillType]}</a>
+                <a>⏳ ${Skill.SkillMaxCoolTime == undefined ? '-' : TextResource['CommonTurnFormat'].replace('{0}', Skill.SkillMaxCoolTime)}</a>
+              </div>
+              <hr>
+              `,
+              { 'order': i }
+            )
+          );
+          if (i == 0) {
+            nodeSkillIcon.setAttribute('selected', '');
+            nodeSkillInfo.setAttribute('selected', '');
+          }
+          nodeSkillIcon.onclick = (e) => {
+            let listClean = nodeSkill.querySelectorAll('[selected]');
+            for (let j of listClean) {
+              j.removeAttribute('selected');
+            }
+            nodeSkillIcon.setAttribute('selected', '');
+            nodeSkillInfo.setAttribute('selected', '');
+          };
+          for (let j = 0; j < Skill[`${skillType}SkillInfos`].length; j++) {
+            const SkillInfo = Skill[`${skillType}SkillInfos`][j];
+            let nodeSkillEffect = nodeSkillInfo.appendChild(
+              createElement(
+                'div',
+                `
+                <skilllevel>${j == 0 ? '' : TextResource['DialogCharacterSkillLockSkillLevelFormat'].replace('{0}', j + 1)}</skilllevel>
+                <skill>${TextResource[SkillInfo.DescriptionKey.slice(1, -1)]}</skill>
+                <unlocked>${j == 0 ? '' : TextResource['DialogCharacterSkillLockSkillDescriptionFormat'].replace('{0}', '').replace('<color=#BE5742>', '').replace('{1}', SkillInfo.CharacterLevel)}</unlocked>
+                `
+              )
+            );
+            if (j == 0) {
+              if (SkillInfo.CharacterLevel > CharacterInfo.Level) {
+                nodeSkillIcon.querySelector('level').innerHTML = TextResource['SkillReleaseLevelFormat'].replaceAll('{0}', SkillInfo.CharacterLevel);
+                nodeSkillIcon.setAttribute('level', 0);
+                nodeSkillInfo.setAttribute('level', 0);
+              }
+              nodeSkillInfo.append(createElement('hr'));
+            }
+            if (SkillInfo.CharacterLevel <= CharacterInfo.Level) {
+              nodeSkillIcon.querySelector('level').innerHTML = TextResource['CommonLevelFormat'].replaceAll('{0}', j + 1);
+              nodeSkillIcon.setAttribute('level', j + 1);
+              nodeSkillInfo.setAttribute('level', j + 1);
+              nodeSkillEffect.setAttribute('unlock', '');
+            }
+            if (SkillInfo.EquipmentRarityFlags > 0) {
+              nodeSkillEffect.setAttribute('class', 'hidden');
+            }
+          }
+        }
+        for (let i = 0; i < CharacterInfo.UserEquipmentDtoInfos.length; i++) {
+          const EquipmentInfo = CharacterInfo.UserEquipmentDtoInfos[i];
+          const EquipmentId = EquipmentInfo.EquipmentId;
+          const Equipment = EquipmentList[EquipmentId];
+          const Slot = Equipment.SlotType;
+          const EquipmentSetId = Equipment.EquipmentSetId;
+          const EquipmentSet = EquipmentSetList[EquipmentSetId];
+          let nodeEquipment = nodePanel.querySelector(`equipment[slot="${Slot}"]`);
+          nodeEquipment.setAttribute('rarity', EquipmenRarity[Equipment.RarityFlags].rarity);
+          nodeEquipment.querySelector('img').setAttribute('src', `${GlobalConstant.assetURL}Icon/Equipment/EQP_${'0'.repeat(6 - Equipment.IconId.toString().length)}${Equipment.IconId}.png`);
+          nodeEquipment.querySelector('level').innerHTML = TextResource['CommonLevelLabel'] + Equipment.EquipmentLv;
+          nodeEquipment.querySelector('reinforcement').innerHTML = EquipmentInfo.ReinforcementLv == 0 ? '' : TextResource['CommonPlusLabel'] + EquipmentInfo.ReinforcementLv;
+          nodeEquipment.querySelector('raritydesc').innerHTML = EquipmenRarity[Equipment.RarityFlags].rarity;
+          nodeEquipment.setAttribute('quality', Equipment.QualityLv);
+          nodeEquipment.querySelector('name').innerHTML = TextResource[Equipment.NameKey.slice(1, -1)];
+          let parameterBase = getParameter(Equipment.BattleParameterChangeInfo);
+          nodeEquipment.querySelector('parameter_set[type="base"] parameter_name').innerHTML = TextResource[parameterBase.name];
+          nodeEquipment.querySelector('parameter_set[type="base"] parameter_value').innerHTML = getNumber(Math.round(parameterBase.value * Reinforcement[EquipmentInfo.ReinforcementLv]));
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="1"] parameter_value').innerHTML = getNumber(EquipmentInfo.AdditionalParameterMuscle);
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="2"] parameter_value').innerHTML = getNumber(EquipmentInfo.AdditionalParameterIntelligence);
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="3"] parameter_value').innerHTML = getNumber(EquipmentInfo.AdditionalParameterEnergy);
+          nodeEquipment.querySelector('parameter_set[type="addition"] parameter[order="4"] parameter_value').innerHTML = getNumber(EquipmentInfo.AdditionalParameterHealth);
+          const [LegendLv, MatchlessLv] = [EquipmentInfo.LegendSacredTreasureLv, EquipmentInfo.MatchlessSacredTreasureLv];
+          let [parameterLegend, parameterMatchless] = [getParameter(LegendList[LegendLv][Slot]), getParameter(MatchlessList[MatchlessLv][Slot])];
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="1"] level').innerHTML = LegendLv;
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="1"] parameter_name').innerHTML = TextResource[parameterLegend.name];
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="1"] parameter_value').innerHTML = getNumber(parameterLegend.value);
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="2"] level').innerHTML = MatchlessLv;
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="2"] parameter_name').innerHTML = TextResource[parameterMatchless.name];
+          nodeEquipment.querySelector('parameter_set[type="treasure"] div[order="2"] parameter_value').innerHTML = getNumber(parameterMatchless.value);
+          for (let j = 1; j < 5; j++) {
+            let nodeSphere = nodeEquipment.querySelector(`parameter_set[type="sphere"] sphere[order="${j}"]`);
+            if (j <= EquipmentInfo.SphereUnlockedCount) {
+              const SphereId = EquipmentInfo[`SphereId${j}`];
+              if (SphereId == 0) {
+                nodeSphere.querySelector('img').setAttribute('src', '');
+                nodeSphere.querySelector('name').innerHTML = TextResource['CommonNotEquippingLabel'];
+              } else {
+                const Sphere = SphereList[SphereId];
+                nodeSphere.setAttribute('rarity', EquipmenRarity[Sphere.RarityFlags].rarity);
+                nodeSphere.querySelector('img').setAttribute('src', `${GlobalConstant.assetURL}Icon/Sphere/SPH_${'0'.repeat(2 - Sphere.CategoryId.toString().length)}${Sphere.CategoryId}0${Sphere.SphereType}.png`);
+                nodeSphere.querySelector('level').innerHTML = TextResource['CommonLevelFormat'].replace('{0}', Sphere.Lv);
+                nodeSphere.querySelector('name').innerHTML = TextResource[Sphere.NameKey.slice(1, -1)];
+                let parameterSphere = Sphere.BaseParameterChangeInfo ? getParameter(Sphere.BaseParameterChangeInfo) : getParameter(Sphere.BattleParameterChangeInfo);
+                nodeSphere.querySelector('parameter_value').innerHTML = getNumber(parameterSphere.value);
+              }
+            }
+          }
+          const EquipmentExclusive = EquipmentExclusiveList[Equipment.ExclusiveEffectId];
+          if (EquipmentExclusive) {
+            if (EquipmentExclusive.CharacterId == Character.Id) {
+              nodeCharacterInfo.querySelector('parameter_set[type="exclusive"]').setAttribute('unlock', '');
+            }
+            let ExclusiveList = (EquipmentExclusive.BaseParameterChangeInfoList ? EquipmentExclusive.BaseParameterChangeInfoList : []).concat(EquipmentExclusive.BattleParameterChangeInfoList ? EquipmentExclusive.BattleParameterChangeInfoList : []);
+            for (let k = 0; k < ExclusiveList.length; k++) {
+              let nodeExclusive = nodeCharacterInfo.querySelector('parameter_set[type="exclusive"] [type="parameter"]');
+              let parameterExclusive = getParameter(ExclusiveList[k]);
+              nodeExclusive.append(
+                createElement(
+                  'div',
+                  `
+                    <effect>
+                      <effect_name>${TextResource[parameterExclusive.name]}</effect_name>
+                      <effect_value>${getNumber(parameterExclusive.value)}</effect_value>
+                    </effect>
+                    `
+                )
+              );
+            }
+          }
+          const EquipmentSkill = EquipmenSkillList[Equipment.EquipmentExclusiveSkillDescriptionId];
+          if (EquipmentSkill) {
+            nodeCharacterInfo.querySelector('parameter_set[type="exclusive"]').setAttribute('rarity', EquipmenRarity[Equipment.RarityFlags].rarity);
+            nodeCharacterInfo.querySelector('parameter_set[type="exclusive"] [order="SSR"] skill').innerHTML = TextResource[EquipmentSkill.Description1Key.slice(1, -1)];
+            nodeCharacterInfo.querySelector('parameter_set[type="exclusive"] [order="UR"] skill').innerHTML = TextResource[EquipmentSkill.Description2Key.slice(1, -1)];
+            nodeCharacterInfo.querySelector('parameter_set[type="exclusive"] [order="LR"] skill').innerHTML = TextResource[EquipmentSkill.Description3Key.slice(1, -1)];
+          }
+          if (EquipmentSet) {
+            const EquipmentSetName = TextResource[EquipmentSet.NameKey.slice(1, -1)];
+            nodeEquipment.querySelector('desc setname').innerHTML = EquipmentSet ? EquipmentSetName : '';
+            countEquipmenSet[EquipmentSetId] = !countEquipmenSet[EquipmentSetId] ? 1 : countEquipmenSet[EquipmentSetId] + 1;
+          }
+        }
+        for (let i in countEquipmenSet) {
+          const EquipmenSet = EquipmentSetList[i];
+          if (countEquipmenSet[i] > 1) {
+            let nodeEquipmenSets = nodeCharacterInfo.querySelector('parameter_set[type="set"]');
+            nodeEquipmenSets.append(createElement('parameter_subtype', TextResource[EquipmenSet.NameKey.slice(1, -1)]));
+            let nodeEquipmenSet = nodeEquipmenSets.appendChild(
+              createElement(
+                'div',
+                `
+                  `,
+                { 'count': countEquipmenSet[i] }
+              )
+            );
+            for (let j = 0; j < EquipmenSet.EffectList.length; j++) {
+              const Set = EquipmenSet.EffectList[j];
+              let parameterSet = getParameter(Set.BaseParameterChangeInfo ? Set.BaseParameterChangeInfo : Set.BattleParameterChangeInfo);
+              nodeEquipmenSet.appendChild(
+                createElement(
+                  'div',
+                  `
+                  <treasure>${TextResource['EquipmentSet'].replace('{0}', Set.RequiredEquipmentCount)}</treasure>
+                  <parameter>
+                    <parameter_name>${TextResource[parameterSet.name]}</parameter_name>
+                    <parameter_value>${getNumber(parameterSet.value)}</parameter_value>
+                  </parameter>
+                  `,
+                  { 'require': Set.RequiredEquipmentCount }
+                )
+              );
+            }
+          }
+        }
+      };
+    }
+    nodeTr.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonBattlePowerLabel']}: ${getNumber(totalBattlePower)}`;
+  }
+}
+//获取加成信息
+function getParameter(ParameterChangeInfo) {
+  const ParameterType = {
+    'Base': {
+      '1': 'BaseParameterTypeMuscle',
+      '2': 'BaseParameterTypeEnergy',
+      '3': 'BaseParameterTypeIntelligence',
+      '4': 'BaseParameterTypeHealth',
+    },
+    'Battle': {
+      '1': 'BattleParameterTypeHp',
+      '2': 'BattleParameterTypeAttackPower',
+      '3': 'BattleParameterTypePhysicalDamageRelax',
+      '4': 'BattleParameterTypeMagicDamageRelax',
+      '5': 'BattleParameterTypeHit',
+      '6': 'BattleParameterTypeAvoidance',
+      '7': 'BattleParameterTypeCritical',
+      '8': 'BattleParameterTypeCriticalResist',
+      '9': 'BattleParameterTypeCriticalDamageEnhance',
+      '10': 'BattleParameterTypePhysicalCriticalDamageRelax',
+      '11': 'BattleParameterTypeMagicCriticalDamageRelax',
+      '12': 'BattleParameterTypeDefensePenetration',
+      '13': 'BattleParameterTypeDefense',
+      '14': 'BattleParameterTypeDamageEnhance',
+      '15': 'BattleParameterTypeDebuffHit',
+      '16': 'BattleParameterTypeDebuffResist',
+      '17': 'BattleParameterTypeDamageReflect',
+      '18': 'BattleParameterTypeHpDrain',
+      '19': 'BattleParameterTypeSpeed',
+    },
+  };
+  let paraType = ParameterChangeInfo.BaseParameterType ? 'Base' : 'Battle';
+  let Parameter = {
+    'name': ParameterType[paraType][ParameterChangeInfo[`${paraType}ParameterType`]],
+    'value': ParameterChangeInfo.ChangeParameterType == 1 ? ParameterChangeInfo.Value : `${ParameterChangeInfo.Value / 100}%`,
+  };
+  return Parameter;
+}
+function getNumber(number) {
+  if (isNaN(number)) {
+    return number;
+  } else {
+    return new Intl.NumberFormat('en-US').format(number);
+  }
 }
 /*API函数*/
 //获取option
@@ -2630,73 +4158,385 @@ async function getAppVersion() {
 }
 //获取本地化文件
 async function getTextResource() {
-  if (GlobalConstant.AppVersion != getStorage('AppVersion') || GlobalURLList.lang != getStorage('Language')) {
-    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TextResource${GlobalURLList.lang}MB`, { type: 'arraybuffer', msgpack: true });
-    const TextResourceMB = await msgpack.decode(new Uint8Array(buffer));
-    if (!TextResourceMB) return;
-    let result = {};
-    for (let i = 0; i < TextResourceMB.length; i++) {
-      const TextResource = TextResourceMB[i];
-      result[TextResource.StringKey.replace(/\[(.*?)\]/, '$1')] = TextResource.Text;
+  const Type = 'TextResource';
+  let DataList = {};
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`) || GlobalURLList.lang != getStorage('Language')) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}${GlobalURLList.lang}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      const CacheData = DataMB[i];
+      let Data = {
+        'Guid': CacheData.StringKey.replace(/\[(.*?)\]/, '$1'),
+        'Value': CacheData.Text,
+      };
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data.Value;
     }
-    setStorage('AppVersion', GlobalConstant.AppVersion);
+    let cacheLanguageTable = {};
+    for (let j in LanguageTableM) {
+      cacheLanguageTable[j] = DataList[LanguageTableM[j]].replace('{0}', '');
+    }
+    for (let j of LanguageTableJ) {
+      cacheLanguageTable[j] = LanguageTable[j][GlobalURLList.lang];
+    }
+    setStorage(`LanguageTable`, cacheLanguageTable);
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
     setStorage('Language', GlobalURLList.lang);
-    setStorage('TextResource', JSON.stringify(result));
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i].Value;
+    }
   }
-  return JSON.parse(getStorage('TextResource'));
+  return DataList;
 }
 //获取人物信息
 async function getCharacter() {
-  let CharacterList = JSON.parse(getStorage('Character'));
-  if (CharacterList?.AppVersion != GlobalConstant.AppVersion) {
-    const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/CharacterMB`, { type: 'arraybuffer', msgpack: true });
-    const CharacterMB = await msgpack.decode(new Uint8Array(buffer));
-    if (!CharacterMB) return;
-    CharacterList = {};
-    for (let i = 0; i < CharacterMB.length; i++) {
-      const Character = CharacterMB[i];
-      Character.Name = Character.NameKey ? TextResource[Character.NameKey.slice(1, -1)] : '';
-      Character.Title = Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '';
-      CharacterList[Character.Id] = Character;
+  const Type = 'Character';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      let Data = DataMB[i];
+      Data.Guid = Data.Id;
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
     }
-    CharacterList.AppVersion = GlobalConstant.AppVersion;
-    setStorage('Character', JSON.stringify(CharacterList));
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
   }
-  return CharacterList;
+  return DataList;
+}
+//获取装备信息
+async function getEquipment() {
+  const Type = 'Equipment';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      let Data = DataMB[i];
+      Data.Guid = Data.Id;
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
+}
+//获取套装信息
+async function getEquipmentSet() {
+  const Type = 'EquipmentSet';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      let Data = DataMB[i];
+      Data.Guid = Data.Id;
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
+}
+//获取强化信息
+async function getReinforcement() {
+  const Type = 'EquipmentReinforcementParameter';
+  let DataList = {};
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`)) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      const CacheData = DataMB[i];
+      let Data = {
+        'Guid': CacheData.Id,
+        'Value': CacheData.ReinforcementCoefficient,
+      };
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data.Value;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i].Value;
+    }
+  }
+  return DataList;
+}
+//获取魔装信息
+async function getMatchless() {
+  const Type = 'EquipmentMatchlessSacredTreasure';
+  let DataList = {};
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`)) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      const CacheData = DataMB[i];
+      let Data = {
+        'Guid': CacheData.Lv,
+        '1': {
+          'BattleParameterType': 2,
+          'ChangeParameterType': 1,
+          'Value': CacheData.WeaponAttackPower,
+        },
+        '2': {
+          'BattleParameterType': 3,
+          'ChangeParameterType': 1,
+          'Value': CacheData.SubPhysicalDamageRelax,
+        },
+        '3': {
+          'BattleParameterType': 4,
+          'ChangeParameterType': 1,
+          'Value': CacheData.GauntletMagicDamageRelax,
+        },
+        '4': {
+          'BattleParameterType': 7,
+          'ChangeParameterType': 1,
+          'Value': CacheData.HelmetCritical,
+        },
+        '5': {
+          'BattleParameterType': 12,
+          'ChangeParameterType': 1,
+          'Value': CacheData.ArmorDefensePenetration,
+        },
+        '6': {
+          'BattleParameterType': 1,
+          'ChangeParameterType': 1,
+          'Value': CacheData.ShoesHp,
+        },
+        'RequiredTotalExp': CacheData.RequiredTotalExp,
+      };
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
+}
+//获取圣装信息
+async function getLegend() {
+  const Type = 'EquipmentLegendSacredTreasure';
+  let DataList = {};
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`)) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      const CacheData = DataMB[i];
+      let Data = {
+        'Guid': CacheData.Lv,
+        '1': {
+          'BattleParameterType': 2,
+          'ChangeParameterType': 2,
+          'Value': CacheData.WeaponAttackPowerPercent,
+        },
+        '2': {
+          'BattleParameterType': 5,
+          'ChangeParameterType': 2,
+          'Value': CacheData.SubHitPercent,
+        },
+        '3': {
+          'BattleParameterType': 9,
+          'ChangeParameterType': 2,
+          'Value': CacheData.GauntletCriticalDamagePercent,
+        },
+        '4': {
+          'BattleParameterType': 10,
+          'ChangeParameterType': 2,
+          'Value': CacheData.HelmetPhysicalCriticalDamageRelaxPercent,
+        },
+        '5': {
+          'BattleParameterType': 11,
+          'ChangeParameterType': 2,
+          'Value': CacheData.ArmorMagicCriticalDamageRelaxPercent,
+        },
+        '6': {
+          'BattleParameterType': 18,
+          'ChangeParameterType': 2,
+          'Value': CacheData.ShoesHpDrainPercent,
+        },
+        'RequiredTotalExp': CacheData.RequiredTotalExp,
+      };
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
+}
+//获取符石信息
+async function getSphere() {
+  const Type = 'Sphere';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      let Data = DataMB[i];
+      Data.Guid = Data.Id;
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
+}
+//获取装备技能信息
+async function getEquipmentSkill() {
+  const Type = 'EquipmentExclusiveSkillDescription';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      let Data = DataMB[i];
+      Data.Guid = Data.Id;
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
+}
+//获取装备特效信息
+async function getEquipmentExclusive() {
+  const Type = 'EquipmentExclusiveEffect';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+    const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+    if (!DataMB) return;
+    for (let i = 0; i < DataMB.length; i++) {
+      let Data = DataMB[i];
+      Data.Guid = Data.Id;
+      updateData(DataBase.Static.db, Type, Data);
+      DataList[Data.Guid] = Data;
+    }
+    setStorage(`version${Type}`, GlobalConstant.AppVersion);
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
+}
+//获取装备技能信息
+async function getSkill() {
+  const Type = 'Skill';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    for (let i of ['Active', 'Passive']) {
+      const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${i}${Type}MB`, { type: 'arraybuffer', msgpack: true });
+      const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+      if (!DataMB) return;
+      for (let j = 0; j < DataMB.length; j++) {
+        let Data = DataMB[j];
+        Data.Guid = Data.Id;
+        updateData(DataBase.Static.db, Type, Data);
+        DataList[Data.Guid] = Data;
+      }
+      setStorage(`version${Type}`, GlobalConstant.AppVersion);
+    }
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
+    }
+  }
+  return DataList;
 }
 //获取物品信息
 async function getItem() {
-  let ItemList = JSON.parse(getStorage('Item'));
-  if (ItemList?.AppVersion != GlobalConstant.AppVersion) {
-    const buffer0 = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/ItemMB`, { type: 'arraybuffer', msgpack: true });
-    const ItemMB = await msgpack.decode(new Uint8Array(buffer0));
-    const buffer1 = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/TreasureChestMB`, { type: 'arraybuffer', msgpack: true });
-    const TreasureChestMB = await msgpack.decode(new Uint8Array(buffer1));
-    if (!ItemMB || !TreasureChestMB) return;
-    ItemList = {};
-    for (let i = 0; i < ItemMB.length; i++) {
-      const Item = ItemMB[i];
-      Item.Name = Item.NameKey ? TextResource[Item.NameKey.slice(1, -1)] : '';
-      Item.Display = Item.DisplayName ? TextResource[Item.DisplayName.slice(1, -1)] : '';
-      Item.Description = Item.DescriptionKey ? TextResource[Item.DescriptionKey.slice(1, -1)] : '';
-      ItemList[`${Item.ItemId}@${Item.ItemType}`] = Item;
+  const Type = 'Item';
+  let DataList = {};
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+    for (let i of ['Item', 'TreasureChest']) {
+      const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${i}MB`, { type: 'arraybuffer', msgpack: true });
+      const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+      if (!DataMB) return;
+      for (let j = 0; j < DataMB.length; j++) {
+        let ItemType, ItemId;
+        let Data = DataMB[j];
+        switch (i) {
+          case 'Item': {
+            ItemId = Data.ItemId;
+            ItemType = Data.ItemType;
+            break;
+          }
+          case 'TreasureChest': {
+            ItemId = Data.Id;
+            ItemType = 17;
+            break;
+          }
+          default: {
+            ItemType = Data.ItemType;
+          }
+        }
+        Data.Guid = `${ItemId}@${ItemType}`;
+        updateData(DataBase.Static.db, Type, Data);
+        DataList[Data.Guid] = Data;
+      }
+      setStorage(`version${Type}`, GlobalConstant.AppVersion);
     }
-    for (let i = 0; i < TreasureChestMB.length; i++) {
-      const Treasure = TreasureChestMB[i];
-      Treasure.Name = Treasure.NameKey ? TextResource[Treasure.NameKey.slice(1, -1)] : '';
-      Treasure.Display = Treasure.DisplayName ? TextResource[Treasure.DisplayName.slice(1, -1)] : '';
-      Treasure.Description = Treasure.DescriptionKey ? TextResource[Treasure.DescriptionKey.slice(1, -1)] : '';
-      ItemList[`${Treasure.Id}@${17}`] = Treasure;
+  } else {
+    const DataDB = await getArray(DataBase.Static.db, Type, {}, 'Guid');
+    for (let i = 0; i < DataDB.length; i++) {
+      DataList[DataDB[i].Guid] = DataDB[i];
     }
-    ItemList.AppVersion = GlobalConstant.AppVersion;
-    setStorage('Item', JSON.stringify(ItemList));
   }
-  return ItemList;
+  return DataList;
 }
 //获取神殿信息
 async function getLocalRaidQuest(QuestGuid) {
-  let test = await getData('Raid', !QuestGuid ? 100101 : QuestGuid);
-  let LocalRaidQuest = {};
+  let test = await getData(DataBase.Static.db, 'Raid', !QuestGuid ? 100101 : QuestGuid);
+  let LocalRaidQuestList = {};
   if (!test) {
     const json = await sendGMRequest(`https://raw.githubusercontent.com/moonheart/mementomori-masterbook/master/Master/LocalRaidQuestMB.json`, {});
     if (!json) {
@@ -2715,17 +4555,17 @@ async function getLocalRaidQuest(QuestGuid) {
         'FixedBattleReward': QuestMB.FixedBattleRewards,
         'FirstBattleReward': QuestMB.FirstBattleRewards,
       };
-      updateData('Raid', Quest);
-      LocalRaidQuest[QuestMB.Id] = Quest;
+      updateData(DataBase.Static.db, 'Raid', Quest);
+      LocalRaidQuestList[QuestMB.Id] = Quest;
     }
   } else {
-    const LocalRaidQuestDB = await getArray('Raid', {}, 'Guid');
+    const LocalRaidQuestDB = await getArray(DataBase.Static.db, 'Raid', {}, 'Guid');
     for (let i = 0; i < LocalRaidQuestDB.length; i++) {
       const Quest = LocalRaidQuestDB[i];
-      LocalRaidQuest[Quest.Guid] = Quest;
+      LocalRaidQuestList[Quest.Guid] = Quest;
     }
   }
-  return LocalRaidQuest;
+  return LocalRaidQuestList;
 }
 //获取世界组
 async function getWorldGroup() {
@@ -3190,7 +5030,7 @@ function createElement(type, text = '', option) {
     node = document.createTextNode(text);
   } else {
     node = document.createElement(type);
-    node.innerHTML = text;
+    node.innerHTML = text.toString().replaceAll(/\n */g, '');
   }
   if (option?.constructor === String) {
     node.id = option;
@@ -3209,6 +5049,15 @@ function createElement(type, text = '', option) {
     }
   }
   return node;
+}
+//获取父元素
+function getFather(target, lable) {
+  let father = target.parentNode;
+  if (!father) return;
+  if (father.tagName != lable) {
+    father = getFather(target.parentNode, lable);
+  }
+  return father;
 }
 //获取消息头
 function getHeader(headers, key) {
@@ -3343,136 +5192,203 @@ function sendData(socket, MatchInfo) {
 }
 /*数据库函数*/
 //打开数据库
-async function openDB() {
+async function openDB(dbName) {
   //创建打开请求,若存在则打开,否则创建
-  let request = indexedDB.open('database', 1);
+  let version = DataBase[dbName].version;
+  let request = await indexedDB.open(dbName, version);
   //请求失败
   request.onerror = function (error) {
-    console.error('数据库打开失败:' + error.target.errorCode);
+    console.error(`数据库${dbName}:${version}打开失败:` + error.target.errorCode);
   };
   //请求成功
   request.onsuccess = function (success) {
-    console.log('数据库打开成功');
-    DataBase = request.result;
+    console.log(`数据库${dbName}:${version}打开成功`);
+    DataBase[dbName].db = request.result;
   };
   //更新数据库版本
   request.onupgradeneeded = function (upgrade) {
-    console.log('数据库构建中');
-    DataBase = request.result;
-    //表Match是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Match')) {
-      let objectStore = DataBase.createObjectStore('Match', {
-        keyPath: 'Guid',
-      });
+    console.log(`数据库${dbName}:${version}构建中`);
+    DataBase[dbName].db = request.result;
+    let db = DataBase[dbName].db;
+    switch (dbName) {
+      case 'Record': {
+        //表Match是否存在,否则创建
+        if (!db.objectStoreNames.contains('Match')) {
+          let objectStore = db.createObjectStore('Match', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Guild是否存在,否则创建
+        if (!db.objectStoreNames.contains('Guild')) {
+          let objectStore = db.createObjectStore('Guild', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('GuildId', 'GuildId', {
+            unique: false,
+          });
+          objectStore.createIndex('Name', 'Name', {
+            unique: false,
+          });
+        }
+        //表Player是否存在,否则创建
+        if (!db.objectStoreNames.contains('Player')) {
+          let objectStore = db.createObjectStore('Player', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('PlayerId', 'PlayerId', {
+            unique: false,
+          });
+          objectStore.createIndex('Name', 'Name', {
+            unique: false,
+          });
+          objectStore.createIndex('Guild', 'Guild', {
+            unique: false,
+          });
+          objectStore.createIndex('Level', 'Level', {
+            unique: false,
+          });
+        }
+        //表Deck是否存在,否则创建
+        if (!db.objectStoreNames.contains('Deck')) {
+          let objectStore = db.createObjectStore('Deck', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('DeckId', 'DeckId', {
+            unique: false,
+          });
+          objectStore.createIndex('Player', 'Player', {
+            unique: false,
+          });
+          objectStore.createIndex('LastUpdate', 'LastUpdate', {
+            unique: false,
+          });
+        }
+        //表Character是否存在,否则创建
+        if (!db.objectStoreNames.contains('Character')) {
+          let objectStore = db.createObjectStore('Character', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('CharacterId', 'CharacterId', {
+            unique: false,
+          });
+          objectStore.createIndex('Player', 'Player', {
+            unique: false,
+          });
+          objectStore.createIndex('Level', 'Level', {
+            unique: false,
+          });
+          objectStore.createIndex('SubLevel', 'SubLevel', {
+            unique: false,
+          });
+          objectStore.createIndex('BattlePower', 'BattlePower', {
+            unique: false,
+          });
+          objectStore.createIndex('LastUpdate', 'LastUpdate', {
+            unique: false,
+          });
+        }
+        //表Battle是否存在,否则创建
+        if (!db.objectStoreNames.contains('Battle')) {
+          let objectStore = db.createObjectStore('Battle', {
+            keyPath: 'Guid',
+          });
+          objectStore.createIndex('LastUpdate', 'LastUpdate', {
+            unique: false,
+          });
+        }
+        break;
+      }
+      case 'Static': {
+        //表TextResource是否存在,否则创建
+        if (!db.objectStoreNames.contains('TextResource')) {
+          let objectStore = db.createObjectStore('TextResource', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Character是否存在,否则创建
+        if (!db.objectStoreNames.contains('Character')) {
+          let objectStore = db.createObjectStore('Character', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Equipment是否存在,否则创建
+        if (!db.objectStoreNames.contains('Equipment')) {
+          let objectStore = db.createObjectStore('Equipment', {
+            keyPath: 'Guid',
+          });
+        }
+        //表EquipmentSet是否存在,否则创建
+        if (!db.objectStoreNames.contains('EquipmentSet')) {
+          let objectStore = db.createObjectStore('EquipmentSet', {
+            keyPath: 'Guid',
+          });
+        }
+        //表 Reinforcement 是否存在,否则创建
+        if (!db.objectStoreNames.contains('EquipmentReinforcementParameter')) {
+          let objectStore = db.createObjectStore('EquipmentReinforcementParameter', {
+            keyPath: 'Guid',
+          });
+        }
+        //表 Matchless 是否存在,否则创建
+        if (!db.objectStoreNames.contains('EquipmentMatchlessSacredTreasure')) {
+          let objectStore = db.createObjectStore('EquipmentMatchlessSacredTreasure', {
+            keyPath: 'Guid',
+          });
+        }
+        //表 Legend 是否存在,否则创建
+        if (!db.objectStoreNames.contains('EquipmentLegendSacredTreasure')) {
+          let objectStore = db.createObjectStore('EquipmentLegendSacredTreasure', {
+            keyPath: 'Guid',
+          });
+        }
+        //表 Sphere 是否存在,否则创建
+        if (!db.objectStoreNames.contains('Sphere')) {
+          let objectStore = db.createObjectStore('Sphere', {
+            keyPath: 'Guid',
+          });
+        }
+        //表 EquipmentSkill 是否存在,否则创建
+        if (!db.objectStoreNames.contains('EquipmentExclusiveSkillDescription')) {
+          let objectStore = db.createObjectStore('EquipmentExclusiveSkillDescription', {
+            keyPath: 'Guid',
+          });
+        }
+        //表 EquipmentExclusive 是否存在,否则创建
+        if (!db.objectStoreNames.contains('EquipmentExclusiveEffect')) {
+          let objectStore = db.createObjectStore('EquipmentExclusiveEffect', {
+            keyPath: 'Guid',
+          });
+        }
+        //表 Skill 是否存在,否则创建
+        if (!db.objectStoreNames.contains('Skill')) {
+          let objectStore = db.createObjectStore('Skill', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Equipment是否存在,否则创建
+        if (!db.objectStoreNames.contains('Item')) {
+          let objectStore = db.createObjectStore('Item', {
+            keyPath: 'Guid',
+          });
+        }
+        //表Raid是否存在,否则创建
+        if (!db.objectStoreNames.contains('Raid')) {
+          let objectStore = db.createObjectStore('Raid', {
+            keyPath: 'Guid',
+          });
+        }
+        break;
+      }
+      default: {
+        break;
+      }
     }
-    //表Guild是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Guild')) {
-      let objectStore = DataBase.createObjectStore('Guild', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('GuildId', 'GuildId', {
-        unique: false,
-      });
-      objectStore.createIndex('Name', 'Name', {
-        unique: false,
-      });
-    }
-    //表Player是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Player')) {
-      let objectStore = DataBase.createObjectStore('Player', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('PlayerId', 'PlayerId', {
-        unique: false,
-      });
-      objectStore.createIndex('Name', 'Name', {
-        unique: false,
-      });
-      objectStore.createIndex('Guild', 'Guild', {
-        unique: false,
-      });
-      objectStore.createIndex('Level', 'Level', {
-        unique: false,
-      });
-    }
-    //表Deck是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Deck')) {
-      let objectStore = DataBase.createObjectStore('Deck', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('DeckId', 'DeckId', {
-        unique: false,
-      });
-      objectStore.createIndex('Player', 'Player', {
-        unique: false,
-      });
-      objectStore.createIndex('LastUpdate', 'LastUpdate', {
-        unique: false,
-      });
-    }
-    //表Character是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Character')) {
-      let objectStore = DataBase.createObjectStore('Character', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('CharacterId', 'CharacterId', {
-        unique: false,
-      });
-      objectStore.createIndex('Player', 'Player', {
-        unique: false,
-      });
-      objectStore.createIndex('Level', 'Level', {
-        unique: false,
-      });
-      objectStore.createIndex('SubLevel', 'SubLevel', {
-        unique: false,
-      });
-      objectStore.createIndex('BattlePower', 'BattlePower', {
-        unique: false,
-      });
-      objectStore.createIndex('LastUpdate', 'LastUpdate', {
-        unique: false,
-      });
-    }
-    //表Battle是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Battle')) {
-      let objectStore = DataBase.createObjectStore('Battle', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('LastUpdate', 'LastUpdate', {
-        unique: false,
-      });
-    }
-    //表Raid是否存在,否则创建
-    if (!DataBase.objectStoreNames.contains('Raid')) {
-      let objectStore = DataBase.createObjectStore('Raid', {
-        keyPath: 'Guid',
-      });
-      objectStore.createIndex('LocalRaidBannerId', 'LocalRaidBannerId', {
-        unique: false,
-      });
-      objectStore.createIndex('Level', 'Level', {
-        unique: false,
-      });
-      objectStore.createIndex('LocalRaidLevel', 'LocalRaidLevel', {
-        unique: false,
-      });
-      objectStore.createIndex('FirstBattleReward', 'FirstBattleReward', {
-        unique: false,
-      });
-      objectStore.createIndex('FixBattleReward', 'FixBattleReward', {
-        unique: false,
-      });
-      objectStore.createIndex('Enermy', 'Enermy', {
-        unique: false,
-      });
-    }
-    console.log('数据库构建成功');
+    console.log(`数据库${dbName}:${version}构建成功`);
   };
 }
 //插入数据
-async function insertData(table, data) {
-  let transaction = DataBase.transaction([table], 'readwrite');
+async function insertData(db, table, data) {
+  let transaction = db.transaction([table], 'readwrite');
   let objectStore = transaction.objectStore(table);
   let request = objectStore.add(data);
   request.onsuccess = function (success) {
@@ -3483,8 +5399,8 @@ async function insertData(table, data) {
   };
 }
 //更新数据
-async function updateData(table, data) {
-  let transaction = DataBase.transaction([table], 'readwrite');
+async function updateData(db, table, data) {
+  let transaction = db.transaction([table], 'readwrite');
   let objectStore = transaction.objectStore(table);
   let request = objectStore.put(data);
   request.onsuccess = function (sucess) {
@@ -3495,18 +5411,18 @@ async function updateData(table, data) {
   };
 }
 //删除数据
-async function removeData(table, key) {
+async function removeData(db, table, key) {
   if (!key) return;
-  let transaction = DataBase.transaction([table], 'readwrite');
+  let transaction = db.transaction([table], 'readwrite');
   let objectStore = transaction.objectStore(table);
   let request = objectStore.delete(key);
   request.onerror = function (error) {};
   request.onsuccess = function (success) {};
 }
 //获取数据
-async function getData(table, index, key) {
+async function getData(db, table, index, key) {
   return new Promise(function (resolve, reject) {
-    let transaction = DataBase.transaction([table]);
+    let transaction = db.transaction([table]);
     transaction.oncomplete = function (complete) {};
     transaction.onerror = function (error) {
       console.log(`${table} 获取失败:${index}`);
@@ -3533,10 +5449,10 @@ async function getData(table, index, key) {
   });
 }
 //获取数据组,留空获取全部，{'>':,'>=':,'<':,'<=':}获取指定范围，字符串获取固定
-async function getArray(table, index = {}, key) {
+async function getArray(db, table, index = {}, key) {
   return new Promise(function (resolve, reject) {
     let oArray = [];
-    let transaction = DataBase.transaction([table]);
+    let transaction = db.transaction([table]);
     transaction.oncomplete = function (complete) {};
     transaction.onerror = function (error) {
       console.error(`${table} 获取失败:${index}`);
