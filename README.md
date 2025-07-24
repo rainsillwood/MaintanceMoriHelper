@@ -10,7 +10,8 @@
     开发版/Nightly(Unrecommend)：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 
 # 功能介绍/Tips
- 优化幻影神殿：显示具体获得报酬，更改显示模式
+ 优化幻影神殿：显示具体获得报酬，更改显示模式（数据来源于旧版本，不一定准确）
+ Better Templ:Show resources you'll get(Data get from old version,not really exact)
 
  数据转换：选择MessagePack格式的二进制文件（如游戏的MB文件，抓包发包的数据），自动转化为可读的JSON格式，可一次性多选
  
