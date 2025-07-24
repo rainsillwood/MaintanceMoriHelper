@@ -1,18 +1,29 @@
-# MementoMoriGuildHelper
- A tool based on Maintenance Mori(https://mentemori.icu)
+# MaintenanceMoriHelper
  
- 一个基于Maintenance Mori的工具，需要安装TamperMonkey来使用，大部分已支持五种文字，小部分只有中文和英文
+ 一个基于Maintenance Mori( https://mentemori.icu )的工具，需要安装TamperMonkey来使用，大部分已支持五种文字，小部分只有中文和英文，大陆地区使用需要开梯子来加载资源
+ 
+ A tool based on Maintenance Mori( https://mentemori.icu ),You need a Browser plugin like Tamper Monkey to use it.Support EnUs/JaJp/KoKr/ZhCn/ZhTw
 
- 安装地址：
+ 如果长时间不工作，请查看控制台是否出错，没出错耐心等待一下，因为首次使用或者切换语言/游戏版本的时候会大量从服务器获取数据，需要时间处理。如果出错请提交Issue
+
+ If not work,please start an issue
+
+ 安装地址/URL：
  
-    稳定版：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
+    稳定版/Stable：https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/GuildHelper.user.js
     
-    开发版：https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
+    开发版/Nightly(Unrecommend)：https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/GuildHelper.user.js
 
-# 功能介绍
- 优化幻影神殿：显示具体获得报酬，更改显示模式
+# 功能介绍/Tips
+ 优化幻影神殿：显示具体获得报酬，更改显示模式（数据来源于旧版本，不一定准确）
+ 
+ Better Temple:Show resources you'll get(Data get from old version,not really exact)
+
+ 优化竞技场/巅峰竞技场/
 
  数据转换：选择MessagePack格式的二进制文件（如游戏的MB文件，抓包发包的数据），自动转化为可读的JSON格式，可一次性多选
+
+ Data Convert: Can convert MB Files or messagepack to JSON.
  
  战斗布局：选好区域、群组、等级（本地为Local）、世界（跨服为四个Block）后可以进行如下点击操作
  
