@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/extend/GuildHelper.user.js
-// @version      1.01
+// @version      1.02
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -52,7 +52,7 @@ const GlobalConstant = {
   'LocalURL': 'https://mentemori.icu/',
   'AppVersion': '',
 };
-//翻译表
+//翻译表-人工维护
 const LanguageTable = {
   'Region': {
     'JaJp': 'サーバー',
@@ -295,7 +295,7 @@ const LanguageTable = {
 };
 //URL信息
 const GlobalURLList = getURLList();
-//跳转功能
+//自动跳转功能
 if (!GlobalURLList.lang) {
   let url = JSON.parse(JSON.stringify(GlobalURLList));
   url.lang = getStorage('Language') ?? 'EnUs';
@@ -334,10 +334,8 @@ let DataBase = {
 await openDB('Static');
 await openDB('Record');
 setStorage('ScriptVersion', 1.01);
-//固定语言
 setStorage('lang', '["en","en","en","en","en","en","en"]');
-//注入翻译
-//从游戏资源获取翻译
+//需要从游戏资源获取翻译列表
 const LanguageTableM = {
   'Rank': 'CommonPlayerRankLabel',
   'STR': 'BaseParameterTypeMuscle',
@@ -373,8 +371,9 @@ const LanguageTableM = {
   'Event': 'PlayerEventPolicyLabel',
   ' Wins': 'WeeklyTopicsLeagueContinueWinCountFormat',
 };
-//从翻译表获取翻译
+//从翻译表获取翻译列表
 const LanguageTableJ = ['Locked', 'All Worlds', ' Forces'];
+//注入翻译
 const functionLanguage = unsafeWindow._m;
 unsafeWindow._m = function (...args) {
   //内联翻译表
@@ -638,12 +637,42 @@ async function initPage() {
   //获取语言账号模块
   const divLocal = navDefault.childNodes[3];
   const nodeSwitch = [divLocal.querySelector('#switch-light'), divLocal.querySelector('#switch-dark')];
+  const nodeRefresh = createElement('a', '🔄');
+  nodeRefresh.onclick = async () => {
+    await getTextResource(true);
+    await getCharacter(true);
+    await getEquipment(true);
+    await getEquipmentSet(true);
+    await getReinforcement(true);
+    await getMatchless(true);
+    await getLegend(true);
+    await getSphere(true);
+    await getEquipmentSkill(true);
+    await getEquipmentExclusive(true);
+    await getSkill(true);
+    await getItem(true);
+    await getLocalRaidQuest(true);
+    window.location.href = document.URL;
+  };
+  const nodeClear = createElement('a', '🗑️');
+  nodeClear.onclick = () => {
+    localStorage.clear();
+    indexedDB.deleteDatabase('Static');
+    indexedDB.deleteDatabase('Record');
+    window.location.href = document.URL;
+  };
   divLocal.innerHTML = '';
   let URLList = getURLList();
   divLocal.append(
     nodeSwitch[0],
     createElement('a', '|'),
     nodeSwitch[1],
+    createElement('a', '　'),
+    createElement('a', '　'),
+    createElement('a', '　'),
+    nodeRefresh,
+    createElement('a', '|'),
+    nodeClear,
     createElement('br'),
     createElement('a', '🇬🇧', {
       'href': getURL(URLList, { 'lang': 'EnUs' }),
@@ -930,10 +959,10 @@ function initContent() {
   thead > tr {
     background: #aaf !important;
   }
-  tbody > tr {
-    background: #e8e8e8 !important;
+  tbody > :nth-child(1) {
+    background: #e8e8e8;
   }
-  tbody * {
+  tbody {
     font-size: small;
     font-weight: normal;
   }
@@ -947,47 +976,6 @@ function initContent() {
 }
 //初始化翻译
 function initTranslator() {
-  //替换内置语言表，需人工维护
-  unsafeWindow.m = {};
-  unsafeWindow.m[GlobalURLList.lang] = {
-    'Rank': TextResource['CommonPlayerRankLabel'],
-    'STR': TextResource['BaseParameterTypeMuscle'],
-    'MAG': TextResource['BaseParameterTypeIntelligence'],
-    'DEX': TextResource['BaseParameterTypeEnergy'],
-    'STA': TextResource['BaseParameterTypeHealth'],
-    'ATK': TextResource['BattleParameterTypeAttackPower'],
-    'DEF': TextResource['BattleParameterTypeDefense'],
-    'DEF Break': TextResource['BattleParameterTypeDefensePenetration'],
-    'SPD': TextResource['BattleParameterTypeSpeed'],
-    'HP': TextResource['BattleParameterTypeHp'],
-    'PM.DEF Break': TextResource['BattleParameterTypeDamageEnhance'],
-    'P.DEF': TextResource['BattleParameterTypePhysicalDamageRelax'],
-    'M.DEF': TextResource['BattleParameterTypeMagicDamageRelax'],
-    'ACC': TextResource['BattleParameterTypeHit'],
-    'EVD': TextResource['BattleParameterTypeAvoidance'],
-    'CRIT': TextResource['BattleParameterTypeCritical'],
-    'CRIT RES': TextResource['BattleParameterTypeCriticalResist'],
-    'CRIT DMG Boost': TextResource['BattleParameterTypeCriticalDamageEnhance'],
-    'P.CRIT DMG Cut': TextResource['BattleParameterTypePhysicalCriticalDamageRelax'],
-    'M.CRIT DMG Cut': TextResource['BattleParameterTypeMagicCriticalDamageRelax'],
-    'Debuff ACC': TextResource['BattleParameterTypeDebuffHit'],
-    'Debuff RES': TextResource['BattleParameterTypeDebuffResist'],
-    'Counter': TextResource['BattleParameterTypeDamageReflect'],
-    'HP Drain': TextResource['BattleParameterTypeHpDrain'],
-    'Locked': LanguageTable['Locked'][GlobalURLList.lang],
-    'None': TextResource['CommonNotEquippingLabel'],
-    ' pts, ': ` ${TextResource['GlovalPvpPoint']}`,
-    ' streak': ` ${TextResource['GlobalPvpConsecutiveVictoryLabel']?.replace('{0}', '')}`,
-    'EXP Orb': TextResource['ItemName10'],
-    'Upgrade Water': TextResource['ItemName12'],
-    'Upgrade Panacea': TextResource['ItemName13'],
-    'Kindling Orb': TextResource['ItemName11'],
-    'Rune Ticket': TextResource['ItemName43'],
-    'Event': TextResource['PlayerEventPolicyLabel'],
-    'All Worlds': LanguageTable['All Worlds'][GlobalURLList.lang],
-    ' Forces': LanguageTable[' Forces'][GlobalURLList.lang],
-    ' Wins': ` ${TextResource['WeeklyTopicsLeagueContinueWinCountFormat']?.replace('{0}', '')}`,
-  };
   //替换含data-ja的标签，需人工维护
   let jalist = [];
   jalist[0] = document.querySelectorAll('[data-ja]');
@@ -1143,7 +1131,7 @@ async function gvgMapper() {
   //读取数据
   buttonGetLocal.onclick = async () => {
     drawMap();
-    fillGuilds();
+    await fillGuilds();
     const RegionId = getStorage(GlobalURLList.function + 'RegionId');
     const GroupId = getStorage(GlobalURLList.function + 'GroupId');
     const ClassId = getStorage(GlobalURLList.function + 'ClassId');
@@ -1225,7 +1213,7 @@ async function gvgMapper() {
     if (MatchInfo) {
       //初始化页面
       drawMap();
-      fillGuilds();
+      await fillGuilds();
       //从数据库获取战斗信息
       let Match = await getData(DataBase.Record.db, 'Match', `${GroupId}_${ClassId}_${WorldId}`);
       //若无信息则新建
@@ -1274,7 +1262,7 @@ async function gvgMapper() {
       //填充城池信息
       document.querySelector('gvg-viewer').setAttribute('guid', Match.Guid);
       document.querySelector('gvg-viewer').setAttribute('region', RegionId);
-      fillMap(Match.Castles, Match.Guilds);
+      await fillMap(Match.Castles, Match.Guilds);
     } else {
       alert('无法获取战斗信息');
     }
@@ -1459,7 +1447,7 @@ async function temple() {
     `);
   document.body.appendChild(createElement('data', ''));
   //插入数据
-  fillTemple();
+  await fillTemple();
   changeTempleDisplay();
 }
 //优化竞技场
@@ -1499,7 +1487,7 @@ async function arena() {
       changeSelect(selectRegion.value, selectGroup.value, 0, -1);
     };
     document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillTeam);
-    fillTeam();
+    await fillTeam();
   }
 }
 //优化通关阵容
@@ -1541,7 +1529,7 @@ async function clearlist() {
   document.querySelector('input[type="button"][name="clearparty"]').onclick = fillTeam;
   if (Id) {
     document.querySelector('input[type="text"][name="guid"]').value = Id;
-    fillTeam();
+    await fillTeam();
   }
 }
 /*子功能*/
@@ -2286,7 +2274,7 @@ async function fillGuilds(GuildList) {
         createElement('td', `<input type="radio" name="${Guid}" value="neutral"${Guild.Relation == 0 ? ' checked="true"' : ''}>`),
         createElement('td', `<input type="radio" name="${Guid}" value="enermy"${Guild.Relation < 0 ? ' checked="true"' : ''}>`)
       );
-      listTable[count < GuildList.length / 2 ? 0 : 1].append(nodeGuild);
+      listTable[count < GuildList.length / 2 ? 0 : 1].querySelector('tbody').append(nodeGuild);
       count++;
     }
   }
@@ -2563,6 +2551,7 @@ async function fillTemple() {
         const QuestGuid = QuestArray[j];
         let Quest = QuestGuid > 999999 ? LocalRaidQuestList[8000000000 + (QuestGuid % 100000000)] : LocalRaidQuestList[QuestGuid * 1];
         let QuestBannerId = QuestGuid > 999999 ? QuestGuid.toString().slice(0, -8) + Quest.LocalRaidBannerId.toString().slice(-1) : Quest.LocalRaidBannerId.toString();
+        let QuestNameId = `LocalRaidName${QuestGuid > 999999 ? 107 + QuestGuid.toString().slice(0, -8) / 10 : Quest.LocalRaidBannerId}`;
         if (j == 0) {
           table.querySelector('th[name="LocalRaidLevel"]').innerHTML = TextResource['LocalRaidTrainingLevelFormat'].replace('{0}', Quest.LocalRaidLevel);
         }
@@ -2570,19 +2559,20 @@ async function fillTemple() {
           createElement(
             'tr',
             `
-                <th>
-                  <div name="banner">
-                    <img src="${GlobalConstant.assetURL}Banner/LocalRaid/RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png">
-                  </div>
-                  <div name="desc">
-                    <div>${TextResource['LocalRaidName' + (107 + QuestGuid.toString().slice(0, -8) / 10)]}</div>
-                    <div>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</div>
-                  </div>
-                </th>
-                <th name="first"></th>
-                <th name="fixed"></th>
-                <th name="event"></th>
-              `
+            <th>
+              <div name="banner">
+                <img src="${GlobalConstant.assetURL}Banner/LocalRaid/RQB_${'0'.repeat(6 - QuestBannerId.length)}${QuestBannerId}.png">
+              </div>
+              <div name="desc">
+                <div>${TextResource[QuestNameId]}</div>
+                <div>${'☆'.repeat(Quest.Level > 5 ? 5 : Quest.Level)}${'★'.repeat(Quest.Level > 5 ? Quest.Level - 5 : 0)}</div>
+              </div>
+            </th>
+            <th name="first"></th>
+            <th name="fixed"></th>
+            <th name="event"></th>
+            `,
+            { 'banner': QuestBannerId }
           )
         );
         for (let k = Quest.FixedBattleReward.length - 1; k >= 0; k--) {
@@ -2707,9 +2697,6 @@ table {
   display: inline-table;
   vertical-align: top;
 }
-tbody {
-  font-size: medium;
-}
 tbody tr > :nth-child(1) {
   width: 20px;
 }
@@ -2754,19 +2741,23 @@ character icon {
 icon > img {
   display: block;
   position: absolute;
-  left: 4px;
-  top: 4px;
-  background-color: grey;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
   width: 128px;
   height: 128px;
+  background-color: grey;
+  background-size: cover;
 }
 rarity {
   display: block;
   position: absolute;
-  left: 0px;
-  right: 0px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
   width: 138px;
   height: 138px;
+  background-size: cover;
 }
 [rarity="N"] > icon > rarity {
   background-image: url('assets/char_frame_n.png');
@@ -2840,13 +2831,15 @@ stars {
   position: absolute;
   width: 100px;
   bottom: 0px;
-  left: 19px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: left;
 }
 stars > * {
   display: inline-block;
   height: 20px;
   width: 20px;
-  background-size: 100%;
+  background-size: cover;
 }
 [star="0"] stars > * {
   display: none;
@@ -2888,7 +2881,7 @@ element {
   top: 5px;
   width: 32px;
   height: 32px;
-  background-size: 100%;
+  background-size: cover;
 }
 [element="1"] element {
   background-image: url('${GlobalConstant.assetURL}/icon_element_1.png');
@@ -2935,7 +2928,7 @@ th[selected] character {
 tr[selected] {
   position: sticky;
   top: 1vh;
-  bottom: 0vh;
+  bottom: 1vh;
   z-index: 100;
   outline: 4px #ff80ff solid;
 }
@@ -2950,11 +2943,12 @@ info {
 }
 info > div[name="equipment"] {
   display: inline-grid;
-  grid-template-rows: auto auto auto;
-  grid-template-columns: auto auto;
+  grid-template-rows: 33% 33% 33%;
+  grid-template-columns: 49.5% 49.5%;
   grid-auto-flow: column;
   width: 66%;
   height: 100%;
+  gap: 0.5% 1%;
 }
 equipment {
   display: block;
@@ -2966,26 +2960,34 @@ equipment {
   scrollbar-width: none;
 }
 [rarity="D"] {
-  border-color: rgb(128, 128, 64);
+  border-color: #805500;
 }
-[rarity="R"],
 [rarity="C"] {
-  border-color: rgba(128, 128, 128, 1);
+  border-color: #808080;
 }
-[rarity="SR"],
 [rarity="B"] {
-  border-color: rgb(192, 192, 0);
+  border-color: #808000;
 }
-[rarity="SSR"],
 [rarity="A"] {
-  border-color: rgb(96, 32, 192);
+  border-color: #550080;
 }
-[rarity="UR"],
 [rarity="S"] {
-  border-color: rgb(192, 0, 0);
+  border-color: #800000;
+}
+[rarity="R"]{
+  border-color: #c0c0c0;
+}
+[rarity="SR"]{
+  border-color: #c0c000;
+}
+[rarity="SSR"]{
+  border-color: #8000c0;
+}
+[rarity="UR"]{
+  border-color: #c00000;
 }
 [rarity="LR"] {
-  border-color: rgb(32, 32, 32);
+  border-color: #404040;
 }
 equipment > icon {
   zoom: 50%;
@@ -3020,7 +3022,7 @@ madel {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-size: 100%;
+  background-size: cover;
   vertical-align: top;
 }
 [quality="1"] madel {
@@ -3037,30 +3039,38 @@ madel {
 }
 raritydesc {
   display: inline-block;
-  color: rgb(128, 128, 96);
+  color: #805500;
   font-size: 18px;
   width: 56px;
   vertical-align: top;
   text-align: center;
 }
-[rarity="R"] raritydesc,
 [rarity="C"] raritydesc {
-  color: rgb(128, 128, 128);
+  color: #808080;
 }
-[rarity="SR"] raritydesc,
 [rarity="B"] raritydesc {
-  color: rgb(192, 192, 0);
+  color: #808000;
 }
-[rarity="SSR"] raritydesc,
 [rarity="A"] raritydesc {
-  color: rgb(96, 32, 192);
+  color: #550080;
 }
-[rarity="UR"] raritydesc,
 [rarity="S"] raritydesc {
-  color: rgb(192, 0, 0);
+  color: #800000;
+}
+[rarity="R"] raritydesc{
+  color: #c0c0c0;
+}
+[rarity="SR"] raritydesc{
+  color: #c0c000;
+}
+[rarity="SSR"] raritydesc{
+  color: #8000c0;
+}
+[rarity="UR"] raritydesc{
+  color: #c00000;
 }
 [rarity="LR"] raritydesc {
-  color: rgb(32, 32, 32);
+  color: #404040;
 }
 equipment desc name {
   display: inline-block;
@@ -3081,7 +3091,7 @@ category {
   display: inline-block;
   width: 21px;
   height: 21px;
-  background-size: 100%;
+  background-size: cover;
   vertical-align: bottom;
   margin: 0px 5px;
 }
@@ -3155,9 +3165,9 @@ sphere level {
 sphere name {
   display: block;
 }
-info > div[name='character'] {
+info > div[name="character"] {
   display: inline-block;
-  width: 34%;
+  width: 33%;
   height: calc(100% - 4px);
   overflow-y: scroll;
   scrollbar-width: thin;
@@ -3178,7 +3188,7 @@ job {
   width: 24px;
   height: 24px;
   vertical-align: bottom;
-  background-size: 100%;
+  background-size: cover;
   margin-right: 5px;
 }
 [job="1"] job {
@@ -3288,8 +3298,6 @@ parameter_set[type="skill"] icon {
   zoom: 60%;
 }
 parameter_set[type="skill"] icon img {
-  left: calc(50% - 50px);
-  top: calc(50% - 50px);
   height: 100px;
   width: 100px;
 }
@@ -3694,79 +3702,7 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
               <parameter_set type="set">
                 <parameter_type>${TextResource['CharacterEquipmentSeriesEffect']}</parameter_type>
               </parameter_set>
-              <parameter_set type="potential" job="${nodecharacter.getAttribute('job')}">
-                <parameter_type>${TextResource['CommonPotentialParameterLabel']}</parameter_type>
-                <div order="1">
-                  <parameter>
-                    <parameter_name>${TextResource['BaseParameterTypeMuscle']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
-                  </parameter>
-                  <parameter main="">
-                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
-                  </parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypePhysicalDamageRelax']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
-                  </parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypeHit']}</parameter_name>
-                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Muscle / 2))}</parameter_value>
-                  </parameter>
-                </div>
-                <div order="2">
-                  <parameter>
-                    <parameter_name>${TextResource['BaseParameterTypeEnergy']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Energy)}</parameter_value>
-                  </parameter>
-                  <parameter main="">
-                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Energy)}</parameter_value>
-                  </parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypeAvoidance']}</parameter_name>
-                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Energy / 2))}</parameter_value>
-                  </parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypeCritical']}</parameter_name>
-                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Energy / 2))}</parameter_value>
-                  </parameter>
-                </div>
-                <div order="3">
-                  <parameter>
-                    <parameter_name>${TextResource['BaseParameterTypeIntelligence']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
-                  </parameter>
-                  <parameter main="">
-                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
-                  </parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypeMagicDamageRelax']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
-                  </parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypeDebuffHit']}</parameter_name>
-                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Intelligence / 2))}</parameter_value>
-                  </parameter>
-                </div>
-                <div>
-                  <parameter>
-                    <parameter_name>${TextResource['BaseParameterTypeHealth']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Health)}</parameter_value>
-                  </parameter>
-                  <parameter main=""></parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypeHp']}</parameter_name>
-                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Health)}</parameter_value>
-                  </parameter>
-                  <parameter>
-                    <parameter_name>${TextResource['BattleParameterTypeCriticalResist']}</parameter_name>
-                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Health / 2))}</parameter_value>
-                  </parameter>
-                </div>
-              </parameter_set type="">
-              <parameter_set >
+              <parameter_set type="common">
                 <parameter_type>${TextResource['CommonStatusLabel']}</parameter_type>
                 <parameter>
                   <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
@@ -3847,6 +3783,78 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
                   <parameter_name>${TextResource['BattleParameterTypeDamageReflect']}</parameter_name>
                   <parameter_value>${getNumber(CharacterInfo.BattleParameter.DamageReflect)}</parameter_value>
                 </parameter>
+              </parameter_set>
+              <parameter_set type="potential" job="${nodecharacter.getAttribute('job')}">
+                <parameter_type>${TextResource['CommonPotentialParameterLabel']}</parameter_type>
+                <div order="1">
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeMuscle']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
+                  </parameter>
+                  <parameter main="">
+                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypePhysicalDamageRelax']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Muscle)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeHit']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Muscle / 2))}</parameter_value>
+                  </parameter>
+                </div>
+                <div order="2">
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeEnergy']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Energy)}</parameter_value>
+                  </parameter>
+                  <parameter main="">
+                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Energy)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeAvoidance']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Energy / 2))}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeCritical']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Energy / 2))}</parameter_value>
+                  </parameter>
+                </div>
+                <div order="3">
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeIntelligence']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
+                  </parameter>
+                  <parameter main="">
+                    <parameter_name>${TextResource['BattleParameterTypeAttackPower']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeMagicDamageRelax']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Intelligence)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeDebuffHit']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Intelligence / 2))}</parameter_value>
+                  </parameter>
+                </div>
+                <div>
+                  <parameter>
+                    <parameter_name>${TextResource['BaseParameterTypeHealth']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Health)}</parameter_value>
+                  </parameter>
+                  <parameter main=""></parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeHp']}</parameter_name>
+                    <parameter_value>${getNumber(CharacterInfo.BaseParameter.Health)}</parameter_value>
+                  </parameter>
+                  <parameter>
+                    <parameter_name>${TextResource['BattleParameterTypeCriticalResist']}</parameter_name>
+                    <parameter_value>${getNumber(Math.round(CharacterInfo.BaseParameter.Health / 2))}</parameter_value>
+                  </parameter>
+                </div>
               </parameter_set>
             `
           )
@@ -4156,10 +4164,10 @@ async function getAppVersion() {
   alert('获取版本号失败，请刷新页面重试');
 }
 //获取本地化文件
-async function getTextResource() {
+async function getTextResource(force = false) {
   const Type = 'TextResource';
   let DataList = {};
-  if (GlobalConstant.AppVersion != getStorage(`version${Type}`) || GlobalURLList.lang != getStorage('Language')) {
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`) || GlobalURLList.lang != getStorage('Language') || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}${GlobalURLList.lang}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4191,10 +4199,10 @@ async function getTextResource() {
   return DataList;
 }
 //获取人物信息
-async function getCharacter() {
+async function getCharacter(force = false) {
   const Type = 'Character';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4214,10 +4222,10 @@ async function getCharacter() {
   return DataList;
 }
 //获取装备信息
-async function getEquipment() {
+async function getEquipment(force = false) {
   const Type = 'Equipment';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4237,10 +4245,10 @@ async function getEquipment() {
   return DataList;
 }
 //获取套装信息
-async function getEquipmentSet() {
+async function getEquipmentSet(force = false) {
   const Type = 'EquipmentSet';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4260,10 +4268,10 @@ async function getEquipmentSet() {
   return DataList;
 }
 //获取强化信息
-async function getReinforcement() {
+async function getReinforcement(force = false) {
   const Type = 'EquipmentReinforcementParameter';
   let DataList = {};
-  if (GlobalConstant.AppVersion != getStorage(`version${Type}`)) {
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`) || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4286,10 +4294,10 @@ async function getReinforcement() {
   return DataList;
 }
 //获取魔装信息
-async function getMatchless() {
+async function getMatchless(force = false) {
   const Type = 'EquipmentMatchlessSacredTreasure';
   let DataList = {};
-  if (GlobalConstant.AppVersion != getStorage(`version${Type}`)) {
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`) || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4342,10 +4350,10 @@ async function getMatchless() {
   return DataList;
 }
 //获取圣装信息
-async function getLegend() {
+async function getLegend(force = false) {
   const Type = 'EquipmentLegendSacredTreasure';
   let DataList = {};
-  if (GlobalConstant.AppVersion != getStorage(`version${Type}`)) {
+  if (GlobalConstant.AppVersion != getStorage(`version${Type}`) || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4398,10 +4406,10 @@ async function getLegend() {
   return DataList;
 }
 //获取符石信息
-async function getSphere() {
+async function getSphere(force = false) {
   const Type = 'Sphere';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4421,10 +4429,10 @@ async function getSphere() {
   return DataList;
 }
 //获取装备技能信息
-async function getEquipmentSkill() {
+async function getEquipmentSkill(force = false) {
   const Type = 'EquipmentExclusiveSkillDescription';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4444,10 +4452,10 @@ async function getEquipmentSkill() {
   return DataList;
 }
 //获取装备特效信息
-async function getEquipmentExclusive() {
+async function getEquipmentExclusive(force = false) {
   const Type = 'EquipmentExclusiveEffect';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
     const DataMB = await msgpack.decode(new Uint8Array(Buffer));
     if (!DataMB) return;
@@ -4467,10 +4475,10 @@ async function getEquipmentExclusive() {
   return DataList;
 }
 //获取装备技能信息
-async function getSkill() {
+async function getSkill(force = false) {
   const Type = 'Skill';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     for (let i of ['Active', 'Passive']) {
       const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${i}${Type}MB`, { type: 'arraybuffer', msgpack: true });
       const DataMB = await msgpack.decode(new Uint8Array(Buffer));
@@ -4492,10 +4500,10 @@ async function getSkill() {
   return DataList;
 }
 //获取物品信息
-async function getItem() {
+async function getItem(force = false) {
   const Type = 'Item';
   let DataList = {};
-  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion) {
+  if (getStorage(`version${Type}`) != GlobalConstant.AppVersion || force) {
     for (let i of ['Item', 'TreasureChest']) {
       const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${i}MB`, { type: 'arraybuffer', msgpack: true });
       const DataMB = await msgpack.decode(new Uint8Array(Buffer));
@@ -4533,10 +4541,10 @@ async function getItem() {
   return DataList;
 }
 //获取神殿信息
-async function getLocalRaidQuest(QuestGuid) {
-  let test = await getData(DataBase.Static.db, 'Raid', !QuestGuid ? 100101 : QuestGuid);
+async function getLocalRaidQuest(force = false) {
+  let test = await getData(DataBase.Static.db, 'Raid', 100101);
   let LocalRaidQuestList = {};
-  if (!test) {
+  if (!test || force) {
     const json = await sendGMRequest(`https://raw.githubusercontent.com/moonheart/mementomori-masterbook/master/Master/LocalRaidQuestMB.json`, {});
     if (!json) {
       alert('获取神殿信息失败，请重试！');
@@ -5051,6 +5059,7 @@ function createElement(type, text = '', option) {
 }
 //获取父元素
 function getFather(target, lable) {
+  if (target.tagName == lable) return target;
   let father = target.parentNode;
   if (!father) return;
   if (father.tagName != lable) {
