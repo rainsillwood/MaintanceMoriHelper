@@ -19,17 +19,25 @@
  
  Better Temple:Show resources you'll get(Data get from old version,not really exact)
 
- 优化竞技场/巅峰竞技场/
+ 优化竞技场/巅峰竞技场/通关记录：优化队伍及人物信息显示，现在你选中的队伍与人物信息可以驻留在窗口一直显示了
+
+ Better Arena/Lengend/ClearParty：Now the team you selected and charatcer info panel will be pinned on the screen.
 
  数据转换：选择MessagePack格式的二进制文件（如游戏的MB文件，抓包发包的数据），自动转化为可读的JSON格式，可一次性多选
 
  Data Convert: Can convert MB Files or messagepack to JSON.
  
  战斗布局：选好区域、群组、等级（本地为Local）、世界（跨服为四个Block）后可以进行如下点击操作
+
+ GvGMapper:
  
    从服务器获取：通过API从服务器获取地图信息
+
+   Get from server:Get battle information from server
    
    从上一次恢复：从浏览器缓存恢复地图信息
+
+   
 
    保存设置：以当前信息保存到浏览器缓存，包括公会颜色信息和城池信息
 
