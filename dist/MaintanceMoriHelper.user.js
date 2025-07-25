@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Maintenance Mori Helper
 // @namespace    https://suzunemaiki.moe/
-// @updateURL    https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
-// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/dist/GuildHelper.user.js
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
 // @version      1.02
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
@@ -47,7 +47,7 @@ const GlobalConstant = {
   'ModelName': 'Xiaomi 2203121C',
   'GlobalConstant': 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)',
   //服务器url
-  'assetURL': 'https://raw.githubusercontent.com/rainsillwood/MementoMoriGuildHelper/main/assets/',
+  'assetURL': 'https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/assets/',
   'authURL': 'https://prd1-auth.mememori-boi.com/api/auth/',
   'LocalURL': 'https://mentemori.icu/',
   'AppVersion': '',
@@ -2158,7 +2158,7 @@ function drawMap() {
       NodeCastleName.onclick = (e) => {
         let exist = e.target.parentNode.querySelector('gvg-castle-hint');
         let image = e.target.parentNode.querySelector('.gvg-castle-symbol');
-        let hint = prompt('输入添加的提示,然后输入"|"(不带引号),再输入标识代码(A1:攻击1;A2:攻击2;D1:防御1;D2:防御2;F1:禁止;F2:旗帜)\n若标识代码为空则移除图标,其他代码则为你确认知道的图片名称,包含相对路径,路经确认:\nhttps://github.com/rainsillwood/MementoMoriGuildHelper/tree/main/assets', exist ? exist.innerHTML : '');
+        let hint = prompt('输入添加的提示,然后输入"|"(不带引号),再输入标识代码(A1:攻击1;A2:攻击2;D1:防御1;D2:防御2;F1:禁止;F2:旗帜)\n若标识代码为空则移除图标,其他代码则为你确认知道的图片名称,包含相对路径,路经确认:\nhttps://github.com/rainsillwood/MaintanceMoriHelper/tree/main/assets', exist ? exist.innerHTML : '');
         if (hint == '' || hint == undefined) {
           exist.remove();
           return;
