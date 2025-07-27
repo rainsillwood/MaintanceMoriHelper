@@ -21,7 +21,7 @@
 
  优化竞技场/巅峰竞技场/通关记录：优化队伍及人物信息显示，现在你选中的队伍与人物信息可以驻留在窗口一直显示了
 
- Better Arena/Lengend/ClearParty：Now the team you selected and charatcer info panel will be pinned on the screen.
+ Better Arena/Lengend/ClearParty：Now the team you selected and charatcer info panel will be pinned on the screen.And the information panel is moved to the right from bottom.All the information display is just like in game.
 
  数据转换：选择MessagePack格式的二进制文件（如游戏的MB文件，抓包发包的数据），自动转化为可读的JSON格式，可一次性多选
 
