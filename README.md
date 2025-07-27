@@ -10,9 +10,13 @@
 
  安装地址/URL：
  
-    稳定版/Stable：https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
+稳定版/Stable：
     
-    开发版/Nightly(Unrecommend)：https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
+    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
+    
+开发版/Nightly(Unrecommend)：
+    
+    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
 
 # 功能介绍/Tips
  优化幻影神殿：显示具体获得报酬，更改显示模式（数据来源于旧版本，不一定准确）
