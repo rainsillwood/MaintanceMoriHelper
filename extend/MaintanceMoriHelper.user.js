@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
-// @version      1.02
+// @version      1.04
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -323,7 +323,7 @@ if (getStorage('ScriptVersion') * 1 < 1.01) {
 }
 //公共对象
 let SocketGvG;
-let DataBase = {
+const DataBase = {
   'Static': {
     'version': 1,
   },
@@ -869,6 +869,9 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
         return WorldList[value].SName;
       });
       const option = new Option(`${Group.Name}(${text})`, GroupId);
+      if (GroupId[0] == 'N') {
+        option.classList.add('GN');
+      }
       option.classList.add('R' + Group.Region);
       selectGroup.options.add(option);
     }
@@ -938,12 +941,15 @@ function changeSelect(RegionId, GroupId, ClassId, WorldId) {
   #listGroup > option.R${RegionId} {
     display: inline;
   }
-  #listClass > .static
-  ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
+  #listClass > option.static
+  ${GroupId == 'N' + RegionId ? '' : ',#listClass > option.dynamic'} {
     display: inline;
   }
-  #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
+  #listWorld > ${ClassId > 0 ? 'option.global' : 'option.G' + GroupId} {
     display: inline;
+  }
+  #listGroup > option.GN {
+    display: ${ClassId == -1 ? 'none' : 'inline'};
   }
         `
     )
@@ -1405,11 +1411,11 @@ async function temple() {
   await initSelect(true, true, false, false);
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
-  const [selectRegion, selectGroup, selectClass, selectWorld] = [document.querySelector('#listRegion'), document.querySelector('#listGroup'), document.querySelector('#listClass'), document.querySelector('#listWorld')];
+  const [selectRegion, selectGroup] = [document.querySelector('#listRegion'), document.querySelector('#listGroup')];
   if (CacheGroupId != '-1') {
     selectRegion.value = CacheRegionId;
     selectGroup.value = CacheGroupId;
-    changeSelect(CacheRegionId, CacheGroupId, '-1', '-1');
+    changeSelect(CacheRegionId, CacheGroupId, 0, -1);
   }
   selectGroup.addEventListener('change', fillTemple);
   //初始化显示选项
@@ -1479,12 +1485,12 @@ async function arena() {
   if ((type == 'legend' && CacheGroupId != '-1') || (type == 'arena' && CacheWorldId != '-1')) {
     selectRegion.value = CacheRegionId;
     selectGroup.value = CacheGroupId;
-    selectClass.value = 0;
+    selectClass.value = type == 'arena' ? 0 : -1;
     selectWorld.value = CacheWorldId;
-    changeSelect(CacheRegionId, CacheGroupId, 0, CacheWorldId);
+    changeSelect(CacheRegionId, CacheGroupId, selectClass.value, CacheWorldId);
     selectGroup.onchange = () => {
       selectWorld.value = -1;
-      changeSelect(selectRegion.value, selectGroup.value, 0, -1);
+      changeSelect(selectRegion.value, selectGroup.value, selectClass.value, -1);
     };
     document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillTeam);
     await fillTeam();
@@ -2238,7 +2244,7 @@ async function fillGuilds(GuildList) {
   tr > :nth-child(2) {
     width: calc(100% - 25px);
   }
-        `
+      `
     )
   );
   let textTable = `
@@ -2514,7 +2520,7 @@ async function fillTemple() {
   div[name="desc"] {
     font-size: x-large;
   }
-        `
+      `
     )
   );
   const GroupId = getStorage(GlobalURLList.function + 'GroupId');
@@ -2700,30 +2706,20 @@ table {
 tbody tr > :nth-child(1) {
   width: 20px;
 }
-tbody tr > th[name="player"] > div {
-  display: flex;
-  justify-content: space-between;
+th[name="player"] {
+  position: relative;
   width: 150px;
   text-align: left;
 }
-tbody tr > th[name="player"] > div > :nth-child(2) {
+th[name='player'] > [name='world'] {
+  position: absolute;
   right: 0px;
+  top: 0px;
+  font-size: x-large;
 }
-tbody tr > th[name="player"] > div > :nth-child(1) {
-  left: 0px;
-}
-tbody tr > :nth-child(2) > :nth-child(5) {
-  display: inline-block;
-  width: 50%;
-  text-align: left;
-}
-tbody tr > :nth-child(2) > :nth-child(6) {
-  display: inline-block;
-  width: 50%;
-  text-align: right;
-}
-tr > :nth-child(2) > * {
-  width: 100px;
+th[name='player'] > div[name="point"] {
+  display: flex;
+  justify-content: space-between;
 }
 th character {
   display: block;
@@ -3403,19 +3399,20 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
       createElement(
         'tr',
         `
-          <th>${i + 1}</th>
+          <th>
+            <div>${i + 1}</div>
+            <div name="record"></div>
+          </th>
           <th name="player">
-            <div>
-              <a>${Player.PlayerName}</a>
-              <a name="world"></a>
-            </div>
-            <div name="level">
-            </div>
+            <div name="level"></div>
+            <div>${Player.PlayerName}</div>
+            <div name="world"></div>
             <div name="BattlePower"></div>
-            <div>
-              <a name="point"></a>
-              <a name="wins"></a>
-            </a></div>
+            <div name="time"></div>
+            <div name="point">
+              <a></a>
+              <a></a>
+            </div>
           </th>
           `
       )
@@ -3430,16 +3427,16 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
       case 'legend': {
         nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.PlayerLevel);
         nodePlayer.querySelector('[name="world"]').innerHTML = `W${Player.PlayerId?.toString().slice(-2)}`;
-        nodePlayer.querySelector('[name="point"]').innerHTML = TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint);
-        nodePlayer.querySelector('[name="wins"]').innerHTML = TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount);
+        nodePlayer.querySelector('[name="point"] > :nth-child(1)').innerHTML = TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint);
+        nodePlayer.querySelector('[name="point"] > :nth-child(2)').innerHTML = TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount);
         break;
       }
       case 'clearlist': {
         nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.Rank);
         nodePlayer.querySelector('[name="world"]').innerHTML = `${RegionList[Player.WorldId.toString().slice(0, 1)]}W${Player.PlayerId?.toString().slice(-2)}`;
         nodePlayer.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonPlayerRankLabel']}:${Player.DeckBattlePower}`;
-        nodePlayer.querySelector('[name="point"]').innerHTML = new Date(Player.ClearTimestamp).toLocaleString().split(' ');
-        nodePlayer.querySelector('[name="wins"]').innerHTML = Player.BattleToken ? `<a href="${getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang, 'token': Player.BattleToken })}">${TextResource['CommonPlayLabel']}</a>` : '';
+        nodePlayer.querySelector('[name="time"]').innerHTML = new Date(Player.ClearTimestamp).toLocaleString().split(' ');
+        nodeTr.querySelector('[name="record"]').innerHTML = Player.BattleToken ? `<a href="${getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang, 'token': Player.BattleToken })}">▶️</a>` : '';
         break;
       }
       default: {
