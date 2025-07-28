@@ -4,32 +4,44 @@
  
  A tool based on Maintenance Mori( https://mentemori.icu ),You need a Browser plugin like Tamper Monkey to use it.Support EnUs/JaJp/KoKr/ZhCn/ZhTw
 
- 如果长时间不工作，请查看控制台是否出错，没出错耐心等待一下，因为首次使用或者切换语言/游戏版本的时候会大量从服务器获取数据，需要时间处理。如果出错请提交Issue
+ 如果长时间不工作，请查看控制台是否出错，没出错耐心等待一下，因为首次使用或者切换语言/游戏版本的时候会大量从服务器获取数据，需要时间处理，在完成之前不要关闭或刷新页面。如果出错，先尝试点击🔄（重新加载数据）或者🗑️（清除缓存），如果依然出错，请提交Issue
 
- If not work,please start an issue
+ If not work,please open development tool,and find if there are some error.if nothing wrong please dont close or refresh the page and wait a minute to complete data sync. If there is a error,first try click 🔄(force sync data again) or 🗑️(clear all data,inclue ganmedata and cache).If not work ,please start an issue.
 
  安装地址/URL：
  
-    稳定版/Stable：https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/GuildHelper.user.js
+稳定版/Stable：
     
-    开发版/Nightly(Unrecommend)：https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/GuildHelper.user.js
+    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
+    
+开发版/Nightly(Unrecommend)：
+    
+    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
 
 # 功能介绍/Tips
  优化幻影神殿：显示具体获得报酬，更改显示模式（数据来源于旧版本，不一定准确）
  
  Better Temple:Show resources you'll get(Data get from old version,not really exact)
 
- 优化竞技场/巅峰竞技场/
+ 优化竞技场/巅峰竞技场/通关记录：优化队伍及人物信息显示，现在你选中的队伍与人物信息可以驻留在窗口一直显示了
+
+ Better Arena/Lengend/ClearParty：Now the team you selected and charatcer info panel will be pinned on the screen.And the information panel is moved to the right from bottom.All the information display is just like in game.
 
  数据转换：选择MessagePack格式的二进制文件（如游戏的MB文件，抓包发包的数据），自动转化为可读的JSON格式，可一次性多选
 
  Data Convert: Can convert MB Files or messagepack to JSON.
  
  战斗布局：选好区域、群组、等级（本地为Local）、世界（跨服为四个Block）后可以进行如下点击操作
+
+ GvGMapper:
  
    从服务器获取：通过API从服务器获取地图信息
+
+   Get from server:Get battle information from server
    
    从上一次恢复：从浏览器缓存恢复地图信息
+
+   
 
    保存设置：以当前信息保存到浏览器缓存，包括公会颜色信息和城池信息
 
