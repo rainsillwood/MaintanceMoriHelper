@@ -6,7 +6,7 @@
 
  如果长时间不工作，请查看控制台是否出错，没出错耐心等待一下，因为首次使用或者切换语言/游戏版本的时候会大量从服务器获取数据，需要时间处理，在完成之前不要关闭或刷新页面。如果出错，先尝试点击🔄（重新加载数据）或者🗑️（清除缓存），如果依然出错，请提交Issue
 
- If not work,please open development tool,and find if there are some error.if nothing wrong please dont close or refresh the page and wait a minute to complete data sync. If there is a error,first try click 🔄(force sync data again) or 🗑️(clear all data,inclue ganmedata and cache).If not work ,please start an issue.
+ If not work,please open development tool,and find if there are some error.if nothing wrong please dont close or refresh the page and wait a minute to complete data sync. If there is a error,first try click 🔄(force sync data again) or 🗑️(clear all data,inclue game data and cache data).If not work ,please start an issue.
 
  安装地址/URL：
  
