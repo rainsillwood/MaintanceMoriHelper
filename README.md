@@ -12,11 +12,11 @@
  
 稳定版/Stable：
     
-    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
+    https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/dist/MaintenanceMoriHelper.user.js
     
 开发版/Nightly(Unrecommend)：
     
-    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
+    https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/extend/MaintenanceMoriHelper.user.js
 
 # 功能介绍/Tips
  优化幻影神殿：显示具体获得报酬，更改显示模式（数据来源于旧版本，不一定准确）
