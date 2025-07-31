@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Maintenance Mori Helper
 // @namespace    https://suzunemaiki.moe/
-// @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
-// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
-// @version      1.04
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/extend/MaintanceMoriHelper.user.js
+// @version      1.06
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -25,21 +25,23 @@
 console.log('脚本运行中');
 //增加冻结层
 document.querySelector('style').append(`
-  #loading {
-    width: 100%;
-    height: 100%;
-    font-size: xx-large;
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+#loading {
+  width: 100%;
+  height: 100%;
+  font-size: xx-large;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2147483647;
+  opacity: 0.8;
+}
   `);
 const FreezeNode = createElement('div', '<h1>Loading......</h1>', 'loading');
-document.body.append(FreezeNode);
+document.body.insertAdjacentElement('afterbegin', FreezeNode);
 /*全局对象*/
 //静态常量
 const GlobalConstant = {
@@ -333,7 +335,7 @@ const DataBase = {
 };
 await openDB('Static');
 await openDB('Record');
-setStorage('ScriptVersion', 1.01);
+setStorage('ScriptVersion', 1.06);
 setStorage('lang', '["en","en","en","en","en","en","en"]');
 //需要从游戏资源获取翻译列表
 const LanguageTableM = {
@@ -484,6 +486,7 @@ const LanguageJa = {
 };
 //初始化所有页面
 initPage();
+console.log('载入完成');
 /*常量函数*/
 //分解URL
 function getURLList() {
@@ -549,7 +552,6 @@ async function initPage() {
   //原有功能进行翻译
   initTranslator();
   //本地化标题
-  document.querySelector('h1').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   document.querySelector('title').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   //追加导航栏格式
   document.querySelector('style').append(`
@@ -639,6 +641,7 @@ async function initPage() {
   const nodeSwitch = [divLocal.querySelector('#switch-light'), divLocal.querySelector('#switch-dark')];
   const nodeRefresh = createElement('a', '🔄');
   nodeRefresh.onclick = async () => {
+    FreezeNode.classList.remove('hidden');
     await getTextResource(true);
     await getCharacter(true);
     await getEquipment(true);
@@ -656,6 +659,7 @@ async function initPage() {
   };
   const nodeClear = createElement('a', '🗑️');
   nodeClear.onclick = () => {
+    FreezeNode.classList.remove('hidden');
     localStorage.clear();
     indexedDB.deleteDatabase('Static');
     indexedDB.deleteDatabase('Record');
@@ -758,7 +762,7 @@ async function initPage() {
     default: {
     }
   }
-  FreezeNode.remove();
+  FreezeNode.classList.add('hidden');
 }
 //初始化选择栏
 async function initSelect(addRegion = true, addGroup = true, addClass = true, addWorld = true) {
@@ -972,11 +976,8 @@ function initContent() {
     font-size: small;
     font-weight: normal;
   }
-  .hidden {
-    display: none;
-  }
     `);
-  while (document.body.childNodes.length > 6) {
+  while (document.body.childNodes.length > 7) {
     document.body.lastChild.remove();
   }
 }
@@ -2214,6 +2215,7 @@ async function fillMap(CastleList, GuildList) {
 }
 //战斗布局-重置表格
 async function fillGuilds(GuildList) {
+  FreezeNode.classList.remove('hidden');
   let divGuildList = document.querySelector('#guilds');
   divGuildList.innerHTML = '';
   divGuildList.appendChild(
@@ -2284,6 +2286,7 @@ async function fillGuilds(GuildList) {
       count++;
     }
   }
+  FreezeNode.classList.add('hidden');
 }
 //战斗布局-更新数据
 async function updateServerData(GuildList) {
@@ -2474,6 +2477,7 @@ function updateBattlePanel() {
 }
 //优化神殿-获取信息
 async function fillTemple() {
+  FreezeNode.classList.remove('hidden');
   const ItemList = await getItem();
   //初始化数据节点
   let nodeData = document.querySelector('data');
@@ -2609,6 +2613,7 @@ async function fillTemple() {
       }
     }
   }
+  FreezeNode.classList.add('hidden');
 }
 //优化神殿-改变高亮
 function changeTempleDisplay() {
@@ -2648,6 +2653,7 @@ function changeTempleDisplay() {
 }
 //优化竞技场-获取信息
 async function fillTeam() {
+  FreezeNode.classList.remove('hidden');
   const CharacterList = await getCharacter();
   const EquipmentList = await getEquipment();
   const EquipmentSetList = await getEquipmentSet();
@@ -4048,6 +4054,7 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
     }
     nodeTr.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonBattlePowerLabel']}: ${getNumber(totalBattlePower)}`;
   }
+  FreezeNode.classList.add('hidden');
 }
 //获取加成信息
 function getParameter(ParameterChangeInfo) {
@@ -4944,8 +4951,8 @@ async function sendGMRequest(url, option = {}) {
             setStorage('utcnowtimestamp', getHeader(response.responseHeaders, 'ortegautcnowtimestamp'));
             data = await msgpack.decode(new Uint8Array(response.response));
             if (data.ErrorCode) {
-              console.log(`${response.finalUrl.split('/').pop()}:${GlobalConstant.ErrorCode[data.ErrorCode]}`);
-              document.querySelector('#accountmanager>a:nth-child(2)').innerHTML = '未登录';
+              console.log(`${response.finalUrl.split('/').pop()}:${GlobalConstant.ErrorCode?.[data.ErrorCode]}`);
+              document.querySelector('#accountmanager>a:nth-child(2)')?.replaceChildren().insertAdjacentText('beforeend', '未登录');
             } else {
               console.log(`${response.finalUrl.split('/').pop()}:获取成功`);
             }
