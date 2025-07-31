@@ -3623,7 +3623,7 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
                         <rarity></rarity>
                         <level></level>
                       </icon>
-                      <name></name>
+                      <name>${TextResource['MissionLockedButton']}</name>
                       <div><parameter_value>　</parameter_value></div>
                     </sphere>
                     <sphere order="3">
