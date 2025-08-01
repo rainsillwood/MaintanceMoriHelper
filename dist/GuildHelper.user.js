@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Maintenance Mori Helper
 // @namespace    https://suzunemaiki.moe/
-// @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
-// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintanceMoriHelper.user.js
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintenanceMoriHelper.user.js
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/dist/MaintenanceMoriHelper.user.js
 // @version      1.02
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
