@@ -1,0 +1,6374 @@
+[
+  {
+    "Id": 1,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_000_m.png",
+    "FileSize": 120966,
+    "RawDataDownloadType": 0,
+    "Etag": "ed9669e33149005adc138ccd0213f6aa"
+  },
+  {
+    "Id": 2,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_001.mp3",
+    "FileSize": 2374144,
+    "RawDataDownloadType": 0,
+    "Etag": "4473d3b1f4f987bd38bb07e497d43bdf"
+  },
+  {
+    "Id": 3,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_002.mp3",
+    "FileSize": 1820416,
+    "RawDataDownloadType": 0,
+    "Etag": "8bd8288ed293cf3a96bc3253d6eb47a0"
+  },
+  {
+    "Id": 4,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_003.mp3",
+    "FileSize": 2474752,
+    "RawDataDownloadType": 0,
+    "Etag": "91ed3c0a853521fb1c527b1e8491508b"
+  },
+  {
+    "Id": 5,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_004.mp3",
+    "FileSize": 1749760,
+    "RawDataDownloadType": 0,
+    "Etag": "67435be53e5c1bcd0c82900321d6a15e"
+  },
+  {
+    "Id": 6,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_005.mp3",
+    "FileSize": 1556224,
+    "RawDataDownloadType": 0,
+    "Etag": "2c965ee6b2c4e241b0a4abc1d12beebe"
+  },
+  {
+    "Id": 7,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_006.mp3",
+    "FileSize": 2229760,
+    "RawDataDownloadType": 0,
+    "Etag": "3b60e7d04a7a7dfd3fa56fccccc2457f"
+  },
+  {
+    "Id": 8,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_007.mp3",
+    "FileSize": 2119168,
+    "RawDataDownloadType": 0,
+    "Etag": "5b45f3f856ff9c3966f3de7f4d67ead7"
+  },
+  {
+    "Id": 9,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_008.mp3",
+    "FileSize": 2079232,
+    "RawDataDownloadType": 0,
+    "Etag": "d36c6753d6184894ca4f6ad16f4ec961"
+  },
+  {
+    "Id": 10,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_009.mp3",
+    "FileSize": 2927104,
+    "RawDataDownloadType": 0,
+    "Etag": "70d8187d93829eeb7f9e350eab7a453a"
+  },
+  {
+    "Id": 11,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_010.mp3",
+    "FileSize": 2379520,
+    "RawDataDownloadType": 0,
+    "Etag": "10567ebae50741bd60ffc345a8b6298e"
+  },
+  {
+    "Id": 12,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_011.mp3",
+    "FileSize": 2789632,
+    "RawDataDownloadType": 0,
+    "Etag": "fbd3a72293eb9a15b06b2dcc435143ff"
+  },
+  {
+    "Id": 13,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_012.mp3",
+    "FileSize": 4134400,
+    "RawDataDownloadType": 0,
+    "Etag": "b45dbb99e44a68e5d5cabe0531f5ab23"
+  },
+  {
+    "Id": 14,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_013.mp3",
+    "FileSize": 3415552,
+    "RawDataDownloadType": 0,
+    "Etag": "00f6ef7a43ad5099c81c4318c8807e54"
+  },
+  {
+    "Id": 15,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_014.mp3",
+    "FileSize": 2981632,
+    "RawDataDownloadType": 0,
+    "Etag": "5208524376c93098d380b895c1962fea"
+  },
+  {
+    "Id": 16,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_015.mp3",
+    "FileSize": 3115264,
+    "RawDataDownloadType": 0,
+    "Etag": "72f1a4c551ba73082f7218a5240f7298"
+  },
+  {
+    "Id": 17,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_016.mp3",
+    "FileSize": 2374144,
+    "RawDataDownloadType": 0,
+    "Etag": "c94e58b5637c3428d704196f33b8a512"
+  },
+  {
+    "Id": 18,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_017.mp3",
+    "FileSize": 2027776,
+    "RawDataDownloadType": 0,
+    "Etag": "7b513cb63452fa6b71b4d27b78220283"
+  },
+  {
+    "Id": 19,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_018.mp3",
+    "FileSize": 2375680,
+    "RawDataDownloadType": 0,
+    "Etag": "6bfe4dbe26bc1858578bc1bb88692727"
+  },
+  {
+    "Id": 20,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_019.mp3",
+    "FileSize": 2426368,
+    "RawDataDownloadType": 0,
+    "Etag": "1d5fd509ee51e377a35e87dc155447cf"
+  },
+  {
+    "Id": 21,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_023.mp3",
+    "FileSize": 2269696,
+    "RawDataDownloadType": 0,
+    "Etag": "ceefd779b36cffce086687859fee757c"
+  },
+  {
+    "Id": 22,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_024.mp3",
+    "FileSize": 7973878,
+    "RawDataDownloadType": 0,
+    "Etag": "6ad0469ef1fb11596c346676bda80777"
+  },
+  {
+    "Id": 23,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_025.mp3",
+    "FileSize": 7973878,
+    "RawDataDownloadType": 0,
+    "Etag": "e6287c6969f526219f8cb98c4a261095"
+  },
+  {
+    "Id": 24,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_026.mp3",
+    "FileSize": 2960758,
+    "RawDataDownloadType": 0,
+    "Etag": "5da6c29d39e2eaa739382f361a74e59d"
+  },
+  {
+    "Id": 25,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/BGM_027.mp3",
+    "FileSize": 2960758,
+    "RawDataDownloadType": 0,
+    "Etag": "17503b65fa71d124462918812c657a23"
+  },
+  {
+    "Id": 26,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000001_00_m_offwhite.png",
+    "FileSize": 136292,
+    "RawDataDownloadType": 0,
+    "Etag": "4d3d13c4dd36abcb9ab2b6fde7e1c64e"
+  },
+  {
+    "Id": 27,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000001_SONG_JP.mp3",
+    "FileSize": 7501088,
+    "RawDataDownloadType": 0,
+    "Etag": "1714014ea754ddd3953248d6421789c4"
+  },
+  {
+    "Id": 28,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000001_SONG_US.mp3",
+    "FileSize": 7501088,
+    "RawDataDownloadType": 0,
+    "Etag": "4f5e69638431e8aaffcac9af9d117497"
+  },
+  {
+    "Id": 29,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000002_00_m_offwhite.png",
+    "FileSize": 145937,
+    "RawDataDownloadType": 0,
+    "Etag": "93a36794013d7eb21b3fea3b2c6967c1"
+  },
+  {
+    "Id": 30,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000002_SONG_JP.mp3",
+    "FileSize": 10571552,
+    "RawDataDownloadType": 0,
+    "Etag": "95a4c4289d0a063a9bd0c0695ebb710d-2"
+  },
+  {
+    "Id": 31,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000002_SONG_US.mp3",
+    "FileSize": 10559264,
+    "RawDataDownloadType": 0,
+    "Etag": "627bec9f7a53d15f5fcad920558a4d6b-2"
+  },
+  {
+    "Id": 32,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000004_00_m_offwhite.png",
+    "FileSize": 124966,
+    "RawDataDownloadType": 0,
+    "Etag": "60612bffe18ddbdda7a5697cfc1fab34"
+  },
+  {
+    "Id": 33,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000004_SONG_JP.mp3",
+    "FileSize": 10092320,
+    "RawDataDownloadType": 0,
+    "Etag": "610286206d0278e821258a88a391af10-2"
+  },
+  {
+    "Id": 34,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000004_SONG_US.mp3",
+    "FileSize": 10092320,
+    "RawDataDownloadType": 0,
+    "Etag": "a65b0fa860fa3a18969a11bc1fa462f8-2"
+  },
+  {
+    "Id": 35,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000005_00_m_offwhite.png",
+    "FileSize": 122887,
+    "RawDataDownloadType": 0,
+    "Etag": "1469404f2d5ffbf5875e1de84e55ea17"
+  },
+  {
+    "Id": 36,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000005_SONG_JP.mp3",
+    "FileSize": 8692256,
+    "RawDataDownloadType": 0,
+    "Etag": "1b736e88ad2ba35e547dc8ebe26077d2-2"
+  },
+  {
+    "Id": 37,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000005_SONG_US.mp3",
+    "FileSize": 8692256,
+    "RawDataDownloadType": 0,
+    "Etag": "18af2333f52f69cd4ca02c9330e49529-2"
+  },
+  {
+    "Id": 38,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000006_00_m_offwhite.png",
+    "FileSize": 143150,
+    "RawDataDownloadType": 0,
+    "Etag": "5c36355e5f88e674da46a7e3115d0203"
+  },
+  {
+    "Id": 39,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000006_SONG_JP.mp3",
+    "FileSize": 8193824,
+    "RawDataDownloadType": 0,
+    "Etag": "787e79860c5457d5f8013367695eeee0"
+  },
+  {
+    "Id": 40,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000006_SONG_US.mp3",
+    "FileSize": 8193824,
+    "RawDataDownloadType": 0,
+    "Etag": "2aff1e74df2c4c2ab324ccebf68b4719"
+  },
+  {
+    "Id": 41,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000007_00_m_offwhite.png",
+    "FileSize": 141826,
+    "RawDataDownloadType": 0,
+    "Etag": "1d188212d1e4ba30c8d9bc9c6a62e048"
+  },
+  {
+    "Id": 42,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000007_SONG_JP.mp3",
+    "FileSize": 10745888,
+    "RawDataDownloadType": 0,
+    "Etag": "85bd53bf471c74b941ae3e70bca43781-2"
+  },
+  {
+    "Id": 43,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000007_SONG_US.mp3",
+    "FileSize": 10745888,
+    "RawDataDownloadType": 0,
+    "Etag": "d6e3cbea67c84e2c77ebea6a2d35ed42-2"
+  },
+  {
+    "Id": 44,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000008_00_m_offwhite.png",
+    "FileSize": 143749,
+    "RawDataDownloadType": 0,
+    "Etag": "12e17832f35e0a503b0b744b166ff9d4"
+  },
+  {
+    "Id": 45,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000008_SONG_JP.mp3",
+    "FileSize": 8815136,
+    "RawDataDownloadType": 0,
+    "Etag": "1d36fad9c1b7842fe965ab56b60e3637-2"
+  },
+  {
+    "Id": 46,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000008_SONG_US.mp3",
+    "FileSize": 8815136,
+    "RawDataDownloadType": 0,
+    "Etag": "7ae1fc8352fe8d68eb04f9fbff1af39d-2"
+  },
+  {
+    "Id": 47,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000009_00_m_offwhite.png",
+    "FileSize": 133403,
+    "RawDataDownloadType": 0,
+    "Etag": "654c021a1f1bb118da05ce228d1ab58f"
+  },
+  {
+    "Id": 48,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000009_SONG_JP.mp3",
+    "FileSize": 6671648,
+    "RawDataDownloadType": 0,
+    "Etag": "598d4cc15bd5d9fb5692012d646128a5"
+  },
+  {
+    "Id": 49,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000009_SONG_US.mp3",
+    "FileSize": 6671648,
+    "RawDataDownloadType": 0,
+    "Etag": "5a3b566de20ddc5bc7d8f6a453ebcd6a"
+  },
+  {
+    "Id": 50,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000010_00_m_offwhite.png",
+    "FileSize": 144286,
+    "RawDataDownloadType": 0,
+    "Etag": "16522cd559c20233ae5bba03e389785c"
+  },
+  {
+    "Id": 51,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000010_SONG_JP.mp3",
+    "FileSize": 5993504,
+    "RawDataDownloadType": 0,
+    "Etag": "9ec9049c70be3344d8c6f64e0f0f9c7e"
+  },
+  {
+    "Id": 52,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000010_SONG_US.mp3",
+    "FileSize": 5993504,
+    "RawDataDownloadType": 0,
+    "Etag": "559890e021d6206d70762b63ef905c11"
+  },
+  {
+    "Id": 53,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000011_00_m_offwhite.png",
+    "FileSize": 130815,
+    "RawDataDownloadType": 0,
+    "Etag": "c1a1be18512f4369d7ab5f6b518cb9cf"
+  },
+  {
+    "Id": 54,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000011_SONG_JP.mp3",
+    "FileSize": 7246880,
+    "RawDataDownloadType": 0,
+    "Etag": "db86b3566222faa372c3ed270a41f4ff"
+  },
+  {
+    "Id": 55,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000011_SONG_US.mp3",
+    "FileSize": 7246880,
+    "RawDataDownloadType": 0,
+    "Etag": "ef207b80b5a6499642fd8954cc75d70c"
+  },
+  {
+    "Id": 56,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000012_00_m_offwhite.png",
+    "FileSize": 145153,
+    "RawDataDownloadType": 0,
+    "Etag": "ce2888c488dfe327eb53685145046756"
+  },
+  {
+    "Id": 57,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000012_SONG_JP.mp3",
+    "FileSize": 8941088,
+    "RawDataDownloadType": 0,
+    "Etag": "4462f3084fd5b6e7dd1251edd2ef1711-2"
+  },
+  {
+    "Id": 58,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000012_SONG_US.mp3",
+    "FileSize": 8941088,
+    "RawDataDownloadType": 0,
+    "Etag": "70f2629026826a36e19f38440c9a82e8-2"
+  },
+  {
+    "Id": 59,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000013_00_m_offwhite.png",
+    "FileSize": 135963,
+    "RawDataDownloadType": 0,
+    "Etag": "c60b830f5a15afed57d590c71f5877a0"
+  },
+  {
+    "Id": 60,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000013_SONG_JP.mp3",
+    "FileSize": 6378272,
+    "RawDataDownloadType": 0,
+    "Etag": "d75d20bc33fcd779e8ba8048622536ea"
+  },
+  {
+    "Id": 61,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000013_SONG_US.mp3",
+    "FileSize": 6378272,
+    "RawDataDownloadType": 0,
+    "Etag": "4108842f773fbdcfd2292fc52afe6568"
+  },
+  {
+    "Id": 62,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000014_00_m_offwhite.png",
+    "FileSize": 114310,
+    "RawDataDownloadType": 0,
+    "Etag": "05089d8a5c36a6f03dd32615f2131704"
+  },
+  {
+    "Id": 63,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000014_SONG_JP.mp3",
+    "FileSize": 8802080,
+    "RawDataDownloadType": 0,
+    "Etag": "acb2d210920a6b9f5fc0614e841eaef2-2"
+  },
+  {
+    "Id": 64,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000014_SONG_US.mp3",
+    "FileSize": 8802080,
+    "RawDataDownloadType": 0,
+    "Etag": "21af7fffb812afe846cde2bba233aed7-2"
+  },
+  {
+    "Id": 65,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000015_00_m_offwhite.png",
+    "FileSize": 139166,
+    "RawDataDownloadType": 0,
+    "Etag": "28da4c9f18af464c4104e1ae6cd5b55d"
+  },
+  {
+    "Id": 66,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000015_SONG_JP.mp3",
+    "FileSize": 8599328,
+    "RawDataDownloadType": 0,
+    "Etag": "5d3350e14128e7d3419d19e61e4aa3b5-2"
+  },
+  {
+    "Id": 67,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000015_SONG_US.mp3",
+    "FileSize": 8599328,
+    "RawDataDownloadType": 0,
+    "Etag": "46f11f67e7e183691f34f6fee76ac642-2"
+  },
+  {
+    "Id": 68,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000016_00_m_offwhite.png",
+    "FileSize": 129096,
+    "RawDataDownloadType": 0,
+    "Etag": "f77f2f919c3bb4f53a18f9e1023de6af"
+  },
+  {
+    "Id": 69,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000016_SONG_JP.mp3",
+    "FileSize": 8410400,
+    "RawDataDownloadType": 0,
+    "Etag": "3a8c374e4b560fe648fbdd0cccd6679e-2"
+  },
+  {
+    "Id": 70,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000016_SONG_US.mp3",
+    "FileSize": 8410400,
+    "RawDataDownloadType": 0,
+    "Etag": "f9ef4d847c1eef68b067486b172e040e-2"
+  },
+  {
+    "Id": 71,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000017_00_m_offwhite.png",
+    "FileSize": 155626,
+    "RawDataDownloadType": 0,
+    "Etag": "660f629c5241ce1c478e79f1153053cb"
+  },
+  {
+    "Id": 72,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000017_SONG_JP.mp3",
+    "FileSize": 7253024,
+    "RawDataDownloadType": 0,
+    "Etag": "dfe25ba92f92f36aef76a8aff68774f8"
+  },
+  {
+    "Id": 73,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000017_SONG_US.mp3",
+    "FileSize": 7253024,
+    "RawDataDownloadType": 0,
+    "Etag": "7373dc3b1d3cd8a95cd8e141f87f8e6e"
+  },
+  {
+    "Id": 74,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000018_00_m_offwhite.png",
+    "FileSize": 151814,
+    "RawDataDownloadType": 0,
+    "Etag": "53d0057ee47e5ddefc1a79380c9bdd88"
+  },
+  {
+    "Id": 75,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000018_SONG_JP.mp3",
+    "FileSize": 10030880,
+    "RawDataDownloadType": 0,
+    "Etag": "42a1cac840b48c4e6050f96ee7673f83-2"
+  },
+  {
+    "Id": 76,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000018_SONG_US.mp3",
+    "FileSize": 10030880,
+    "RawDataDownloadType": 0,
+    "Etag": "3c96f679e6a45e766441ab5dddd5c331-2"
+  },
+  {
+    "Id": 77,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000019_00_m_offwhite.png",
+    "FileSize": 125174,
+    "RawDataDownloadType": 0,
+    "Etag": "5f6fbb6556ac2472b39c9e0eeae661be"
+  },
+  {
+    "Id": 78,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000019_SONG_JP.mp3",
+    "FileSize": 8579360,
+    "RawDataDownloadType": 0,
+    "Etag": "a96ecfd69bae335dca77cb81df68b081-2"
+  },
+  {
+    "Id": 79,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000019_SONG_US.mp3",
+    "FileSize": 8579360,
+    "RawDataDownloadType": 0,
+    "Etag": "fc1ae5d4917058e32e676fee5025918a-2"
+  },
+  {
+    "Id": 80,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000020_00_m_offwhite.png",
+    "FileSize": 140190,
+    "RawDataDownloadType": 0,
+    "Etag": "d4e2e7af9a988f9a3ae21ddec4d68603"
+  },
+  {
+    "Id": 81,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000020_SONG_JP.mp3",
+    "FileSize": 7673120,
+    "RawDataDownloadType": 0,
+    "Etag": "ea5fe85e24793756414bad7ae1e06157"
+  },
+  {
+    "Id": 82,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000020_SONG_US.mp3",
+    "FileSize": 7665440,
+    "RawDataDownloadType": 0,
+    "Etag": "ed1d3f5e0111ad27551c9bcefeab8c8f"
+  },
+  {
+    "Id": 83,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000021_00_m_offwhite.png",
+    "FileSize": 121409,
+    "RawDataDownloadType": 0,
+    "Etag": "64224b9d40cdc10140ad74eab0b439dc"
+  },
+  {
+    "Id": 84,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000021_SONG_JP.mp3",
+    "FileSize": 8196896,
+    "RawDataDownloadType": 0,
+    "Etag": "0af7a3466846d5a5c1caa0d722c9ec48"
+  },
+  {
+    "Id": 85,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000021_SONG_US.mp3",
+    "FileSize": 8196896,
+    "RawDataDownloadType": 0,
+    "Etag": "669acdd8ec3ea8fac2f54a0fc67f7630"
+  },
+  {
+    "Id": 86,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000022_00_m_offwhite.png",
+    "FileSize": 140321,
+    "RawDataDownloadType": 0,
+    "Etag": "e37c071886b3f313ddce7eda75dea8a1"
+  },
+  {
+    "Id": 87,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000022_SONG_JP.mp3",
+    "FileSize": 8176928,
+    "RawDataDownloadType": 0,
+    "Etag": "f1d94f4d0ddc094f0e2a4eea5be8b1d3"
+  },
+  {
+    "Id": 88,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000022_SONG_US.mp3",
+    "FileSize": 8176928,
+    "RawDataDownloadType": 0,
+    "Etag": "90568985aa882979080f78031b1e7bdc"
+  },
+  {
+    "Id": 89,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000024_00_m_offwhite.png",
+    "FileSize": 136349,
+    "RawDataDownloadType": 0,
+    "Etag": "64f5f88e4e7ed417d805e6cf47b4f455"
+  },
+  {
+    "Id": 90,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000024_SONG_JP.mp3",
+    "FileSize": 8091680,
+    "RawDataDownloadType": 0,
+    "Etag": "f6bdb414d5910195321ecec956e3856c"
+  },
+  {
+    "Id": 91,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000024_SONG_US.mp3",
+    "FileSize": 8091680,
+    "RawDataDownloadType": 0,
+    "Etag": "2f863a73a641167d67868f1260453748"
+  },
+  {
+    "Id": 92,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000025_00_m_offwhite.png",
+    "FileSize": 142836,
+    "RawDataDownloadType": 0,
+    "Etag": "616f9407c47908491bedaad5af6c5623"
+  },
+  {
+    "Id": 93,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000025_SONG_JP.mp3",
+    "FileSize": 7716128,
+    "RawDataDownloadType": 0,
+    "Etag": "9e701a86b97e4fa40c52ff97404f996b"
+  },
+  {
+    "Id": 94,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000025_SONG_US.mp3",
+    "FileSize": 7716128,
+    "RawDataDownloadType": 0,
+    "Etag": "7f483455fd1eb46e0a937537c61fc0b1"
+  },
+  {
+    "Id": 95,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000026_00_m_offwhite.png",
+    "FileSize": 135946,
+    "RawDataDownloadType": 0,
+    "Etag": "8cd3d3fab7af8a255359559f00578da0"
+  },
+  {
+    "Id": 96,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000026_SONG_JP.mp3",
+    "FileSize": 7497248,
+    "RawDataDownloadType": 0,
+    "Etag": "642a9b23193bb67fee080e38d5a8eab9"
+  },
+  {
+    "Id": 97,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000026_SONG_US.mp3",
+    "FileSize": 7497248,
+    "RawDataDownloadType": 0,
+    "Etag": "641414ffcafc68a433324bfd8a791b26"
+  },
+  {
+    "Id": 98,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000027_00_m_offwhite.png",
+    "FileSize": 142654,
+    "RawDataDownloadType": 0,
+    "Etag": "8848da326ebcdb5dd0f2d3b468a6c323"
+  },
+  {
+    "Id": 99,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000027_SONG_JP.mp3",
+    "FileSize": 6967328,
+    "RawDataDownloadType": 0,
+    "Etag": "ff83ebae884c24adf0a43521d86bece0"
+  },
+  {
+    "Id": 100,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000027_SONG_US.mp3",
+    "FileSize": 6967328,
+    "RawDataDownloadType": 0,
+    "Etag": "2ee6060d76ff2f6e0e3382e224357d9b"
+  },
+  {
+    "Id": 101,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000028_00_m_offwhite.png",
+    "FileSize": 145433,
+    "RawDataDownloadType": 0,
+    "Etag": "705e17ec356e049fc6880988b1cbed30"
+  },
+  {
+    "Id": 102,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000028_SONG_JP.mp3",
+    "FileSize": 5663264,
+    "RawDataDownloadType": 0,
+    "Etag": "1455fb2fb7c3aabf7f888c1e0e06c097"
+  },
+  {
+    "Id": 103,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000028_SONG_US.mp3",
+    "FileSize": 5663264,
+    "RawDataDownloadType": 0,
+    "Etag": "fe9dc47175aefcc366d80780f83c8751"
+  },
+  {
+    "Id": 104,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000029_00_m_offwhite.png",
+    "FileSize": 122992,
+    "RawDataDownloadType": 0,
+    "Etag": "d314827f11745574bc9e6bdfcf34a367"
+  },
+  {
+    "Id": 105,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000029_SONG_JP.mp3",
+    "FileSize": 6078752,
+    "RawDataDownloadType": 0,
+    "Etag": "2b17e9bc2790d37f0bc82012e98df8f5"
+  },
+  {
+    "Id": 106,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000029_SONG_US.mp3",
+    "FileSize": 6078752,
+    "RawDataDownloadType": 0,
+    "Etag": "f9d47de6edd7b21e4fdbb05fa01109bb"
+  },
+  {
+    "Id": 107,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000030_00_m_offwhite.png",
+    "FileSize": 132505,
+    "RawDataDownloadType": 0,
+    "Etag": "47a385c128c05526f98659ed2058e794"
+  },
+  {
+    "Id": 108,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000030_SONG_JP.mp3",
+    "FileSize": 6888992,
+    "RawDataDownloadType": 0,
+    "Etag": "7304c10f174f80b61fd402cba6d0bdc6"
+  },
+  {
+    "Id": 109,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000030_SONG_US.mp3",
+    "FileSize": 6888992,
+    "RawDataDownloadType": 0,
+    "Etag": "40523cac7948979b54f0d9d06e5838a3"
+  },
+  {
+    "Id": 110,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000031_00_m_offwhite.png",
+    "FileSize": 133547,
+    "RawDataDownloadType": 0,
+    "Etag": "5282d34381955bef53f1b8738e971ba5"
+  },
+  {
+    "Id": 111,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000031_SONG_JP.mp3",
+    "FileSize": 6599456,
+    "RawDataDownloadType": 0,
+    "Etag": "a06b0fbd613499dda1e8327528937e4c"
+  },
+  {
+    "Id": 112,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000031_SONG_US.mp3",
+    "FileSize": 6599456,
+    "RawDataDownloadType": 0,
+    "Etag": "278e05bf83ab4c6d09fa953c2fb80414"
+  },
+  {
+    "Id": 113,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000032_00_m_offwhite.png",
+    "FileSize": 136954,
+    "RawDataDownloadType": 0,
+    "Etag": "a6757fec7dba7cc71fedccfc0c4fcd17"
+  },
+  {
+    "Id": 114,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000032_SONG_JP.mp3",
+    "FileSize": 6110240,
+    "RawDataDownloadType": 0,
+    "Etag": "00a813ffd269ee0dcf0dc98fb2e0a030"
+  },
+  {
+    "Id": 115,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000032_SONG_US.mp3",
+    "FileSize": 6110240,
+    "RawDataDownloadType": 0,
+    "Etag": "c985e7824d05533c970d888c22a90925"
+  },
+  {
+    "Id": 116,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000033_00_m_offwhite.png",
+    "FileSize": 132396,
+    "RawDataDownloadType": 0,
+    "Etag": "1ef90eb3ae9464c922ce0f7e55549efb"
+  },
+  {
+    "Id": 117,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000033_SONG_JP.mp3",
+    "FileSize": 6686240,
+    "RawDataDownloadType": 0,
+    "Etag": "1696498b0b142d0a8edc99d1f0378ed6"
+  },
+  {
+    "Id": 118,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000033_SONG_US.mp3",
+    "FileSize": 6686240,
+    "RawDataDownloadType": 0,
+    "Etag": "3c2428b38c89a546dc97b5295f9688eb"
+  },
+  {
+    "Id": 119,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000034_00_m_offwhite.png",
+    "FileSize": 130726,
+    "RawDataDownloadType": 0,
+    "Etag": "82e528688fd91933e14655b1ad99479a"
+  },
+  {
+    "Id": 120,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000034_SONG_JP.mp3",
+    "FileSize": 7663136,
+    "RawDataDownloadType": 0,
+    "Etag": "c610ce13f6d8c2b49aa1d239daffd32a"
+  },
+  {
+    "Id": 121,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000034_SONG_US.mp3",
+    "FileSize": 7663136,
+    "RawDataDownloadType": 0,
+    "Etag": "799e3fb3329f7c1753c94a63a453dc92"
+  },
+  {
+    "Id": 122,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000035_00_m_offwhite.png",
+    "FileSize": 159567,
+    "RawDataDownloadType": 0,
+    "Etag": "bd0168460bdf3c72acf9db3f13e8691e"
+  },
+  {
+    "Id": 123,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000035_SONG_JP.mp3",
+    "FileSize": 6847520,
+    "RawDataDownloadType": 0,
+    "Etag": "10416a114884fe4bf5cf3e02f1a07032"
+  },
+  {
+    "Id": 124,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000035_SONG_US.mp3",
+    "FileSize": 6847520,
+    "RawDataDownloadType": 0,
+    "Etag": "419ff6fa44d9331c9f51497dfa22b71e"
+  },
+  {
+    "Id": 125,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000036_00_m_offwhite.png",
+    "FileSize": 143205,
+    "RawDataDownloadType": 0,
+    "Etag": "a25c7f3a0f3f945fe486380bbf612446"
+  },
+  {
+    "Id": 126,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000036_SONG_JP.mp3",
+    "FileSize": 5526560,
+    "RawDataDownloadType": 0,
+    "Etag": "adf73f3ecc4765bbabe6122412c02b6d"
+  },
+  {
+    "Id": 127,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000036_SONG_US.mp3",
+    "FileSize": 5526560,
+    "RawDataDownloadType": 0,
+    "Etag": "738ab663d0c99944b69c77b3bc99691f"
+  },
+  {
+    "Id": 128,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000037_00_m_offwhite.png",
+    "FileSize": 151175,
+    "RawDataDownloadType": 0,
+    "Etag": "c7b498b788c0f0203fcd66ee98dfecae"
+  },
+  {
+    "Id": 129,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000037_SONG_JP.mp3",
+    "FileSize": 6787616,
+    "RawDataDownloadType": 0,
+    "Etag": "53472038423191f67b5a5e2d70fe539c"
+  },
+  {
+    "Id": 130,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000037_SONG_US.mp3",
+    "FileSize": 6787616,
+    "RawDataDownloadType": 0,
+    "Etag": "a3bc16d60ba175e50f4218eca5ac7e18"
+  },
+  {
+    "Id": 131,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000040_00_m_offwhite.png",
+    "FileSize": 139822,
+    "RawDataDownloadType": 0,
+    "Etag": "e0e5e34b568243b4307dc21826d02685"
+  },
+  {
+    "Id": 132,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000040_SONG_JP.mp3",
+    "FileSize": 7448096,
+    "RawDataDownloadType": 0,
+    "Etag": "9d4a926d51952184b7b2947de213d9b4"
+  },
+  {
+    "Id": 133,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000040_SONG_US.mp3",
+    "FileSize": 7448096,
+    "RawDataDownloadType": 0,
+    "Etag": "1190c8a133b6c7d07c7cc590dadbd534"
+  },
+  {
+    "Id": 134,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000041_00_m_offwhite.png",
+    "FileSize": 146074,
+    "RawDataDownloadType": 0,
+    "Etag": "337822a2419513df1eb16179f9089fe2"
+  },
+  {
+    "Id": 135,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000041_SONG_JP.mp3",
+    "FileSize": 5856800,
+    "RawDataDownloadType": 0,
+    "Etag": "00015cc9c684687ed4911b9e02b62f72"
+  },
+  {
+    "Id": 136,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000041_SONG_US.mp3",
+    "FileSize": 5856800,
+    "RawDataDownloadType": 0,
+    "Etag": "e0483315ceb3df791e3dffbc3dcaa510"
+  },
+  {
+    "Id": 137,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000042_00_m_offwhite.png",
+    "FileSize": 145343,
+    "RawDataDownloadType": 0,
+    "Etag": "35827ab33a051583ab6e8989885386cb"
+  },
+  {
+    "Id": 138,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000042_SONG_JP.mp3",
+    "FileSize": 7782176,
+    "RawDataDownloadType": 0,
+    "Etag": "4f180318a429353a617f3f1356440798"
+  },
+  {
+    "Id": 139,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000042_SONG_US.mp3",
+    "FileSize": 7782176,
+    "RawDataDownloadType": 0,
+    "Etag": "641debdeb638d431e00a9065d36a70da"
+  },
+  {
+    "Id": 140,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000043_00_m_offwhite.png",
+    "FileSize": 138705,
+    "RawDataDownloadType": 0,
+    "Etag": "71b059f908dc4a6b976aaa23c4e6b380"
+  },
+  {
+    "Id": 141,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000043_SONG_JP.mp3",
+    "FileSize": 10910240,
+    "RawDataDownloadType": 0,
+    "Etag": "4193ca78acd03d8170e8e9968c14bd92-2"
+  },
+  {
+    "Id": 142,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000043_SONG_US.mp3",
+    "FileSize": 10910240,
+    "RawDataDownloadType": 0,
+    "Etag": "339b727ac2be59434c08cee31f19a291-2"
+  },
+  {
+    "Id": 143,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000044_00_m_offwhite.png",
+    "FileSize": 152327,
+    "RawDataDownloadType": 0,
+    "Etag": "434108ebe87c9cf4d4f0012c777c92da"
+  },
+  {
+    "Id": 144,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000044_SONG_JP.mp3",
+    "FileSize": 7721504,
+    "RawDataDownloadType": 0,
+    "Etag": "38c1b570b76fecb0d25bcf25a7e34fef"
+  },
+  {
+    "Id": 145,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000044_SONG_US.mp3",
+    "FileSize": 7721504,
+    "RawDataDownloadType": 0,
+    "Etag": "6a5c9c83a219d45b5b638f51981d6c12"
+  },
+  {
+    "Id": 146,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000045_00_m_offwhite.png",
+    "FileSize": 158976,
+    "RawDataDownloadType": 0,
+    "Etag": "57b92b440e506ae1cd2d732cdda4ef2b"
+  },
+  {
+    "Id": 147,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000045_SONG_JP.mp3",
+    "FileSize": 10901792,
+    "RawDataDownloadType": 0,
+    "Etag": "abb69bc3a5d18bd720dea96bc3cdaf34-2"
+  },
+  {
+    "Id": 148,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000045_SONG_US.mp3",
+    "FileSize": 10901792,
+    "RawDataDownloadType": 0,
+    "Etag": "b808d1da4827fd93f01744646995e243-2"
+  },
+  {
+    "Id": 149,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000046_00_m_offwhite.png",
+    "FileSize": 135101,
+    "RawDataDownloadType": 0,
+    "Etag": "379ffa508e0384e8f519eb23080b7b5f"
+  },
+  {
+    "Id": 150,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000046_SONG_JP.mp3",
+    "FileSize": 8692256,
+    "RawDataDownloadType": 0,
+    "Etag": "91cd0517df259f47c3afff121ffcd116-2"
+  },
+  {
+    "Id": 151,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000046_SONG_US.mp3",
+    "FileSize": 8692256,
+    "RawDataDownloadType": 0,
+    "Etag": "c5ceb7ee0e0d4512e534476edcd6fa4e-2"
+  },
+  {
+    "Id": 152,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000047_00_m_offwhite.png",
+    "FileSize": 142623,
+    "RawDataDownloadType": 0,
+    "Etag": "94be4088b069f54d6fa9aaf6a043d73c"
+  },
+  {
+    "Id": 153,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000047_SONG_JP.mp3",
+    "FileSize": 7829024,
+    "RawDataDownloadType": 0,
+    "Etag": "5d0dfaa3ba93617fd32235844cfc7788"
+  },
+  {
+    "Id": 154,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000047_SONG_US.mp3",
+    "FileSize": 7829024,
+    "RawDataDownloadType": 0,
+    "Etag": "ed03d4fa7fbfb796dc2664f2e6d7b957"
+  },
+  {
+    "Id": 155,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000048_00_m_offwhite.png",
+    "FileSize": 129622,
+    "RawDataDownloadType": 0,
+    "Etag": "e7ab439c84a8c8857f6d275c7fda8ddf"
+  },
+  {
+    "Id": 156,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000048_SONG_JP.mp3",
+    "FileSize": 7759136,
+    "RawDataDownloadType": 0,
+    "Etag": "ae3392e689c1bba189ae5db1f8dca6ca"
+  },
+  {
+    "Id": 157,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000048_SONG_US.mp3",
+    "FileSize": 7759136,
+    "RawDataDownloadType": 0,
+    "Etag": "298ecf868de284bea7ac974ece7dc452"
+  },
+  {
+    "Id": 158,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000049_00_m_offwhite.png",
+    "FileSize": 151630,
+    "RawDataDownloadType": 0,
+    "Etag": "936b12f2cbfc464ffd94074426787726"
+  },
+  {
+    "Id": 159,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000049_SONG_JP.mp3",
+    "FileSize": 9601568,
+    "RawDataDownloadType": 0,
+    "Etag": "1461ffd367caa8a407ec99c9e17cce1b-2"
+  },
+  {
+    "Id": 160,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000049_SONG_US.mp3",
+    "FileSize": 9601568,
+    "RawDataDownloadType": 0,
+    "Etag": "1e32ceb3cebfc91f108c3cf4452fcaa2-2"
+  },
+  {
+    "Id": 161,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000050_00_m_offwhite.png",
+    "FileSize": 148840,
+    "RawDataDownloadType": 0,
+    "Etag": "d9dafb7761352c371511ab12fc057518"
+  },
+  {
+    "Id": 162,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000050_SONG_JP.mp3",
+    "FileSize": 11229728,
+    "RawDataDownloadType": 0,
+    "Etag": "d2aeb80ac23a7880794abc93f318662c-2"
+  },
+  {
+    "Id": 163,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000050_SONG_US.mp3",
+    "FileSize": 11229728,
+    "RawDataDownloadType": 0,
+    "Etag": "9e1d2948ae04b05561e39ea2c39c4d59-2"
+  },
+  {
+    "Id": 164,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000051_00_m_offwhite.png",
+    "FileSize": 117508,
+    "RawDataDownloadType": 0,
+    "Etag": "08ba3af7bdce9848827c6490fe56709a"
+  },
+  {
+    "Id": 165,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000051_SONG_JP.mp3",
+    "FileSize": 8614688,
+    "RawDataDownloadType": 0,
+    "Etag": "f0bc1c9ba3597356ce7f0154fede086e-2"
+  },
+  {
+    "Id": 166,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000051_SONG_US.mp3",
+    "FileSize": 8614688,
+    "RawDataDownloadType": 0,
+    "Etag": "d6bc7cbcfe5930c725132c6ccd96aff6-2"
+  },
+  {
+    "Id": 167,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000052_00_m_offwhite.png",
+    "FileSize": 132291,
+    "RawDataDownloadType": 0,
+    "Etag": "58ef867534ab062b5dcd8cce37ef48d4"
+  },
+  {
+    "Id": 168,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000052_SONG_JP.mp3",
+    "FileSize": 9744416,
+    "RawDataDownloadType": 0,
+    "Etag": "7dd8070856cb5dded7b78a380e992c21-2"
+  },
+  {
+    "Id": 169,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000052_SONG_US.mp3",
+    "FileSize": 9748480,
+    "RawDataDownloadType": 0,
+    "Etag": "312052320ffab1cfeffbb496b76dfba6-2"
+  },
+  {
+    "Id": 170,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000053_00_m_offwhite.png",
+    "FileSize": 130126,
+    "RawDataDownloadType": 0,
+    "Etag": "a4fe8ba85c734b49f4bdff24fd49ecff"
+  },
+  {
+    "Id": 171,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000053_SONG_JP.mp3",
+    "FileSize": 4261664,
+    "RawDataDownloadType": 0,
+    "Etag": "d4218c59dc1847d8e5836fdb677b6689"
+  },
+  {
+    "Id": 172,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000053_SONG_US.mp3",
+    "FileSize": 4261664,
+    "RawDataDownloadType": 0,
+    "Etag": "fd013672dd631cd754f18c6dc5991bd1"
+  },
+  {
+    "Id": 173,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000054_00_m_offwhite.png",
+    "FileSize": 130508,
+    "RawDataDownloadType": 0,
+    "Etag": "3eb1fa953b0718afe497863c7d722c23"
+  },
+  {
+    "Id": 174,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000054_SONG_JP.mp3",
+    "FileSize": 6019616,
+    "RawDataDownloadType": 0,
+    "Etag": "73f92b8b7e8221f7f850d5b727532cab"
+  },
+  {
+    "Id": 175,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000054_SONG_US.mp3",
+    "FileSize": 6019616,
+    "RawDataDownloadType": 0,
+    "Etag": "b86363434ed2117969262cfd35b2c6d2"
+  },
+  {
+    "Id": 176,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000055_00_m_offwhite.png",
+    "FileSize": 145201,
+    "RawDataDownloadType": 0,
+    "Etag": "293c19b3fe20d75dae8e6a2e7a49b063"
+  },
+  {
+    "Id": 177,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000055_SONG_JP.mp3",
+    "FileSize": 8514080,
+    "RawDataDownloadType": 0,
+    "Etag": "43b7d3f7b3dee196ff2b498a7ddbe0cb-2"
+  },
+  {
+    "Id": 178,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000055_SONG_US.mp3",
+    "FileSize": 8514080,
+    "RawDataDownloadType": 0,
+    "Etag": "c280ef9add340e1da0b96d44aacbc7a9-2"
+  },
+  {
+    "Id": 179,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000056_00_m_offwhite.png",
+    "FileSize": 137875,
+    "RawDataDownloadType": 0,
+    "Etag": "d2969328b76d8842828ec83ee770bcd8"
+  },
+  {
+    "Id": 180,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000056_SONG_JP.mp3",
+    "FileSize": 6721272,
+    "RawDataDownloadType": 0,
+    "Etag": "f43a225daee6264e6b7025ac8cbc4f89"
+  },
+  {
+    "Id": 181,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000056_SONG_US.mp3",
+    "FileSize": 6721272,
+    "RawDataDownloadType": 0,
+    "Etag": "47cb59b231b303567c0ebb28bec9eeae"
+  },
+  {
+    "Id": 182,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000057_00_m_offwhite.png",
+    "FileSize": 156192,
+    "RawDataDownloadType": 0,
+    "Etag": "cf1803ead5e4524b0f446b84b95b5ff5"
+  },
+  {
+    "Id": 183,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000057_SONG_JP.mp3",
+    "FileSize": 7733792,
+    "RawDataDownloadType": 0,
+    "Etag": "d432f622e249984d4cfc899c2838d201"
+  },
+  {
+    "Id": 184,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000057_SONG_US.mp3",
+    "FileSize": 7733792,
+    "RawDataDownloadType": 0,
+    "Etag": "1223aa9f5cb2ea1ee0a39c0cf52f7d1d"
+  },
+  {
+    "Id": 185,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000058_00_m_offwhite.png",
+    "FileSize": 160066,
+    "RawDataDownloadType": 0,
+    "Etag": "0055f095efd4968dcbd583bdf635ffcd"
+  },
+  {
+    "Id": 186,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000058_SONG_JP.mp3",
+    "FileSize": 7703840,
+    "RawDataDownloadType": 0,
+    "Etag": "7e051fa4a8edfa15f3444395bb7c2fc1"
+  },
+  {
+    "Id": 187,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000058_SONG_US.mp3",
+    "FileSize": 7703840,
+    "RawDataDownloadType": 0,
+    "Etag": "d0bf773d5c78e89dc9be6525fd8bec57"
+  },
+  {
+    "Id": 188,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000059_00_m_offwhite.png",
+    "FileSize": 143891,
+    "RawDataDownloadType": 0,
+    "Etag": "b25e8852d3ff474f3573a377be832a9c"
+  },
+  {
+    "Id": 189,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000059_SONG_JP.mp3",
+    "FileSize": 8887572,
+    "RawDataDownloadType": 0,
+    "Etag": "2d4e484919e5dcf1dd1400333a22c929-2"
+  },
+  {
+    "Id": 190,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000059_SONG_US.mp3",
+    "FileSize": 8887572,
+    "RawDataDownloadType": 0,
+    "Etag": "4f0704f1a09108000cfae5f30f581168-2"
+  },
+  {
+    "Id": 191,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000060_00_m_offwhite.png",
+    "FileSize": 132536,
+    "RawDataDownloadType": 0,
+    "Etag": "4013aaa78e9911fca24c9b33ca2a8522"
+  },
+  {
+    "Id": 192,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000060_SONG_JP.mp3",
+    "FileSize": 7042592,
+    "RawDataDownloadType": 0,
+    "Etag": "f83c43a531ea1e8f419dede8c7a8f4a4"
+  },
+  {
+    "Id": 193,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000060_SONG_US.mp3",
+    "FileSize": 7042592,
+    "RawDataDownloadType": 0,
+    "Etag": "30ed81bf93dc8dc31d0208281ec2d2ba"
+  },
+  {
+    "Id": 194,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000061_00_m_offwhite.png",
+    "FileSize": 149448,
+    "RawDataDownloadType": 0,
+    "Etag": "6d35e94831ba59152851fa4612e151d1"
+  },
+  {
+    "Id": 195,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000061_SONG_JP.mp3",
+    "FileSize": 8051744,
+    "RawDataDownloadType": 0,
+    "Etag": "677456bfd2d1fb9ccd149a6e3bccd977"
+  },
+  {
+    "Id": 196,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000061_SONG_US.mp3",
+    "FileSize": 8051744,
+    "RawDataDownloadType": 0,
+    "Etag": "8ac50418b8e87c3ebc193dadcc532e00"
+  },
+  {
+    "Id": 197,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000062_00_m_offwhite.png",
+    "FileSize": 140093,
+    "RawDataDownloadType": 0,
+    "Etag": "845e7240123fe747125b4162a1d4a18c"
+  },
+  {
+    "Id": 198,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000062_SONG_JP.mp3",
+    "FileSize": 8432672,
+    "RawDataDownloadType": 0,
+    "Etag": "42d818bc370dacd8fd7673658c202ded-2"
+  },
+  {
+    "Id": 199,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000062_SONG_US.mp3",
+    "FileSize": 8432672,
+    "RawDataDownloadType": 0,
+    "Etag": "074097f97ff7df5d139c02aae9dd4d30-2"
+  },
+  {
+    "Id": 200,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000063_00_m_offwhite.png",
+    "FileSize": 149474,
+    "RawDataDownloadType": 0,
+    "Etag": "bdde81879f2d548e1c8e32153ffa4b5c"
+  },
+  {
+    "Id": 201,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000063_SONG_JP.mp3",
+    "FileSize": 14725620,
+    "RawDataDownloadType": 0,
+    "Etag": "710a4ba1a3db26a10907c0ea90896208-2"
+  },
+  {
+    "Id": 202,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000063_SONG_US.mp3",
+    "FileSize": 14725620,
+    "RawDataDownloadType": 0,
+    "Etag": "1256f156a98ce8e61243b4404e381f11-2"
+  },
+  {
+    "Id": 203,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000064_00_m_offwhite.png",
+    "FileSize": 141799,
+    "RawDataDownloadType": 0,
+    "Etag": "d384fac5c332facffe4e2cd236ca4e04"
+  },
+  {
+    "Id": 204,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000064_SONG_JP.mp3",
+    "FileSize": 8374968,
+    "RawDataDownloadType": 0,
+    "Etag": "6ba95978b79c437ef2771ff26c3e3796"
+  },
+  {
+    "Id": 205,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000064_SONG_US.mp3",
+    "FileSize": 8374968,
+    "RawDataDownloadType": 0,
+    "Etag": "c266191ec5fda5558175c8a974dce280"
+  },
+  {
+    "Id": 206,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000065_00_m_offwhite.png",
+    "FileSize": 149452,
+    "RawDataDownloadType": 0,
+    "Etag": "8b83609021640c3147ff7c1b04febecb"
+  },
+  {
+    "Id": 207,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000065_SONG_JP.mp3",
+    "FileSize": 9380286,
+    "RawDataDownloadType": 0,
+    "Etag": "cd77ab2d23be8116d1b4615c266c40c5-2"
+  },
+  {
+    "Id": 208,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000065_SONG_US.mp3",
+    "FileSize": 9379891,
+    "RawDataDownloadType": 0,
+    "Etag": "786dc8a5cd1fa2cc5e2888b4763b428c-2"
+  },
+  {
+    "Id": 209,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000067_00_m_offwhite.png",
+    "FileSize": 139215,
+    "RawDataDownloadType": 0,
+    "Etag": "c393a20ad54688dffd313fc8ce436fc0"
+  },
+  {
+    "Id": 210,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000067_SONG_JP.mp3",
+    "FileSize": 11175968,
+    "RawDataDownloadType": 0,
+    "Etag": "169e584c4c54bd6b85a2c584e6ffb221-2"
+  },
+  {
+    "Id": 211,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000067_SONG_US.mp3",
+    "FileSize": 11175968,
+    "RawDataDownloadType": 0,
+    "Etag": "ed066d6960f5c2eaa7e89a1facecd32a-2"
+  },
+  {
+    "Id": 212,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000068_00_m_offwhite.png",
+    "FileSize": 125917,
+    "RawDataDownloadType": 0,
+    "Etag": "a622b45baaf2f1afef4b195adcfaa103"
+  },
+  {
+    "Id": 213,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000068_SONG_JP.mp3",
+    "FileSize": 7123212,
+    "RawDataDownloadType": 0,
+    "Etag": "47bc67a7dc1bc46c86383a71a357e654"
+  },
+  {
+    "Id": 214,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000068_SONG_US.mp3",
+    "FileSize": 7123212,
+    "RawDataDownloadType": 0,
+    "Etag": "02298f962ba45083df70f3e39fef5504"
+  },
+  {
+    "Id": 215,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000069_00_m_offwhite.png",
+    "FileSize": 144562,
+    "RawDataDownloadType": 0,
+    "Etag": "837cb770484bda42eccc84c70181b2d6"
+  },
+  {
+    "Id": 216,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000069_SONG_JP.mp3",
+    "FileSize": 25183798,
+    "RawDataDownloadType": 0,
+    "Etag": "fd8122bbd7b018d57825666e1e8614da-2"
+  },
+  {
+    "Id": 217,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000069_SONG_US.mp3",
+    "FileSize": 25183798,
+    "RawDataDownloadType": 0,
+    "Etag": "154cfbd3952f58f3c83ed345541e37f9-2"
+  },
+  {
+    "Id": 218,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000070_00_m_offwhite.png",
+    "FileSize": 142421,
+    "RawDataDownloadType": 0,
+    "Etag": "2531746d0c6f2342a8b473f6fd769e99"
+  },
+  {
+    "Id": 219,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000070_SONG_JP.mp3",
+    "FileSize": 7147808,
+    "RawDataDownloadType": 0,
+    "Etag": "d8223747c579cfc26daf02f101355a84"
+  },
+  {
+    "Id": 220,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000070_SONG_US.mp3",
+    "FileSize": 7147808,
+    "RawDataDownloadType": 0,
+    "Etag": "11da5b46a2023ddd4c73d663f3fd0da1"
+  },
+  {
+    "Id": 221,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000071_00_m_offwhite.png",
+    "FileSize": 144721,
+    "RawDataDownloadType": 0,
+    "Etag": "cc29f7a1d320f15cb463ff573813be73"
+  },
+  {
+    "Id": 222,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000071_SONG_JP.mp3",
+    "FileSize": 7950368,
+    "RawDataDownloadType": 0,
+    "Etag": "ae14dbdee532c08bc239392fb7113f86"
+  },
+  {
+    "Id": 223,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000071_SONG_US.mp3",
+    "FileSize": 7950368,
+    "RawDataDownloadType": 0,
+    "Etag": "1310f9043dbb72e0c268cd1587913945"
+  },
+  {
+    "Id": 224,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000072_00_m_offwhite.png",
+    "FileSize": 138470,
+    "RawDataDownloadType": 0,
+    "Etag": "6ab89ca3839d5ad2529b1acf40032b2f"
+  },
+  {
+    "Id": 225,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000072_SONG_JP.mp3",
+    "FileSize": 6043424,
+    "RawDataDownloadType": 0,
+    "Etag": "66bc8a99755069afcaece9d24f3ed4c1"
+  },
+  {
+    "Id": 226,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000072_SONG_US.mp3",
+    "FileSize": 6043424,
+    "RawDataDownloadType": 0,
+    "Etag": "e5f41d5020266915e08d53063a5aed99"
+  },
+  {
+    "Id": 227,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000073_00_m_offwhite.png",
+    "FileSize": 140497,
+    "RawDataDownloadType": 0,
+    "Etag": "42274cb07bba2d0d66efcb4c9312db67"
+  },
+  {
+    "Id": 228,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000073_SONG_JP.mp3",
+    "FileSize": 9510840,
+    "RawDataDownloadType": 0,
+    "Etag": "0dfa48a3f940c878a0249a4278778687-2"
+  },
+  {
+    "Id": 229,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000073_SONG_US.mp3",
+    "FileSize": 9510840,
+    "RawDataDownloadType": 0,
+    "Etag": "886f226d87ae8395265984c36bd5cf5a-2"
+  },
+  {
+    "Id": 230,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000074_00_m_offwhite.png",
+    "FileSize": 130441,
+    "RawDataDownloadType": 0,
+    "Etag": "1183f2241d3ec6c305bf07f105be76b6"
+  },
+  {
+    "Id": 231,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000074_SONG_JP.mp3",
+    "FileSize": 10210320,
+    "RawDataDownloadType": 0,
+    "Etag": "e6dd406116ac04c01af72f771bda469f-2"
+  },
+  {
+    "Id": 232,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000074_SONG_US.mp3",
+    "FileSize": 10210320,
+    "RawDataDownloadType": 0,
+    "Etag": "3565bd77a7786dbf262045cf243281a5-2"
+  },
+  {
+    "Id": 233,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000075_00_m_offwhite.png",
+    "FileSize": 148852,
+    "RawDataDownloadType": 0,
+    "Etag": "f7ff376466a76b32372c801e956aae57"
+  },
+  {
+    "Id": 234,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000075_SONG_JP.mp3",
+    "FileSize": 10075644,
+    "RawDataDownloadType": 0,
+    "Etag": "a7f6af7629cb1b512fea7c73903fc3f2-2"
+  },
+  {
+    "Id": 235,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000075_SONG_US.mp3",
+    "FileSize": 10075644,
+    "RawDataDownloadType": 0,
+    "Etag": "ce01825b6c7ebfe11f9beaf854e2ce61-2"
+  },
+  {
+    "Id": 236,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000076_00_m_offwhite.png",
+    "FileSize": 144098,
+    "RawDataDownloadType": 0,
+    "Etag": "e884f28049b22f711471267ac5b4f947"
+  },
+  {
+    "Id": 237,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000076_SONG_JP.mp3",
+    "FileSize": 9754092,
+    "RawDataDownloadType": 0,
+    "Etag": "f36197c8370f539f3c13e66951d90f3f-2"
+  },
+  {
+    "Id": 238,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000076_SONG_US.mp3",
+    "FileSize": 9754092,
+    "RawDataDownloadType": 0,
+    "Etag": "8ede98a29a7f82fedc70cbbaad110d31-2"
+  },
+  {
+    "Id": 239,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000077_00_m_offwhite.png",
+    "FileSize": 133800,
+    "RawDataDownloadType": 0,
+    "Etag": "b2ad55e6a30e483049a6a4780bf37bce"
+  },
+  {
+    "Id": 240,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000077_SONG_JP.mp3",
+    "FileSize": 7567166,
+    "RawDataDownloadType": 0,
+    "Etag": "6b4389d0f372d7d655e06558433c58c9"
+  },
+  {
+    "Id": 241,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000077_SONG_US.mp3",
+    "FileSize": 7567166,
+    "RawDataDownloadType": 0,
+    "Etag": "156c84e038894a462ca8f35e8afb344a"
+  },
+  {
+    "Id": 242,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000078_00_m_offwhite.png",
+    "FileSize": 147139,
+    "RawDataDownloadType": 0,
+    "Etag": "d5129e84ad1826fa6a3e3a50f93dc49f"
+  },
+  {
+    "Id": 243,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000078_SONG_JP.mp3",
+    "FileSize": 8341560,
+    "RawDataDownloadType": 0,
+    "Etag": "36f742cc807bea739e92b1824031865b"
+  },
+  {
+    "Id": 244,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000078_SONG_US.mp3",
+    "FileSize": 8341560,
+    "RawDataDownloadType": 0,
+    "Etag": "19d28f71ed6a229721f648ea1b42d159"
+  },
+  {
+    "Id": 245,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000079_00_m_offwhite.png",
+    "FileSize": 133785,
+    "RawDataDownloadType": 0,
+    "Etag": "21b3db467e857c61bd3a471c8baea57f"
+  },
+  {
+    "Id": 246,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000079_SONG_JP.mp3",
+    "FileSize": 7549566,
+    "RawDataDownloadType": 0,
+    "Etag": "7611080c1348682dc0d97fc36bc4f43a"
+  },
+  {
+    "Id": 247,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000079_SONG_US.mp3",
+    "FileSize": 7549566,
+    "RawDataDownloadType": 0,
+    "Etag": "9f803948c368c8b4557f6e073cd3e3b2"
+  },
+  {
+    "Id": 248,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000080_00_m_offwhite.png",
+    "FileSize": 142215,
+    "RawDataDownloadType": 0,
+    "Etag": "13a1b97d22ae9f9be1f1878472b26e7f"
+  },
+  {
+    "Id": 249,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000080_SONG_JP.mp3",
+    "FileSize": 8492278,
+    "RawDataDownloadType": 0,
+    "Etag": "447e64245a2952ecf3371e2d05ace610-2"
+  },
+  {
+    "Id": 250,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000080_SONG_US.mp3",
+    "FileSize": 8492278,
+    "RawDataDownloadType": 0,
+    "Etag": "8c3c3746e4696abf5f083952c911f419-2"
+  },
+  {
+    "Id": 251,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000081_00_m_offwhite.png",
+    "FileSize": 146362,
+    "RawDataDownloadType": 0,
+    "Etag": "7fafdc147c4618f0f8eb7fa329d6be26"
+  },
+  {
+    "Id": 252,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000081_SONG_JP.mp3",
+    "FileSize": 6989886,
+    "RawDataDownloadType": 0,
+    "Etag": "1bd8c14a39e28e92f8bcf1c0fabe2712"
+  },
+  {
+    "Id": 253,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000081_SONG_US.mp3",
+    "FileSize": 6989886,
+    "RawDataDownloadType": 0,
+    "Etag": "9d5812fa9bac0e29a26e155add2ccc66"
+  },
+  {
+    "Id": 254,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000082_00_m_offwhite.png",
+    "FileSize": 150542,
+    "RawDataDownloadType": 0,
+    "Etag": "4133b47cd42a69128b48fb675212a4d8"
+  },
+  {
+    "Id": 255,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000082_SONG_JP.mp3",
+    "FileSize": 10426816,
+    "RawDataDownloadType": 0,
+    "Etag": "e291e9fa48a96fd0b1d95149f8e9e645-2"
+  },
+  {
+    "Id": 256,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000082_SONG_US.mp3",
+    "FileSize": 10426816,
+    "RawDataDownloadType": 0,
+    "Etag": "3c2e0be898d11c1b0e218f2b177699cf-2"
+  },
+  {
+    "Id": 257,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000084_00_m_offwhite.png",
+    "FileSize": 128814,
+    "RawDataDownloadType": 0,
+    "Etag": "63e0d14c6c6185fe702aeaff3e6a70cc"
+  },
+  {
+    "Id": 258,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000084_SONG_JP.mp3",
+    "FileSize": 10652976,
+    "RawDataDownloadType": 0,
+    "Etag": "94374b40e7cfdeb78f8725a484c79a06-2"
+  },
+  {
+    "Id": 259,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000084_SONG_US.mp3",
+    "FileSize": 10650888,
+    "RawDataDownloadType": 0,
+    "Etag": "f9222c92dcd540864c29a9b922e4e724-2"
+  },
+  {
+    "Id": 260,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000085_00_m_offwhite.png",
+    "FileSize": 128997,
+    "RawDataDownloadType": 0,
+    "Etag": "67c892929537b58f9ca6c02acbf9707c"
+  },
+  {
+    "Id": 261,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000085_SONG_JP.mp3",
+    "FileSize": 9844920,
+    "RawDataDownloadType": 0,
+    "Etag": "82135546c5b8891cddfe3b6d2b97a6b6-2"
+  },
+  {
+    "Id": 262,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000085_SONG_US.mp3",
+    "FileSize": 9844920,
+    "RawDataDownloadType": 0,
+    "Etag": "805fe626701e4394bf498d70df8143e7-2"
+  },
+  {
+    "Id": 263,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000086_00_m_offwhite.png",
+    "FileSize": 146776,
+    "RawDataDownloadType": 0,
+    "Etag": "0f868419e96e0e5602432d6c8e406a64"
+  },
+  {
+    "Id": 264,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000086_SONG_JP.mp3",
+    "FileSize": 13184758,
+    "RawDataDownloadType": 0,
+    "Etag": "d6870ff6e1ab6d6f64854666cfd6fa66-2"
+  },
+  {
+    "Id": 265,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000086_SONG_US.mp3",
+    "FileSize": 13184758,
+    "RawDataDownloadType": 0,
+    "Etag": "a77c3edd1f4709779bec9c9afbee5efd-2"
+  },
+  {
+    "Id": 266,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000087_00_m_offwhite.png",
+    "FileSize": 132632,
+    "RawDataDownloadType": 0,
+    "Etag": "e5caecb5cfe79b15c1745c84a7c08e2f"
+  },
+  {
+    "Id": 267,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000087_SONG_JP.mp3",
+    "FileSize": 21215974,
+    "RawDataDownloadType": 0,
+    "Etag": "fedeb840811164ad0f895c0f667cfdf8-3"
+  },
+  {
+    "Id": 268,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000087_SONG_US.mp3",
+    "FileSize": 21093094,
+    "RawDataDownloadType": 0,
+    "Etag": "f37fba2be56615e1a4c7fbd8ab9e4484-3"
+  },
+  {
+    "Id": 269,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000089_00_m_offwhite.png",
+    "FileSize": 146556,
+    "RawDataDownloadType": 0,
+    "Etag": "10628b1389a1d75a51b9289bb270adea"
+  },
+  {
+    "Id": 270,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000089_SONG_JP.mp3",
+    "FileSize": 9868884,
+    "RawDataDownloadType": 0,
+    "Etag": "0845757310c85ca0f22d6329dc20e0a1-2"
+  },
+  {
+    "Id": 271,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000089_SONG_US.mp3",
+    "FileSize": 9868884,
+    "RawDataDownloadType": 0,
+    "Etag": "b82cc7b72762cd3eadd36742f206e757-2"
+  },
+  {
+    "Id": 272,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000093_00_m_offwhite.png",
+    "FileSize": 124709,
+    "RawDataDownloadType": 0,
+    "Etag": "48d6521485cdb13e612f75d412b214bc"
+  },
+  {
+    "Id": 273,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000093_SONG_JP.mp3",
+    "FileSize": 11580455,
+    "RawDataDownloadType": 0,
+    "Etag": "9261386ba90928da5b477a2bfe94541e-2"
+  },
+  {
+    "Id": 274,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000093_SONG_US.mp3",
+    "FileSize": 11580455,
+    "RawDataDownloadType": 0,
+    "Etag": "c1aa5bbd7115427850402e9d8d331362-2"
+  },
+  {
+    "Id": 275,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000095_00_m_offwhite.png",
+    "FileSize": 146321,
+    "RawDataDownloadType": 0,
+    "Etag": "cec4b48fcf0466a11371e86bc1f66d98"
+  },
+  {
+    "Id": 276,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000095_SONG_JP.mp3",
+    "FileSize": 9239158,
+    "RawDataDownloadType": 0,
+    "Etag": "a0fe8d8bb0c66c9d8e0ebf73ee9835dd-2"
+  },
+  {
+    "Id": 277,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000095_SONG_US.mp3",
+    "FileSize": 9239158,
+    "RawDataDownloadType": 0,
+    "Etag": "69cd5d6527fb2d739990c5cc086c3888-2"
+  },
+  {
+    "Id": 278,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000096_00_m_offwhite.png",
+    "FileSize": 165272,
+    "RawDataDownloadType": 0,
+    "Etag": "5cf9e58f6edf77189176bd73c1b5a42e"
+  },
+  {
+    "Id": 279,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000096_SONG_JP.mp3",
+    "FileSize": 9286198,
+    "RawDataDownloadType": 0,
+    "Etag": "3076f7821d68c04b654a8bc9fb4705fb-2"
+  },
+  {
+    "Id": 280,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000096_SONG_US.mp3",
+    "FileSize": 9286198,
+    "RawDataDownloadType": 0,
+    "Etag": "952e61e5080dd69df4bb663ca2797565-2"
+  },
+  {
+    "Id": 281,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000100_00_m_offwhite.png",
+    "FileSize": 150636,
+    "RawDataDownloadType": 0,
+    "Etag": "e3a8741b006d0caefc50d3f016519a7e"
+  },
+  {
+    "Id": 282,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000100_SONG_JP.mp3",
+    "FileSize": 8849364,
+    "RawDataDownloadType": 0,
+    "Etag": "70b8802bf888c75cf5c34dd48340f69e-2"
+  },
+  {
+    "Id": 283,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000100_SONG_US.mp3",
+    "FileSize": 8849364,
+    "RawDataDownloadType": 0,
+    "Etag": "c0afe33543aa8ceea11a9a74a97d37b2-2"
+  },
+  {
+    "Id": 284,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000105_00_m_offwhite.png",
+    "FileSize": 147861,
+    "RawDataDownloadType": 0,
+    "Etag": "c424adaadb5658c253094962246f99b9"
+  },
+  {
+    "Id": 285,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000105_SONG_JP.mp3",
+    "FileSize": 13295158,
+    "RawDataDownloadType": 0,
+    "Etag": "5a3d9118045ac2723df0fc3e06c461f6-2"
+  },
+  {
+    "Id": 286,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000105_SONG_US.mp3",
+    "FileSize": 13295158,
+    "RawDataDownloadType": 0,
+    "Etag": "7ad913ccd6d21de0f9f174acaf06d6d2-2"
+  },
+  {
+    "Id": 287,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000106_00_m_offwhite.png",
+    "FileSize": 141729,
+    "RawDataDownloadType": 0,
+    "Etag": "35f94ef90ff0ed788706a31ea20bef81"
+  },
+  {
+    "Id": 288,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000106_SONG_JP.mp3",
+    "FileSize": 7793398,
+    "RawDataDownloadType": 0,
+    "Etag": "8ced1136bc9e7ca2c4b7f742032cd284"
+  },
+  {
+    "Id": 289,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000106_SONG_US.mp3",
+    "FileSize": 7793398,
+    "RawDataDownloadType": 0,
+    "Etag": "29906a2d938ca7666dd810b40371627b"
+  },
+  {
+    "Id": 290,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000107_00_m_offwhite.png",
+    "FileSize": 139388,
+    "RawDataDownloadType": 0,
+    "Etag": "4ae22c3ad587efc46656abcb17017a72"
+  },
+  {
+    "Id": 291,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000107_SONG_JP.mp3",
+    "FileSize": 14188918,
+    "RawDataDownloadType": 0,
+    "Etag": "0894c30fde5f7007c36cbd243d08995a-2"
+  },
+  {
+    "Id": 292,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000107_SONG_US.mp3",
+    "FileSize": 14188918,
+    "RawDataDownloadType": 0,
+    "Etag": "d21e2da9b565f04e94ba67954e8d5a8a-2"
+  },
+  {
+    "Id": 293,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000108_00_m_offwhite.png",
+    "FileSize": 128563,
+    "RawDataDownloadType": 0,
+    "Etag": "64a5277297b8e746bfbe452e14f304f3"
+  },
+  {
+    "Id": 294,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000108_SONG_JP.mp3",
+    "FileSize": 17131318,
+    "RawDataDownloadType": 0,
+    "Etag": "d5452f53fe9a0dd9193f6040a94d2421-3"
+  },
+  {
+    "Id": 295,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000108_SONG_US.mp3",
+    "FileSize": 17132278,
+    "RawDataDownloadType": 0,
+    "Etag": "1ed5dd2afbe28cbe3319b03897af4826-3"
+  },
+  {
+    "Id": 296,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000109_00_m_offwhite.png",
+    "FileSize": 173688,
+    "RawDataDownloadType": 0,
+    "Etag": "1f97e22d7e6084a6672a56454f300cb6"
+  },
+  {
+    "Id": 297,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000109_SONG_JP.mp3",
+    "FileSize": 9889079,
+    "RawDataDownloadType": 0,
+    "Etag": "789b674a0b3e8d8a1ae2c97be0b4db00-2"
+  },
+  {
+    "Id": 298,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000109_SONG_US.mp3",
+    "FileSize": 9889895,
+    "RawDataDownloadType": 0,
+    "Etag": "a8420bcd3210d6880cd8eee3cf11e33f-2"
+  },
+  {
+    "Id": 299,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000111_00_m_offwhite.png",
+    "FileSize": 159685,
+    "RawDataDownloadType": 0,
+    "Etag": "c6a3966ae3a143c30a90a71f02cf30aa"
+  },
+  {
+    "Id": 300,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000111_SONG_JP.mp3",
+    "FileSize": 9890964,
+    "RawDataDownloadType": 0,
+    "Etag": "ec6f21a06dd2afd2ab49dac7f9cc3e23-2"
+  },
+  {
+    "Id": 301,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000111_SONG_US.mp3",
+    "FileSize": 9890964,
+    "RawDataDownloadType": 0,
+    "Etag": "5a8613024b12bb9e65d04147d56e658d-2"
+  },
+  {
+    "Id": 302,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000112_00_m_offwhite.png",
+    "FileSize": 147750,
+    "RawDataDownloadType": 0,
+    "Etag": "04e4dd450fb8a64f8670a1ccb89aacfc"
+  },
+  {
+    "Id": 303,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000112_SONG_JP.mp3",
+    "FileSize": 8021844,
+    "RawDataDownloadType": 0,
+    "Etag": "de6ec097dee123668a40c47f7f87949e"
+  },
+  {
+    "Id": 304,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000112_SONG_US.mp3",
+    "FileSize": 8021844,
+    "RawDataDownloadType": 0,
+    "Etag": "4f7bccd3b9df4ebe50efc5a56a939fac"
+  },
+  {
+    "Id": 305,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000113_00_m_offwhite.png",
+    "FileSize": 139925,
+    "RawDataDownloadType": 0,
+    "Etag": "e5b3e7ae353bf4e130ceca7be48b8a85"
+  },
+  {
+    "Id": 306,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000113_SONG_JP.mp3",
+    "FileSize": 10902804,
+    "RawDataDownloadType": 0,
+    "Etag": "46dfedb8a13dfb8e07d729de097127d5-2"
+  },
+  {
+    "Id": 307,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000113_SONG_US.mp3",
+    "FileSize": 10902804,
+    "RawDataDownloadType": 0,
+    "Etag": "e478680e0cb03b12b0d6140aea26c7e2-2"
+  },
+  {
+    "Id": 308,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000114_00_m_offwhite.png",
+    "FileSize": 152183,
+    "RawDataDownloadType": 0,
+    "Etag": "28136ca31d1de356c30ab631af8d4035"
+  },
+  {
+    "Id": 309,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000114_SONG_JP.mp3",
+    "FileSize": 8170783,
+    "RawDataDownloadType": 0,
+    "Etag": "1968dba2464d2e2dcdd2e15f22ecbe5f"
+  },
+  {
+    "Id": 310,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000114_SONG_US.mp3",
+    "FileSize": 8170783,
+    "RawDataDownloadType": 0,
+    "Etag": "0d7f4ea254641917a8bfd02ec4af4ff5"
+  },
+  {
+    "Id": 311,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000115_00_m_offwhite.png",
+    "FileSize": 137977,
+    "RawDataDownloadType": 0,
+    "Etag": "3afec80f45676816969b720f4274c8f3"
+  },
+  {
+    "Id": 312,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000115_SONG_JP.mp3",
+    "FileSize": 8768758,
+    "RawDataDownloadType": 0,
+    "Etag": "78fa1ae454edcdb9d180cc7e39add2d5-2"
+  },
+  {
+    "Id": 313,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000115_SONG_US.mp3",
+    "FileSize": 8768758,
+    "RawDataDownloadType": 0,
+    "Etag": "6dafb3ed15bf154de274391a123a9987-2"
+  },
+  {
+    "Id": 314,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000116_00_m_offwhite.png",
+    "FileSize": 178759,
+    "RawDataDownloadType": 0,
+    "Etag": "0e66bbf752364c03175f01e66248a0b2"
+  },
+  {
+    "Id": 315,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000116_SONG_JP.mp3",
+    "FileSize": 11462484,
+    "RawDataDownloadType": 0,
+    "Etag": "f41eeb7982826ff9499a5667e7f300d2-2"
+  },
+  {
+    "Id": 316,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000116_SONG_US.mp3",
+    "FileSize": 11462484,
+    "RawDataDownloadType": 0,
+    "Etag": "3f949cdd07f4d1a5b8f227283959ce06-2"
+  },
+  {
+    "Id": 317,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000117_00_m_offwhite.png",
+    "FileSize": 137825,
+    "RawDataDownloadType": 0,
+    "Etag": "10368a0854b89303f544196e5d34c45d"
+  },
+  {
+    "Id": 318,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000117_SONG_JP.mp3",
+    "FileSize": 11060279,
+    "RawDataDownloadType": 0,
+    "Etag": "a2ded6b6bd69a06582558ff8f52fda2f-2"
+  },
+  {
+    "Id": 319,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000117_SONG_US.mp3",
+    "FileSize": 10576439,
+    "RawDataDownloadType": 0,
+    "Etag": "0c45555db7d228ac8421ba133f9299c9-2"
+  },
+  {
+    "Id": 320,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000121_00_m_offwhite.png",
+    "FileSize": 167095,
+    "RawDataDownloadType": 0,
+    "Etag": "29b88eb731ff7994b6a86aa7173b4b84"
+  },
+  {
+    "Id": 321,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000121_SONG_JP.mp3",
+    "FileSize": 7670272,
+    "RawDataDownloadType": 0,
+    "Etag": "5efa541d39b62aed044e55bb85c547e2"
+  },
+  {
+    "Id": 322,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000121_SONG_US.mp3",
+    "FileSize": 9589524,
+    "RawDataDownloadType": 0,
+    "Etag": "d48406065f2e0117ef896479080a73fa-2"
+  },
+  {
+    "Id": 323,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000122_00_m_offwhite.png",
+    "FileSize": 150785,
+    "RawDataDownloadType": 0,
+    "Etag": "b1de8fb87e96a110038ba3c7a51e1fba"
+  },
+  {
+    "Id": 324,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000122_SONG_JP.mp3",
+    "FileSize": 10009044,
+    "RawDataDownloadType": 0,
+    "Etag": "2431e6cbdb3689c493cc0609dbde0083-2"
+  },
+  {
+    "Id": 325,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000122_SONG_US.mp3",
+    "FileSize": 10009044,
+    "RawDataDownloadType": 0,
+    "Etag": "1aa5a81276d6db7575fef7ef15cae7d0-2"
+  },
+  {
+    "Id": 326,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000123_00_m_offwhite.png",
+    "FileSize": 154464,
+    "RawDataDownloadType": 0,
+    "Etag": "c5e776619fbd21b29443b2a0c99ce5a5"
+  },
+  {
+    "Id": 327,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000123_SONG_JP.mp3",
+    "FileSize": 9953254,
+    "RawDataDownloadType": 0,
+    "Etag": "272374579741c36cef38f80513298b03-2"
+  },
+  {
+    "Id": 328,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MusicPlayer/CHR_000123_SONG_US.mp3",
+    "FileSize": 9953254,
+    "RawDataDownloadType": 0,
+    "Etag": "56af1feb72790dee33d7f9a627c044bd-2"
+  },
+  {
+    "Id": 329,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_010087.png",
+    "FileSize": 64521,
+    "RawDataDownloadType": 7,
+    "Etag": "9138e80c0543be391c8c6758818e2cee"
+  },
+  {
+    "Id": 330,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_010100.png",
+    "FileSize": 64790,
+    "RawDataDownloadType": 7,
+    "Etag": "78f56e9f2af3270e66515743b7f9ec5b"
+  },
+  {
+    "Id": 331,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_010121.png",
+    "FileSize": 67042,
+    "RawDataDownloadType": 7,
+    "Etag": "00bfef550f84d081402b706e4b3f589b"
+  },
+  {
+    "Id": 332,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_010122.png",
+    "FileSize": 64769,
+    "RawDataDownloadType": 7,
+    "Etag": "e00438bca2a6b4088f03e9c97d8994f7"
+  },
+  {
+    "Id": 333,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_010123.png",
+    "FileSize": 65376,
+    "RawDataDownloadType": 7,
+    "Etag": "be23da5bbc419d025af5d679410c8c25"
+  },
+  {
+    "Id": 334,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020065.png",
+    "FileSize": 66502,
+    "RawDataDownloadType": 7,
+    "Etag": "4eef5c074745ad91673bae2336dfbca8"
+  },
+  {
+    "Id": 335,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020066.png",
+    "FileSize": 65069,
+    "RawDataDownloadType": 7,
+    "Etag": "93dce0c6be49e237dea6b1a9f3db85a2"
+  },
+  {
+    "Id": 336,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020067.png",
+    "FileSize": 65834,
+    "RawDataDownloadType": 7,
+    "Etag": "2d95aa71fa4b8de45e19f066dfd078d2"
+  },
+  {
+    "Id": 337,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020068.png",
+    "FileSize": 62262,
+    "RawDataDownloadType": 7,
+    "Etag": "78c499f1091947bb69e33d8e2155e90e"
+  },
+  {
+    "Id": 338,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020069.png",
+    "FileSize": 64793,
+    "RawDataDownloadType": 7,
+    "Etag": "9cfd71fb3f9e6b638ec1b7e01079b1ca"
+  },
+  {
+    "Id": 339,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020070.png",
+    "FileSize": 70561,
+    "RawDataDownloadType": 7,
+    "Etag": "ce7f7da5e697e8d4b714d4664cc88cc9"
+  },
+  {
+    "Id": 340,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020071.png",
+    "FileSize": 71857,
+    "RawDataDownloadType": 7,
+    "Etag": "1c0eb476a5769ca8217a1b7bda6ab33a"
+  },
+  {
+    "Id": 341,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020072.png",
+    "FileSize": 67673,
+    "RawDataDownloadType": 7,
+    "Etag": "a109e8e39b517202b827835170874df9"
+  },
+  {
+    "Id": 342,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020073.png",
+    "FileSize": 72356,
+    "RawDataDownloadType": 7,
+    "Etag": "7cfe91b9a998efc144eac6cb7e5fbe23"
+  },
+  {
+    "Id": 343,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020074.png",
+    "FileSize": 70848,
+    "RawDataDownloadType": 7,
+    "Etag": "7bf6f4ecdd67c82e2ef9b2629f5b59bf"
+  },
+  {
+    "Id": 344,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020075.png",
+    "FileSize": 66148,
+    "RawDataDownloadType": 7,
+    "Etag": "1f8ad5a8e420102b305c16592afec397"
+  },
+  {
+    "Id": 345,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020076.png",
+    "FileSize": 67071,
+    "RawDataDownloadType": 7,
+    "Etag": "1b9ba6a1b9dd2b928b817fb22230148d"
+  },
+  {
+    "Id": 346,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020077.png",
+    "FileSize": 66762,
+    "RawDataDownloadType": 7,
+    "Etag": "a6ca2e9261bbc2e00dba944b84aa781d"
+  },
+  {
+    "Id": 347,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020078.png",
+    "FileSize": 61657,
+    "RawDataDownloadType": 7,
+    "Etag": "12fe354dc38821f827f430572ef9d6c8"
+  },
+  {
+    "Id": 348,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020079.png",
+    "FileSize": 67606,
+    "RawDataDownloadType": 7,
+    "Etag": "e160f770b70098dff5582df4476a4e3e"
+  },
+  {
+    "Id": 349,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020080.png",
+    "FileSize": 62847,
+    "RawDataDownloadType": 7,
+    "Etag": "f3cc21560e2436d6ff60efa4ddf196b9"
+  },
+  {
+    "Id": 350,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020081.png",
+    "FileSize": 61608,
+    "RawDataDownloadType": 7,
+    "Etag": "70a04a37d196fc4ea00e3bae8866c7fb"
+  },
+  {
+    "Id": 351,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020082.png",
+    "FileSize": 65049,
+    "RawDataDownloadType": 7,
+    "Etag": "701ddc48f76eecea02e91da37559a37b"
+  },
+  {
+    "Id": 352,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020084.png",
+    "FileSize": 61083,
+    "RawDataDownloadType": 7,
+    "Etag": "f4433100f4677a900cbc872b37543cf5"
+  },
+  {
+    "Id": 353,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020085.png",
+    "FileSize": 62195,
+    "RawDataDownloadType": 7,
+    "Etag": "eebc523a9fc6b5377bf79fcf5b1b9a1f"
+  },
+  {
+    "Id": 354,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020086.png",
+    "FileSize": 67472,
+    "RawDataDownloadType": 7,
+    "Etag": "6e1ae0c9ba73391b56d8a8c15fb6654e"
+  },
+  {
+    "Id": 355,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020087.png",
+    "FileSize": 63043,
+    "RawDataDownloadType": 7,
+    "Etag": "54d330a5c41ad11414b4098609daa820"
+  },
+  {
+    "Id": 356,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020088.png",
+    "FileSize": 66741,
+    "RawDataDownloadType": 7,
+    "Etag": "88409145f39c48c60ae60ab525d1aaf9"
+  },
+  {
+    "Id": 357,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020089.png",
+    "FileSize": 64484,
+    "RawDataDownloadType": 7,
+    "Etag": "100f8951229b74cdd7f462fd30879521"
+  },
+  {
+    "Id": 358,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020093.png",
+    "FileSize": 62593,
+    "RawDataDownloadType": 7,
+    "Etag": "bbb4c76e29d9a7762f8bf545146f5c4e"
+  },
+  {
+    "Id": 359,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020095.png",
+    "FileSize": 66769,
+    "RawDataDownloadType": 7,
+    "Etag": "f9cc8da5dc96c65193abab0450ef0450"
+  },
+  {
+    "Id": 360,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020096.png",
+    "FileSize": 68849,
+    "RawDataDownloadType": 7,
+    "Etag": "2b4f4d0093f815c78997a6bffd33b31e"
+  },
+  {
+    "Id": 361,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020100.png",
+    "FileSize": 63136,
+    "RawDataDownloadType": 7,
+    "Etag": "fbc6021c77ed0b3e227d630f3fabb2aa"
+  },
+  {
+    "Id": 362,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020105.png",
+    "FileSize": 68565,
+    "RawDataDownloadType": 7,
+    "Etag": "f0b849360f4a4aec09e13ac46ae1d360"
+  },
+  {
+    "Id": 363,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020106.png",
+    "FileSize": 65703,
+    "RawDataDownloadType": 7,
+    "Etag": "6382770b17fd148e56d8311afc3b4dd4"
+  },
+  {
+    "Id": 364,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020107.png",
+    "FileSize": 71881,
+    "RawDataDownloadType": 7,
+    "Etag": "b90fa542e6d72b75481a75bd05621bf3"
+  },
+  {
+    "Id": 365,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020108.png",
+    "FileSize": 72834,
+    "RawDataDownloadType": 7,
+    "Etag": "7e2d239b868f9a94273573d6da67dfcb"
+  },
+  {
+    "Id": 366,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020109.png",
+    "FileSize": 69587,
+    "RawDataDownloadType": 7,
+    "Etag": "af7fcdcc32640b1e2b907c9f77171c83"
+  },
+  {
+    "Id": 367,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020111.png",
+    "FileSize": 76377,
+    "RawDataDownloadType": 7,
+    "Etag": "5e6fb375428f37d74739daeb59afb0bb"
+  },
+  {
+    "Id": 368,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020112.png",
+    "FileSize": 65030,
+    "RawDataDownloadType": 7,
+    "Etag": "4b64380e70102d127dcea29c2979ddb2"
+  },
+  {
+    "Id": 369,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020113.png",
+    "FileSize": 61768,
+    "RawDataDownloadType": 7,
+    "Etag": "a5aaa92bc49a97c71aa35b90dee6fa8b"
+  },
+  {
+    "Id": 370,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020114.png",
+    "FileSize": 63506,
+    "RawDataDownloadType": 7,
+    "Etag": "06bec15ef9062aaa33e1156363af4c15"
+  },
+  {
+    "Id": 371,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020115.png",
+    "FileSize": 63358,
+    "RawDataDownloadType": 7,
+    "Etag": "7d9e36493491fea0bae5e9f6e6991c2e"
+  },
+  {
+    "Id": 372,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020116.png",
+    "FileSize": 64492,
+    "RawDataDownloadType": 7,
+    "Etag": "dedc1825263efc44e5c9b6e796d396e1"
+  },
+  {
+    "Id": 373,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020117.png",
+    "FileSize": 63596,
+    "RawDataDownloadType": 7,
+    "Etag": "6b6d1d98918e3869155cf0182a6d517f"
+  },
+  {
+    "Id": 374,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020121.png",
+    "FileSize": 65443,
+    "RawDataDownloadType": 7,
+    "Etag": "a60ad5e171cfa906e3def30ce38aca60"
+  },
+  {
+    "Id": 375,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020122.png",
+    "FileSize": 63258,
+    "RawDataDownloadType": 7,
+    "Etag": "c225aa6b201df144ad7ab5dd7a1ffc33"
+  },
+  {
+    "Id": 376,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_020123.png",
+    "FileSize": 64304,
+    "RawDataDownloadType": 7,
+    "Etag": "3d7d661957c6f7c9933ea7a66a5a3917"
+  },
+  {
+    "Id": 377,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_700002.png",
+    "FileSize": 68335,
+    "RawDataDownloadType": 7,
+    "Etag": "8517e031998bbb47ed9e57ffb169d247"
+  },
+  {
+    "Id": 378,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800003.png",
+    "FileSize": 70249,
+    "RawDataDownloadType": 7,
+    "Etag": "6289215d3a5605a50a543434c833fc88"
+  },
+  {
+    "Id": 379,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800004.png",
+    "FileSize": 71003,
+    "RawDataDownloadType": 7,
+    "Etag": "9a2ea5c40271ad610ffbf447a965ed6d"
+  },
+  {
+    "Id": 380,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800006.png",
+    "FileSize": 77845,
+    "RawDataDownloadType": 7,
+    "Etag": "fd79d1cc9aa321aed9419ef8da240334"
+  },
+  {
+    "Id": 381,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800007.png",
+    "FileSize": 85427,
+    "RawDataDownloadType": 7,
+    "Etag": "03876d3aca6a5f7310dbb977b18f7f46"
+  },
+  {
+    "Id": 382,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800008.png",
+    "FileSize": 86518,
+    "RawDataDownloadType": 7,
+    "Etag": "2f981b73adce139c3581485e9435de16"
+  },
+  {
+    "Id": 383,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800009.png",
+    "FileSize": 288145,
+    "RawDataDownloadType": 7,
+    "Etag": "8456f6958334034e0c956851b7efa9d0"
+  },
+  {
+    "Id": 384,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800010.png",
+    "FileSize": 81242,
+    "RawDataDownloadType": 7,
+    "Etag": "9fd9813b6c2d93eceb0686f0f27b04ab"
+  },
+  {
+    "Id": 385,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800012.png",
+    "FileSize": 76559,
+    "RawDataDownloadType": 7,
+    "Etag": "5526fd0d1f382eda81ff73bc76f8d5ef"
+  },
+  {
+    "Id": 386,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800013.png",
+    "FileSize": 87189,
+    "RawDataDownloadType": 7,
+    "Etag": "874c25f2fd5885345016d377a2e57ddf"
+  },
+  {
+    "Id": 387,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800014.png",
+    "FileSize": 86148,
+    "RawDataDownloadType": 7,
+    "Etag": "a3927ae94cafe3e5839680d4be8030ca"
+  },
+  {
+    "Id": 388,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_800016.png",
+    "FileSize": 83628,
+    "RawDataDownloadType": 7,
+    "Etag": "45f2332ad1d4712bb2d606b1f0106d75"
+  },
+  {
+    "Id": 389,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_900050.png",
+    "FileSize": 83111,
+    "RawDataDownloadType": 7,
+    "Etag": "425b1f232774ccfdf7031b48490af265"
+  },
+  {
+    "Id": 390,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_900051.png",
+    "FileSize": 73607,
+    "RawDataDownloadType": 7,
+    "Etag": "bac0f95e01c7a4cc85478f79d3082e56"
+  },
+  {
+    "Id": 391,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_900052.png",
+    "FileSize": 76030,
+    "RawDataDownloadType": 7,
+    "Etag": "ec2f8223655bc2f0181cba72a8599864"
+  },
+  {
+    "Id": 392,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_900053.png",
+    "FileSize": 76000,
+    "RawDataDownloadType": 7,
+    "Etag": "504c4006a282a20ec785329cf733dd42"
+  },
+  {
+    "Id": 393,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/CN/MYPAGE_BANNER_CN_900054.png",
+    "FileSize": 79151,
+    "RawDataDownloadType": 7,
+    "Etag": "8d366bb0459d6ce6a09bbbd43e47ab4d"
+  },
+  {
+    "Id": 394,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_010087.png",
+    "FileSize": 63721,
+    "RawDataDownloadType": 2,
+    "Etag": "55c3648c2dff5d41ec9697f5e3673323"
+  },
+  {
+    "Id": 395,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_010100.png",
+    "FileSize": 63353,
+    "RawDataDownloadType": 2,
+    "Etag": "8deab131e527aa599ed106797900af45"
+  },
+  {
+    "Id": 396,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_010121.png",
+    "FileSize": 65563,
+    "RawDataDownloadType": 2,
+    "Etag": "6a3c37c3499637349531d609ae84d2ec"
+  },
+  {
+    "Id": 397,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_010122.png",
+    "FileSize": 63914,
+    "RawDataDownloadType": 2,
+    "Etag": "d224dd3753e2b3ef12055fab7e925dd0"
+  },
+  {
+    "Id": 398,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_010123.png",
+    "FileSize": 65944,
+    "RawDataDownloadType": 2,
+    "Etag": "b2a47b64b940b55c4772a74e0b6518ff"
+  },
+  {
+    "Id": 399,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020065.png",
+    "FileSize": 63526,
+    "RawDataDownloadType": 2,
+    "Etag": "b8b7b2bf05d0b1d620cc10cd036f9698"
+  },
+  {
+    "Id": 400,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020066.png",
+    "FileSize": 61289,
+    "RawDataDownloadType": 2,
+    "Etag": "5c956190c698fa39a5db3d96ac9563ad"
+  },
+  {
+    "Id": 401,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020067.png",
+    "FileSize": 61534,
+    "RawDataDownloadType": 2,
+    "Etag": "465264eaa0549c510403b28852a07be2"
+  },
+  {
+    "Id": 402,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020068.png",
+    "FileSize": 59244,
+    "RawDataDownloadType": 2,
+    "Etag": "06b9c472f491d5dde9778fde31052ebf"
+  },
+  {
+    "Id": 403,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020069.png",
+    "FileSize": 61967,
+    "RawDataDownloadType": 2,
+    "Etag": "08a961333c4feac85600d0d9aaac972d"
+  },
+  {
+    "Id": 404,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020070.png",
+    "FileSize": 66827,
+    "RawDataDownloadType": 2,
+    "Etag": "5fd94999745d4a472edf7bbc82baa1a3"
+  },
+  {
+    "Id": 405,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020071.png",
+    "FileSize": 68178,
+    "RawDataDownloadType": 2,
+    "Etag": "5f81a246df83555a1c05ebe65e2d76a1"
+  },
+  {
+    "Id": 406,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020072.png",
+    "FileSize": 65083,
+    "RawDataDownloadType": 2,
+    "Etag": "ac310dff2ce4d75dd7d59930769639b3"
+  },
+  {
+    "Id": 407,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020073.png",
+    "FileSize": 68460,
+    "RawDataDownloadType": 2,
+    "Etag": "eb150ce234b645b9e9fb2c4dd114d658"
+  },
+  {
+    "Id": 408,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020074.png",
+    "FileSize": 66967,
+    "RawDataDownloadType": 2,
+    "Etag": "4e9d5b40b87b59a63a3f846883c7497c"
+  },
+  {
+    "Id": 409,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020075.png",
+    "FileSize": 62463,
+    "RawDataDownloadType": 2,
+    "Etag": "7c9bc31691e0d4a1b3456f2e33f786a8"
+  },
+  {
+    "Id": 410,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020076.png",
+    "FileSize": 62927,
+    "RawDataDownloadType": 2,
+    "Etag": "1cd5109eedadbb2ef50ae3dcf364d17b"
+  },
+  {
+    "Id": 411,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020077.png",
+    "FileSize": 62361,
+    "RawDataDownloadType": 2,
+    "Etag": "bd93458787994813b26a7838d93ab880"
+  },
+  {
+    "Id": 412,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020078.png",
+    "FileSize": 59548,
+    "RawDataDownloadType": 2,
+    "Etag": "c1c34cdde038f3ba5c7218a3ac59a13a"
+  },
+  {
+    "Id": 413,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020079.png",
+    "FileSize": 62983,
+    "RawDataDownloadType": 2,
+    "Etag": "81c8cd3368647bc12e1877258d9feb8b"
+  },
+  {
+    "Id": 414,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020080.png",
+    "FileSize": 58707,
+    "RawDataDownloadType": 2,
+    "Etag": "37ff3d30f9df50feb243c337ce1087d2"
+  },
+  {
+    "Id": 415,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020081.png",
+    "FileSize": 62527,
+    "RawDataDownloadType": 2,
+    "Etag": "9b68a280b877052f1f76fd91ea7397f9"
+  },
+  {
+    "Id": 416,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020082.png",
+    "FileSize": 62715,
+    "RawDataDownloadType": 2,
+    "Etag": "ff3a159b4df726729ab95601d3ab7458"
+  },
+  {
+    "Id": 417,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020084.png",
+    "FileSize": 56764,
+    "RawDataDownloadType": 2,
+    "Etag": "97728b0c6b16809037349055961195f0"
+  },
+  {
+    "Id": 418,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020085.png",
+    "FileSize": 57429,
+    "RawDataDownloadType": 2,
+    "Etag": "5507bf9d8c1f3cf4cd26005f028ed7f5"
+  },
+  {
+    "Id": 419,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020086.png",
+    "FileSize": 63404,
+    "RawDataDownloadType": 2,
+    "Etag": "ac00f13373fcd8c28ec192d93bae0126"
+  },
+  {
+    "Id": 420,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020087.png",
+    "FileSize": 62312,
+    "RawDataDownloadType": 2,
+    "Etag": "5ef3f2bbfe9d0148bc10b877aa9c6872"
+  },
+  {
+    "Id": 421,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020088.png",
+    "FileSize": 62702,
+    "RawDataDownloadType": 2,
+    "Etag": "863ee55322cab0b0e58eb4c82afe4de1"
+  },
+  {
+    "Id": 422,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020089.png",
+    "FileSize": 63422,
+    "RawDataDownloadType": 2,
+    "Etag": "e2c0ebcb9894c3b5e980a68dd0799453"
+  },
+  {
+    "Id": 423,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020093.png",
+    "FileSize": 60470,
+    "RawDataDownloadType": 2,
+    "Etag": "664864f7ae0f693536c27c5b1eb2ada9"
+  },
+  {
+    "Id": 424,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020095.png",
+    "FileSize": 62578,
+    "RawDataDownloadType": 2,
+    "Etag": "af0707fc7fd74a6194400d824a92d6fb"
+  },
+  {
+    "Id": 425,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020096.png",
+    "FileSize": 63819,
+    "RawDataDownloadType": 2,
+    "Etag": "05db2e025e3cabfddb90ade58c0752e1"
+  },
+  {
+    "Id": 426,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020100.png",
+    "FileSize": 61565,
+    "RawDataDownloadType": 2,
+    "Etag": "c6b996cd6aeb0ec908067b361b4f9406"
+  },
+  {
+    "Id": 427,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020105.png",
+    "FileSize": 67692,
+    "RawDataDownloadType": 2,
+    "Etag": "33384ab308983acba7b21ce78ac243f9"
+  },
+  {
+    "Id": 428,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020106.png",
+    "FileSize": 62576,
+    "RawDataDownloadType": 2,
+    "Etag": "29c1e972b90170bc83e05ce0634c5654"
+  },
+  {
+    "Id": 429,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020107.png",
+    "FileSize": 67256,
+    "RawDataDownloadType": 2,
+    "Etag": "f21fd75e56924af06316a81a102ecffa"
+  },
+  {
+    "Id": 430,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020108.png",
+    "FileSize": 68177,
+    "RawDataDownloadType": 2,
+    "Etag": "34f63630d7c02f25bc3c3728082c0af2"
+  },
+  {
+    "Id": 431,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020109.png",
+    "FileSize": 64078,
+    "RawDataDownloadType": 2,
+    "Etag": "6c4deef8ab3027df8379428319be7440"
+  },
+  {
+    "Id": 432,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020111.png",
+    "FileSize": 75310,
+    "RawDataDownloadType": 2,
+    "Etag": "effd4588cf47f7141862bd914e532cab"
+  },
+  {
+    "Id": 433,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020112.png",
+    "FileSize": 62776,
+    "RawDataDownloadType": 2,
+    "Etag": "112fbadcaf77a9eaae0caf9b52f0bcab"
+  },
+  {
+    "Id": 434,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020113.png",
+    "FileSize": 60362,
+    "RawDataDownloadType": 2,
+    "Etag": "b39d624c2196c2ff584836af10e259f5"
+  },
+  {
+    "Id": 435,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020114.png",
+    "FileSize": 63105,
+    "RawDataDownloadType": 2,
+    "Etag": "0853b31d33414d83a042da4b7ac6a5d0"
+  },
+  {
+    "Id": 436,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020115.png",
+    "FileSize": 61751,
+    "RawDataDownloadType": 2,
+    "Etag": "00a846dacc3e31a5369aee09257e6d99"
+  },
+  {
+    "Id": 437,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020116.png",
+    "FileSize": 64534,
+    "RawDataDownloadType": 2,
+    "Etag": "91abd6c435279ab809dd5beb248ff8f2"
+  },
+  {
+    "Id": 438,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020117.png",
+    "FileSize": 63839,
+    "RawDataDownloadType": 2,
+    "Etag": "6ec9353787602385c31c0cd91f535cf6"
+  },
+  {
+    "Id": 439,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020121.png",
+    "FileSize": 63938,
+    "RawDataDownloadType": 2,
+    "Etag": "91bcc20f97dff207c2aca7e60985ec5e"
+  },
+  {
+    "Id": 440,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020122.png",
+    "FileSize": 62486,
+    "RawDataDownloadType": 2,
+    "Etag": "0129bacab0c8246053c33b6300f495b8"
+  },
+  {
+    "Id": 441,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_020123.png",
+    "FileSize": 64934,
+    "RawDataDownloadType": 2,
+    "Etag": "abc0e149493e63fb5f050baea67da20f"
+  },
+  {
+    "Id": 442,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_700002.png",
+    "FileSize": 68506,
+    "RawDataDownloadType": 2,
+    "Etag": "97a7a6d7cdcd948dcb90224df4527ab1"
+  },
+  {
+    "Id": 443,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800002.png",
+    "FileSize": 70813,
+    "RawDataDownloadType": 2,
+    "Etag": "7f43c29fcd760856687e1eefed77be1e"
+  },
+  {
+    "Id": 444,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800003.png",
+    "FileSize": 69613,
+    "RawDataDownloadType": 2,
+    "Etag": "bc3fbd673451e66fda31ed130d022f3f"
+  },
+  {
+    "Id": 445,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800004.png",
+    "FileSize": 71055,
+    "RawDataDownloadType": 2,
+    "Etag": "2bb0a9cb03b27727685f9368ad7d1f7d"
+  },
+  {
+    "Id": 446,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800005.png",
+    "FileSize": 63246,
+    "RawDataDownloadType": 2,
+    "Etag": "5cf17cfc0ac679d1c480a923d424eb0d"
+  },
+  {
+    "Id": 447,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800006.png",
+    "FileSize": 71331,
+    "RawDataDownloadType": 2,
+    "Etag": "89fd4a5f90bde5460123bc6bc77c38fd"
+  },
+  {
+    "Id": 448,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800007.png",
+    "FileSize": 82131,
+    "RawDataDownloadType": 2,
+    "Etag": "495c0036138b008390347fbe49b623f9"
+  },
+  {
+    "Id": 449,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800008.png",
+    "FileSize": 82078,
+    "RawDataDownloadType": 2,
+    "Etag": "449dae5f4a7bec94c37086bdcbf91db1"
+  },
+  {
+    "Id": 450,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800009.png",
+    "FileSize": 241672,
+    "RawDataDownloadType": 2,
+    "Etag": "fa4a14787a47ee076674f28e45258716"
+  },
+  {
+    "Id": 451,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800010.png",
+    "FileSize": 78662,
+    "RawDataDownloadType": 2,
+    "Etag": "c9675d981a9143a90afdf0dd71cb3524"
+  },
+  {
+    "Id": 452,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800012.png",
+    "FileSize": 77208,
+    "RawDataDownloadType": 2,
+    "Etag": "400b7f1860fbb11da08757a9c300efc9"
+  },
+  {
+    "Id": 453,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800013.png",
+    "FileSize": 77846,
+    "RawDataDownloadType": 2,
+    "Etag": "f5f95ecd474a84138919d8fc1f6b8a02"
+  },
+  {
+    "Id": 454,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800014.png",
+    "FileSize": 76164,
+    "RawDataDownloadType": 2,
+    "Etag": "1923676f8dea9cda4499794d47859288"
+  },
+  {
+    "Id": 455,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_800016.png",
+    "FileSize": 83624,
+    "RawDataDownloadType": 2,
+    "Etag": "426317fd591d363b0675496bda2953d1"
+  },
+  {
+    "Id": 456,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_900050.png",
+    "FileSize": 82315,
+    "RawDataDownloadType": 2,
+    "Etag": "ce49c0cad1fce4605d6973056a992b54"
+  },
+  {
+    "Id": 457,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_900051.png",
+    "FileSize": 73155,
+    "RawDataDownloadType": 2,
+    "Etag": "3316ad235ab5b8e0660119c9009ee725"
+  },
+  {
+    "Id": 458,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_900052.png",
+    "FileSize": 75962,
+    "RawDataDownloadType": 2,
+    "Etag": "9bc324cf4fce7b8915a0b6e337448122"
+  },
+  {
+    "Id": 459,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_900053.png",
+    "FileSize": 76977,
+    "RawDataDownloadType": 2,
+    "Etag": "df8691ebf83b8090fd2ac7933b8b9b64"
+  },
+  {
+    "Id": 460,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/JP/MYPAGE_BANNER_JP_900054.png",
+    "FileSize": 78990,
+    "RawDataDownloadType": 2,
+    "Etag": "b9d571467ceead5ab6d23ec150830d70"
+  },
+  {
+    "Id": 461,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_010087.png",
+    "FileSize": 63184,
+    "RawDataDownloadType": 4,
+    "Etag": "bd76480f0ae6c1cc4d8d569fc7526625"
+  },
+  {
+    "Id": 462,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_010100.png",
+    "FileSize": 63064,
+    "RawDataDownloadType": 4,
+    "Etag": "2f959647e8b7619ad8916433162f75a2"
+  },
+  {
+    "Id": 463,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_010121.png",
+    "FileSize": 65734,
+    "RawDataDownloadType": 4,
+    "Etag": "4d85adf1bea4807b03bd0def3e616b2c"
+  },
+  {
+    "Id": 464,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_010122.png",
+    "FileSize": 63560,
+    "RawDataDownloadType": 4,
+    "Etag": "7abe79d98989f16b621d81016310f26f"
+  },
+  {
+    "Id": 465,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_010123.png",
+    "FileSize": 64552,
+    "RawDataDownloadType": 4,
+    "Etag": "a6b037c71479e35274e4c5feb8491b2e"
+  },
+  {
+    "Id": 466,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020065.png",
+    "FileSize": 63058,
+    "RawDataDownloadType": 4,
+    "Etag": "2c1e76afd8789a2d92f104d66eb0ee35"
+  },
+  {
+    "Id": 467,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020066.png",
+    "FileSize": 60890,
+    "RawDataDownloadType": 4,
+    "Etag": "3f9c099cbc99dc93d32adf3b6ea35355"
+  },
+  {
+    "Id": 468,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020067.png",
+    "FileSize": 60760,
+    "RawDataDownloadType": 4,
+    "Etag": "7011f77cbe17d06bfca0021d9f039ea5"
+  },
+  {
+    "Id": 469,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020068.png",
+    "FileSize": 58471,
+    "RawDataDownloadType": 4,
+    "Etag": "7e70904ffe9444e904aaefe10902cde0"
+  },
+  {
+    "Id": 470,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020069.png",
+    "FileSize": 60885,
+    "RawDataDownloadType": 4,
+    "Etag": "db704de8ec213d51c2b21623265a224b"
+  },
+  {
+    "Id": 471,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020070.png",
+    "FileSize": 65785,
+    "RawDataDownloadType": 4,
+    "Etag": "5af68e7e834e80d77c6b508ec36bc81b"
+  },
+  {
+    "Id": 472,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020071.png",
+    "FileSize": 66813,
+    "RawDataDownloadType": 4,
+    "Etag": "462cd9c7461b9354bb352e601279a573"
+  },
+  {
+    "Id": 473,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020072.png",
+    "FileSize": 63383,
+    "RawDataDownloadType": 4,
+    "Etag": "94d48ea745252b800d27778ced759fa2"
+  },
+  {
+    "Id": 474,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020073.png",
+    "FileSize": 67619,
+    "RawDataDownloadType": 4,
+    "Etag": "d6e4b78af883d698fb50428eb4430d0a"
+  },
+  {
+    "Id": 475,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020074.png",
+    "FileSize": 66113,
+    "RawDataDownloadType": 4,
+    "Etag": "afb77b0e89e274179d7a61f41858f028"
+  },
+  {
+    "Id": 476,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020075.png",
+    "FileSize": 61156,
+    "RawDataDownloadType": 4,
+    "Etag": "08b0d58710feb6882ea9dee1308589c3"
+  },
+  {
+    "Id": 477,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020076.png",
+    "FileSize": 62738,
+    "RawDataDownloadType": 4,
+    "Etag": "cb697f71e759b2ea89ee941e95dd55dd"
+  },
+  {
+    "Id": 478,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020077.png",
+    "FileSize": 61322,
+    "RawDataDownloadType": 4,
+    "Etag": "9e0f02b6226682d94b365fde3625227f"
+  },
+  {
+    "Id": 479,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020078.png",
+    "FileSize": 59064,
+    "RawDataDownloadType": 4,
+    "Etag": "4441853ada85a541f60085fc7703933d"
+  },
+  {
+    "Id": 480,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020079.png",
+    "FileSize": 62354,
+    "RawDataDownloadType": 4,
+    "Etag": "439cf6584b0854ede883f3b1a04b12f2"
+  },
+  {
+    "Id": 481,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020080.png",
+    "FileSize": 58260,
+    "RawDataDownloadType": 4,
+    "Etag": "b417de50e16eb371c32db0e6cb06d406"
+  },
+  {
+    "Id": 482,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020081.png",
+    "FileSize": 61637,
+    "RawDataDownloadType": 4,
+    "Etag": "067c3b045229010cf2f9591683b18e32"
+  },
+  {
+    "Id": 483,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020082.png",
+    "FileSize": 62041,
+    "RawDataDownloadType": 4,
+    "Etag": "4a2e1bc063ddad0f8736f85bf8f0cbc9"
+  },
+  {
+    "Id": 484,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020084.png",
+    "FileSize": 56125,
+    "RawDataDownloadType": 4,
+    "Etag": "d3bfc986fbc58c6ee97cf774411f1f7f"
+  },
+  {
+    "Id": 485,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020085.png",
+    "FileSize": 55836,
+    "RawDataDownloadType": 4,
+    "Etag": "2178b300ff2cb0259b6be45319fb1d9c"
+  },
+  {
+    "Id": 486,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020086.png",
+    "FileSize": 62836,
+    "RawDataDownloadType": 4,
+    "Etag": "b6d1a7c37ceb476f1209cc078ab6fe5b"
+  },
+  {
+    "Id": 487,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020087.png",
+    "FileSize": 61055,
+    "RawDataDownloadType": 4,
+    "Etag": "99bde3db74991f3ccb70203c4c6b5916"
+  },
+  {
+    "Id": 488,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020088.png",
+    "FileSize": 62479,
+    "RawDataDownloadType": 4,
+    "Etag": "78f62426888404f713c8e1379660f84d"
+  },
+  {
+    "Id": 489,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020089.png",
+    "FileSize": 62516,
+    "RawDataDownloadType": 4,
+    "Etag": "1278f7b02070de69e033f391ea7336b4"
+  },
+  {
+    "Id": 490,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020093.png",
+    "FileSize": 60637,
+    "RawDataDownloadType": 4,
+    "Etag": "0bf7b407ca01d9cc210d14a6c1a0ecdc"
+  },
+  {
+    "Id": 491,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020095.png",
+    "FileSize": 61425,
+    "RawDataDownloadType": 4,
+    "Etag": "323e8160ce53479884ae45496b5fff56"
+  },
+  {
+    "Id": 492,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020096.png",
+    "FileSize": 62721,
+    "RawDataDownloadType": 4,
+    "Etag": "d206961fdd0212bb0559b602fcc7e006"
+  },
+  {
+    "Id": 493,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020100.png",
+    "FileSize": 60769,
+    "RawDataDownloadType": 4,
+    "Etag": "e745addfe14ae6c6ad0760953b748310"
+  },
+  {
+    "Id": 494,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020105.png",
+    "FileSize": 66665,
+    "RawDataDownloadType": 4,
+    "Etag": "62c2b50cf8e2d80a3a5594594e465d41"
+  },
+  {
+    "Id": 495,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020106.png",
+    "FileSize": 62303,
+    "RawDataDownloadType": 4,
+    "Etag": "4f65be55c5b01de28f44b1d1c28ba6e3"
+  },
+  {
+    "Id": 496,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020107.png",
+    "FileSize": 65962,
+    "RawDataDownloadType": 4,
+    "Etag": "88bf7ebe1608eb73bfe8041fec256f12"
+  },
+  {
+    "Id": 497,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020108.png",
+    "FileSize": 67199,
+    "RawDataDownloadType": 4,
+    "Etag": "0110d7018789b6c9751ec239c60987aa"
+  },
+  {
+    "Id": 498,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020109.png",
+    "FileSize": 63596,
+    "RawDataDownloadType": 4,
+    "Etag": "5be0c4b574ead1e2801c0c08e9c9987a"
+  },
+  {
+    "Id": 499,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020111.png",
+    "FileSize": 74707,
+    "RawDataDownloadType": 4,
+    "Etag": "8a87e03570ee69339d9f929b2fb76e5b"
+  },
+  {
+    "Id": 500,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020112.png",
+    "FileSize": 61873,
+    "RawDataDownloadType": 4,
+    "Etag": "2c97ca88b1645a7fc49f8cad2feb2522"
+  },
+  {
+    "Id": 501,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020113.png",
+    "FileSize": 59389,
+    "RawDataDownloadType": 4,
+    "Etag": "97846ba6d67f6d2aaa34e3ca622a2a9c"
+  },
+  {
+    "Id": 502,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020114.png",
+    "FileSize": 62485,
+    "RawDataDownloadType": 4,
+    "Etag": "17d0b47d4306dfe7f76ed699afac6d48"
+  },
+  {
+    "Id": 503,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020115.png",
+    "FileSize": 61370,
+    "RawDataDownloadType": 4,
+    "Etag": "b1d5228ed9595a49573597eba838c994"
+  },
+  {
+    "Id": 504,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020116.png",
+    "FileSize": 64011,
+    "RawDataDownloadType": 4,
+    "Etag": "2c332686ce5d833e080f29e4c138fdf4"
+  },
+  {
+    "Id": 505,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020117.png",
+    "FileSize": 62749,
+    "RawDataDownloadType": 4,
+    "Etag": "0b6962b91a60c9314747799b2f913538"
+  },
+  {
+    "Id": 506,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020121.png",
+    "FileSize": 63403,
+    "RawDataDownloadType": 4,
+    "Etag": "a957c6b118b7e81a08cdca50a63dfb99"
+  },
+  {
+    "Id": 507,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020122.png",
+    "FileSize": 61484,
+    "RawDataDownloadType": 4,
+    "Etag": "d109dd938e099cdad1d79383b3dd9158"
+  },
+  {
+    "Id": 508,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_020123.png",
+    "FileSize": 63297,
+    "RawDataDownloadType": 4,
+    "Etag": "3119b9f85e76c25f4060f96155d769be"
+  },
+  {
+    "Id": 509,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_700002.png",
+    "FileSize": 68436,
+    "RawDataDownloadType": 4,
+    "Etag": "e62697a66bb3cbc7e6ce546b337fb687"
+  },
+  {
+    "Id": 510,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800003.png",
+    "FileSize": 69351,
+    "RawDataDownloadType": 4,
+    "Etag": "1f57182c1d792fda283b2c2c0d7cfbdb"
+  },
+  {
+    "Id": 511,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800004.png",
+    "FileSize": 70921,
+    "RawDataDownloadType": 4,
+    "Etag": "5648b38852a9d60a03df46246705f169"
+  },
+  {
+    "Id": 512,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800005.png",
+    "FileSize": 61746,
+    "RawDataDownloadType": 4,
+    "Etag": "5f056741471f2ae90caf7f64fba14bcb"
+  },
+  {
+    "Id": 513,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800006.png",
+    "FileSize": 69872,
+    "RawDataDownloadType": 4,
+    "Etag": "e46fe9a8e268e12b3cd74e110e7279ca"
+  },
+  {
+    "Id": 514,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800007.png",
+    "FileSize": 81826,
+    "RawDataDownloadType": 4,
+    "Etag": "a871ca7535fd8db3dfaf93e01f9b9e97"
+  },
+  {
+    "Id": 515,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800008.png",
+    "FileSize": 81362,
+    "RawDataDownloadType": 4,
+    "Etag": "e904fa73f76aba97206eb5a449e36772"
+  },
+  {
+    "Id": 516,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800009.png",
+    "FileSize": 237738,
+    "RawDataDownloadType": 4,
+    "Etag": "5c9b49351539d7186c5e4aee077ad9c4"
+  },
+  {
+    "Id": 517,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800010.png",
+    "FileSize": 77903,
+    "RawDataDownloadType": 4,
+    "Etag": "0a0dafaa888a640c6bd4d74873c7be64"
+  },
+  {
+    "Id": 518,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800012.png",
+    "FileSize": 76371,
+    "RawDataDownloadType": 4,
+    "Etag": "61a5eb7c2cdb8f36e94baa21fbdf82c3"
+  },
+  {
+    "Id": 519,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800013.png",
+    "FileSize": 76723,
+    "RawDataDownloadType": 4,
+    "Etag": "d2967cd6c800afadf5049b9af96015e6"
+  },
+  {
+    "Id": 520,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800014.png",
+    "FileSize": 75309,
+    "RawDataDownloadType": 4,
+    "Etag": "af4a01d90c7fb1076fc0b2b18d4d82c1"
+  },
+  {
+    "Id": 521,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_800016.png",
+    "FileSize": 82970,
+    "RawDataDownloadType": 4,
+    "Etag": "70ba352f1521b7fc04f1571ad3fd5a7e"
+  },
+  {
+    "Id": 522,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_900050.png",
+    "FileSize": 81930,
+    "RawDataDownloadType": 4,
+    "Etag": "4ec7ecf032ca106a280972ff238048da"
+  },
+  {
+    "Id": 523,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_900051.png",
+    "FileSize": 70958,
+    "RawDataDownloadType": 4,
+    "Etag": "9e2bbfa49431f67df4c93d8854c644a8"
+  },
+  {
+    "Id": 524,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_900052.png",
+    "FileSize": 74950,
+    "RawDataDownloadType": 4,
+    "Etag": "b666d0c0b3c1ef17b23f2272966fa350"
+  },
+  {
+    "Id": 525,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_900053.png",
+    "FileSize": 75147,
+    "RawDataDownloadType": 4,
+    "Etag": "1c32be67fb255d2ab8703cee4e9dacea"
+  },
+  {
+    "Id": 526,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/KR/MYPAGE_BANNER_KR_900054.png",
+    "FileSize": 78183,
+    "RawDataDownloadType": 4,
+    "Etag": "9ef94e76d2b48b3ddd8722686eba2d25"
+  },
+  {
+    "Id": 527,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_010087.png",
+    "FileSize": 64741,
+    "RawDataDownloadType": 5,
+    "Etag": "c5f875a04ea442ac3055451f446835e9"
+  },
+  {
+    "Id": 528,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_010100.png",
+    "FileSize": 65228,
+    "RawDataDownloadType": 5,
+    "Etag": "d3fb55c280db3a9b492d8ef6f4db7a5a"
+  },
+  {
+    "Id": 529,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_010121.png",
+    "FileSize": 67414,
+    "RawDataDownloadType": 5,
+    "Etag": "105c62a06fa1ef6854d7a7fd49b9eee8"
+  },
+  {
+    "Id": 530,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_010122.png",
+    "FileSize": 65164,
+    "RawDataDownloadType": 5,
+    "Etag": "01563fddf75857e5e50ba8aec46a6603"
+  },
+  {
+    "Id": 531,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_010123.png",
+    "FileSize": 65551,
+    "RawDataDownloadType": 5,
+    "Etag": "2137dc75c82ccad1583bd94841db9112"
+  },
+  {
+    "Id": 532,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020065.png",
+    "FileSize": 63688,
+    "RawDataDownloadType": 5,
+    "Etag": "4142450f24b3d1d12868cc6669477f25"
+  },
+  {
+    "Id": 533,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020066.png",
+    "FileSize": 62526,
+    "RawDataDownloadType": 5,
+    "Etag": "213b53e6f59f77e4b2a7f51eafeba7a8"
+  },
+  {
+    "Id": 534,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020067.png",
+    "FileSize": 63713,
+    "RawDataDownloadType": 5,
+    "Etag": "58e44568b17369f1fcb8ba94d7ab9ef2"
+  },
+  {
+    "Id": 535,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020068.png",
+    "FileSize": 59757,
+    "RawDataDownloadType": 5,
+    "Etag": "9dff76fa37b5ee7337785cda49884bf1"
+  },
+  {
+    "Id": 536,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020069.png",
+    "FileSize": 62236,
+    "RawDataDownloadType": 5,
+    "Etag": "56acd6d55e000d60ff53f8e957f934f6"
+  },
+  {
+    "Id": 537,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020070.png",
+    "FileSize": 68016,
+    "RawDataDownloadType": 5,
+    "Etag": "1001703748e7b04bf3176c579954f285"
+  },
+  {
+    "Id": 538,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020071.png",
+    "FileSize": 68948,
+    "RawDataDownloadType": 5,
+    "Etag": "c4a7c0208b99ccba9318a407c94670b4"
+  },
+  {
+    "Id": 539,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020072.png",
+    "FileSize": 65116,
+    "RawDataDownloadType": 5,
+    "Etag": "b55b3362ab71fb38b1dbb4f33fc5e4e2"
+  },
+  {
+    "Id": 540,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020073.png",
+    "FileSize": 69914,
+    "RawDataDownloadType": 5,
+    "Etag": "a4442201370edac2130b730cb66ec5a8"
+  },
+  {
+    "Id": 541,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020074.png",
+    "FileSize": 68153,
+    "RawDataDownloadType": 5,
+    "Etag": "1fbef41767174a59bb088675388fbbdc"
+  },
+  {
+    "Id": 542,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020075.png",
+    "FileSize": 63337,
+    "RawDataDownloadType": 5,
+    "Etag": "be48bf4281e372a67a014c4763c4630b"
+  },
+  {
+    "Id": 543,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020076.png",
+    "FileSize": 65036,
+    "RawDataDownloadType": 5,
+    "Etag": "0512d9c0eb224772d4239bf7cb8f6861"
+  },
+  {
+    "Id": 544,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020077.png",
+    "FileSize": 64273,
+    "RawDataDownloadType": 5,
+    "Etag": "f3654d1f71f5540ac0b757fd5dad17ad"
+  },
+  {
+    "Id": 545,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020078.png",
+    "FileSize": 59024,
+    "RawDataDownloadType": 5,
+    "Etag": "ed1779b6f47410f5560c0ba6722d1cb4"
+  },
+  {
+    "Id": 546,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020079.png",
+    "FileSize": 64804,
+    "RawDataDownloadType": 5,
+    "Etag": "3b1da6aea32ecb84b21bdface1a19158"
+  },
+  {
+    "Id": 547,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020080.png",
+    "FileSize": 60129,
+    "RawDataDownloadType": 5,
+    "Etag": "07cdbd1602061766d2f23315479a311c"
+  },
+  {
+    "Id": 548,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020081.png",
+    "FileSize": 61601,
+    "RawDataDownloadType": 5,
+    "Etag": "eccca564bc33024180dcf5a7808fd645"
+  },
+  {
+    "Id": 549,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020082.png",
+    "FileSize": 62850,
+    "RawDataDownloadType": 5,
+    "Etag": "9b46ab5bf978f04e9284fecb607b211e"
+  },
+  {
+    "Id": 550,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020084.png",
+    "FileSize": 58201,
+    "RawDataDownloadType": 5,
+    "Etag": "c9a2b19be4e98d9a13945df54fd9168e"
+  },
+  {
+    "Id": 551,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020085.png",
+    "FileSize": 59847,
+    "RawDataDownloadType": 5,
+    "Etag": "35c89e594a8e2a747f1e43432e3a176d"
+  },
+  {
+    "Id": 552,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020086.png",
+    "FileSize": 64873,
+    "RawDataDownloadType": 5,
+    "Etag": "9bcfb78d22e8f15399617254e0f6b2de"
+  },
+  {
+    "Id": 553,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020087.png",
+    "FileSize": 63100,
+    "RawDataDownloadType": 5,
+    "Etag": "20eaa234a1d9e4695fcac9bbc74bcb40"
+  },
+  {
+    "Id": 554,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020088.png",
+    "FileSize": 64344,
+    "RawDataDownloadType": 5,
+    "Etag": "d592f48a5bd91fd36af57b0c3afec881"
+  },
+  {
+    "Id": 555,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020089.png",
+    "FileSize": 64935,
+    "RawDataDownloadType": 5,
+    "Etag": "47325b8a57f93023caebfb47e38b984a"
+  },
+  {
+    "Id": 556,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020093.png",
+    "FileSize": 63327,
+    "RawDataDownloadType": 5,
+    "Etag": "0b2d0944c1c05375c47e9c977d5ba8da"
+  },
+  {
+    "Id": 557,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020095.png",
+    "FileSize": 64154,
+    "RawDataDownloadType": 5,
+    "Etag": "015d11ae41c9f6f5ba6283f958212c39"
+  },
+  {
+    "Id": 558,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020096.png",
+    "FileSize": 66201,
+    "RawDataDownloadType": 5,
+    "Etag": "ec2efce83d613c842adc14a5001be4bd"
+  },
+  {
+    "Id": 559,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020100.png",
+    "FileSize": 63467,
+    "RawDataDownloadType": 5,
+    "Etag": "1882cac8ca35311aae0779ab25a2aed0"
+  },
+  {
+    "Id": 560,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020105.png",
+    "FileSize": 68688,
+    "RawDataDownloadType": 5,
+    "Etag": "20c82aa0474f8c530637f38773abab97"
+  },
+  {
+    "Id": 561,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020106.png",
+    "FileSize": 62963,
+    "RawDataDownloadType": 5,
+    "Etag": "cad548cf6cfe8b9c20eacf7fdad876e5"
+  },
+  {
+    "Id": 562,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020107.png",
+    "FileSize": 69468,
+    "RawDataDownloadType": 5,
+    "Etag": "93cdf5afef665b7dced81d3b364ff58d"
+  },
+  {
+    "Id": 563,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020108.png",
+    "FileSize": 70443,
+    "RawDataDownloadType": 5,
+    "Etag": "a7e2f8d3891d088119ae38f807f5ac2c"
+  },
+  {
+    "Id": 564,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020109.png",
+    "FileSize": 65183,
+    "RawDataDownloadType": 5,
+    "Etag": "88ad4b2ec6f858e00ec36cea0429dfb9"
+  },
+  {
+    "Id": 565,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020111.png",
+    "FileSize": 76480,
+    "RawDataDownloadType": 5,
+    "Etag": "37e7c94c9a631f470021e3d143545bab"
+  },
+  {
+    "Id": 566,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020112.png",
+    "FileSize": 62321,
+    "RawDataDownloadType": 5,
+    "Etag": "f2065a8f2cb75ccb3e7e0c40b2c3cb1f"
+  },
+  {
+    "Id": 567,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020113.png",
+    "FileSize": 62360,
+    "RawDataDownloadType": 5,
+    "Etag": "961204547a20230f4c0305e30dbd3f9b"
+  },
+  {
+    "Id": 568,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020114.png",
+    "FileSize": 63916,
+    "RawDataDownloadType": 5,
+    "Etag": "bea03a4a40faddad798f0f9368d42f95"
+  },
+  {
+    "Id": 569,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020115.png",
+    "FileSize": 63573,
+    "RawDataDownloadType": 5,
+    "Etag": "7fa176fd2660ee7202976e02768e49fb"
+  },
+  {
+    "Id": 570,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020116.png",
+    "FileSize": 64603,
+    "RawDataDownloadType": 5,
+    "Etag": "fc0b9fa022d919379e36ff8282583025"
+  },
+  {
+    "Id": 571,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020117.png",
+    "FileSize": 63523,
+    "RawDataDownloadType": 5,
+    "Etag": "093e597f4c23e551e5dfed617185529a"
+  },
+  {
+    "Id": 572,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020121.png",
+    "FileSize": 65684,
+    "RawDataDownloadType": 5,
+    "Etag": "d10ed2c7fdc629f7be39595bbd7bd134"
+  },
+  {
+    "Id": 573,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020122.png",
+    "FileSize": 63617,
+    "RawDataDownloadType": 5,
+    "Etag": "766d54f0186ca23730b104bfd2075930"
+  },
+  {
+    "Id": 574,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_020123.png",
+    "FileSize": 64591,
+    "RawDataDownloadType": 5,
+    "Etag": "4539f45b775d1af8ac4d8cc74f53d9d1"
+  },
+  {
+    "Id": 575,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_700002.png",
+    "FileSize": 68525,
+    "RawDataDownloadType": 5,
+    "Etag": "5be6edc58f8cba21bcc5fdca8469a822"
+  },
+  {
+    "Id": 576,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800003.png",
+    "FileSize": 69822,
+    "RawDataDownloadType": 5,
+    "Etag": "d3a57a325b040da236afe0d242b0ab37"
+  },
+  {
+    "Id": 577,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800004.png",
+    "FileSize": 71935,
+    "RawDataDownloadType": 5,
+    "Etag": "66fbb647f4f90546c56e65826385bdc3"
+  },
+  {
+    "Id": 578,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800005.png",
+    "FileSize": 63456,
+    "RawDataDownloadType": 5,
+    "Etag": "f7e180f5b305cb3e30326f901ed89d38"
+  },
+  {
+    "Id": 579,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800006.png",
+    "FileSize": 70483,
+    "RawDataDownloadType": 5,
+    "Etag": "463f7abc19a895051646a827efadbc01"
+  },
+  {
+    "Id": 580,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800007.png",
+    "FileSize": 82117,
+    "RawDataDownloadType": 5,
+    "Etag": "234135657d530a4964b6aa79c98fda51"
+  },
+  {
+    "Id": 581,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800008.png",
+    "FileSize": 82227,
+    "RawDataDownloadType": 5,
+    "Etag": "e9c05b4c569e933a9c0948ef0a01c619"
+  },
+  {
+    "Id": 582,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800009.png",
+    "FileSize": 239386,
+    "RawDataDownloadType": 5,
+    "Etag": "9376b04649c687ac9d1db00d34d80a1d"
+  },
+  {
+    "Id": 583,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800010.png",
+    "FileSize": 78492,
+    "RawDataDownloadType": 5,
+    "Etag": "f5c896afa8c427ce06c9449dbc825c6c"
+  },
+  {
+    "Id": 584,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800012.png",
+    "FileSize": 76949,
+    "RawDataDownloadType": 5,
+    "Etag": "3ea19b3eee4bb039da922ca9ee84a053"
+  },
+  {
+    "Id": 585,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800013.png",
+    "FileSize": 78666,
+    "RawDataDownloadType": 5,
+    "Etag": "bd5c063152da609bc78cc89c915249dc"
+  },
+  {
+    "Id": 586,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800014.png",
+    "FileSize": 77382,
+    "RawDataDownloadType": 5,
+    "Etag": "ddb38ab8c47cf9a0972228b5bc792123"
+  },
+  {
+    "Id": 587,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_800016.png",
+    "FileSize": 83851,
+    "RawDataDownloadType": 5,
+    "Etag": "9f57a86200c235763e2b5e41ab252e30"
+  },
+  {
+    "Id": 588,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_900050.png",
+    "FileSize": 83196,
+    "RawDataDownloadType": 5,
+    "Etag": "a61cd9228d07561b990572888879519d"
+  },
+  {
+    "Id": 589,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_900051.png",
+    "FileSize": 73683,
+    "RawDataDownloadType": 5,
+    "Etag": "171098e60b4c25539ebc1d83456051d2"
+  },
+  {
+    "Id": 590,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_900052.png",
+    "FileSize": 76083,
+    "RawDataDownloadType": 5,
+    "Etag": "6652a6a50ff9c12b3ba564c3a7be9585"
+  },
+  {
+    "Id": 591,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_900053.png",
+    "FileSize": 76113,
+    "RawDataDownloadType": 5,
+    "Etag": "38952beb271acce21b149f0942877bc8"
+  },
+  {
+    "Id": 592,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/TW/MYPAGE_BANNER_TW_900054.png",
+    "FileSize": 79578,
+    "RawDataDownloadType": 5,
+    "Etag": "c2866ea2c9ecc9afc6a4c63dd9c20e39"
+  },
+  {
+    "Id": 593,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_010087.png",
+    "FileSize": 65711,
+    "RawDataDownloadType": 3,
+    "Etag": "8c82c2024b591e0480812905ec448351"
+  },
+  {
+    "Id": 594,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_010100.png",
+    "FileSize": 66369,
+    "RawDataDownloadType": 3,
+    "Etag": "2b18868ea068306ee7ad48d642f866d4"
+  },
+  {
+    "Id": 595,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_010121.png",
+    "FileSize": 67998,
+    "RawDataDownloadType": 3,
+    "Etag": "476ace18498e442c41483afd5904bdc0"
+  },
+  {
+    "Id": 596,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_010122.png",
+    "FileSize": 65806,
+    "RawDataDownloadType": 3,
+    "Etag": "9ebef460dd90dc43b630a35d457b5e08"
+  },
+  {
+    "Id": 597,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_010123.png",
+    "FileSize": 67424,
+    "RawDataDownloadType": 3,
+    "Etag": "43dd65e0e287e6a6fdcd5f45b0c4665a"
+  },
+  {
+    "Id": 598,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020065.png",
+    "FileSize": 63591,
+    "RawDataDownloadType": 3,
+    "Etag": "c015de8d168bc02d5685f66becbac248"
+  },
+  {
+    "Id": 599,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020066.png",
+    "FileSize": 60571,
+    "RawDataDownloadType": 3,
+    "Etag": "034425e41db7e9731a6ea1408b458ab3"
+  },
+  {
+    "Id": 600,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020067.png",
+    "FileSize": 63053,
+    "RawDataDownloadType": 3,
+    "Etag": "a765f6ec23bea9ce0301868cbb327fd1"
+  },
+  {
+    "Id": 601,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020068.png",
+    "FileSize": 60049,
+    "RawDataDownloadType": 3,
+    "Etag": "73622c569e6b310e5894a28a88cb4bd0"
+  },
+  {
+    "Id": 602,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020069.png",
+    "FileSize": 62958,
+    "RawDataDownloadType": 3,
+    "Etag": "819f404dff754ebbe98b929385aff15e"
+  },
+  {
+    "Id": 603,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020070.png",
+    "FileSize": 67719,
+    "RawDataDownloadType": 3,
+    "Etag": "21288a64496ad41a59041d9f026349b9"
+  },
+  {
+    "Id": 604,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020071.png",
+    "FileSize": 69987,
+    "RawDataDownloadType": 3,
+    "Etag": "19b864466f461dd6047e020057b08348"
+  },
+  {
+    "Id": 605,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020072.png",
+    "FileSize": 65705,
+    "RawDataDownloadType": 3,
+    "Etag": "d4b637ddc9e7c8fd22c52cacb04cae1f"
+  },
+  {
+    "Id": 606,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020073.png",
+    "FileSize": 68993,
+    "RawDataDownloadType": 3,
+    "Etag": "139e961108f1d3b36514c52076146377"
+  },
+  {
+    "Id": 607,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020074.png",
+    "FileSize": 67573,
+    "RawDataDownloadType": 3,
+    "Etag": "ceef7790f903c9940e56752c776c85bb"
+  },
+  {
+    "Id": 608,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020075.png",
+    "FileSize": 63297,
+    "RawDataDownloadType": 3,
+    "Etag": "c67e2d967a84e05db9ac5a8e24b24e09"
+  },
+  {
+    "Id": 609,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020076.png",
+    "FileSize": 63683,
+    "RawDataDownloadType": 3,
+    "Etag": "ca4f2a93159a7e3c322533c70969524d"
+  },
+  {
+    "Id": 610,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020077.png",
+    "FileSize": 62789,
+    "RawDataDownloadType": 3,
+    "Etag": "40e5a3df105cc4887c79722cb39c141b"
+  },
+  {
+    "Id": 611,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020078.png",
+    "FileSize": 59971,
+    "RawDataDownloadType": 3,
+    "Etag": "91254b05326148b2a3d93bcf49ff0c75"
+  },
+  {
+    "Id": 612,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020079.png",
+    "FileSize": 63601,
+    "RawDataDownloadType": 3,
+    "Etag": "2544d2cc4003f27f7b912e5119c7f48d"
+  },
+  {
+    "Id": 613,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020080.png",
+    "FileSize": 59650,
+    "RawDataDownloadType": 3,
+    "Etag": "ea09b11527e6c7eeff06d0ca93558403"
+  },
+  {
+    "Id": 614,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020081.png",
+    "FileSize": 63264,
+    "RawDataDownloadType": 3,
+    "Etag": "28cd5d0e380e971f1ae7f36178815247"
+  },
+  {
+    "Id": 615,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020082.png",
+    "FileSize": 62821,
+    "RawDataDownloadType": 3,
+    "Etag": "66939aadec37c325e631117aff85df90"
+  },
+  {
+    "Id": 616,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020084.png",
+    "FileSize": 58754,
+    "RawDataDownloadType": 3,
+    "Etag": "7962108dc5121c406b5b5f2d9b41ad71"
+  },
+  {
+    "Id": 617,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020085.png",
+    "FileSize": 57686,
+    "RawDataDownloadType": 3,
+    "Etag": "44f791cf3b5aab2acf4980dd21b1a8d4"
+  },
+  {
+    "Id": 618,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020086.png",
+    "FileSize": 63971,
+    "RawDataDownloadType": 3,
+    "Etag": "72928f706d1fe7f17f5893db66bc5b3f"
+  },
+  {
+    "Id": 619,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020087.png",
+    "FileSize": 62669,
+    "RawDataDownloadType": 3,
+    "Etag": "f37e64117f42e284715402cc459f4945"
+  },
+  {
+    "Id": 620,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020088.png",
+    "FileSize": 63789,
+    "RawDataDownloadType": 3,
+    "Etag": "012d900fec26ac65d9763ca913fbb47f"
+  },
+  {
+    "Id": 621,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020089.png",
+    "FileSize": 63854,
+    "RawDataDownloadType": 3,
+    "Etag": "f55176bd2cbf96393d24aa13f1e425a0"
+  },
+  {
+    "Id": 622,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020093.png",
+    "FileSize": 60908,
+    "RawDataDownloadType": 3,
+    "Etag": "d06fed13339693a8ee70762c6cf50c22"
+  },
+  {
+    "Id": 623,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020095.png",
+    "FileSize": 63905,
+    "RawDataDownloadType": 3,
+    "Etag": "9335ca7e82173856c40f53c4d42fc48f"
+  },
+  {
+    "Id": 624,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020096.png",
+    "FileSize": 64610,
+    "RawDataDownloadType": 3,
+    "Etag": "9529c4435c857150ad4030600c96ba23"
+  },
+  {
+    "Id": 625,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020100.png",
+    "FileSize": 63021,
+    "RawDataDownloadType": 3,
+    "Etag": "08a33038f4447caffed49222fd786e04"
+  },
+  {
+    "Id": 626,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020105.png",
+    "FileSize": 68586,
+    "RawDataDownloadType": 3,
+    "Etag": "2f4a223ca76c6a19c7f085d5ef86482a"
+  },
+  {
+    "Id": 627,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020106.png",
+    "FileSize": 63407,
+    "RawDataDownloadType": 3,
+    "Etag": "76e5743dc098e354e880daf9ee8ab107"
+  },
+  {
+    "Id": 628,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020107.png",
+    "FileSize": 67662,
+    "RawDataDownloadType": 3,
+    "Etag": "a7a54d6bd1ae68a0826d7cd3b8270296"
+  },
+  {
+    "Id": 629,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020108.png",
+    "FileSize": 68771,
+    "RawDataDownloadType": 3,
+    "Etag": "35a63eef1abbba8859e32dcb4b300803"
+  },
+  {
+    "Id": 630,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020109.png",
+    "FileSize": 64484,
+    "RawDataDownloadType": 3,
+    "Etag": "d32c2443137ff56c80171bd2b66d33ad"
+  },
+  {
+    "Id": 631,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020111.png",
+    "FileSize": 75786,
+    "RawDataDownloadType": 3,
+    "Etag": "ae13a50658dd592acb3139e078cbdd8c"
+  },
+  {
+    "Id": 632,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020112.png",
+    "FileSize": 63398,
+    "RawDataDownloadType": 3,
+    "Etag": "2b74b2252cd0e5428b5767b29a98bb83"
+  },
+  {
+    "Id": 633,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020113.png",
+    "FileSize": 60780,
+    "RawDataDownloadType": 3,
+    "Etag": "1eb949d684dff05f5c78be2310fe4014"
+  },
+  {
+    "Id": 634,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020114.png",
+    "FileSize": 63315,
+    "RawDataDownloadType": 3,
+    "Etag": "d33900057bc7338f7b9f1608bf8cc14d"
+  },
+  {
+    "Id": 635,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020115.png",
+    "FileSize": 63120,
+    "RawDataDownloadType": 3,
+    "Etag": "80ff06584bbc8f62836400fb20fbb0a1"
+  },
+  {
+    "Id": 636,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020116.png",
+    "FileSize": 64741,
+    "RawDataDownloadType": 3,
+    "Etag": "dd685e593231b0597306400c0e8a08c2"
+  },
+  {
+    "Id": 637,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020117.png",
+    "FileSize": 63772,
+    "RawDataDownloadType": 3,
+    "Etag": "ad980ba38a69eaf9fa335cf5297caec8"
+  },
+  {
+    "Id": 638,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020121.png",
+    "FileSize": 64609,
+    "RawDataDownloadType": 3,
+    "Etag": "0a3991f64669eb25097ba456cc44dbce"
+  },
+  {
+    "Id": 639,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020122.png",
+    "FileSize": 62474,
+    "RawDataDownloadType": 3,
+    "Etag": "829faec8ba64f81d1f21cc24d4bae923"
+  },
+  {
+    "Id": 640,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_020123.png",
+    "FileSize": 65144,
+    "RawDataDownloadType": 3,
+    "Etag": "d61be75fb0023cb3908efc4817e9e56c"
+  },
+  {
+    "Id": 641,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_700002.png",
+    "FileSize": 68639,
+    "RawDataDownloadType": 3,
+    "Etag": "dc108fdd52b1dc4b4d814ed9d64ce0cb"
+  },
+  {
+    "Id": 642,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800002.png",
+    "FileSize": 70199,
+    "RawDataDownloadType": 3,
+    "Etag": "440e6a5dfe796725dc843c0c19b1ca81"
+  },
+  {
+    "Id": 643,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800003.png",
+    "FileSize": 70311,
+    "RawDataDownloadType": 3,
+    "Etag": "901761340afd39edb7f4103a6e3a6f71"
+  },
+  {
+    "Id": 644,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800004.png",
+    "FileSize": 70440,
+    "RawDataDownloadType": 3,
+    "Etag": "707ad5a3243bcbab00d8c5cdcd8bfed6"
+  },
+  {
+    "Id": 645,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800005.png",
+    "FileSize": 63308,
+    "RawDataDownloadType": 3,
+    "Etag": "d0843eb020fd14090d533b53ca8870b2"
+  },
+  {
+    "Id": 646,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800006.png",
+    "FileSize": 70683,
+    "RawDataDownloadType": 3,
+    "Etag": "58664d1314ee194f0a2a3662852b19ce"
+  },
+  {
+    "Id": 647,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800007.png",
+    "FileSize": 82160,
+    "RawDataDownloadType": 3,
+    "Etag": "26454b0d02ec77140a261d9dc4f3ebe9"
+  },
+  {
+    "Id": 648,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800008.png",
+    "FileSize": 82104,
+    "RawDataDownloadType": 3,
+    "Etag": "46361143333d85660fa523cc547b1f82"
+  },
+  {
+    "Id": 649,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800009.png",
+    "FileSize": 238991,
+    "RawDataDownloadType": 3,
+    "Etag": "f041f7ecbe39acc9f95a70d417107220"
+  },
+  {
+    "Id": 650,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800010.png",
+    "FileSize": 78701,
+    "RawDataDownloadType": 3,
+    "Etag": "4dedaaab89909197a8999bee2aeb7c2b"
+  },
+  {
+    "Id": 651,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800011.png",
+    "FileSize": 65239,
+    "RawDataDownloadType": 3,
+    "Etag": "86fc46189ff0e6c114bb69635e6ffc9b"
+  },
+  {
+    "Id": 652,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800012.png",
+    "FileSize": 77688,
+    "RawDataDownloadType": 3,
+    "Etag": "6f069477d6f617d624c773eb398ea9c7"
+  },
+  {
+    "Id": 653,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800013.png",
+    "FileSize": 77167,
+    "RawDataDownloadType": 3,
+    "Etag": "8eb1d40e9248befb4e02451b2d573e02"
+  },
+  {
+    "Id": 654,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800014.png",
+    "FileSize": 75833,
+    "RawDataDownloadType": 3,
+    "Etag": "e6379704990c0b5f96702efdff378d10"
+  },
+  {
+    "Id": 655,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800015.png",
+    "FileSize": 64818,
+    "RawDataDownloadType": 3,
+    "Etag": "4d4232323cd072e9b7ec0092577fe740"
+  },
+  {
+    "Id": 656,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_800016.png",
+    "FileSize": 83131,
+    "RawDataDownloadType": 3,
+    "Etag": "0974bf58163650062f4042dff1caee00"
+  },
+  {
+    "Id": 657,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_900050.png",
+    "FileSize": 82043,
+    "RawDataDownloadType": 3,
+    "Etag": "c4c3ea3c766ce7b583534544e71978eb"
+  },
+  {
+    "Id": 658,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_900051.png",
+    "FileSize": 71644,
+    "RawDataDownloadType": 3,
+    "Etag": "b9aa3908f16bbb60a2c1b303abd64d20"
+  },
+  {
+    "Id": 659,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_900052.png",
+    "FileSize": 76034,
+    "RawDataDownloadType": 3,
+    "Etag": "8957e092c641422d511a229a98fa49c5"
+  },
+  {
+    "Id": 660,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_900053.png",
+    "FileSize": 75913,
+    "RawDataDownloadType": 3,
+    "Etag": "1192b42ff03b9a77cc50d6aff3d21f1e"
+  },
+  {
+    "Id": 661,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "MyPageBanner/US/MYPAGE_BANNER_US_900054.png",
+    "FileSize": 79951,
+    "RawDataDownloadType": 3,
+    "Etag": "4040897081f1c0d6fa8fdb4c46108c57"
+  },
+  {
+    "Id": 662,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010001.mp4",
+    "FileSize": 4037445,
+    "RawDataDownloadType": 1,
+    "Etag": "291e59fe93ef7c141359f8106c0dd13d"
+  },
+  {
+    "Id": 663,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010002.mp4",
+    "FileSize": 3810365,
+    "RawDataDownloadType": 1,
+    "Etag": "a176ce47514be0570249e4c0abaa132b"
+  },
+  {
+    "Id": 664,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010003.mp4",
+    "FileSize": 1991750,
+    "RawDataDownloadType": 1,
+    "Etag": "4d433d422b95e9e2773ba077988ee33e"
+  },
+  {
+    "Id": 665,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010004.mp4",
+    "FileSize": 3813709,
+    "RawDataDownloadType": 1,
+    "Etag": "bf18bb02ba88f2aeab28f456c3048dd4"
+  },
+  {
+    "Id": 666,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010005.mp4",
+    "FileSize": 3199459,
+    "RawDataDownloadType": 1,
+    "Etag": "a25dbd2ea4dc03c4e5dcac720b4e0905"
+  },
+  {
+    "Id": 667,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010006.mp4",
+    "FileSize": 3071537,
+    "RawDataDownloadType": 1,
+    "Etag": "a8ac28b8e3d84e86fcf816a808a1d97c"
+  },
+  {
+    "Id": 668,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010007.mp4",
+    "FileSize": 3324592,
+    "RawDataDownloadType": 1,
+    "Etag": "3b7dc1ab1ff75d694037a7208b414b54"
+  },
+  {
+    "Id": 669,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010008.mp4",
+    "FileSize": 4177295,
+    "RawDataDownloadType": 1,
+    "Etag": "af94331e89779d92198229a4677e7817"
+  },
+  {
+    "Id": 670,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010009.mp4",
+    "FileSize": 3127304,
+    "RawDataDownloadType": 1,
+    "Etag": "179d3746a4674bae99fe9e28f1ebce06"
+  },
+  {
+    "Id": 671,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010010.mp4",
+    "FileSize": 3507317,
+    "RawDataDownloadType": 1,
+    "Etag": "47833057ea5b00253e980c642bcc0a69"
+  },
+  {
+    "Id": 672,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010011.mp4",
+    "FileSize": 3984827,
+    "RawDataDownloadType": 1,
+    "Etag": "066575e56ae434a2a5a4d967e0c1c1e6"
+  },
+  {
+    "Id": 673,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010012.mp4",
+    "FileSize": 4044860,
+    "RawDataDownloadType": 1,
+    "Etag": "cbad28d5dd1ae244305000996d5cd39e"
+  },
+  {
+    "Id": 674,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010013.mp4",
+    "FileSize": 3649183,
+    "RawDataDownloadType": 1,
+    "Etag": "68b8f1215800dde1eb991a65186c63b4"
+  },
+  {
+    "Id": 675,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010014.mp4",
+    "FileSize": 2998830,
+    "RawDataDownloadType": 1,
+    "Etag": "a7c0a0f446fbd5b119f59841f48c15c3"
+  },
+  {
+    "Id": 676,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010015.mp4",
+    "FileSize": 3436508,
+    "RawDataDownloadType": 1,
+    "Etag": "6f0eb063ad9aa28c460b2135dd2c1a17"
+  },
+  {
+    "Id": 677,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010016.mp4",
+    "FileSize": 2615941,
+    "RawDataDownloadType": 1,
+    "Etag": "02cb3940daf7ab52efb8e9e8e0b5de73"
+  },
+  {
+    "Id": 678,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010017.mp4",
+    "FileSize": 3930531,
+    "RawDataDownloadType": 1,
+    "Etag": "0441270ce79f07bd20a1208d164a7042"
+  },
+  {
+    "Id": 679,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010018.mp4",
+    "FileSize": 3669210,
+    "RawDataDownloadType": 1,
+    "Etag": "efa5ffc73680d193512015103aca5710"
+  },
+  {
+    "Id": 680,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/EVENT_010019.mp4",
+    "FileSize": 4083270,
+    "RawDataDownloadType": 1,
+    "Etag": "2344362e7840ebe043ed79c742146767"
+  },
+  {
+    "Id": 681,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020001.mp4",
+    "FileSize": 3922869,
+    "RawDataDownloadType": 1,
+    "Etag": "1855420db3beb27aa34a85f2a8357a87"
+  },
+  {
+    "Id": 682,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020002.mp4",
+    "FileSize": 4053611,
+    "RawDataDownloadType": 1,
+    "Etag": "5538676a15be251281f4de5dd8473db5"
+  },
+  {
+    "Id": 683,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020003.mp4",
+    "FileSize": 3766160,
+    "RawDataDownloadType": 1,
+    "Etag": "affa65a785b7b61fba36b19755b73b16"
+  },
+  {
+    "Id": 684,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020004.mp4",
+    "FileSize": 3387459,
+    "RawDataDownloadType": 1,
+    "Etag": "36469b60458ff56a12f92b73117ffd38"
+  },
+  {
+    "Id": 685,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020005.mp4",
+    "FileSize": 4512441,
+    "RawDataDownloadType": 1,
+    "Etag": "2866b6e98177d427eae45a7ca793860f"
+  },
+  {
+    "Id": 686,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020006.mp4",
+    "FileSize": 4130672,
+    "RawDataDownloadType": 1,
+    "Etag": "2b7f6474bf0ba761330ca4da83fbd3e5"
+  },
+  {
+    "Id": 687,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020007.mp4",
+    "FileSize": 3916202,
+    "RawDataDownloadType": 1,
+    "Etag": "022ba9877c4ad6e804fd3923486ca4cc"
+  },
+  {
+    "Id": 688,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020008.mp4",
+    "FileSize": 3653746,
+    "RawDataDownloadType": 1,
+    "Etag": "a2a3a0fe60037f02611444432fa69469"
+  },
+  {
+    "Id": 689,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020009.mp4",
+    "FileSize": 2546264,
+    "RawDataDownloadType": 1,
+    "Etag": "173b904703346949b1214ee60d040d77"
+  },
+  {
+    "Id": 690,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020010.mp4",
+    "FileSize": 4396848,
+    "RawDataDownloadType": 1,
+    "Etag": "4b8d156a1e83507ff06bb4c28595c335"
+  },
+  {
+    "Id": 691,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020011.mp4",
+    "FileSize": 3668222,
+    "RawDataDownloadType": 1,
+    "Etag": "2fb371b2dfb9ba5986c17f59f1ed7d7c"
+  },
+  {
+    "Id": 692,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020012.mp4",
+    "FileSize": 3985413,
+    "RawDataDownloadType": 1,
+    "Etag": "607e088922b71fcd4d202c7c931ed6f6"
+  },
+  {
+    "Id": 693,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020013.mp4",
+    "FileSize": 3871506,
+    "RawDataDownloadType": 1,
+    "Etag": "d834892dd7798debef1b5b9559f708d8"
+  },
+  {
+    "Id": 694,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020014.mp4",
+    "FileSize": 3534509,
+    "RawDataDownloadType": 1,
+    "Etag": "39993b5a76a8dc0e45ea46aaf80127cc"
+  },
+  {
+    "Id": 695,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020015.mp4",
+    "FileSize": 1238530,
+    "RawDataDownloadType": 1,
+    "Etag": "f63f4e6e664f09d545bdca94ecbfbe2c"
+  },
+  {
+    "Id": 696,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020016.mp4",
+    "FileSize": 4101314,
+    "RawDataDownloadType": 1,
+    "Etag": "7037908837d83335ddc73d51beca6803"
+  },
+  {
+    "Id": 697,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020017.mp4",
+    "FileSize": 2977266,
+    "RawDataDownloadType": 1,
+    "Etag": "7a5c80c127247747eb3bf143a01f2965"
+  },
+  {
+    "Id": 698,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020018.mp4",
+    "FileSize": 3955373,
+    "RawDataDownloadType": 1,
+    "Etag": "aff94f290ef5c040e8c71b60f3db73a5"
+  },
+  {
+    "Id": 699,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020019.mp4",
+    "FileSize": 3993286,
+    "RawDataDownloadType": 1,
+    "Etag": "f21b53dceb201a5f8f2114e933d7b067"
+  },
+  {
+    "Id": 700,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PanelPictureBook/TITLE_020020.mp4",
+    "FileSize": 3762887,
+    "RawDataDownloadType": 1,
+    "Etag": "9fd74bf375db5393dcbaebaa3262baf7"
+  },
+  {
+    "Id": 701,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/CN/PlayVideo_Subtitle_JP_CN.srt",
+    "FileSize": 2380,
+    "RawDataDownloadType": 7,
+    "Etag": "ec6860d546e698e30c010196f741813b"
+  },
+  {
+    "Id": 702,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/CN/PlayVideo_Subtitle_US_CN.srt",
+    "FileSize": 2380,
+    "RawDataDownloadType": 7,
+    "Etag": "ec6860d546e698e30c010196f741813b"
+  },
+  {
+    "Id": 703,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/KR/PlayVideo_Subtitle_JP_KR.srt",
+    "FileSize": 2653,
+    "RawDataDownloadType": 4,
+    "Etag": "5c3410ed0305dad599c7304ebff7b6b5"
+  },
+  {
+    "Id": 704,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/KR/PlayVideo_Subtitle_US_KR.srt",
+    "FileSize": 2653,
+    "RawDataDownloadType": 4,
+    "Etag": "5c3410ed0305dad599c7304ebff7b6b5"
+  },
+  {
+    "Id": 705,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/TW/PlayVideo_Subtitle_JP_TW.srt",
+    "FileSize": 2362,
+    "RawDataDownloadType": 5,
+    "Etag": "3fcba49d282b832ee675c55ab50f5350"
+  },
+  {
+    "Id": 706,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/TW/PlayVideo_Subtitle_US_TW.srt",
+    "FileSize": 2362,
+    "RawDataDownloadType": 5,
+    "Etag": "3fcba49d282b832ee675c55ab50f5350"
+  },
+  {
+    "Id": 707,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/US/PlayVideo_Subtitle_JP_US.srt",
+    "FileSize": 2734,
+    "RawDataDownloadType": 3,
+    "Etag": "030d71823a0b162068a7eb975cf8409d"
+  },
+  {
+    "Id": 708,
+    "IsIgnore": false,
+    "Memo": "",
+    "FilePath": "PlayVideo/US/PlayVideo_Subtitle_US_US.srt",
+    "FileSize": 2734,
+    "RawDataDownloadType": 3,
+    "Etag": "030d71823a0b162068a7eb975cf8409d"
+  }
+]
