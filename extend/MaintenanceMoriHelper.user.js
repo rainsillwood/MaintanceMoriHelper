@@ -49,7 +49,7 @@ const GlobalConstant = {
   'ModelName': 'Xiaomi 2203121C',
   'GlobalConstant': 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)',
   //服务器url
-  'assetURL': 'https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/assets/',
+  'assetURL': 'https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/assets/',
   'authURL': 'https://prd1-auth.mememori-boi.com/api/auth/',
   'LocalURL': 'https://mentemori.icu/',
   'AppVersion': '',
@@ -294,6 +294,13 @@ const LanguageTable = {
     'ZhTw': '（包含確定）',
     'ZhCn': '（包含确定）',
   },
+  'BuildModel': {
+    'JaJp': 'Build Model',
+    'EnUs': 'Build Model',
+    'KoKr': 'Build Model',
+    'ZhTw': '模型生成',
+    'ZhCn': '模型生成',
+  },
 };
 //URL信息
 const GlobalURLList = getURLList();
@@ -485,7 +492,7 @@ const LanguageJa = {
   'クリアパーティ': TextResource['AutoBattleQuestButtonClearParty'],
 };
 //初始化所有页面
-initPage();
+await initPage();
 console.log('载入完成');
 /*常量函数*/
 //分解URL
@@ -724,6 +731,12 @@ async function initPage() {
     createElement('a', LanguageTable['battlehelper'][GlobalURLList.lang], {
       'href': getURL({ 'function': 'gvgMapper', 'lang': GlobalURLList.lang }),
       'title': 'gvgMapper',
+    }),
+    createElement('a', '|'),
+    //生成动作文件
+    createElement('a', LanguageTable['BuildModel'][GlobalURLList.lang], {
+      'href': getURL({ 'function': 'actionMaker', 'lang': GlobalURLList.lang }),
+      'title': 'actionMaker',
     })
   );
   //取消超链接
@@ -741,6 +754,10 @@ async function initPage() {
     }
     case 'gvgMapper': {
       await gvgMapper();
+      break;
+    }
+    case 'actionMaker': {
+      await actionMaker();
       break;
     }
     case 'temple': {
@@ -966,17 +983,17 @@ function changeSelect(RegionId, GroupId, ClassId, WorldId) {
 //初始化内容
 function initContent() {
   document.querySelector('style').append(`
-  thead > tr {
-    background: #aaf !important;
-  }
-  tbody > :nth-child(1) {
-    background: #e8e8e8;
-  }
-  tbody {
-    font-size: small;
-    font-weight: normal;
-  }
-    `);
+thead > tr {
+  background: #aaf !important;
+}
+tbody > :nth-child(1) {
+  background: #e8e8e8;
+}
+tbody {
+  font-size: small;
+  font-weight: normal;
+}
+  `);
   while (document.body.childNodes.length > 7) {
     document.body.lastChild.remove();
   }
@@ -1056,39 +1073,39 @@ async function gvgMapper() {
   initContent();
   await initSelect();
   document.querySelector('style').append(`
-  #guilds {
-    display: inline-block;
-    width: calc(100% - 820px);
-    text-align: center;
-  }
-  gvg-list {
-    display: block;
-    position: fixed;
-    top: 5%;
-    width: 200px;
-    height: 95%;
-  }
-  gvg-list#enermyList {
-    left: calc(50% + 650px);
-  }
-  gvg-list#friendList {
-    right: calc(50% + 650px);
-  }
-  gvg-list > h2 {
-    text-align: center;
-    margin: 0px;
-  }
-  gvg-list > div {
-    height: calc(100% - 28px);
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    background: rgb(255, 127, 127);
-  }
-  data {
-    display: block;
-    width: 100%;
-  }
-    `);
+#guilds {
+  display: inline-block;
+  width: calc(100% - 820px);
+  text-align: center;
+}
+gvg-list {
+  display: block;
+  position: fixed;
+  top: 5%;
+  width: 200px;
+  height: 95%;
+}
+gvg-list#enermyList {
+  left: calc(50% + 650px);
+}
+gvg-list#friendList {
+  right: calc(50% + 650px);
+}
+gvg-list > h2 {
+  text-align: center;
+  margin: 0px;
+}
+gvg-list > div {
+  height: calc(100% - 28px);
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  background: rgb(255, 127, 127);
+}
+data {
+  display: block;
+  width: 100%;
+}
+  `);
   const divSelect = document.querySelector('#selectpanel');
   //插入公会列表面板
   divSelect.insertAdjacentElement('afterend', createElement('div', '', 'guilds'));
@@ -1402,6 +1419,336 @@ async function gvgMapper() {
     buttonDisconnectServer.onclick = () => {
       SocketGvG.close(1000, 'User Stop');
     };*/
+}
+//生成动作文件
+async function actionMaker() {
+  initContent();
+  const Model = await sendGMRequest(`${GlobalConstant.assetURL}model3.json`, {});
+  const CharacterList = await getCharacter();
+  const CharacterVoiceList = await getCharacterVoice();
+  //初始化选择区
+  const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
+  //选择栏样式
+  document.querySelector('style').append(`
+#selectpanel {
+  width: 700px;
+  display: inline-block;
+  vertical-align: top;
+}
+#selectpanel > p {
+  text-align: center;
+}
+#selectpanel a {
+  display: inline-block;
+}
+#selectpanel a:nth-child(1) {
+  width: 75px;
+  text-align: left;
+}
+#selectpanel a:nth-child(2) {
+  width: 25px;
+}
+#selectpanel a:nth-child(3) {
+  width: calc(100% - 120px);
+}
+#selectpanel select {
+  width: calc(100% - 120px);
+}
+data {
+  display: block;
+  width: 100%;
+}
+  `);
+  //语言选择
+  const pVoice = divSelect.appendChild(createElement('p', `<a>${TextResource['GameSettingVoiceLanguage']}</a><a>:</a>`));
+  const selectVoice = pVoice.appendChild(createElement('select', ''));
+  for (let Voice of [
+    {
+      'Name': TextResource['VoiceLanguageTypejaJP'],
+      'Value': 'JP',
+    },
+    {
+      'Name': TextResource['VoiceLanguageTypeenUS'],
+      'Value': 'US',
+    },
+  ]) {
+    const option = new Option(Voice.Name, Voice.Value);
+    selectVoice.options.add(option);
+  }
+  const pFile = divSelect.appendChild(createElement('p', `<a>${TextResource['LamentDownloadButton']}</a><a>:</a>`));
+  const aFile = pFile.appendChild(createElement('a', ''));
+  //插入标题
+  document.body.appendChild(createElement('h2', LanguageTable['BuildModel'][GlobalURLList.lang]));
+  document.body.append(createElement('hr'));
+  //插入数据区
+  let nodeData = document.body.appendChild(createElement('data', ''));
+  nodeData.append(
+    createElement(
+      'style',
+      `
+character {
+  display: inline-block;
+  text-align: center;
+  border: black 2px solid;
+}
+      `
+    )
+  );
+  for (let i in CharacterList) {
+    const Character = CharacterList[i];
+    const CharacterId = Character.Id;
+    const CharacterVoice = CharacterVoiceList[CharacterId];
+    const ChraracterFile = `${'0'.repeat(6 - CharacterId.toString().length)}${CharacterId}`;
+    let nodeCharacter = nodeData.appendChild(
+      createElement(
+        'character',
+        `
+        <div>No.${CharacterId}</div>
+        <img src="${GlobalConstant.assetURL}CharacterIcon/CHR_${ChraracterFile}/${ChraracterFile}_00_s.png">
+        <div>${Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '　'}</div>
+        <div>${TextResource[Character.NameKey.slice(1, -1)]}</div>
+        `
+      )
+    );
+    nodeCharacter.onclick = async () => {
+      console.log(CharacterVoice);
+      /*const VoiceLanguage = selectVoice.value;
+      const Skill = [
+        SkillList[Character.ActiveSkillIds[0]], //
+        SkillList[Character.ActiveSkillIds[1]],
+      ];
+      let model = JSON.parse(Model);
+      model.FileReferences.Moc = `CHR_${ChraracterFile}.moc3`;
+      model.Physics = `CHR_${ChraracterFile}.physics3.json`;
+      model.PhysicsV2.File = `CHR_${ChraracterFile}.physics3.json`;
+      model.Motions = {
+        'Menu': [
+          {
+            'Name': 'Menu',
+            'Text': TextResource['MenuTitle'],
+            'Choices': [
+              {
+                'Text': TextResource['MenuMusicPlayerButton'],
+                'NextMtn': 'Menu:PlayMusic',
+              },
+              {
+                'Text': TextResource['CharacterDetailVoice'],
+              },
+              {
+                'Text': TextResource['CharacterDetailMemory'],
+              },
+              {
+                'Text': TextResource['DungeonBattleGridBattleTitle'],
+              },
+              {
+                'Text': TextResource['DungeonBattleGridBattleTitle'],
+              },
+            ],
+          },
+          {
+            'Name': 'PlayMusic',
+            'Text': TextResource['MusicPlayerTabPlaylist'],
+            'Choices': [
+              {
+                'Text': '日文（完整）',
+                'NextMtn': 'Menu:PlayMusicJP',
+              },
+              {
+                'Text': '英文（完整）',
+                'NextMtn': 'Menu:PlayMusicUS',
+              },
+              {
+                'Text': '日文（短）',
+                'NextMtn': 'Menu:PlayShortJP',
+              },
+              {
+                'Text': '英文（短）',
+                'NextMtn': 'Menu:PlayShortUS',
+              },
+              {
+                'Text': '停止',
+                'NextMtn': 'Menu:PlayStop',
+              },
+            ],
+          },
+          {
+            'Name': 'PlayMusicJP',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_JP.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayMusicUS',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_US.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayShortJP',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_SHORT_JP.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayShortUS',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_SHORT_US.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayStop',
+            'Sound': 'Sound/SE_001001.wav',
+            'SoundChannel': 1,
+          },
+        ],
+        'Login': [
+          {
+            'Name': 'Login1',
+            'Text': TextResource['MenuTitle'],
+            'File': 'motions/Talk_Loop.anim.motion3.json',
+            'Sound': `Voice/${VoiceLanguage}/Common/CV_${VoiceLanguage}_${ChraracterFile}_Mypage_${'0'.repeat(3 - CharacterVoice.CharacterDetailVoiceUnLockedText1.Path.TimelineId.toString().length)}${CharacterVoice.CharacterDetailVoiceUnLockedText1.Path.TimelineId}.wav`,
+          },
+          {
+            'Name': 'Login2',
+            'Text': TextResource[CharacterVoice.CharacterDetailVoiceUnLockedText2.SubtitleKey.slice(1, -1)],
+            'File': 'motions/Talk_Loop.anim.motion3.json',
+            'Sound': `Voice/${VoiceLanguage}/Common/CV_${VoiceLanguage}_${ChraracterFile}_Mypage_${'0'.repeat(3 - CharacterVoice.CharacterDetailVoiceUnLockedText1.Path.TimelineId.toString().length)}${CharacterVoice.CharacterDetailVoiceUnLockedText2.Path.TimelineId}.wav`,
+          },
+        ],
+        'Talk': [
+          {
+            'Name': 'TalkStart',
+            'File': 'motions/Talk_In.anim.motion3.json',
+          },
+          {
+            'Name': 'TalkEnd',
+            'File': 'motions/Talk_Out.anim.motion3.json',
+          },
+          {
+            'Name': 'Talk1',
+            'File': 'motions/Talk_Loop.anim.motion3.json',
+            'Sound': `Voice/${VoiceLanguage}/Common/CV_${VoiceLanguage}_${ChraracterFile}_Mypage_002.wav`,
+          },
+        ],
+        'Battle': [
+          {
+            'Name': 'Skill1',
+            'Text': TextResource['MenuTitle'],
+            'File': 'motions/Skill.anim.motion3.json',
+            'Sound': `Voice/JP/Skill/CV_${VoiceLanguage}_SKILL_000105001_0.wav`,
+          },
+          {
+            'Name': 'Skill2',
+            'Text': TextResource['MenuTitle'],
+            'File': 'motions/Skill.anim.motion3.json',
+            'Sound': 'Voice/JP/Skill/CV_JP_SKILL_000105002_0.wav',
+          },
+          {
+            'Name': 'BattleStart',
+          },
+          {
+            'Name': 'BattleWin',
+          },
+          {
+            'Name': 'BattleLose',
+          },
+        ],
+      };
+      for (let j in CharacterVoice) {
+        const Voice = CharacterVoice[j];
+        const VoiceType={}
+        const GroupType={}
+      }
+      model.Expressions = [
+        {
+          'Name': 'Angry',
+          'File': 'motions/Face_Angry.anim.motion3.json',
+        },
+        {
+          'Name': 'Blushing',
+          'File': 'motions/Face_Blushing.anim.motion3.json',
+        },
+        {
+          'Name': 'Eye_Close',
+          'File': 'motions/Face_Eye_Close.anim.motion3.json',
+        },
+        {
+          'Name': 'Eye_Grin',
+          'File': 'motions/Face_Eye_Grin.anim.motion3.json',
+        },
+        {
+          'Name': 'Glad',
+          'File': 'motions/Face_Glad.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Down',
+          'File': 'motions/Face_Look_Down.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Left',
+          'File': 'motions/Face_Look_Left.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Right',
+          'File': 'motions/Face_Look_Right.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Up',
+          'File': 'motions/Face_Look_Up.anim.motion3.json',
+        },
+        {
+          'Name': 'Sad',
+          'File': 'motions/Face_Sad.anim.motion3.json',
+        },
+        {
+          'Name': 'Smile',
+          'File': 'motions/Face_Smile.anim.motion3.json',
+        },
+        {
+          'Name': 'Surprise',
+          'File': 'motions/Face_Surprise.anim.motion3.json',
+        },
+        {
+          'Name': 'TearDrop',
+          'File': 'motions/Face_TearDrop.anim.motion3.json',
+        },
+        {
+          'Name': 'Tears',
+          'File': 'motions/Face_Tears.anim.motion3.json',
+        },
+        {
+          'Name': 'Unique1',
+          'File': 'motions/Face_Unique1.anim.motion3.json',
+        },
+        {
+          'Name': 'Unique',
+          'File': 'motions/Face_Unique2.anim.motion3.json',
+        },
+      ];
+      model.Controllers.KeyTrigger = {
+        'Items': [
+          {
+            'Input': 77,
+            'DownMtn': 'Menu:Menu',
+            'UpMtn': 'Menu:Menu',
+          },
+        ],
+        'Enabled': true,
+      };
+      model.Options.Name = ChraracterFile;
+      let file = new Blob([JSON.stringify(model)], { type: 'text/plain' });
+      let link = createElement('a', +'.json');
+      let url = window.URL.createObjectURL(file);
+      link.href = url;
+      link.download = `${ChraracterFile}.model3.json`;
+      nodeData.appendChild(link);*/
+    };
+  }
+  FreezeNode.classList.add('hidden');
 }
 /*优化功能*/
 //优化神殿
@@ -4577,6 +4924,24 @@ async function getLocalRaidQuest(force = false) {
     }
   }
   return LocalRaidQuestList;
+}
+//获取装备技能信息
+async function getCharacterVoice() {
+  const Type = 'CharacterDetailVoice';
+  let DataList = {};
+  const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+  const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+  if (!DataMB) return;
+  for (let i = 0; i < DataMB.length; i++) {
+    let Data = DataMB[i];
+    const CharacterId = Data.CharacterId;
+    const UnlockedVoiceButtonTextKey = Data.UnlockedVoiceButtonTextKey;
+    if (!DataList[CharacterId]) {
+      DataList[CharacterId] = {};
+    }
+    DataList[CharacterId][UnlockedVoiceButtonTextKey.slice(1, -1)] = Data;
+  }
+  return DataList;
 }
 //获取世界组
 async function getWorldGroup() {

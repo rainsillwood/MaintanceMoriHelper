@@ -1,0 +1,287 @@
+{
+  "Version": 3,
+  "Type": 0,
+  "FileReferences": {
+    "Moc": "CHR_000000.moc3",
+    "Textures": [
+      "textures/texture_00.png"
+    ],
+    "Physics": "CHR_000000.physics3.json",
+    "PhysicsV2": {
+      "File": "CHR_000000.physics3.json"
+    },
+    "Motions": {
+      "Menu": [
+        {
+          "Name": "Menu",
+          "Text": "需要做什么",
+          "Choices": [
+            {
+              "Text": "播放音乐",
+              "NextMtn": "Menu:PlayMusic"
+            },
+            {
+              "Text": "交谈"
+            },
+            {
+              "Text": "查看回忆"
+            },
+            {
+              "Text": "释放技能"
+            }
+          ],
+          "Language": "zhs"
+        },
+        {
+          "Name": "PlayMusic",
+          "Text": "播放音乐",
+          "Choices": [
+            {
+              "Text": "日文（完整）",
+              "NextMtn": "Menu:PlayMusicJP"
+            },
+            {
+              "Text": "英文（完整）",
+              "NextMtn": "Menu:PlayMusicUS"
+            },
+            {
+              "Text": "日文（短）",
+              "NextMtn": "Menu:PlayShortJP"
+            },
+            {
+              "Text": "英文（短）",
+              "NextMtn": "Menu:PlayShortUS"
+            },
+            {
+              "Text": "停止",
+              "NextMtn": "Menu:PlayStop"
+            }
+          ],
+          "Language": "zhs"
+        },
+        {
+          "Name": "PlayMusicJP",
+          "Sound": "Music/CHR_000000_SONG_JP.wav",
+          "SoundChannel": 1,
+          "SoundLoop": true,
+          "Interruptable": true,
+          "Language": "zhs"
+        },
+        {
+          "Name": "PlayMusicUS",
+          "Sound": "Music/CHR_000000_SONG_US.wav",
+          "SoundChannel": 1,
+          "SoundLoop": true,
+          "Interruptable": true,
+          "Language": "zhs"
+        },
+        {
+          "Name": "PlayShortJP",
+          "Sound": "Music/CHR_000000_SONG_SHORT_JP.wav",
+          "SoundChannel": 1,
+          "SoundLoop": true,
+          "Interruptable": true,
+          "Language": "zhs"
+        },
+        {
+          "Name": "PlayShortUS",
+          "Sound": "Music/CHR_000000_SONG_SHORT_US.wav",
+          "SoundChannel": 1,
+          "SoundLoop": true,
+          "Interruptable": true,
+          "Language": "zhs"
+        },
+        {
+          "Name": "PlayStop",
+          "Sound": "Sound/SE_001001.wav",
+          "SoundChannel": 1,
+          "Language": "zhs"
+        }
+      ],
+      "Talk": [
+        {
+          "Name": "TalkStart",
+          "File": "motions/Talk_In.anim.motion3.json"
+        },
+        {
+          "Name": "TalkEnd",
+          "File": "motions/Talk_Out.anim.motion3.json"
+        },
+        {
+          "Name": "Talk1",
+          "File": "motions/Talk_Loop.anim.motion3.json",
+          "Sound": "Voice/JP/Common/CV_JP_000000_Mypage_002.wav",
+          "Language": "zhs"
+        }
+      ],
+      "Battle": [
+        {
+          "Name": "Skill1",
+          "File": "motions/Skill.anim.motion3.json",
+          "Sound": "Voice/JP/Skill/CV_JP_SKILL_000000001_0.wav"
+        },
+        {
+          "Name": "Skill2",
+          "File": "motions/Skill.anim.motion3.json",
+          "Sound": "Voice/JP/Skill/CV_JP_SKILL_000000002_0.wav"
+        },
+        {
+          "Name": "BattleStart"
+        },
+        {
+          "Name": "BattleWin"
+        },
+        {
+          "Name": "BattleLose"
+        }
+      ]
+    },
+    "Expressions": [
+      {
+        "Name": "Angry",
+        "File": "motions/Face_Angry.anim.motion3.json"
+      },
+      {
+        "Name": "Blushing",
+        "File": "motions/Face_Blushing.anim.motion3.json"
+      },
+      {
+        "Name": "Eye_Close",
+        "File": "motions/Face_Eye_Close.anim.motion3.json"
+      },
+      {
+        "Name": "Eye_Grin",
+        "File": "motions/Face_Eye_Grin.anim.motion3.json"
+      },
+      {
+        "Name": "Glad",
+        "File": "motions/Face_Glad.anim.motion3.json"
+      },
+      {
+        "Name": "Look_Down",
+        "File": "motions/Face_Look_Down.anim.motion3.json"
+      },
+      {
+        "Name": "Look_Left",
+        "File": "motions/Face_Look_Left.anim.motion3.json"
+      },
+      {
+        "Name": "Look_Right",
+        "File": "motions/Face_Look_Right.anim.motion3.json"
+      },
+      {
+        "Name": "Look_Up",
+        "File": "motions/Face_Look_Up.anim.motion3.json"
+      },
+      {
+        "Name": "Sad",
+        "File": "motions/Face_Sad.anim.motion3.json"
+      },
+      {
+        "Name": "Smile",
+        "File": "motions/Face_Smile.anim.motion3.json"
+      },
+      {
+        "Name": "Surprise",
+        "File": "motions/Face_Surprise.anim.motion3.json"
+      },
+      {
+        "Name": "TearDrop",
+        "File": "motions/Face_TearDrop.anim.motion3.json"
+      },
+      {
+        "Name": "Tears",
+        "File": "motions/Face_Tears.anim.motion3.json"
+      },
+      {
+        "Name": "Unique1",
+        "File": "motions/Face_Unique1.anim.motion3.json"
+      },
+      {
+        "Name": "Unique",
+        "File": "motions/Face_Unique2.anim.motion3.json"
+      }
+    ]
+  },
+  "Controllers": {
+    "ParamHit": {},
+    "ParamLoop": {},
+    "KeyTrigger": {
+      "Items": [
+        {
+          "Input": 77,
+          "DownMtn": "Menu:Menu",
+          "UpMtn": "Menu:Menu"
+        }
+      ],
+      "Enabled": true
+    },
+    "ParamTrigger": {},
+    "AreaTrigger": {},
+    "HandTrigger": {},
+    "EyeBlink": {
+      "MinInterval": 500,
+      "MaxInterval": 6000,
+      "Items": [
+        {
+          "Id": "ParamEyeLOpen",
+          "Min": 0.0,
+          "Max": 1.0,
+          "BlendMode": 2,
+          "Input": 0
+        },
+        {
+          "Id": "ParamEyeROpen",
+          "Min": 0.0,
+          "Max": 1.0,
+          "BlendMode": 2,
+          "Input": 0
+        }
+      ],
+      "Enabled": true
+    },
+    "LipSync": {
+      "Gain": 5.0,
+      "Items": [
+        {
+          "Id": "ParamMouthOpenY",
+          "Min": 0.0,
+          "Max": 1.0,
+          "Input": 0
+        }
+      ],
+      "Enabled": true
+    },
+    "MouseTracking": {
+      "SmoothTime": 0.15,
+      "Enabled": true
+    },
+    "AutoBreath": {
+      "Enabled": true
+    },
+    "ExtraMotion": {
+      "Enabled": true
+    },
+    "Accelerometer": {
+      "Enabled": true
+    },
+    "Microphone": {},
+    "Transform": {},
+    "FaceTracking": {
+      "Enabled": true
+    },
+    "HandTracking": {},
+    "ParamValue": {},
+    "PartOpacity": {},
+    "ArtmeshOpacity": {},
+    "ArtmeshColor": {},
+    "ArtmeshCulling": {
+      "DefaultMode": 0
+    },
+    "IntimacySystem": {}
+  },
+  "Options": {
+    "Name": "CHR_000000",
+    "TexType": 0
+  }
+}
