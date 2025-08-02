@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Maintenance Mori Helper
 // @namespace    https://suzunemaiki.moe/
-// @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintenanceMoriHelper.user.js
-// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/extend/MaintenanceMoriHelper.user.js
-// @version      1.02
+// @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/extend/MaintenanceMoriHelper.user.js
+// @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/extend/MaintenanceMoriHelper.user.js
+// @version      1.09
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -25,21 +25,23 @@
 console.log('脚本运行中');
 //增加冻结层
 document.querySelector('style').append(`
-  #loading {
-    width: 100%;
-    height: 100%;
-    font-size: xx-large;
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+#loading {
+  width: 100%;
+  height: 100%;
+  font-size: xx-large;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2147483647;
+  opacity: 0.8;
+}
   `);
 const FreezeNode = createElement('div', '<h1>Loading......</h1>', 'loading');
-document.body.append(FreezeNode);
+document.body.insertAdjacentElement('afterbegin', FreezeNode);
 /*全局对象*/
 //静态常量
 const GlobalConstant = {
@@ -47,7 +49,7 @@ const GlobalConstant = {
   'ModelName': 'Xiaomi 2203121C',
   'GlobalConstant': 'Android OS 13 / API-33 (TKQ1.220829.002/V14.0.12.0.TLACNXM)',
   //服务器url
-  'assetURL': 'https://raw.githubusercontent.com/rainsillwood/MaintanceMoriHelper/main/assets/',
+  'assetURL': 'https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/assets/',
   'authURL': 'https://prd1-auth.mememori-boi.com/api/auth/',
   'LocalURL': 'https://mentemori.icu/',
   'AppVersion': '',
@@ -292,6 +294,13 @@ const LanguageTable = {
     'ZhTw': '（包含確定）',
     'ZhCn': '（包含确定）',
   },
+  'BuildModel': {
+    'JaJp': 'Build Model',
+    'EnUs': 'Build Model',
+    'KoKr': 'Build Model',
+    'ZhTw': '模型生成',
+    'ZhCn': '模型生成',
+  },
 };
 //URL信息
 const GlobalURLList = getURLList();
@@ -323,7 +332,7 @@ if (getStorage('ScriptVersion') * 1 < 1.01) {
 }
 //公共对象
 let SocketGvG;
-let DataBase = {
+const DataBase = {
   'Static': {
     'version': 1,
   },
@@ -333,7 +342,7 @@ let DataBase = {
 };
 await openDB('Static');
 await openDB('Record');
-setStorage('ScriptVersion', 1.01);
+setStorage('ScriptVersion', 1.06);
 setStorage('lang', '["en","en","en","en","en","en","en"]');
 //需要从游戏资源获取翻译列表
 const LanguageTableM = {
@@ -483,7 +492,8 @@ const LanguageJa = {
   'クリアパーティ': TextResource['AutoBattleQuestButtonClearParty'],
 };
 //初始化所有页面
-initPage();
+await initPage();
+console.log('载入完成');
 /*常量函数*/
 //分解URL
 function getURLList() {
@@ -549,7 +559,6 @@ async function initPage() {
   //原有功能进行翻译
   initTranslator();
   //本地化标题
-  document.querySelector('h1').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   document.querySelector('title').innerHTML = LanguageTable['title'][GlobalURLList.lang];
   //追加导航栏格式
   document.querySelector('style').append(`
@@ -639,6 +648,7 @@ async function initPage() {
   const nodeSwitch = [divLocal.querySelector('#switch-light'), divLocal.querySelector('#switch-dark')];
   const nodeRefresh = createElement('a', '🔄');
   nodeRefresh.onclick = async () => {
+    FreezeNode.classList.remove('hidden');
     await getTextResource(true);
     await getCharacter(true);
     await getEquipment(true);
@@ -656,6 +666,7 @@ async function initPage() {
   };
   const nodeClear = createElement('a', '🗑️');
   nodeClear.onclick = () => {
+    FreezeNode.classList.remove('hidden');
     localStorage.clear();
     indexedDB.deleteDatabase('Static');
     indexedDB.deleteDatabase('Record');
@@ -720,6 +731,12 @@ async function initPage() {
     createElement('a', LanguageTable['battlehelper'][GlobalURLList.lang], {
       'href': getURL({ 'function': 'gvgMapper', 'lang': GlobalURLList.lang }),
       'title': 'gvgMapper',
+    }),
+    createElement('a', '|'),
+    //生成动作文件
+    createElement('a', LanguageTable['BuildModel'][GlobalURLList.lang], {
+      'href': getURL({ 'function': 'actionMaker', 'lang': GlobalURLList.lang }),
+      'title': 'actionMaker',
     })
   );
   //取消超链接
@@ -737,6 +754,10 @@ async function initPage() {
     }
     case 'gvgMapper': {
       await gvgMapper();
+      break;
+    }
+    case 'actionMaker': {
+      await actionMaker();
       break;
     }
     case 'temple': {
@@ -758,7 +779,7 @@ async function initPage() {
     default: {
     }
   }
-  FreezeNode.remove();
+  FreezeNode.classList.add('hidden');
 }
 //初始化选择栏
 async function initSelect(addRegion = true, addGroup = true, addClass = true, addWorld = true) {
@@ -869,6 +890,9 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
         return WorldList[value].SName;
       });
       const option = new Option(`${Group.Name}(${text})`, GroupId);
+      if (isNaN(GroupId * 1) && !addWorld) {
+        option.classList.add('hidden');
+      }
       option.classList.add('R' + Group.Region);
       selectGroup.options.add(option);
     }
@@ -938,11 +962,11 @@ function changeSelect(RegionId, GroupId, ClassId, WorldId) {
   #listGroup > option.R${RegionId} {
     display: inline;
   }
-  #listClass > .static
-  ${GroupId == 'N' + RegionId ? '' : ',#listClass > .dynamic'} {
+  #listClass > option.static
+  ${GroupId == 'N' + RegionId ? '' : ',#listClass > option.dynamic'} {
     display: inline;
   }
-  #listWorld > ${ClassId > 0 ? '.global' : '.G' + GroupId} {
+  #listWorld > ${ClassId > 0 ? 'option.global' : 'option.G' + GroupId} {
     display: inline;
   }
         `
@@ -956,21 +980,18 @@ function changeSelect(RegionId, GroupId, ClassId, WorldId) {
 //初始化内容
 function initContent() {
   document.querySelector('style').append(`
-  thead > tr {
-    background: #aaf !important;
-  }
-  tbody > :nth-child(1) {
-    background: #e8e8e8;
-  }
-  tbody {
-    font-size: small;
-    font-weight: normal;
-  }
-  .hidden {
-    display: none;
-  }
-    `);
-  while (document.body.childNodes.length > 6) {
+thead > tr {
+  background: #aaf !important;
+}
+tbody > :nth-child(1) {
+  background: #e8e8e8;
+}
+tbody {
+  font-size: small;
+  font-weight: normal;
+}
+  `);
+  while (document.body.childNodes.length > 7) {
     document.body.lastChild.remove();
   }
 }
@@ -1049,39 +1070,39 @@ async function gvgMapper() {
   initContent();
   await initSelect();
   document.querySelector('style').append(`
-  #guilds {
-    display: inline-block;
-    width: calc(100% - 820px);
-    text-align: center;
-  }
-  gvg-list {
-    display: block;
-    position: fixed;
-    top: 5%;
-    width: 200px;
-    height: 95%;
-  }
-  gvg-list#enermyList {
-    left: calc(50% + 650px);
-  }
-  gvg-list#friendList {
-    right: calc(50% + 650px);
-  }
-  gvg-list > h2 {
-    text-align: center;
-    margin: 0px;
-  }
-  gvg-list > div {
-    height: calc(100% - 28px);
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    background: rgb(255, 127, 127);
-  }
-  data {
-    display: block;
-    width: 100%;
-  }
-    `);
+#guilds {
+  display: inline-block;
+  width: calc(100% - 820px);
+  text-align: center;
+}
+gvg-list {
+  display: block;
+  position: fixed;
+  top: 5%;
+  width: 200px;
+  height: 95%;
+}
+gvg-list#enermyList {
+  left: calc(50% + 650px);
+}
+gvg-list#friendList {
+  right: calc(50% + 650px);
+}
+gvg-list > h2 {
+  text-align: center;
+  margin: 0px;
+}
+gvg-list > div {
+  height: calc(100% - 28px);
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  background: rgb(255, 127, 127);
+}
+data {
+  display: block;
+  width: 100%;
+}
+  `);
   const divSelect = document.querySelector('#selectpanel');
   //插入公会列表面板
   divSelect.insertAdjacentElement('afterend', createElement('div', '', 'guilds'));
@@ -1396,6 +1417,336 @@ async function gvgMapper() {
       SocketGvG.close(1000, 'User Stop');
     };*/
 }
+//生成动作文件
+async function actionMaker() {
+  initContent();
+  const Model = await sendGMRequest(`${GlobalConstant.assetURL}model3.json`, {});
+  const CharacterList = await getCharacter();
+  const CharacterVoiceList = await getCharacterVoice();
+  //初始化选择区
+  const divSelect = document.body.appendChild(createElement('div', '', 'selectpanel'));
+  //选择栏样式
+  document.querySelector('style').append(`
+#selectpanel {
+  width: 700px;
+  display: inline-block;
+  vertical-align: top;
+}
+#selectpanel > p {
+  text-align: center;
+}
+#selectpanel a {
+  display: inline-block;
+}
+#selectpanel a:nth-child(1) {
+  width: 75px;
+  text-align: left;
+}
+#selectpanel a:nth-child(2) {
+  width: 25px;
+}
+#selectpanel a:nth-child(3) {
+  width: calc(100% - 120px);
+}
+#selectpanel select {
+  width: calc(100% - 120px);
+}
+data {
+  display: block;
+  width: 100%;
+}
+  `);
+  //语言选择
+  const pVoice = divSelect.appendChild(createElement('p', `<a>${TextResource['GameSettingVoiceLanguage']}</a><a>:</a>`));
+  const selectVoice = pVoice.appendChild(createElement('select', ''));
+  for (let Voice of [
+    {
+      'Name': TextResource['VoiceLanguageTypejaJP'],
+      'Value': 'JP',
+    },
+    {
+      'Name': TextResource['VoiceLanguageTypeenUS'],
+      'Value': 'US',
+    },
+  ]) {
+    const option = new Option(Voice.Name, Voice.Value);
+    selectVoice.options.add(option);
+  }
+  const pFile = divSelect.appendChild(createElement('p', `<a>${TextResource['LamentDownloadButton']}</a><a>:</a>`));
+  const aFile = pFile.appendChild(createElement('a', ''));
+  //插入标题
+  document.body.appendChild(createElement('h2', LanguageTable['BuildModel'][GlobalURLList.lang]));
+  document.body.append(createElement('hr'));
+  //插入数据区
+  let nodeData = document.body.appendChild(createElement('data', ''));
+  nodeData.append(
+    createElement(
+      'style',
+      `
+character {
+  display: inline-block;
+  text-align: center;
+  border: black 2px solid;
+}
+      `
+    )
+  );
+  for (let i in CharacterList) {
+    const Character = CharacterList[i];
+    const CharacterId = Character.Id;
+    const CharacterVoice = CharacterVoiceList[CharacterId];
+    const ChraracterFile = `${'0'.repeat(6 - CharacterId.toString().length)}${CharacterId}`;
+    let nodeCharacter = nodeData.appendChild(
+      createElement(
+        'character',
+        `
+        <div>No.${CharacterId}</div>
+        <img src="${GlobalConstant.assetURL}CharacterIcon/CHR_${ChraracterFile}/CHR_${ChraracterFile}_00_s.png">
+        <div>${Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '　'}</div>
+        <div>${TextResource[Character.NameKey.slice(1, -1)]}</div>
+        `
+      )
+    );
+    nodeCharacter.onclick = async () => {
+      console.log(CharacterVoice);
+      /*const VoiceLanguage = selectVoice.value;
+      const Skill = [
+        SkillList[Character.ActiveSkillIds[0]], //
+        SkillList[Character.ActiveSkillIds[1]],
+      ];
+      let model = JSON.parse(Model);
+      model.FileReferences.Moc = `CHR_${ChraracterFile}.moc3`;
+      model.Physics = `CHR_${ChraracterFile}.physics3.json`;
+      model.PhysicsV2.File = `CHR_${ChraracterFile}.physics3.json`;
+      model.Motions = {
+        'Menu': [
+          {
+            'Name': 'Menu',
+            'Text': TextResource['MenuTitle'],
+            'Choices': [
+              {
+                'Text': TextResource['MenuMusicPlayerButton'],
+                'NextMtn': 'Menu:PlayMusic',
+              },
+              {
+                'Text': TextResource['CharacterDetailVoice'],
+              },
+              {
+                'Text': TextResource['CharacterDetailMemory'],
+              },
+              {
+                'Text': TextResource['DungeonBattleGridBattleTitle'],
+              },
+              {
+                'Text': TextResource['DungeonBattleGridBattleTitle'],
+              },
+            ],
+          },
+          {
+            'Name': 'PlayMusic',
+            'Text': TextResource['MusicPlayerTabPlaylist'],
+            'Choices': [
+              {
+                'Text': '日文（完整）',
+                'NextMtn': 'Menu:PlayMusicJP',
+              },
+              {
+                'Text': '英文（完整）',
+                'NextMtn': 'Menu:PlayMusicUS',
+              },
+              {
+                'Text': '日文（短）',
+                'NextMtn': 'Menu:PlayShortJP',
+              },
+              {
+                'Text': '英文（短）',
+                'NextMtn': 'Menu:PlayShortUS',
+              },
+              {
+                'Text': '停止',
+                'NextMtn': 'Menu:PlayStop',
+              },
+            ],
+          },
+          {
+            'Name': 'PlayMusicJP',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_JP.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayMusicUS',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_US.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayShortJP',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_SHORT_JP.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayShortUS',
+            'Sound': `Music/CHR_${ChraracterFile}_SONG_SHORT_US.wav`,
+            'SoundChannel': 1,
+            'SoundLoop': true,
+            'Interruptable': true,
+          },
+          {
+            'Name': 'PlayStop',
+            'Sound': 'Sound/SE_001001.wav',
+            'SoundChannel': 1,
+          },
+        ],
+        'Login': [
+          {
+            'Name': 'Login1',
+            'Text': TextResource['MenuTitle'],
+            'File': 'motions/Talk_Loop.anim.motion3.json',
+            'Sound': `Voice/${VoiceLanguage}/Common/CV_${VoiceLanguage}_${ChraracterFile}_Mypage_${'0'.repeat(3 - CharacterVoice.CharacterDetailVoiceUnLockedText1.Path.TimelineId.toString().length)}${CharacterVoice.CharacterDetailVoiceUnLockedText1.Path.TimelineId}.wav`,
+          },
+          {
+            'Name': 'Login2',
+            'Text': TextResource[CharacterVoice.CharacterDetailVoiceUnLockedText2.SubtitleKey.slice(1, -1)],
+            'File': 'motions/Talk_Loop.anim.motion3.json',
+            'Sound': `Voice/${VoiceLanguage}/Common/CV_${VoiceLanguage}_${ChraracterFile}_Mypage_${'0'.repeat(3 - CharacterVoice.CharacterDetailVoiceUnLockedText1.Path.TimelineId.toString().length)}${CharacterVoice.CharacterDetailVoiceUnLockedText2.Path.TimelineId}.wav`,
+          },
+        ],
+        'Talk': [
+          {
+            'Name': 'TalkStart',
+            'File': 'motions/Talk_In.anim.motion3.json',
+          },
+          {
+            'Name': 'TalkEnd',
+            'File': 'motions/Talk_Out.anim.motion3.json',
+          },
+          {
+            'Name': 'Talk1',
+            'File': 'motions/Talk_Loop.anim.motion3.json',
+            'Sound': `Voice/${VoiceLanguage}/Common/CV_${VoiceLanguage}_${ChraracterFile}_Mypage_002.wav`,
+          },
+        ],
+        'Battle': [
+          {
+            'Name': 'Skill1',
+            'Text': TextResource['MenuTitle'],
+            'File': 'motions/Skill.anim.motion3.json',
+            'Sound': `Voice/JP/Skill/CV_${VoiceLanguage}_SKILL_000105001_0.wav`,
+          },
+          {
+            'Name': 'Skill2',
+            'Text': TextResource['MenuTitle'],
+            'File': 'motions/Skill.anim.motion3.json',
+            'Sound': 'Voice/JP/Skill/CV_JP_SKILL_000105002_0.wav',
+          },
+          {
+            'Name': 'BattleStart',
+          },
+          {
+            'Name': 'BattleWin',
+          },
+          {
+            'Name': 'BattleLose',
+          },
+        ],
+      };
+      for (let j in CharacterVoice) {
+        const Voice = CharacterVoice[j];
+        const VoiceType={}
+        const GroupType={}
+      }
+      model.Expressions = [
+        {
+          'Name': 'Angry',
+          'File': 'motions/Face_Angry.anim.motion3.json',
+        },
+        {
+          'Name': 'Blushing',
+          'File': 'motions/Face_Blushing.anim.motion3.json',
+        },
+        {
+          'Name': 'Eye_Close',
+          'File': 'motions/Face_Eye_Close.anim.motion3.json',
+        },
+        {
+          'Name': 'Eye_Grin',
+          'File': 'motions/Face_Eye_Grin.anim.motion3.json',
+        },
+        {
+          'Name': 'Glad',
+          'File': 'motions/Face_Glad.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Down',
+          'File': 'motions/Face_Look_Down.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Left',
+          'File': 'motions/Face_Look_Left.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Right',
+          'File': 'motions/Face_Look_Right.anim.motion3.json',
+        },
+        {
+          'Name': 'Look_Up',
+          'File': 'motions/Face_Look_Up.anim.motion3.json',
+        },
+        {
+          'Name': 'Sad',
+          'File': 'motions/Face_Sad.anim.motion3.json',
+        },
+        {
+          'Name': 'Smile',
+          'File': 'motions/Face_Smile.anim.motion3.json',
+        },
+        {
+          'Name': 'Surprise',
+          'File': 'motions/Face_Surprise.anim.motion3.json',
+        },
+        {
+          'Name': 'TearDrop',
+          'File': 'motions/Face_TearDrop.anim.motion3.json',
+        },
+        {
+          'Name': 'Tears',
+          'File': 'motions/Face_Tears.anim.motion3.json',
+        },
+        {
+          'Name': 'Unique1',
+          'File': 'motions/Face_Unique1.anim.motion3.json',
+        },
+        {
+          'Name': 'Unique',
+          'File': 'motions/Face_Unique2.anim.motion3.json',
+        },
+      ];
+      model.Controllers.KeyTrigger = {
+        'Items': [
+          {
+            'Input': 77,
+            'DownMtn': 'Menu:Menu',
+            'UpMtn': 'Menu:Menu',
+          },
+        ],
+        'Enabled': true,
+      };
+      model.Options.Name = ChraracterFile;
+      let file = new Blob([JSON.stringify(model)], { type: 'text/plain' });
+      let link = createElement('a', +'.json');
+      let url = window.URL.createObjectURL(file);
+      link.href = url;
+      link.download = `${ChraracterFile}.model3.json`;
+      nodeData.appendChild(link);*/
+    };
+  }
+  FreezeNode.classList.add('hidden');
+}
 /*优化功能*/
 //优化神殿
 async function temple() {
@@ -1405,11 +1756,11 @@ async function temple() {
   await initSelect(true, true, false, false);
   let CacheRegionId = getStorage(GlobalURLList.function + 'RegionId');
   let CacheGroupId = getStorage(GlobalURLList.function + 'GroupId');
-  const [selectRegion, selectGroup, selectClass, selectWorld] = [document.querySelector('#listRegion'), document.querySelector('#listGroup'), document.querySelector('#listClass'), document.querySelector('#listWorld')];
+  const [selectRegion, selectGroup] = [document.querySelector('#listRegion'), document.querySelector('#listGroup')];
   if (CacheGroupId != '-1') {
     selectRegion.value = CacheRegionId;
     selectGroup.value = CacheGroupId;
-    changeSelect(CacheRegionId, CacheGroupId, '-1', '-1');
+    changeSelect(CacheRegionId, CacheGroupId, 0, -1);
   }
   selectGroup.addEventListener('change', fillTemple);
   //初始化显示选项
@@ -1479,12 +1830,12 @@ async function arena() {
   if ((type == 'legend' && CacheGroupId != '-1') || (type == 'arena' && CacheWorldId != '-1')) {
     selectRegion.value = CacheRegionId;
     selectGroup.value = CacheGroupId;
-    selectClass.value = 0;
+    selectClass.value = type == 'arena' ? 0 : -1;
     selectWorld.value = CacheWorldId;
-    changeSelect(CacheRegionId, CacheGroupId, 0, CacheWorldId);
+    changeSelect(CacheRegionId, CacheGroupId, selectClass.value, CacheWorldId);
     selectGroup.onchange = () => {
       selectWorld.value = -1;
-      changeSelect(selectRegion.value, selectGroup.value, 0, -1);
+      changeSelect(selectRegion.value, selectGroup.value, selectClass.value, -1);
     };
     document.querySelector(`#list${type == 'arena' ? 'World' : 'Group'}`).addEventListener('change', fillTeam);
     await fillTeam();
@@ -2208,6 +2559,7 @@ async function fillMap(CastleList, GuildList) {
 }
 //战斗布局-重置表格
 async function fillGuilds(GuildList) {
+  FreezeNode.classList.remove('hidden');
   let divGuildList = document.querySelector('#guilds');
   divGuildList.innerHTML = '';
   divGuildList.appendChild(
@@ -2238,7 +2590,7 @@ async function fillGuilds(GuildList) {
   tr > :nth-child(2) {
     width: calc(100% - 25px);
   }
-        `
+      `
     )
   );
   let textTable = `
@@ -2278,6 +2630,7 @@ async function fillGuilds(GuildList) {
       count++;
     }
   }
+  FreezeNode.classList.add('hidden');
 }
 //战斗布局-更新数据
 async function updateServerData(GuildList) {
@@ -2468,6 +2821,7 @@ function updateBattlePanel() {
 }
 //优化神殿-获取信息
 async function fillTemple() {
+  FreezeNode.classList.remove('hidden');
   const ItemList = await getItem();
   //初始化数据节点
   let nodeData = document.querySelector('data');
@@ -2514,7 +2868,7 @@ async function fillTemple() {
   div[name="desc"] {
     font-size: x-large;
   }
-        `
+      `
     )
   );
   const GroupId = getStorage(GlobalURLList.function + 'GroupId');
@@ -2603,6 +2957,7 @@ async function fillTemple() {
       }
     }
   }
+  FreezeNode.classList.add('hidden');
 }
 //优化神殿-改变高亮
 function changeTempleDisplay() {
@@ -2642,6 +2997,7 @@ function changeTempleDisplay() {
 }
 //优化竞技场-获取信息
 async function fillTeam() {
+  FreezeNode.classList.remove('hidden');
   const CharacterList = await getCharacter();
   const EquipmentList = await getEquipment();
   const EquipmentSetList = await getEquipmentSet();
@@ -2700,30 +3056,20 @@ table {
 tbody tr > :nth-child(1) {
   width: 20px;
 }
-tbody tr > th[name="player"] > div {
-  display: flex;
-  justify-content: space-between;
+th[name="player"] {
+  position: relative;
   width: 150px;
   text-align: left;
 }
-tbody tr > th[name="player"] > div > :nth-child(2) {
+th[name='player'] > [name='world'] {
+  position: absolute;
   right: 0px;
+  top: 0px;
+  font-size: x-large;
 }
-tbody tr > th[name="player"] > div > :nth-child(1) {
-  left: 0px;
-}
-tbody tr > :nth-child(2) > :nth-child(5) {
-  display: inline-block;
-  width: 50%;
-  text-align: left;
-}
-tbody tr > :nth-child(2) > :nth-child(6) {
-  display: inline-block;
-  width: 50%;
-  text-align: right;
-}
-tr > :nth-child(2) > * {
-  width: 100px;
+th[name='player'] > div[name="point"] {
+  display: flex;
+  justify-content: space-between;
 }
 th character {
   display: block;
@@ -3403,19 +3749,20 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
       createElement(
         'tr',
         `
-          <th>${i + 1}</th>
+          <th>
+            <div>${i + 1}</div>
+            <div name="record"></div>
+          </th>
           <th name="player">
-            <div>
-              <a>${Player.PlayerName}</a>
-              <a name="world"></a>
+            <div name="level"></div>
+            <div>${Player.PlayerName}</div>
+            <div name="world"></div>
+            <div>${TextResource['CommonBattlePowerLabel']}: ${getNumber(Player.DeckBattlePower || Player.BattlePower)}</div>
+            <div name="time"></div>
+            <div name="point">
+              <a></a>
+              <a></a>
             </div>
-            <div name="level">
-            </div>
-            <div name="BattlePower"></div>
-            <div>
-              <a name="point"></a>
-              <a name="wins"></a>
-            </a></div>
           </th>
           `
       )
@@ -3430,23 +3777,21 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
       case 'legend': {
         nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.PlayerLevel);
         nodePlayer.querySelector('[name="world"]').innerHTML = `W${Player.PlayerId?.toString().slice(-2)}`;
-        nodePlayer.querySelector('[name="point"]').innerHTML = TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint);
-        nodePlayer.querySelector('[name="wins"]').innerHTML = TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount);
+        nodePlayer.querySelector('[name="point"] > :nth-child(1)').innerHTML = TextResource['GlobalPvpPointFormatWithLabel'].replace('{0}', Player.CurrentPoint);
+        nodePlayer.querySelector('[name="point"] > :nth-child(2)').innerHTML = TextResource['GlobalPvpConsecutiveVictoryLabel'].replace('{0}', Player.ConsecutiveVictoryCount);
         break;
       }
       case 'clearlist': {
         nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.Rank);
         nodePlayer.querySelector('[name="world"]').innerHTML = `${RegionList[Player.WorldId.toString().slice(0, 1)]}W${Player.PlayerId?.toString().slice(-2)}`;
-        nodePlayer.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonPlayerRankLabel']}:${Player.DeckBattlePower}`;
-        nodePlayer.querySelector('[name="point"]').innerHTML = new Date(Player.ClearTimestamp).toLocaleString().split(' ');
-        nodePlayer.querySelector('[name="wins"]').innerHTML = Player.BattleToken ? `<a href="${getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang, 'token': Player.BattleToken })}">${TextResource['CommonPlayLabel']}</a>` : '';
+        nodePlayer.querySelector('[name="time"]').innerHTML = new Date(Player.ClearTimestamp).toLocaleString().split(' ');
+        nodeTr.querySelector('[name="record"]').innerHTML = Player.BattleToken ? `<a href="${getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang, 'token': Player.BattleToken })}">▶️</a>` : '';
         break;
       }
       default: {
         break;
       }
     }
-    let totalBattlePower = 0;
     for (let j = 0; j < 5; j++) {
       const CharacterInfo = Player.UserCharacterInfoList?.[j] || Player.ClearPartyCharacterInfos?.[j];
       let nodeCharacter = nodeTr.appendChild(createElement('th', ''));
@@ -3456,7 +3801,6 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
       const CharacterId = CharacterInfo.CharacterId;
       const CharacterIcon = `${'0'.repeat(6 - CharacterId.toString().length)}${CharacterId}`;
       const Character = CharacterList[CharacterId];
-      totalBattlePower += CharacterInfo.BattlePower;
       let attributeCharacterInfo = CharacterRarity[CharacterInfo.RarityFlags.toString()];
       attributeCharacterInfo.element = Character.ElementType;
       attributeCharacterInfo.job = Character.JobFlags;
@@ -3620,7 +3964,7 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
                         <rarity></rarity>
                         <level></level>
                       </icon>
-                      <name></name>
+                      <name>${TextResource['MissionLockedButton']}</name>
                       <div><parameter_value>　</parameter_value></div>
                     </sphere>
                     <sphere order="3">
@@ -4049,8 +4393,8 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
         }
       };
     }
-    nodeTr.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonBattlePowerLabel']}: ${getNumber(totalBattlePower)}`;
   }
+  FreezeNode.classList.add('hidden');
 }
 //获取加成信息
 function getParameter(ParameterChangeInfo) {
@@ -4574,6 +4918,24 @@ async function getLocalRaidQuest(force = false) {
   }
   return LocalRaidQuestList;
 }
+//获取装备技能信息
+async function getCharacterVoice() {
+  const Type = 'CharacterDetailVoice';
+  let DataList = {};
+  const Buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/${Type}MB`, { type: 'arraybuffer', msgpack: true });
+  const DataMB = await msgpack.decode(new Uint8Array(Buffer));
+  if (!DataMB) return;
+  for (let i = 0; i < DataMB.length; i++) {
+    let Data = DataMB[i];
+    const CharacterId = Data.CharacterId;
+    const UnlockedVoiceButtonTextKey = Data.UnlockedVoiceButtonTextKey;
+    if (!DataList[CharacterId]) {
+      DataList[CharacterId] = {};
+    }
+    DataList[CharacterId][UnlockedVoiceButtonTextKey.slice(1, -1)] = Data;
+  }
+  return DataList;
+}
 //获取世界组
 async function getWorldGroup() {
   const buffer = await sendGMRequest(`https://cdn-mememori.akamaized.net/master/prd1/version/${getStorage('MasterVersion')}/WorldGroupMB`, { type: 'arraybuffer' });
@@ -4947,8 +5309,8 @@ async function sendGMRequest(url, option = {}) {
             setStorage('utcnowtimestamp', getHeader(response.responseHeaders, 'ortegautcnowtimestamp'));
             data = await msgpack.decode(new Uint8Array(response.response));
             if (data.ErrorCode) {
-              console.log(`${response.finalUrl.split('/').pop()}:${GlobalConstant.ErrorCode[data.ErrorCode]}`);
-              document.querySelector('#accountmanager>a:nth-child(2)').innerHTML = '未登录';
+              console.log(`${response.finalUrl.split('/').pop()}:${GlobalConstant.ErrorCode?.[data.ErrorCode]}`);
+              document.querySelector('#accountmanager>a:nth-child(2)')?.replaceChildren().insertAdjacentText('beforeend', '未登录');
             } else {
               console.log(`${response.finalUrl.split('/').pop()}:获取成功`);
             }

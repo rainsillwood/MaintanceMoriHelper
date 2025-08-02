@@ -3,7 +3,7 @@
 // @namespace    https://suzunemaiki.moe/
 // @updateURL    https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/extend/MaintenanceMoriHelper.user.js
 // @downloadURL  https://raw.githubusercontent.com/rainsillwood/MaintenanceMoriHelper/main/extend/MaintenanceMoriHelper.user.js
-// @version      1.08
+// @version      1.09
 // @description  Maintenance Mori优化
 // @author       SuzuneMaiki
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mememori-game.com
@@ -890,8 +890,8 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
         return WorldList[value].SName;
       });
       const option = new Option(`${Group.Name}(${text})`, GroupId);
-      if (isNaN(GroupId * 1)) {
-        option.setAttribute('fake');
+      if (isNaN(GroupId * 1) && !addWorld) {
+        option.classList.add('hidden');
       }
       option.classList.add('R' + Group.Region);
       selectGroup.options.add(option);
