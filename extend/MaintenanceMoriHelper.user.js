@@ -890,8 +890,8 @@ async function initSelect(addRegion = true, addGroup = true, addClass = true, ad
         return WorldList[value].SName;
       });
       const option = new Option(`${Group.Name}(${text})`, GroupId);
-      if (GroupId[0] == 'N') {
-        option.classList.add('GN');
+      if (isNaN(GroupId * 1)) {
+        option.setAttribute('fake');
       }
       option.classList.add('R' + Group.Region);
       selectGroup.options.add(option);
@@ -968,9 +968,6 @@ function changeSelect(RegionId, GroupId, ClassId, WorldId) {
   }
   #listWorld > ${ClassId > 0 ? 'option.global' : 'option.G' + GroupId} {
     display: inline;
-  }
-  #listGroup > option.GN {
-    display: ${ClassId == -1 ? 'none' : 'inline'};
   }
         `
     )
@@ -1504,7 +1501,7 @@ character {
         'character',
         `
         <div>No.${CharacterId}</div>
-        <img src="${GlobalConstant.assetURL}CharacterIcon/CHR_${ChraracterFile}/${ChraracterFile}_00_s.png">
+        <img src="${GlobalConstant.assetURL}CharacterIcon/CHR_${ChraracterFile}/CHR_${ChraracterFile}_00_s.png">
         <div>${Character.Name2Key ? TextResource[Character.Name2Key.slice(1, -1)] : '　'}</div>
         <div>${TextResource[Character.NameKey.slice(1, -1)]}</div>
         `
@@ -3760,7 +3757,7 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
             <div name="level"></div>
             <div>${Player.PlayerName}</div>
             <div name="world"></div>
-            <div name="BattlePower"></div>
+            <div>${TextResource['CommonBattlePowerLabel']}: ${getNumber(Player.DeckBattlePower || Player.BattlePower)}</div>
             <div name="time"></div>
             <div name="point">
               <a></a>
@@ -3787,7 +3784,6 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
       case 'clearlist': {
         nodePlayer.querySelector('[name="level"]').innerHTML = TextResource['CommonPlayerRankFormat'].replace('{0}', Player.Rank);
         nodePlayer.querySelector('[name="world"]').innerHTML = `${RegionList[Player.WorldId.toString().slice(0, 1)]}W${Player.PlayerId?.toString().slice(-2)}`;
-        nodePlayer.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonPlayerRankLabel']}:${Player.DeckBattlePower}`;
         nodePlayer.querySelector('[name="time"]').innerHTML = new Date(Player.ClearTimestamp).toLocaleString().split(' ');
         nodeTr.querySelector('[name="record"]').innerHTML = Player.BattleToken ? `<a href="${getURL({ 'page': 'battle_log', 'lang': GlobalURLList.lang, 'token': Player.BattleToken })}">▶️</a>` : '';
         break;
@@ -3796,7 +3792,6 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
         break;
       }
     }
-    let totalBattlePower = 0;
     for (let j = 0; j < 5; j++) {
       const CharacterInfo = Player.UserCharacterInfoList?.[j] || Player.ClearPartyCharacterInfos?.[j];
       let nodeCharacter = nodeTr.appendChild(createElement('th', ''));
@@ -3806,7 +3801,6 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
       const CharacterId = CharacterInfo.CharacterId;
       const CharacterIcon = `${'0'.repeat(6 - CharacterId.toString().length)}${CharacterId}`;
       const Character = CharacterList[CharacterId];
-      totalBattlePower += CharacterInfo.BattlePower;
       let attributeCharacterInfo = CharacterRarity[CharacterInfo.RarityFlags.toString()];
       attributeCharacterInfo.element = Character.ElementType;
       attributeCharacterInfo.job = Character.JobFlags;
@@ -4399,7 +4393,6 @@ parameter_set[type="skill"] div[order] > div[unlock] > unlocked {
         }
       };
     }
-    nodeTr.querySelector('[name="BattlePower"]').innerHTML = `${TextResource['CommonBattlePowerLabel']}: ${getNumber(totalBattlePower)}`;
   }
   FreezeNode.classList.add('hidden');
 }
